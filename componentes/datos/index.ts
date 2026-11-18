@@ -3,7 +3,7 @@
  * Requieren los tokens de `tokens.css` (bg-suave, text-texto-3, --color-dato-*, …) y
  * `@phosphor-icons/react` (se importa desde '@phosphor-icons/react/ssr', sirve en Server Components).
  *
- * Server Components: Kpi, KpiProtagonista, Variacion, Rayitas, Bloques, Anillo, Curva.
+ * Server Components: Kpi, KpiProtagonista, Variacion, Rayitas, Bloques, Anillo, Curva, DosMonedas.
  * Cliente ('use client'): Cuenta, BarrasApiladas.
  */
 export * from './formato'
@@ -15,4 +15,5 @@ export { Rayitas } from './Rayitas'
 export { Bloques } from './Bloques'
 export { Anillo } from './Anillo'
 export { Curva } from './Curva'
+export { DosMonedas, ChipMoneda, PieDosMonedas, type MonedaLado } from './DosMonedas'
 export { BarrasApiladas, type SerieBarra, type PuntoBarra } from './BarrasApiladas'

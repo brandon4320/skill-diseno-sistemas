@@ -35,6 +35,7 @@ Rutas relativas a esta carpeta; los números sueltos (`06`, `07`…) son las cap
 | Login / acceso | §5 Acceso | `ejemplos/pantallas/login.html` |
 | Celular | §5 Celular, §6e | `ejemplos/pantallas/celular.html`, `09`, `11`, `12` |
 | Gráficos | §5 Gráficos, `guias/graficos.md` | `ejemplos/graficos.html`, `componentes/datos/` |
+| Dos monedas (moneda local y dólares) | §5 Dos monedas | `ejemplos/dos-monedas.html`, `componentes/datos/DosMonedas.tsx` |
 | Textos de interfaz | §6 Textos, `guias/textos.md` | — |
 | Íconos | §6 Íconos, `guias/iconos.md` | `ejemplos/iconos.html` |
 | Vacío, error, bienvenida | §6 Ilustraciones, §6b | `ilustraciones/*.svg`, `ejemplos/ilustraciones.html`, `componentes/estructura/Vacio.tsx` |
@@ -281,6 +282,16 @@ Lo premium se nota en que todo cae en su lugar. Un desfase de 2 px se ve aunque 
 - Avance contra meta: barra de 3–6 px, rayitas con marca de "esperado a hoy" o "3 de 6". Nunca una torta.
 - Filas de 3–6 del mismo tamaño; cada KPI lleva a su lista filtrada (pie clickeable con ↗) y la deja destellando.
 - Sin valor: "—" en gris; cargando: esqueleto con la forma del KPI.
+
+### Dos monedas (`componentes/datos/DosMonedas.tsx` · `ejemplos/dos-monedas.html`)
+Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una nota al pie**: "$ 45,7 M" grande y "y US$ 4.700" chiquito abajo hace que los dólares no se vean.
+- **Lado a lado, mismo tamaño.** Dos columnas iguales separadas por una línea de 1 px: la moneda local a la izquierda y los dólares a la derecha, cada una con su cifra, su contexto y su propio dibujo (barra, curva). Si la tarjeta es angosta (menos de ~320 px) o en celular, una arriba de la otra, también del mismo tamaño.
+- **Chip de moneda** (`ARS`, `USD`, mono 10,5 px) arriba de cada cifra, con un color fijo por moneda en todo el sistema (por ejemplo, la local azul y el dólar verde). Ese color no se usa para otra cosa (ni para entidades ni para estados).
+- **Nunca se suman entre sí**, ni "pasadas" a una sola moneda con un tipo de cambio: el usuario quiere ver las dos. Si una está en cero se muestra igual ("US$ 0"), así se sabe que se miró.
+- **El pie también va partido** en dos mitades alineadas con las columnas ("+60 d: $ 27,2 M" | "Nada a +60 días"). El link de la tarjeta sube al rótulo, a la derecha.
+- **Una cifra que no es plata** (cantidad de facturas, ocupación) va una sola vez; lo que sí es plata dentro de esa tarjeta (lo que falta facturar) va partido por moneda en el pie.
+- **Pantallas de plata (caja, tesorería):** arriba una bandeja por moneda para el saldo y otra por moneda para lo que entró y salió en el período, en una grilla simétrica (2 o 4 columnas). Los montos van completos, sin abreviar.
+- Con las dos columnas, cada bandeja necesita más ancho: en un tablero pasan a ser de a 3 por fila y la protagonista va arriba a todo el ancho.
 
 ### Listas y tablas (01, 07 · `componentes/estructura/Tabla.tsx`, `ejemplos/pantallas/lista-cobranzas.html`)
 - **Tabla:** sin líneas verticales; encabezado 12 px `texto-2` en `bg-suave` o solo hairline (uno por sistema), fijo y ordenable con `aria-sort`; filas en tres densidades (28 / 36 / 44) con `divide-divisor`; primera columna fija con fondo sólido; pie fijo con "N registros" y total del filtro (§1c.7); montos a la derecha; ≤ 2 pastillas por fila; rayita de 3 px del color de la entidad; códigos en mono; anulado tachado en gris; 5–8 columnas (el resto en "Columnas" y en la ficha).
