@@ -1477,8 +1477,9 @@ const SPIN = '<i class="ph ph-circle-notch gira"></i>';
   det.textContent = DET(1);
   ver.addEventListener('click', () => { const v = det.hidden; det.hidden = !v; ver.setAttribute('aria-expanded', v); ver.textContent = v ? 'Ocultar detalle' : 'Ver detalle'; });
   $('#eb-copiar').addEventListener('click', async e => {
+    const btn = e.currentTarget;
     try { await navigator.clipboard.writeText(`${$('#eb-cod').textContent}\n${det.textContent}`); } catch {}
-    const btn = e.currentTarget; btn.innerHTML = '<i class="ph ph-check ok-ic"></i>'; anunciar('Código copiado');
+    btn.innerHTML = '<i class="ph ph-check ok-ic"></i>'; anunciar('Código copiado');
     setTimeout(() => { btn.innerHTML = '<i class="ph ph-copy"></i>'; }, 1500);
   });
   b.addEventListener('click', async () => {

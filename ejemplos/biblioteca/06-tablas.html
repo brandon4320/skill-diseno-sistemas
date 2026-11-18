@@ -27,9 +27,13 @@
 .tt th{position:relative;padding:0;user-select:none}
 .tt th .th{display:flex;align-items:center;gap:var(--espacio-1);height:36px;padding:0 var(--espacio-2) 0 var(--espacio-5);min-width:0}
 .tt th.r .th{justify-content:flex-end;padding:0 var(--espacio-5) 0 var(--espacio-2)}
-.tt th .ord{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:var(--espacio-3);min-width:0;height:28px;border-radius:var(--radius-chip);cursor:pointer;color:var(--texto-2)}
+.tt th .ord,.tt th button.ord{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:var(--espacio-3);min-width:0;height:28px;border-radius:var(--radius-chip);cursor:pointer;color:var(--texto-2)}
 .tt th.r .ord{flex-direction:row-reverse}
 .tt th .ord:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:2px}
+.tt th span.ord{cursor:default}
+.tt .monto .u,.lista-f .monto .u{font-size:11px}.tarj .monto .u{font-size:12px}
+.lamina-regla b,#cons-preset{font-variant-numeric:tabular-nums}
+[data-tema=oscuro] .logo{background:color-mix(in oklch,var(--ent,var(--e1)) 60%,black)}
 .tt th .ord .ph{margin:0;font-size:14px;color:var(--texto-3)}
 .tt th .ord .ti{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .tt th .ord .cand{font-size:12px;color:var(--texto-3)}
@@ -42,7 +46,7 @@
 .ind.on{opacity:1;border:1px solid var(--borde-fuerte);background:var(--superficie);color:var(--tinta)}
 .ind.on .ph{color:var(--tinta)!important}
 .ind .k{position:absolute;right:-6px;top:-6px;min-width:12px;height:12px;border-radius:99px;background:var(--neg);color:var(--neg-t);font-size:11px;line-height:12px;text-align:center;font-weight:500;transform:scale(.82)}
-.tt th .mc{all:unset;box-sizing:border-box;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;color:var(--texto-3);opacity:0;cursor:pointer;flex:none;transition:opacity var(--t-1),background var(--t-1)}
+.tt th .mc,.tt th button.mc{all:unset;box-sizing:border-box;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;color:var(--texto-3);opacity:0;cursor:pointer;flex:none;transition:opacity var(--t-1),background var(--t-1)}
 .tt th .mc .ph{font-size:12px;margin:0}
 .tt th:hover .mc,.tt th .mc:focus-visible,.tt th .mc[aria-expanded=true]{opacity:1}
 .tt th .mc:hover,.tt th .mc[aria-expanded=true]{background:var(--suave);color:var(--tinta)}
@@ -81,7 +85,7 @@ body.moviendo-col,body.moviendo-col *{cursor:grabbing!important}
 .tit-cod{display:flex;align-items:baseline;gap:var(--espacio-4);min-width:0}
 .tit-cod .t{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .tit-cod .cod{font-size:11px;letter-spacing:.04em;flex:none}
-.logo{width:20px;height:20px;border-radius:6px;display:grid;place-items:center;flex:none;background:var(--ent,var(--e1));color:#fff;font-size:11px;font-weight:600;letter-spacing:0}
+.logo{width:20px;height:20px;border-radius:6px;display:grid;place-items:center;flex:none;background:color-mix(in oklch,var(--ent,var(--e1)) 72%,black);color:#fff;font-size:11px;font-weight:600;letter-spacing:0}
 .logo.ch{width:16px;height:16px;border-radius:5px}
 .resuelto{display:inline-flex;align-items:center;gap:var(--espacio-2);color:var(--texto-2);font-size:12px;font-weight:500}
 .resuelto .ph{font-size:13px;color:var(--texto-3)}
@@ -147,7 +151,7 @@ body.moviendo-col,body.moviendo-col *{cursor:grabbing!important}
 .filtro-col b{font-weight:500;color:var(--tinta)}
 
 /* faceta (botón de 24–28 px que se invierte al elegirse) */
-.faceta{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:var(--espacio-3);height:28px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);border:1px solid var(--borde);background:var(--superficie);font-size:12px;font-weight:500;color:var(--texto-2);cursor:pointer;white-space:nowrap;transition:background var(--t-1),color var(--t-1),border-color var(--t-1)}
+.faceta{all:unset;box-sizing:border-box;font-variant-numeric:tabular-nums;display:inline-flex;align-items:center;gap:var(--espacio-3);height:28px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);border:1px solid var(--borde);background:var(--superficie);font-size:12px;font-weight:500;color:var(--texto-2);cursor:pointer;white-space:nowrap;transition:background var(--t-1),color var(--t-1),border-color var(--t-1)}
 .faceta:hover{border-color:var(--borde-fuerte);color:var(--tinta)}
 .faceta:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:2px}
 .faceta[aria-pressed=true]{background:var(--neg);border-color:var(--neg);color:var(--neg-t)}
@@ -286,8 +290,9 @@ body.moviendo-col,body.moviendo-col *{cursor:grabbing!important}
 .tt tr.error td{background:color-mix(in oklch,var(--rojo) 12%,var(--superficie));color:var(--rojo)}
 .tt tr.aviso:hover td{background:color-mix(in oklch,var(--ambar) 12%,var(--superficie))}
 .tt tr.error:hover td{background:color-mix(in oklch,var(--rojo) 16%,var(--superficie))}
-.tt tr.apagada td{opacity:.5}
-.tt tr.aviso .gris,.tt tr.error .gris{color:inherit;opacity:.85}
+.tt tr.apagada td,.tt tr.apagada td :not(.logo,.av,.logo *,.av *){color:var(--texto-3)}
+.tt tr.apagada td :is(.logo,.av,.etq,img){filter:grayscale(1);opacity:.6}
+.tt tr.aviso .gris,.tt tr.error .gris{color:inherit}
 .mono-12{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
 .nivel{display:inline-flex;align-items:center;gap:var(--espacio-2);font-size:12px;font-weight:500}
 .nivel .ph{font-size:14px}
@@ -438,8 +443,11 @@ body.moviendo-col,body.moviendo-col *{cursor:grabbing!important}
 @media (max-width:767px){
   .tt th .agarre{display:none}
   .tt th .th{height:44px}
-  .tt th .ord,.tt th .mc,.exp,.calc,.quien,.tt tr.grupo .pleg,.faceta,.leyenda-e button,.pv-fila,.pv-cab .volver,.opc button,.ed,.fchip button,.ed-pop button{min-height:44px;min-width:44px}
-  .tt th .ord{justify-content:flex-start}
+  .tt th .ord,.tt th .mc,.tt th button.ord,.tt th button.mc,.exp,.calc,.quien,.tt tr.grupo .pleg,.faceta,.leyenda-e button,.pv-fila,.pv-cab .volver,.opc button,.ed,.fchip button,.ed-pop button{min-height:44px;min-width:44px}
+  .tt th .ord,.tt th button.ord{justify-content:flex-start}
+  .cond .in,.facetas .busca .in{height:auto}
+  .cond .in select,.cond .in input,.facetas .busca .in input{min-height:44px}
+  .lamina pre{min-height:44px}
   .tt td.acc .btn{opacity:1}
   .tt tbody td{height:52px}
   .tt.tarjetas-cel table{width:100%!important}

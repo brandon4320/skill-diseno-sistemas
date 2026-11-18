@@ -21,12 +21,23 @@ Para los scripts hace falta Node 18 o más. `revisar.mjs` además necesita Playw
 | `SKILL.md` | Las reglas, en un solo lugar: principios, cuándo leer qué, los dos modos (crear y overhaul), espacios y legibilidad, marco, vida, tipografía, color, superficies, piezas, textos, íconos, movimiento, accesibilidad, antipatrones y la lista para antes de entregar. Si algo de otra carpeta lo contradice, manda `SKILL.md`. |
 | `tokens.css` | Variables de Tailwind v4 con nombres en español: colores, letras, radios, espacios (`--espacio-*`), sombras y modo oscuro. |
 | `guias/` | Un tema por archivo, con valores y antes/después: `jerarquia-y-espacios.md` (la más importante), `textos.md`, `iconos.md`, `graficos.md`, `movimiento.md`, `documentos.md`, `rediseno.md` (pasar una pantalla vieja al lenguaje), `overhaul.md` y `overhaul-ejemplo.md` (remodelar un sistema en producción sin tocar los datos). |
-| `ejemplos/` | HTML autocontenidos que se abren en el navegador: `tablero-crm.html`, `componentes.html` (galería de piezas), `antes-despues.html`, `graficos.html`, `iconos.html`, `ilustraciones.html`, `movimiento.html`; en `pantallas/` una por tipo (lista, vistas de datos, pipeline, ficha, formulario, ajustes, calendario, login, celular); en `documentos/` factura, presupuesto, informe y correo. Más `recetas-tailwind.md`. Todos usan una marca inventada. |
-| `componentes/` | Piezas en React 19 + TypeScript + Tailwind v4, listas para copiar: `base/` (botón, campo, segmentado, pastilla, menú, avatar…), `datos/` (KPI, protagonista, curva, barras apiladas, anillo, formato de números y fechas) y `estructura/` (marco, barra lateral, cabecera, tabla, hoja lateral, toast, vacío, esqueleto, error en el lugar). |
+| `ejemplos/` | HTML autocontenidos que se abren en el navegador: `tablero-crm.html`, `componentes.html` (galería de piezas), `antes-despues.html`, `graficos.html`, `iconos.html`, `ilustraciones.html`, `movimiento.html`; en `pantallas/` una por tipo (lista, vistas de datos, pipeline, ficha, formulario, ajustes, calendario, login, celular); en `documentos/` factura, presupuesto, informe y correo; en `biblioteca/` la biblioteca completa (abajo). Más `recetas-tailwind.md`. Todos usan una marca inventada. |
+| `componentes/` | Piezas en React 19 + TypeScript + Tailwind v4, listas para copiar, en 17 carpetas: `base/` (botón, campo, segmentado, pastilla, menú, avatar…), `datos/` (KPI, protagonista, curva, barras apiladas, anillo, formato de números y fechas), `estructura/` (marco, barra lateral, cabecera, tabla, hoja lateral, toast, vacío, esqueleto, error en el lugar) y una por categoría de la biblioteca (`navegacion/`, `botones/`, `campos/`, `datos-chicos/`, `kpis/`, `tablas/`, `listas/`, `tarjetas/`, `capas/`, `tiempo/`, `ia-automatizaciones/`, `flujos/`, `estados/`, `celular/`). Índice y dependencias en `componentes/README.md`. |
 | `ilustraciones/` | 12 SVG de línea para vacíos, error, bienvenida, éxito y procesos largos. Toman el color del sistema por variables CSS: pegalos en línea, no como `<img>`. |
 | `scripts/` | `revisar.mjs` y `guardia-datos.mjs` (abajo). Detalle completo en `scripts/README.md`. |
 | `referencias/` | Las 14 capturas de referencia. Son de sus autores y van solo como material de estudio, no para copiar. |
 | `analisis/` | El análisis de cada tema de las referencias, con valores estimados. |
+
+## Biblioteca de piezas: `ejemplos/biblioteca/`
+
+299 piezas vivas en 14 categorías (navegación, botones, campos, datos chicos, KPIs, tablas, listas, tarjetas, capas, tiempo, IA y automatizaciones, flujos, estados y celular), cada una con su regla, su sección de `SKILL.md` y el botón "Ver código". La portada (`index.html`) tiene un buscador (`/` o ⌘K) que lleva directo a la lámina. La versión React de cada categoría está en la carpeta del mismo nombre en `componentes/`.
+
+Las páginas cargan `base.css` y `base.js`, así que abrilas con un servidor local, no con doble clic:
+
+```sh
+cd ~/.claude/skills/diseno-sistemas/ejemplos && python3 -m http.server
+# y abrí http://localhost:8000/biblioteca/
+```
 
 ## Ajustarla a tu marca
 

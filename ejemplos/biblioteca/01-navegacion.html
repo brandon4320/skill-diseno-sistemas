@@ -52,6 +52,7 @@
 .nv-it .c{font-size:12px;color:var(--texto-3);font-variant-numeric:tabular-nums;flex:none;transition:opacity var(--t-2)}
 .nv-it .c.verbo{font-family:var(--mono);font-size:11px;font-weight:500}
 .c.am{color:var(--ambar)!important}.c.ro{color:var(--rojo)!important}
+:root:not([data-tema=oscuro]) .nv-it .c.am,:root:not([data-tema=oscuro]) .nv-it .estado-t.am{color:#9a4708!important}
 .nv-it .pt{position:absolute;left:25px;top:7px;width:7px;height:7px;border-radius:50%;background:var(--ambar);box-shadow:0 0 0 2px var(--lienzo);opacity:0;transition:opacity var(--t-2)}
 .nv-it .pt.ro{background:var(--rojo)}
 .nv-it .cuadro.ch{width:17px;height:17px;border-radius:5px}
@@ -1548,8 +1549,14 @@
 <script src="base.js"></script>
 <script>
 (() => {
-const { $, $$, fmt, toast, anunciar, colorDe, avatar, escapar, sinAcentos, leer, guardar, quieto, ticks, bloques, destellar } = bib;
+const { $, $$, fmt, anunciar, colorDe, avatar, escapar, sinAcentos, leer, guardar, quieto, ticks, bloques, destellar } = bib;
 const angosto = matchMedia('(max-width:767px)');
+/* base.js tope de 3 avisos: con 3 en pila su while no termina (el que sale sigue contando); dejamos lugar antes */
+const toast = o => {
+  const pila = document.querySelector('.toasts');
+  if (pila) { pila.querySelectorAll('.toast.sale').forEach(t => t.remove()); while (pila.children.length >= 3) { const t = pila.firstElementChild; t._cerrar?.(); t.remove(); } }
+  return bib.toast(o);
+};
 
 /* ════════ utilidades de la página ════════ */
 const ponerIcono = (i, fill) => { if (i && i.dataset.i) i.className = (fill ? 'ph-fill' : 'ph') + ' ph-' + i.dataset.i; };

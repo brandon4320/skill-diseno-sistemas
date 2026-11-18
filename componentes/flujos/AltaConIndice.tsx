@@ -124,7 +124,7 @@ export function AltaConIndice({ secciones, principal, secundario, estadoGuardado
           <div className="mt-auto hidden flex-col gap-1.5 border-t border-divisor px-2 pt-3 text-xs text-texto-3 md:flex">
             {listas} de {secciones.length} secciones listas
             <div aria-hidden className="flex gap-[3px]">
-              {secciones.map((s, i) => (
+              {secciones.map((_, i) => (
                 <i key={i} className={cx('h-2 flex-1 rounded-[3px]', i < listas ? 'bg-verde-texto' : 'bg-suave')} />
               ))}
             </div>

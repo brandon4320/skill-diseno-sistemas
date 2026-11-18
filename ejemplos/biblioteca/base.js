@@ -214,7 +214,9 @@
       (des ? `<button type="button" class="btn chico texto deshacer">${des.texto}</button>` : '') +
       (o.accion ? `<button type="button" class="btn chico texto deshacer accion">${o.accion.texto}</button>` : '') +
       `<button type="button" class="btn ic chico texto cierra" aria-label="Cerrar aviso"><i class="ph ph-x"></i></button><i class="tiempo" style="animation-duration:${dur}ms"></i>`;
-    while (pila.children.length >= 3) quitar(pila.firstElementChild);
+    // Los que ya están saliendo no cuentan; si hay 3 vivos, saca el más viejo (sin bucle: quitar() demora el remove).
+    const vivos = [...pila.children].filter((t) => !t.classList.contains('sale'));
+    vivos.slice(0, Math.max(0, vivos.length - 2)).forEach(quitar);
     pila.appendChild(el);
     requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('ver')));
     let resto = dur, inicio = Date.now(), timer = setTimeout(cerrar, resto), pausado = false;

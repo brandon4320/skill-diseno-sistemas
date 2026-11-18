@@ -46,6 +46,8 @@ Rutas relativas a esta carpeta; los números sueltos (`06`, `07`…) son las cap
 | Código React + Tailwind v4 | §6g, `ejemplos/recetas-tailwind.md` | `componentes/base/`, `componentes/datos/`, `componentes/estructura/` |
 | Revisar antes de entregar | §8, `scripts/README.md` | `scripts/revisar.mjs` |
 | Patrón concreto con medidas (tabla, vista, lote, proceso, ⌘K, menú, kanban, carga del equipo, facturación, oscuro) | §1c, `guias/patrones-de-referencia.md` (Top 25 al final, tabla de lo que no se copia) | — |
+| Buscar una pieza concreta (biblioteca completa por categoría) | — | `ejemplos/biblioteca/index.html`: 14 categorías, 299 piezas vivas con su regla y su código. Abrir con un servidor local porque usa `base.css` y `base.js` (`cd ejemplos && python3 -m http.server`, después `localhost:8000/biblioteca/`) |
+| La misma pieza en React | `componentes/README.md` (índice por carpeta y qué carpetas copiar juntas) | `componentes/` (17 carpetas: `base/`, `datos/`, `estructura/` y una por categoría de la biblioteca) |
 | Profundizar un tema | `analisis/01-estructura.md` … `15-homogeneidad.md` | `ejemplos/componentes.html` (galería de piezas) |
 
 ## Receta rápida

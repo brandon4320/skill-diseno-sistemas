@@ -1807,7 +1807,7 @@ $$('.barra-viaja').forEach(n => barra(n));
       $('#ini-val').style.strokeDashoffset = (L_ANILLO * (1 - h / t)).toFixed(1);
       $('#ini-ti').textContent = ti; $('#ini-tx').textContent = tx; $('#ini-heroe').classList.toggle('listo', h === t);
       const desde = parseInt($('#ini-n').textContent) || 0;
-      rodar(desde, Math.round(h / t * 100), n => { $('#ini-n').textContent = Math.round(n) + ' %'; }, 600);
+      rodar(desde, Math.round(h / t * 100), n => { const el = $('#ini-n'); if (el) el.textContent = Math.round(n) + ' %'; }, 600);
       $('#ini-ar').setAttribute('aria-label', `${Math.round(h / t * 100)} % del día hecho`);
       $('#ini-c').textContent = t - h;
       if (e.detail) { const fila = e.target.closest('.m-fila'); fila.style.transition = 'opacity 180ms'; fila.style.opacity = '.4'; setTimeout(() => { $('#ini-lista') && (pintar()); }, 420); }

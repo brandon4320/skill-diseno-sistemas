@@ -22,7 +22,7 @@
 .barra-h .rango .gris{font-weight:400}
 .ley{display:flex;gap:var(--espacio-2);flex-wrap:wrap}
 .ley button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:var(--espacio-3);height:28px;padding:0 var(--espacio-4);border-radius:99px;font-size:12px;font-weight:500;background:color-mix(in oklch,var(--t) 12%,var(--superficie));color:color-mix(in oklch,var(--t) 64%,var(--tinta));transition:background var(--t-1),color var(--t-1)}
-.ley button .c{font-variant-numeric:tabular-nums;opacity:.8}
+.ley button .c{font-variant-numeric:tabular-nums}
 .ley button::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--t)}
 .ley button[aria-pressed=false]{background:none;box-shadow:inset 0 0 0 1px var(--borde)}
 .gente-f{display:flex;gap:var(--espacio-2);flex-wrap:wrap}
@@ -38,7 +38,7 @@
 /* ── evento: tinte + borde izquierdo de 3 px ── */
 .ev{--tit:color-mix(in oklch,var(--t) 64%,var(--tinta));--sub:color-mix(in oklch,var(--t) 28%,var(--texto-2));
   position:absolute;left:calc(var(--l,0)*100%/var(--n,1) + 2px);width:calc(100%/var(--n,1) - 5px);top:calc(var(--h)*var(--y) + 1px);height:calc(var(--h)*var(--d) - 3px);min-height:18px;
-  padding:var(--espacio-2) var(--espacio-3) var(--espacio-2) var(--espacio-4);border-radius:8px;border:0;border-left:3px solid var(--t);
+  padding:var(--espacio-2) var(--espacio-3);border-radius:8px;border:0;border-left:3px solid var(--t);
   background:color-mix(in oklch,var(--t) 12%,var(--superficie));color:var(--tit);text-align:left;overflow:hidden;display:flex;flex-direction:column;gap:var(--espacio-1);
   font-size:12px;line-height:1.3;cursor:pointer;z-index:2;transition:background var(--t-1),box-shadow var(--t-2) var(--ease),opacity var(--t-2);touch-action:none;user-select:none}
 [data-tema=oscuro] .ev{background:color-mix(in oklch,var(--t) 19%,var(--superficie))}
@@ -188,6 +188,15 @@ button.hc[aria-expanded=true]{border-color:var(--acento);box-shadow:0 0 0 3px co
 .mm.calor .mm-g button .n{background:color-mix(in oklch,var(--acento) calc(var(--c,0)*1%),transparent)}
 .mm.calor .mm-g button:hover .n{box-shadow:inset 0 0 0 1px var(--acento)}
 .mm.calor .mm-g button.hoy .n{background:var(--neg)}
+.mm.calor .mm-g button.otro{color:var(--tinta)}
+div.ev,div.agf{cursor:default}
+div.ev:hover{background:color-mix(in oklch,var(--t) 12%,var(--superficie))}
+[data-tema=oscuro] div.ev:hover{background:color-mix(in oklch,var(--t) 19%,var(--superficie))}
+.mal div.ev.lleno:hover{background:var(--t)}
+div.agf:hover{background:none}
+.doc-cab .cifra .cent{font-size:14px}
+#doc-venc .monto .u{font-size:11px}
+#doc-venc .lt{margin-left:-3px}
 .prox{display:flex;flex-direction:column;gap:var(--espacio-4)}
 .prox-it{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:var(--espacio-5);padding:var(--espacio-5) var(--espacio-6) var(--espacio-5) var(--espacio-5);background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-control);box-shadow:var(--s-min);transition:transform var(--t-2) var(--ease),box-shadow var(--t-2) var(--ease)}
 @media (hover:hover){.prox-it:hover{transform:translateY(calc(-1px*var(--mueve)));box-shadow:var(--s-hover)}}
@@ -327,7 +336,7 @@ button.hc[aria-expanded=true]{border-color:var(--acento);box-shadow:0 0 0 3px co
 .gb .tt{overflow:hidden;text-overflow:ellipsis;min-width:0}
 .gb.corta .tt{display:none}
 .gb-fuera{position:absolute;top:0;height:var(--fil);display:flex;align-items:center;font-size:12px;color:var(--texto-3);white-space:nowrap;pointer-events:none}
-.gb.lejos{opacity:.6}
+.gb.lejos{filter:saturate(.45)}
 .gb.borrador{background:var(--superficie);box-shadow:inset 0 0 0 1px var(--borde-fuerte);border:1px dashed transparent}
 .gb.mueve{cursor:grabbing;box-shadow:inset 0 0 0 1px var(--t),var(--s-flot);z-index:5;transition:none}
 .gb.choca{box-shadow:inset 0 0 0 1.5px var(--rojo)}
@@ -519,7 +528,7 @@ button.hc[aria-expanded=true]{border-color:var(--acento);box-shadow:0 0 0 3px co
 .hu-gente button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:var(--espacio-3);height:32px;padding:0 var(--espacio-4) 0 var(--espacio-2);border-radius:99px;border:1px solid var(--borde);font-size:12px;font-weight:500;background:var(--superficie)}
 .hu-gente button .av{width:24px;height:24px}
 .hu-gente button[aria-pressed=false]{color:var(--texto-3);border-style:dashed}
-.hu-gente button[aria-pressed=false] .av{filter:grayscale(1);opacity:.55}
+.hu-gente button[aria-pressed=false] .av{background:var(--bandeja);color:var(--texto-3);box-shadow:inset 0 0 0 1px var(--borde)}
 .hu-gente button:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent)}
 .hu-ev{display:flex;align-items:center;gap:var(--espacio-5);padding:var(--espacio-5) var(--espacio-6);border-radius:var(--radius-control);background:var(--superficie);border:1px solid var(--borde);flex-wrap:wrap}
 .hu-ev .tx{display:flex;flex-direction:column;gap:var(--espacio-1);min-width:0;flex:1}
@@ -533,7 +542,8 @@ button.hc[aria-expanded=true]{border-color:var(--acento);box-shadow:0 0 0 3px co
 .rango-dur input{flex:1;accent-color:var(--acento);height:24px;min-width:0}
 .rango-dur output{font-family:var(--mono);font-size:12px;color:var(--tinta);min-width:56px;text-align:right}
 .mal .ev.lleno{background:var(--t);color:#fff;border-left-color:var(--t)}
-.mal .ev.lleno .eh{color:rgb(255 255 255/.9)}
+.mal .ev.lleno .eh{color:#fff}
+[data-tema=oscuro] .mal .ev.lleno,[data-tema=oscuro] .mal .ev.lleno .eh{color:#101014}
 
 /* ── cortes ── */
 @media (max-width:1279px){.hu{grid-template-columns:minmax(0,1fr)}}
@@ -660,7 +670,7 @@ button.hc[aria-expanded=true]{border-color:var(--acento);box-shadow:0 0 0 3px co
           <div class="barra-h">
             <button class="btn chico" id="sem-hoy">Hoy</button>
             <div class="fila g3"><button class="btn ic chico texto" id="sem-ant" aria-label="Semana anterior" data-tip="Semana anterior" data-atajo="←"><i class="ph ph-caret-left"></i></button><button class="btn ic chico texto" id="sem-sig" aria-label="Semana siguiente" data-tip="Semana siguiente" data-atajo="→"><i class="ph ph-caret-right"></i></button></div>
-            <span class="rango" id="sem-rango" aria-live="polite">16 – 22 nov <span class="gris">2026</span></span>
+            <span class="rango" id="sem-rango" aria-live="polite">16 – 22 nov <span class="gris num">2026</span></span>
             <div class="empuja fila g3">
               <div class="seg chico solo-esc" id="sem-vista" role="group" aria-label="Días a la vista"><button data-v="7" class="on">Semana</button><button data-v="5">Laborables</button></div>
               <button class="btn chico neg" id="sem-nuevo"><i class="ph ph-plus"></i>Nuevo evento</button>
@@ -1555,7 +1565,7 @@ function ligarLista(cont) { cont.addEventListener('click', ev => { const b = ev.
   let L = lunes(HOY_D), n = 7, sel = HOY_D;
   const filtro = new Set(Object.keys(TIPOS));
   const cal = $('#sem-cal'), cel = $('#sem-cel'), ley = $('#sem-ley');
-  function rango(d0, d1) { return mnum(d0) === mnum(d1) ? `${dnum(d0)} – ${dnum(d1)} ${MES_C[mnum(d1)]} <span class="gris">${anio(d1)}</span>` : `${dnum(d0)} ${MES_C[mnum(d0)]} – ${dnum(d1)} ${MES_C[mnum(d1)]} <span class="gris">${anio(d1)}</span>`; }
+  function rango(d0, d1) { return mnum(d0) === mnum(d1) ? `${dnum(d0)} – ${dnum(d1)} ${MES_C[mnum(d1)]} <span class="gris num">${anio(d1)}</span>` : `${dnum(d0)} ${MES_C[mnum(d0)]} – ${dnum(d1)} ${MES_C[mnum(d1)]} <span class="gris num">${anio(d1)}</span>`; }
   function pintar() {
     const dias = Array.from({ length: n }, (_, k) => mas(L, k));
     $('#sem-rango').innerHTML = rango(dias[0], dias[n - 1]);
@@ -1717,7 +1727,7 @@ const puntos = (lista, max = 3) => [...new Set(lista.map(e => e.tipo))].slice(0,
   }
   function pintar() {
     const ini = lunes(M), n = semanas(M) * 7, dias = Array.from({ length: n }, (_, k) => mas(ini, k));
-    $('#mes-rango').innerHTML = `${cap(MESES[mnum(M)])} <span class="gris">${anio(M)}</span>`;
+    $('#mes-rango').innerHTML = `${cap(MESES[mnum(M)])} <span class="gris num">${anio(M)}</span>`;
     const delMes = dias.filter(d => mnum(d) === mnum(M)).flatMap(d => [...todoDia(d), ...delDia(d)]);
     ley.innerHTML = Object.entries(TIPOS).map(([k, t]) => `<button class="t-${k}" data-tipo="${k}" aria-pressed="${filtro.has(k)}">${t.n} <span class="c">${delMes.filter(e => e.tipo === k).length}</span></button>`).join('');
     g.innerHTML = `<div class="mes"><div class="mes-dn">${DIAS.map(x => `<div>${x}</div>`).join('')}</div><div class="mes-g">${dias.map(d => {

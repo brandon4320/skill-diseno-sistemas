@@ -550,7 +550,32 @@
   .prox-chips button{height:44px}
   .reu .r2 .lugar{flex-basis:100%}
   .clr-gat{min-height:44px}
+  .sug{height:auto}
+  .sug .ir{height:44px}
+  .proy .tope h3 a{display:block;padding:10px 0;margin:-10px 0}
+  .det .ver-det{height:44px}
+  .promo .cu .btn.enlace{height:44px;margin:-8px 0}
 }
+/* apagadas, cerradas y perdidas: se apaga el dibujo, el texto sigue legible */
+.int.apagada,.proy.cerrada,.opo.perdida{opacity:1}
+.int.apagada .t1 .tile,.int.apagada .estado-i .ph,.int.apagada .estado-i .ph-fill{filter:grayscale(1);opacity:.5}
+.int.apagada .t1 b{color:var(--texto-2)}
+.proy.cerrada .segs,.proy.cerrada .graf svg,.opo.perdida .etapa .ph-fill{filter:grayscale(1);opacity:.55}
+.proy.cerrada .av,.opo.perdida .av{filter:grayscale(1)}
+.reu.fin .r1,.reu.fin .agenda{opacity:1}
+.reu.fin .agenda .n,.reu.fin .r1 .cuando{color:var(--texto-2)}
+.pro.pausado .mini>*:not(.est){opacity:1;filter:grayscale(1)}
+.pro.pausado .mini .nodo{color:var(--texto-2)}
+.pro.pausado .mini .flecha{opacity:.45}
+.pro .mini .nodo.error{color:color-mix(in oklch,var(--rojo) 70%,var(--tinta))}
+.proy.cerrada .tope h3 a,.opo.perdida h4{color:var(--texto-2)}
+.etapa{color:color-mix(in oklch,var(--ent) 62%,var(--tinta))}
+.etapa .ph-fill{color:var(--ent)}
+.tipo span{background:color-mix(in oklch,var(--ent) 70%,#000)}
+#procesos{align-items:stretch}
+.opo .monto .u{font-size:14px}
+.clr-tabla .monto .u{font-size:11px}
+.lamina-pie .nota,.btn,small{font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body class="bib">
@@ -1359,7 +1384,19 @@
 
 <script src="base.js"></script>
 <script>
-const { $, $$, fmt, linea, bloques, anillo, cuenta, toast, anunciar, escapar, destellar, quieto, guardar, leer } = bib;
+const { $, $$, fmt, linea, bloques, anillo, cuenta, anunciar, escapar, destellar, quieto, guardar, leer } = bib;
+// bib.toast se cuelga (while sin salida) si llega un 4º aviso con otro saliendo: dejamos lugar antes de llamarlo
+const toast = o => {
+  const pila = document.querySelector('.toasts');
+  if (pila) {
+    $$('.toast.sale', pila).forEach(t => t.remove());
+    while (pila.children.length >= 3) { const t = pila.firstElementChild; t._cerrar?.(); t.remove(); }
+  }
+  return bib.toast(o);
+};
+const hacerLugar = () => { const pila = document.querySelector('.toasts'); if (!pila) return; $$('.toast.sale', pila).forEach(t => t.remove()); while (pila.children.length >= 3) { const t = pila.firstElementChild; t._cerrar?.(); t.remove(); } };
+// el botón Copiar del código avisa con el toast interno de base.js: le hacemos lugar antes
+document.addEventListener('click', e => { if (e.target.closest('.copia')) hacerLugar(); }, true);
 const esperar = ms => new Promise(r => setTimeout(r, quieto ? Math.min(ms, 60) : ms));
 const ocupar = async (btn, ms, texto) => {
   const antes = btn.innerHTML; btn.setAttribute('aria-busy', 'true'); btn.style.width = btn.offsetWidth + 'px';
