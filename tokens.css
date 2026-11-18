@@ -1,0 +1,80 @@
+/*
+ * Tokens del lenguaje "diseno-sistemas" (Tailwind v4), con nombres en español.
+ * Lo único que cambia por empresa es --acento (ver SKILL.md, "Acento por empresa").
+ * Los neutros de abajo son la versión "sin tinte" (zinc). NO son obligatorios: cada sistema
+ * arma su rampa con el tinte de su marca o su uso, con croma bajo y un solo tinte. Ejemplo
+ * en OKLCH (cambiar H por el tono del sistema: ~285 violeta, ~265 azul,
+ * ~250 azul marino, ~70 cálido):
+ *   --color-fondo:      oklch(0.965 0.012 H);
+ *   --color-panel:      oklch(0.985 0.006 H);
+ *   --color-superficie: oklch(1 0 0);
+ *   --color-borde:      oklch(0.92 0.012 H);
+ *   --color-tinta:      oklch(0.21 0.015 H);
+ *   --color-texto-2:    oklch(0.52 0.02 H);
+ *   --color-texto-3:    oklch(0.68 0.015 H);
+ */
+@theme {
+  /* Dos voces + mono: display para títulos y cifras, interfaz para el resto */
+  --font-display: 'Outfit', 'General Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Geist Mono', ui-monospace, monospace;
+
+  /* Tres planos: lienzo con tono → panel → tarjeta (diferencia de 2-4 % de luz, sin sombra) */
+  --color-fondo: #f4f4f5;        /* lienzo de la app y barra lateral */
+  --color-panel: #fafafa;        /* área principal (la "tarjeta grande") */
+  --color-superficie: #ffffff;   /* tarjetas, tablas, hojas */
+  --color-suave: #f4f4f5;        /* riel del segmentado, encabezado de tabla, tiles de ícono neutros */
+  --color-hover: #f8f8f9;
+  --color-borde: #e4e4e7;        /* hairline 1 px, el único borde */
+  --color-borde-fuerte: #d4d4d8; /* campos de formulario */
+  --color-divisor: #f0f0f2;      /* entre filas */
+
+  /* Texto: tres grises, nunca #000 */
+  --color-tinta: #18181b;
+  --color-texto-2: #71717a;
+  --color-texto-3: #a1a1aa;
+
+  /* Acento: uno solo por sistema (botón principal, ítem activo, toggles, foco, no leído) */
+  --color-acento: var(--acento, #18181b);
+  --color-acento-suave: color-mix(in oklch, var(--acento, #18181b) 10%, white);
+
+  /* Estados: fondo al ~10 % + texto saturado + punto. Solo para estados. */
+  --color-verde-fondo: #e8f7ee;  --color-verde-texto: #15803d;   /* hecho, cobrado, en línea */
+  --color-ambar-fondo: #fef3e2;  --color-ambar-texto: #b45309;   /* pendiente, parcial, por vencer */
+  --color-rojo-fondo: #fdecec;   --color-rojo-texto: #b91c1c;    /* vencido, falló, sin conexión */
+  --color-azul-fondo: #eaf2fe;   --color-azul-texto: #1d4ed8;    /* en curso, informativo */
+  --color-gris-fondo: #f4f4f5;   --color-gris-texto: #52525b;    /* borrador, anulado, reintegrado */
+
+  /* Datos (gráficos, barras de progreso, íconos de tipo): máx. 6 por gráfico */
+  --color-dato-1: #6366f1; --color-dato-2: #22b8e8; --color-dato-3: #4cb862;
+  --color-dato-4: #f2c230; --color-dato-5: #f0634f; --color-dato-6: #d4d4d8;
+
+  /* Radios en capas: cada nivel adentro, un poco menos */
+  --radius-app: 26px;      /* el sistema entero en una caja sobre el lienzo */
+  --radius-marco: 20px;    /* panel principal */
+  --radius-tarjeta: 20px;  /* tarjetas, bandejas, hojas */
+  --radius-interno: 16px;  /* tarjeta dentro de la bandeja */
+  --radius-control: 12px;  /* botones, campos, buscador, íconos en cuadro */
+  --radius-chip: 8px;      /* botón chico, pastilla, etiqueta */
+
+  /* Sombras: suaves, del tono de la tinta */
+  --shadow-min: 0 1px 2px rgb(22 24 29 / 0.05);                        /* botones, tarjeta interna, ítem activo */
+  --shadow-hover: 0 14px 30px -18px rgb(22 24 29 / 0.3);               /* tarjeta clickeable al pasar el mouse (+ subir 2px) */
+  --shadow-flotante: 0 6px 16px rgb(22 24 29 / 0.08), 0 24px 48px -16px rgb(22 24 29 / 0.22);
+  --shadow-principal: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 4px 10px -2px rgb(22 24 29 / 0.35); /* botón negro */
+  --shadow-heroe: 0 18px 36px -18px color-mix(in oklch, var(--acento, #4f46e5) 60%, transparent);
+  --ease: cubic-bezier(.23, 1, .32, 1);
+}
+
+/* Oscuro: subir luz por capa, sin sombras, selección invertida (pastilla blanca) */
+.dark, [data-tema='oscuro'] {
+  --color-fondo: #0a0a0a; --color-panel: #111113; --color-superficie: #18181b;
+  --color-suave: #232326; --color-hover: #1f1f22; --color-borde: #27272a;
+  --color-borde-fuerte: #3f3f46; --color-divisor: #202023;
+  --color-tinta: #fafafa; --color-texto-2: #a1a1aa; --color-texto-3: #71717a;
+  --color-verde-fondo: #22c55e1f; --color-verde-texto: #4ade80;
+  --color-ambar-fondo: #f5b8001f; --color-ambar-texto: #fbbf24;
+  --color-rojo-fondo: #ef44441f;  --color-rojo-texto: #f87171;
+  --color-azul-fondo: #3b82f61f;  --color-azul-texto: #60a5fa;
+  --color-gris-fondo: #27272a;    --color-gris-texto: #a1a1aa;
+}
