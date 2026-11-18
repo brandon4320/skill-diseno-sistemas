@@ -16,9 +16,28 @@ Neutro en la base, **vivo en los datos**. La estructura (fondos, menú, bordes) 
 La regla es la saturación y el contraste, no el color: los neutros llevan croma muy bajo (OKLCH C ≤ 0,02, o hasta ~0,03 en el lienzo), siempre del mismo tinte en todo el sistema. Tienen que dejar que los estados y el acento se lean como lo único con color de verdad. Los hex grises de este documento son el punto de partida, no una obligación: cada sistema arma su rampa de neutros con su tinte (ver `tokens.css`).
 
 - Tokens listos para pegar: `tokens.css`. Nombres en español (`fondo`, `superficie`, `tinta`, `texto-2`, `acento`, `verde-fondo`…).
-- Ejemplo de cómo se ve todo junto: `ejemplo-crm.html` (un CRM de ejemplo). Abrilo y superalo.
+- **Ejemplos** en `ejemplos/`:
+  - `tablero-crm.html`: pantalla completa de un CRM.
+  - `componentes.html`: galería de todas las piezas, con claro, oscuro y celular.
+  - `recetas-tailwind.md`: las piezas en React + Tailwind v4 para copiar.
+
+  Abrilos y superalos.
 - Capturas de referencia: `referencias/01…14-*.jpg`. Abrí la que corresponda antes de diseñar algo parecido.
 - Análisis completo por tema, con valores y ejemplos: `analisis/01-estructura.md` … `analisis/15-homogeneidad.md`. Leé el del tema que estés tocando.
+
+Si existe `marcas.local.md` en esta carpeta, leelo primero: tiene el acento, el tinte y las reglas propias de cada marca de quien usa la skill. Lo que diga ahí manda sobre los valores de ejemplo de este documento.
+
+**Receta rápida para una pantalla nueva:**
+1. Elegí qué pantalla es (tablero, lista, ficha, calendario, formulario, celular) y abrí su referencia y su ejemplo en `ejemplos/`.
+2. Definí el acento y el tinte de los neutros del sistema (`tokens.css`).
+3. Armá el marco: barra lateral sobre el lienzo y el panel con migas de pan.
+4. Escribí la cabecera: título display grande y liviano, subtítulo con cifras reales, un solo botón relleno.
+5. Fila de 3 a 6 KPIs: uno protagonista y el resto en bandeja con tarjeta adentro, cada uno con su dibujo.
+6. Cuerpo: tarjetas de entidad para lo que está en curso, tabla o lista para el resto y un panel lateral de contexto.
+7. Dale vida: color por entidad, avatares, un gráfico con estado y movimiento al cargar.
+8. Diseñá los estados vacío, cargando y error (sección 6b).
+9. Probala a 390 px y en oscuro.
+10. Pasá la lista de la sección 8, comparándola al lado de las referencias.
 
 Principios de base: fricción cero, una acción principal por pantalla, nada de textos de relleno, y todo botón que lleva a una lista te deja parado en la fila que corresponde.
 
@@ -233,6 +252,36 @@ En celular, las tarjetas van a 20–24.
 - Metadatos útiles: "3 de 6 hechas · Vence 9 dic", "hace 2 min", "vuelve mañana 09:00".
 - Sin taglines, ayudas obvias ni rótulos de relleno.
 
+## 6b. Vacío, cargando y error (toda pantalla los tiene)
+- **Cargando:** esqueletos con la forma final (bloques `bg-suave` con brillo suave que pasa), nunca un spinner en el medio de la pantalla. Si tarda menos de 300 ms, no mostrar nada.
+- **Vacío:** ilustración de línea chica (como la tarjeta de plan de 06), una frase que dice qué va a aparecer acá y el botón que lo crea: "Todavía no hay oportunidades. Cargá la primera y aparece en el pipeline. [+ Nueva oportunidad]". Si un filtro es lo que deja la pantalla vacía, decirlo y ofrecer limpiarlo.
+- **Error:** en el lugar, no en un modal. Qué pasó en palabras de la persona y "Reintentar". Los datos que ya estaban quedan a la vista.
+- **Guardando:** el botón dice "Guardando…" con el ancho fijo, y después éxito en el lugar (fila teñida y toast con Deshacer).
+
+## 6c. Formato de datos
+- **Números:** usar `Intl.NumberFormat` con el idioma del sistema (en español: `1.234.567,89`). Montos grandes en tarjetas, abreviados ("US$ 184,2 mil", "$ 1,2 M"), y completos en tablas.
+- **Moneda:** siempre con su símbolo o código ("US$", "$"). Si conviven monedas, el código va en gris y nunca se suman.
+- **Fechas:** relativas si son cercanas ("hace 2 min", "ayer 16:00", "mañana") y cortas si no ("9 dic", "9 dic 2025" si es de otro año). Hora en 24 h donde se use así.
+- **Porcentajes y deltas:** "+12,4 %" con espacio fino antes del %, flecha y período.
+- **Vacíos:** "—" en gris, nunca "0" si no hay dato, ni "null" o "undefined".
+
+## 6d. Accesibilidad y uso real
+- Contraste AA: el texto normal sobre su fondo da 4,5:1 o más. `texto-3` solo para metadatos, nunca para texto que haya que leer para decidir.
+- Foco visible en todo lo clickeable: anillo de 2 px del acento con 2 px de separación (`focus-visible:ring-2 ring-acento/40 ring-offset-2`).
+- Toques de 44 px como mínimo en celular. Los íconos sin texto llevan `aria-label` y tooltip.
+- El estado nunca va solo por color: siempre palabra, ícono o forma.
+- Teclado: ⌘K busca, Esc cierra, Enter confirma, flechas en listas. Las acciones frecuentes no se animan.
+- `prefers-reduced-motion`: sin cuentas ni dibujos animados, aparece directo.
+
+## 6e. Del escritorio al celular
+- Menos de 1280 px: los KPIs pasan a 2 columnas, las tarjetas de entidad a 2 y el panel lateral baja abajo.
+- Menos de 768 px:
+  - Sin barra lateral: va barra inferior de 4 íconos con el activo en pastilla.
+  - Una columna, con márgenes de 16.
+  - La acción principal en píldora negra fija abajo.
+  - Las tablas pasan a tarjetas de 2 líneas (título y monto arriba, estado y fecha abajo).
+- La cifra protagonista sigue arriba. Lo que se ve primero en celular es lo que hay que hacer hoy.
+
 ## 7. Antipatrones (si aparece uno, rehacer)
 - Fondos o menús de marca **saturados**, que compiten con los datos. Un tono de marca apagado (azul marino, verde petróleo) sí va. Tampoco van degradés decorativos ni sombras marcadas en tarjetas.
 - Neutros de tintes distintos mezclados en un mismo sistema.
@@ -256,5 +305,5 @@ En celular, las tarjetas van a 20–24.
 4. ¿Los radios van en capas (26/20/16/12/8)? ¿Los espacios están en la escala? ¿Las sombras son suaves en sus tres niveles? ¿Los íconos son de un solo juego, con el activo relleno?
 5. ¿Los montos llevan `tabular-nums`, van a la derecha y tienen la moneda y los centavos en gris?
 6. ¿Toda acción reversible tiene Deshacer y el éxito se ve en el lugar?
-7. ¿Funciona a 390 px de ancho (toques de 44 px, acción fija abajo) y en oscuro?
+7. ¿Funciona a 390 px de ancho (toques de 44 px, acción fija abajo) y en oscuro? ¿Tiene sus estados vacío, cargando y error? ¿Los números y fechas tienen el formato de la sección 6c?
 8. Probala en el navegador, compará contra la referencia del mismo tipo de pantalla y mirá a 2× los bordes, las alineaciones y los números.

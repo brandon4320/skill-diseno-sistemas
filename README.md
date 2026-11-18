@@ -16,7 +16,7 @@ Reiniciá Claude Code. La skill se activa sola cuando le pedís diseñar o redis
 |---|---|
 | `SKILL.md` | Las reglas: marco, vida, tipografía, color, radios, piezas (KPI, listas, acciones, formularios, calendario, celular, gráficos, oscuro), antipatrones y la lista para revisar antes de entregar. |
 | `tokens.css` | Variables de Tailwind v4 listas para pegar (colores, letras, radios, sombras, modo oscuro). |
-| `ejemplo-crm.html` | Pantalla de inicio de un CRM armada con la skill. Abrila en el navegador. |
+| `ejemplos/` | `tablero-crm.html` (pantalla completa), `componentes.html` (galería de piezas en claro, oscuro y celular) y `recetas-tailwind.md` (piezas en React + Tailwind v4). |
 | `referencias/` | Las 14 capturas de referencia. Son de sus autores y van solo como material de estudio, no para copiar. |
 | `analisis/` | El análisis detallado de cada tema, con valores estimados. |
 

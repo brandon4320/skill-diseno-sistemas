@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Componentes · diseno-sistemas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+/* Mismos tokens que tokens.css (acento y tinte de ejemplo) */
+:root{
+  --lienzo:#e8eaee; --marco:#f4f5f7; --superficie:#fff; --bandeja:#f4f5f7; --suave:#f0f1f4; --hover:#f7f8fa;
+  --borde:#e6e8ec; --divisor:#eef0f3; --tinta:#16181d; --texto-2:#6b7080; --texto-3:#9aa0ad;
+  --acento:#4f46e5; --verde:#1f9d5c; --verde-f:#e7f6ee; --ambar:#c27a0e; --ambar-f:#fdf3e1; --rojo:#d93f3f; --rojo-f:#fdecec; --azul:#2f6fdc; --azul-f:#e9f1fd; --gris-f:#f0f1f4;
+  --e1:#3b6fe0; --e2:#d6336c; --e3:#c8692b; --e4:#25a866; --e5:#7c5ce0;
+  --display:'Outfit',sans-serif; --ui:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --s-min:0 1px 2px rgb(22 24 29/.05); --s-hover:0 14px 30px -18px rgb(22 24 29/.3); --s-flot:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
+  --ease:cubic-bezier(.23,1,.32,1); --neg:#16181d; --neg-t:#fff;
+}
+[data-tema=oscuro]{
+  --lienzo:#050506; --marco:#0b0b0d; --superficie:#151518; --bandeja:#0f0f12; --suave:#1d1d21; --hover:#1a1a1e;
+  --borde:#26262b; --divisor:#1f1f23; --tinta:#f4f4f5; --texto-2:#a1a1aa; --texto-3:#71717a;
+  --verde:#4ade80; --verde-f:rgb(34 197 94/.13); --ambar:#fbbf24; --ambar-f:rgb(245 184 0/.13); --rojo:#f87171; --rojo-f:rgb(239 68 68/.13); --azul:#60a5fa; --azul-f:rgb(59 130 246/.13); --gris-f:#232327;
+  --s-min:none; --s-hover:0 14px 30px -18px rgb(0 0 0/.8); --neg:#f4f4f5; --neg-t:#16181d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ui);background:var(--lienzo);color:var(--tinta);font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .3s}
+button{font:inherit;color:inherit}
+.ph,.ph-fill{font-size:17px;line-height:1}
+.num{font-variant-numeric:tabular-nums}
+.pag{max-width:1240px;margin:0 auto;padding:40px 24px 80px}
+.cabeza{display:flex;align-items:flex-end;gap:16px;margin-bottom:36px}
+.cabeza small{font:500 12px var(--mono);color:var(--texto-3)}
+.cabeza h1{font:300 44px/1.05 var(--display);letter-spacing:-.035em;margin-top:6px}
+.cabeza p{color:var(--texto-2);margin-top:6px;max-width:560px}
+.cabeza .der{margin-left:auto;display:flex;gap:8px}
+.bloque{margin-top:44px}
+.bloque>h2{font:500 20px var(--display);letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.bloque>h2 span{font:500 11px var(--mono);color:var(--texto-3);border:1px solid var(--borde);border-radius:6px;padding:2px 6px}
+.bloque>p.reg{color:var(--texto-2);margin:4px 0 16px;max-width:720px}
+.lamina{background:var(--marco);border:1px solid var(--borde);border-radius:26px;padding:24px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.fila{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.rot-m{font:500 11px var(--mono);color:var(--texto-3);width:100%;margin-top:4px}
+
+/* botones */
+.btn{height:38px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:13px;border:1px solid var(--borde);background:var(--superficie);cursor:pointer;box-shadow:var(--s-min);transition:transform .15s var(--ease),box-shadow .15s,background .15s}
+.btn:hover{background:var(--hover)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 45%,transparent);outline-offset:2px}
+.btn.neg{background:var(--neg);border-color:var(--neg);color:var(--neg-t);box-shadow:inset 0 1px 0 rgb(255 255 255/.12),0 4px 10px -2px rgb(22 24 29/.35)}
+.btn.acento{background:var(--acento);border-color:var(--acento);color:#fff}
+.btn.chico{height:28px;padding:0 10px;border-radius:9px;font-size:12px;gap:6px}.btn.chico .ph,.btn.chico .ph-fill{font-size:14px}
+.btn.ic{width:38px;padding:0;justify-content:center}
+.btn.texto{border:0;background:none;box-shadow:none;color:var(--texto-2)}
+.btn[disabled]{opacity:.5}
+.seg{display:inline-flex;background:var(--bandeja);border:1px solid var(--borde);padding:3px;border-radius:12px;gap:2px}
+.seg button{border:0;background:none;height:28px;padding:0 12px;border-radius:9px;font-weight:600;font-size:12.5px;color:var(--texto-2);cursor:pointer}
+.seg button.on{background:var(--superficie);color:var(--tinta);box-shadow:0 1px 2px rgb(22 24 29/.1),0 0 0 1px var(--borde)}
+[data-tema=oscuro] .seg button.on{background:#f4f4f5;color:#16181d}
+.chip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:7px;font-weight:600;font-size:11.5px;white-space:nowrap}
+.chip.d::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.v{background:var(--verde-f);color:var(--verde)}.am{background:var(--ambar-f);color:var(--ambar)}.ro{background:var(--rojo-f);color:var(--rojo)}.az{background:var(--azul-f);color:var(--azul)}.gr{background:var(--gris-f);color:var(--texto-2)}
+.tag{height:22px;padding:0 8px;border-radius:7px;border:1px solid var(--borde);font-weight:500;font-size:11.5px;color:var(--texto-2);display:inline-flex;align-items:center}
+.campo{display:flex;flex-direction:column;gap:6px;width:260px}
+.campo label{font-size:12.5px;font-weight:600;color:var(--texto-2)}
+.campo .in{height:40px;border:1px solid var(--borde);border-radius:12px;background:var(--superficie);display:flex;align-items:center;gap:8px;padding:0 12px;color:var(--texto-3);box-shadow:var(--s-min)}
+.campo .in.foco{border-color:var(--acento);box-shadow:0 0 0 3px color-mix(in oklch,var(--acento) 18%,transparent);color:var(--tinta)}
+.campo small{font-size:12px;color:var(--texto-3)}
+.toggle{width:36px;height:22px;border-radius:99px;background:var(--acento);position:relative;flex:none}.toggle::after{content:"";position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgb(0 0 0/.2)}
+.toggle.off{background:#d4d7dd}.toggle.off::after{right:auto;left:3px}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:14px;width:100%}
+.heroe{border-radius:20px;padding:20px;color:#fff;position:relative;overflow:hidden;min-height:196px;background:radial-gradient(120% 140% at 100% 0%,#7b72ff 0%,transparent 55%),linear-gradient(150deg,#3f36c9,#5a50f0 60%,#4b42dc);box-shadow:0 18px 36px -18px rgb(79 70 229/.6),inset 0 1px 0 rgb(255 255 255/.18)}
+.heroe::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgb(255 255 255/.10) 1px,transparent 1.2px);background-size:14px 14px;mask:linear-gradient(200deg,#000,transparent 60%);pointer-events:none}
+.heroe .ico{width:38px;height:38px;border-radius:12px;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.22);display:grid;place-items:center}
+.heroe .pill{position:absolute;top:20px;right:20px;font:600 11.5px var(--ui);background:rgb(255 255 255/.16);border:1px solid rgb(255 255 255/.2);padding:3px 8px;border-radius:99px}
+.heroe small{display:block;margin-top:14px;opacity:.8;font-weight:500}
+.heroe .n{font:500 34px/1.1 var(--display);letter-spacing:-.03em}.heroe .n span{opacity:.6;font-size:20px;margin-right:4px;font-weight:400}
+.heroe svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:92px}
+.bandeja{background:var(--bandeja);border:1px solid var(--borde);border-radius:20px;padding:4px;display:flex;flex-direction:column}
+.bandeja .rot{display:flex;align-items:center;gap:8px;padding:9px 10px 8px;color:var(--texto-2);font-weight:600;font-size:12.5px}
+.bandeja .rot .ph{font-size:16px;color:var(--texto-3)}.bandeja .rot .mas{margin-left:auto}
+.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:14px 16px 16px;box-shadow:var(--s-min);flex:1}
+.adentro .n{font:500 30px/1.1 var(--display);letter-spacing:-.03em}.adentro .n span{color:var(--texto-3);font-size:18px;font-weight:400;margin-right:3px}
+.adentro .ctx{color:var(--texto-3);font-size:12px;margin-top:2px}
+.pie{display:flex;align-items:center;justify-content:space-between;padding:9px 10px 7px;font-size:12px;font-weight:500;color:var(--texto-2)}
+.sube{color:var(--verde)}.baja{color:var(--rojo)}
+.ticks{display:flex;gap:2.5px;height:16px;margin-top:12px}.ticks i{flex:1;border-radius:2px;background:var(--suave)}
+.segs{display:flex;gap:3px;margin-top:14px}.segs i{flex:1;height:7px;border-radius:3px;background:var(--suave)}
+.mini{width:100%;height:42px;margin-top:8px;display:block}
+
+/* tarjeta de entidad + lista */
+.dos{display:grid;grid-template-columns:300px 1fr;gap:16px;width:100%}
+.proy{border:1px solid var(--borde);border-radius:20px;background:var(--superficie);overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s}
+.proy:hover{transform:translateY(-2px);box-shadow:var(--s-hover)}
+.proy .tope{padding:16px 18px 14px}
+.cuadro{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;color:#fff;flex:none}
+.proy h3{font:500 20px/1.2 var(--display);letter-spacing:-.02em;margin-top:14px;display:flex;align-items:center;gap:8px}
+.proy h3 .ph{margin-left:auto;color:var(--texto-3);font-size:16px}
+.proy p{color:var(--texto-2);font-size:12.5px;margin-top:6px}
+.avance{display:flex;align-items:center;gap:10px;margin-top:16px}.avance .segs{flex:1;margin:0}.avance b{font:500 13px var(--display)}
+.meta{color:var(--texto-3);font-size:12px;margin-top:8px}
+.graf{border-top:1px solid var(--divisor);border-bottom:1px solid var(--divisor);padding:10px 18px 8px}.graf svg{width:100%;height:56px;display:block}
+.paso{display:flex;align-items:center;gap:10px;height:34px;border-bottom:1px solid var(--divisor);font-size:13px;padding:0 18px}.paso:last-child{border:0}
+.paso .f.baja{color:var(--rojo)}.paso .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.paso .f{font-size:12px;color:var(--texto-3)}
+.check{width:18px;height:18px;border-radius:50%;border:1.5px solid #cfd3da;display:grid;place-items:center;cursor:pointer}
+.check.ok{background:var(--verde);border-color:var(--verde)}.check.ok::after{content:"";width:8px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.card{border:1px solid var(--borde);border-radius:20px;background:var(--superficie)}
+.card .tit{display:flex;align-items:center;gap:10px;padding:16px 18px 8px}.card .tit h3{font:500 17px var(--display)}.card .tit .c{color:var(--texto-3);font-weight:500}.card .tit .der{margin-left:auto;display:flex;gap:6px}
+.dia{font-size:12px;font-weight:600;color:var(--texto-3);padding:6px 18px 2px}
+.item{display:flex;gap:12px;padding:12px 18px;position:relative;transition:background .3s}
+.item:hover{background:var(--hover)}
+.item .nl{position:absolute;left:7px;top:24px;width:6px;height:6px;border-radius:50%;background:var(--acento)}
+.tile{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;flex:none}
+.item .t{font-weight:600;font-size:13.5px}.item .t span{font-weight:400;color:var(--texto-2)}
+.item .m{font-size:12px;color:var(--texto-3);margin-top:1px}
+.item .a{display:flex;gap:6px;margin-top:8px}
+.item .mas{margin-left:auto;color:var(--texto-3)}
+.item.ok{background:color-mix(in oklch,var(--verde-f) 60%,var(--superficie))}
+
+/* tabla */
+.tabla{width:100%;padding:0 8px 8px}
+table{width:100%;border-collapse:collapse}
+th{font-weight:600;font-size:12px;color:var(--texto-3);text-align:left;padding:9px 12px;background:var(--bandeja)}
+th:first-child{border-radius:10px 0 0 10px}th:last-child{border-radius:0 10px 10px 0}
+td{padding:0 12px;height:46px;border-top:1px solid var(--divisor);white-space:nowrap}
+tr:first-child td{border-top:0}
+.r{text-align:right}
+.mono{font:500 12.5px var(--mono);color:var(--texto-2)}
+.av{width:26px;height:26px;border-radius:50%;display:inline-grid;place-items:center;font-weight:700;font-size:10px;vertical-align:middle;margin-right:8px}
+.tachado{text-decoration:line-through;color:var(--texto-3)}
+.gris{color:var(--texto-3)}
+
+/* hoja lateral */
+.hoja{width:400px;border:1px solid var(--borde);border-radius:20px;background:var(--superficie);box-shadow:var(--s-flot);display:flex;flex-direction:column;overflow:hidden}
+.hoja .h{padding:18px 20px 12px;display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid var(--divisor)}
+.hoja .h .tile{width:38px;height:38px}
+.hoja h4{font:500 18px var(--display)}.hoja .h p{font-size:12.5px;color:var(--texto-3)}
+.hoja .cuerpo{padding:16px 20px;display:flex;flex-direction:column;gap:14px}
+.hoja .cuerpo .campo{width:100%}
+.op{display:flex;gap:12px;align-items:center;justify-content:space-between}.op b{font-weight:600;display:block}.op small{color:var(--texto-3);font-size:12px}
+.hoja .pieh{padding:12px 20px;border-top:1px solid var(--divisor);display:flex;gap:8px;align-items:center;background:var(--bandeja)}
+.hoja .pieh a{color:var(--acento);font-weight:600;font-size:12.5px;margin-right:auto}
+
+/* estados */
+.estados{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%}
+.esq{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--suave),var(--hover),var(--suave));background-size:200% 100%;animation:brillo 1.4s infinite linear}
+@keyframes brillo{to{background-position:-200% 0}}
+.vacio{padding:26px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.vacio h4{font:500 17px var(--display);margin-top:6px}.vacio p{color:var(--texto-2);font-size:12.5px;max-width:240px}
+
+/* celular */
+.tel{width:340px;height:700px;border-radius:44px;background:var(--marco);border:10px solid #16181d;position:relative;overflow:hidden;box-shadow:0 30px 60px -30px rgb(22 24 29/.5)}
+.tel .scr{height:100%;overflow-y:auto;padding:46px 16px 110px}
+.tel .hola{display:flex;align-items:center;gap:10px}
+.tel .hola img{width:40px;height:40px;border-radius:50%;background:#efe9ff}
+.tel .hola small{color:var(--texto-3);font-size:12px}.tel .hola b{font:500 17px var(--display);display:block}
+.tel .circ{margin-left:auto;width:40px;height:40px;border-radius:50%;background:var(--superficie);border:1px solid var(--borde);display:grid;place-items:center;position:relative}
+.tel .heroe2{margin-top:18px;border-radius:24px;padding:18px;color:#fff;background:linear-gradient(150deg,#3f36c9,#5a50f0);display:flex;align-items:center;gap:14px;box-shadow:0 18px 30px -18px rgb(79 70 229/.7)}
+.tel .heroe2 b{font:500 17px var(--display);display:block}.tel .heroe2 p{font-size:12px;opacity:.8;margin-top:3px}
+.accesos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.accesos div{background:var(--superficie);border-radius:18px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:600;font-size:12px}
+.accesos .ph-fill{font-size:20px;color:var(--acento)}
+.tel h5{font:500 15px var(--display);margin:18px 2px 8px;display:flex;justify-content:space-between}.tel h5 a{font:500 12.5px var(--ui);color:var(--texto-3)}
+.tel .fl{background:var(--superficie);border-radius:18px;padding:12px;display:flex;gap:12px;align-items:center;margin-bottom:8px}
+.tel .fl .tile{width:40px;height:40px;border-radius:13px}
+.tel .fl b{font-weight:600;display:block;font-size:13.5px}.tel .fl small{font-size:12px;color:var(--texto-3)}
+.tel .fl .r{margin-left:auto;font:500 14px var(--display)}
+.tel .accion{position:absolute;left:16px;right:16px;bottom:74px;height:52px;border-radius:99px;background:var(--neg);color:var(--neg-t);display:grid;place-items:center;font-weight:600;box-shadow:0 10px 20px -10px rgb(0 0 0/.5)}
+.tel .barra{position:absolute;left:0;right:0;bottom:0;height:66px;background:var(--superficie);border-top:1px solid var(--borde);display:flex;justify-content:space-around;align-items:center;padding-bottom:6px}
+.tel .barra span{width:46px;height:34px;border-radius:99px;display:grid;place-items:center;color:var(--texto-3)}
+.tel .barra span.on{background:color-mix(in oklch,var(--acento) 14%,transparent);color:var(--acento)}
+
+.toast{position:fixed;right:28px;bottom:28px;background:#16181d;color:#fff;border-radius:16px;box-shadow:var(--s-flot);padding:12px 14px;display:flex;gap:12px;align-items:center;transform:translateY(16px);opacity:0;transition:transform .35s var(--ease),opacity .25s;pointer-events:none;min-width:340px;z-index:9}
+.toast.ver{transform:none;opacity:1;pointer-events:auto}
+.toast .okc{width:30px;height:30px;border-radius:10px;background:rgb(31 157 92/.22);color:#4ade80;display:grid;place-items:center}
+.toast b{font-weight:600;display:block}.toast small{opacity:.6;font-size:12px}.toast a{margin-left:auto;color:#a5a0ff;font-weight:600;cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:900px){.kpis,.estados,.dos{grid-template-columns:1fr}.hoja{width:100%}}
+</style>
+</head>
+<body>
+<div class="pag">
+  <div class="cabeza">
+    <div>
+      <small>diseno-sistemas · galería</small>
+      <h1>Componentes</h1>
+      <p>Cada pieza con su regla. Cambiá a oscuro para ver cómo se traduce. El acento y el tinte son de ejemplo: los de tu sistema van en <span class="mono">tokens.css</span>.</p>
+    </div>
+    <div class="der"><div class="seg" id="tema"><button class="on" data-t="claro"><i class="ph ph-sun"></i></button><button data-t="oscuro"><i class="ph ph-moon"></i></button></div></div>
+  </div>
+
+  <section class="bloque">
+    <h2>Botones y controles <span>§5 Acciones</span></h2>
+    <p class="reg">Un solo botón relleno por pantalla (negro o acento). Los demás, con borde y sombra mínima. Los botones chicos van dentro de filas y tarjetas. Los de solo ícono llevan tooltip.</p>
+    <div class="lamina">
+      <div class="fila"><button class="btn neg"><i class="ph ph-plus"></i>Nueva oportunidad</button><button class="btn acento"><i class="ph ph-check"></i>Aprobar</button><button class="btn"><i class="ph ph-calendar-blank"></i>Agendar</button><button class="btn ic" title="Llamar" aria-label="Llamar"><i class="ph ph-phone"></i></button><button class="btn ic" title="Correo" aria-label="Correo"><i class="ph ph-envelope-simple"></i></button><button class="btn texto">Cancelar</button></div>
+      <div class="fila"><button class="btn chico"><i class="ph ph-funnel-simple"></i>Filtrar</button><button class="btn chico"><i class="ph ph-plus"></i>Nuevo</button><button class="btn chico acento"><i class="ph ph-check"></i>Aprobar</button>
+        <div class="seg"><button>Semana</button><button class="on">Mes</button><button>Año</button></div>
+        <div class="seg"><button class="on">Todos <span class="gris">24</span></button><button>Míos <span class="gris">9</span></button></div></div>
+      <div class="fila" style="width:100%;gap:20px">
+        <div class="campo"><label>Cliente</label><div class="in"><i class="ph ph-magnifying-glass"></i>Buscar cliente…</div></div>
+        <div class="campo"><label>Monto</label><div class="in foco num"><span class="gris">US$</span>18.400</div><small>Sin IVA. Se convierte al tipo de cambio del día.</small></div>
+        <div class="campo"><label>Avisos por correo</label><div class="op"><div><b>Resumen diario</b><small>A las 08:00, solo si hay algo</small></div><span class="toggle"></span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <h2>Estados <span>§3 Color</span></h2>
+    <p class="reg">Siempre punto + palabra sobre fondo al 10 %. Verde: hecho. Ámbar: pendiente. Rojo: hay que actuar. Azul: en curso. Gris: borrador o anulado. Las etiquetas descriptivas van neutras, con borde.</p>
+    <div class="lamina"><div class="fila">
+      <span class="chip d v">Cobrado</span><span class="chip d am">Por facturar</span><span class="chip d ro">Vencido</span><span class="chip d az">En curso</span><span class="chip d gr">Borrador</span>
+      <span class="chip am">Media</span><span class="chip ro">Alta</span><span class="chip gr">Baja</span>
+      <span class="tag">Branding</span><span class="tag">Web</span>
+      <span class="chip v"><i class="ph ph-check" style="font-size:12px"></i>Aprobado</span>
+      <span class="sube" style="font-weight:600;font-size:12.5px"><i class="ph ph-trend-up"></i> +12,4 % vs. octubre</span>
+      <span class="baja" style="font-weight:600;font-size:12.5px"><i class="ph ph-trend-down"></i> −4 pts vs. octubre</span>
+    </div></div>
+  </section>
+
+  <section class="bloque">
+    <h2>KPIs <span>§1b Vida · §5 KPI</span></h2>
+    <p class="reg">Un protagonista con color y gráfico. El resto en bandeja con tarjeta adentro: rótulo con ícono, número display, contexto, un dibujo (rayitas, curva o bloques) y un pie con la variación y su período.</p>
+    <div class="lamina">
+      <div class="kpis">
+        <div class="heroe"><span class="ico"><i class="ph ph-wallet" style="font-size:19px"></i></span><span class="pill">↗ +12,4 %</span><small>Pipeline abierto</small><div class="n num"><span>US$</span>184.200</div><svg viewBox="0 0 300 92" preserveAspectRatio="none" id="hsvg"></svg></div>
+        <div class="bandeja"><div class="rot"><i class="ph ph-seal-check"></i>Ganado en el mes<i class="ph ph-dots-three mas"></i></div><div class="adentro"><div class="n num"><span>US$</span>41.600</div><div class="ctx">69 % de la meta de US$ 60.000</div><div class="ticks" id="tk"></div></div><div class="pie"><span class="sube"><i class="ph ph-trend-up"></i> +3 cierres</span><span>esta semana</span></div></div>
+        <div class="bandeja"><div class="rot"><i class="ph ph-phone-call"></i>Seguimientos<i class="ph ph-dots-three mas"></i></div><div class="adentro"><div class="n num">11</div><div class="ctx">para los próximos 7 días</div><div class="segs" id="sg"></div></div><div class="pie"><span class="baja"><i class="ph ph-warning-circle"></i> 2 vencidos</span><span class="baja">Requieren atención</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <h2>Tarjeta de entidad y lista con acción <span>§1b · §5 Listas · Acciones</span></h2>
+    <p class="reg">Lo que está en curso va en tarjeta, con el color propio de la entidad en el ícono, el avance y la curva. Los avisos van en filas de dos líneas con la acción adentro. Probá "Aprobar": el éxito se ve en el lugar y aparece un toast con Deshacer.</p>
+    <div class="lamina">
+      <div class="dos">
+        <article class="proy">
+          <div class="tope"><div class="fila" style="gap:6px"><span class="chip am">Media</span><span style="margin-left:auto;display:flex;gap:4px"><span class="tag">Branding</span></span></div>
+            <h3><span class="cuadro" style="background:var(--e1)"><i class="ph-fill ph-storefront" style="font-size:12px"></i></span>Identidad Orbe<i class="ph ph-arrow-up-right"></i></h3>
+            <p>Marca nueva para 40 locales: logo, paleta y manual.</p>
+            <div class="avance"><div class="segs" id="pa"></div><b class="num">40 %</b></div>
+            <div class="meta num">4 de 10 hechas · Vence 9 dic</div></div>
+          <div class="graf"><svg id="ps"></svg></div>
+          <div style="padding:6px 0"><div class="paso"><span class="check ok"></span><span class="t gris">Presentar rutas de logo</span><span class="f">Ayer</span></div><div class="paso"><span class="check"></span><span class="t">Cerrar paleta</span><span class="f baja" style="font-weight:600">Vencido</span></div><div class="paso"><span class="check"></span><span class="t">Manual de marca</span><span class="f">15 dic</span></div></div>
+        </article>
+        <section class="card">
+          <div class="tit"><h3>Para atender</h3><span class="c">3</span><div class="der"><button class="btn chico">Marcar todo leído</button></div></div>
+          <div class="dia">Hoy</div>
+          <div class="item" id="it"><span class="nl"></span><span class="tile am"><i class="ph ph-file-text"></i></span><div style="flex:1"><div class="t">Lucía pide aprobar un descuento <span>· PR-0241 · Estudio Norte</span></div><div class="m num">Propuestas · 12 % sobre US$ 18.400 · hace 8 min</div><div class="a" id="acc"><button class="btn chico acento" onclick="aprobar()"><i class="ph ph-check"></i>Aprobar</button><button class="btn chico">Abrir</button></div></div><i class="ph ph-dots-three mas"></i></div>
+          <div class="item"><span class="nl"></span><span class="tile ro"><i class="ph ph-phone"></i></span><div style="flex:1"><div class="t">Seguimiento vencido <span>· Martín Ruiz · Grupo Atlas</span></div><div class="m">Pipeline · Negociación · venció ayer 16:00</div><div class="a"><button class="btn chico">Llamar</button><button class="btn chico">Reprogramar</button></div></div><i class="ph ph-dots-three mas"></i></div>
+          <div class="dia">Ayer</div>
+          <div class="item"><span class="tile v"><i class="ph ph-currency-circle-dollar"></i></span><div style="flex:1"><div class="t">Casa Lumen aceptó la propuesta <span>· US$ 9.800</span></div><div class="m">Propuestas · Ganada · ayer 18:42</div></div><i class="ph ph-dots-three mas"></i></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <h2>Tabla <span>§5 Listas</span></h2>
+    <p class="reg">Sin líneas verticales, encabezado en bandeja y filas de 46 px. Montos a la derecha con la moneda en gris. Códigos en mono. Lo anulado va tachado y gris. Lo que falta va como "—".</p>
+    <div class="lamina"><section class="card" style="width:100%"><div class="tit"><h3>Facturas</h3><span class="c">5</span><div class="der"><div class="seg"><button class="on">Todas</button><button>Por cobrar</button><button>Vencidas</button></div></div></div>
+      <div class="tabla"><table><thead><tr><th>Comprobante</th><th>Cliente</th><th>Estado</th><th>Vence</th><th class="r">Monto</th></tr></thead><tbody>
+        <tr><td class="mono">FAC-01101</td><td><span class="av" style="background:#e9f1fd;color:#2f6fdc">ON</span>Orbe Retail</td><td><span class="chip d v">Cobrada</span></td><td class="num">12 nov</td><td class="r num"><span class="gris">US$</span> 18.400</td></tr>
+        <tr><td class="mono">FAC-01102</td><td><span class="av" style="background:#fde8f0;color:#d6336c">CL</span>Casa Lumen</td><td><span class="chip d am">Por cobrar</span></td><td class="num">28 nov</td><td class="r num"><span class="gris">US$</span> 9.800</td></tr>
+        <tr><td class="mono">FAC-01098</td><td><span class="av" style="background:#e7f6ee;color:#1f9d5c">GA</span>Grupo Atlas</td><td><span class="chip d ro">Vencida</span></td><td class="num baja">hace 6 días</td><td class="r num"><span class="gris">US$</span> 32.000</td></tr>
+        <tr><td class="mono">FAC-01090</td><td><span class="av" style="background:#fdf3e1;color:#c27a0e">MF</span>Mesa Fina</td><td><span class="chip d gr">Anulada</span></td><td class="gris">—</td><td class="r num tachado">US$ 6.500</td></tr>
+      </tbody></table></div></section></div>
+  </section>
+
+  <section class="bloque">
+    <h2>Hoja lateral <span>§5 Formularios</span></h2>
+    <p class="reg">Las ediciones secundarias se abren al costado, sin cambiar de página. El rótulo va arriba del campo y la ayuda abajo. Al pie: restaurar como enlace a la izquierda, y Cancelar + Guardar a la derecha.</p>
+    <div class="lamina" style="background:repeating-linear-gradient(45deg,var(--marco) 0 10px,var(--bandeja) 10px 20px)">
+      <div class="hoja">
+        <div class="h"><span class="tile az"><i class="ph ph-bell-simple"></i></span><div><h4>Avisos</h4><p>Se aplica solo a vos. El administrador define los de la empresa.</p></div><i class="ph ph-x" style="margin-left:auto;color:var(--texto-3)"></i></div>
+        <div class="cuerpo">
+          <div class="op"><div><b>Aprobaciones</b><small>Lo que espera tu decisión</small></div><span class="toggle"></span></div>
+          <div class="op"><div><b>Seguimientos vencidos</b><small>De tus oportunidades</small></div><span class="toggle"></span></div>
+          <div class="op"><div><b>Resumen semanal</b><small>Lunes 08:00</small></div><span class="toggle off"></span></div>
+          <div class="campo"><label>Horario silencioso</label><div class="in"><i class="ph ph-moon"></i>20:00 – 08:00<i class="ph ph-caret-down" style="margin-left:auto"></i></div><small>Lo urgente igual te llega.</small></div>
+        </div>
+        <div class="pieh"><a>Restaurar</a><button class="btn">Cancelar</button><button class="btn neg">Guardar</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <h2>Cargando, vacío y error <span>§6b</span></h2>
+    <p class="reg">Esqueletos con la forma final. El vacío dice qué va a aparecer y trae el botón para crearlo. El error va en el lugar, con Reintentar.</p>
+    <div class="lamina"><div class="estados">
+      <div class="card" style="padding:18px"><div class="esq" style="width:40%"></div><div class="esq" style="width:70%;height:26px;margin-top:14px;border-radius:8px"></div><div class="esq" style="width:55%;margin-top:10px"></div><div class="esq" style="height:40px;margin-top:8px;border-radius:10px"></div></div>
+      <div class="card vacio">
+        <svg width="110" height="70" viewBox="0 0 110 70" fill="none" stroke="#b9b3ff" stroke-width="1.2"><rect x="18" y="14" width="74" height="46" rx="10" stroke-dasharray="3 4"/><path d="M34 32h42M34 42h26"/><circle cx="84" cy="16" r="9" fill="var(--superficie)" stroke="#8f86ff"/><path d="M84 12v8M80 16h8" stroke="#8f86ff"/></svg>
+        <h4>Todavía no hay oportunidades</h4><p>Cargá la primera y aparece acá con su etapa y su seguimiento.</p><button class="btn neg chico" style="margin-top:6px"><i class="ph ph-plus"></i>Nueva oportunidad</button></div>
+      <div class="card vacio"><span class="tile ro" style="width:44px;height:44px"><i class="ph ph-wifi-slash" style="font-size:20px"></i></span><h4>No pudimos traer las facturas</h4><p>Se cortó la conexión con el servidor. Lo que ya estaba cargado sigue a salvo.</p><button class="btn chico" style="margin-top:6px"><i class="ph ph-arrow-clockwise"></i>Reintentar</button></div>
+    </div></div>
+  </section>
+
+  <section class="bloque">
+    <h2>Celular <span>§5 Celular · §6e</span></h2>
+    <p class="reg">Lo de hoy arriba. Protagonista con anillo, accesos en grilla de 3, filas con ícono en cuadro y monto a la derecha, acción principal en píldora fija abajo y barra inferior con el activo en pastilla.</p>
+    <div class="lamina" style="justify-content:center">
+      <div class="tel"><div class="scr">
+        <div class="hola"><img src="https://api.dicebear.com/9.x/notionists/svg?seed=Ana&backgroundColor=efe9ff" alt=""><div><small>Martes 17 nov</small><b>Hola, Ana</b></div><span class="circ"><i class="ph ph-bell"></i><i style="position:absolute;top:10px;right:11px;width:7px;height:7px;border-radius:50%;background:var(--rojo)"></i></span></div>
+        <div class="heroe2"><svg width="62" height="62" viewBox="0 0 62 62"><circle cx="31" cy="31" r="26" stroke="rgb(255 255 255/.22)" stroke-width="6" fill="none"/><circle cx="31" cy="31" r="26" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="163" stroke-dashoffset="65" transform="rotate(-90 31 31)"/><text x="31" y="36" text-anchor="middle" fill="#fff" font-family="Outfit" font-size="15" font-weight="500">60%</text></svg><div><b>Vas por la mitad</b><p>3 de 5 visitas hechas. Faltan Atlas y Lumen.</p></div></div>
+        <div class="accesos"><div><i class="ph-fill ph-camera"></i>Parte</div><div><i class="ph-fill ph-receipt"></i>Gasto</div><div><i class="ph-fill ph-wrench"></i>Avería</div></div>
+        <h5>Hoy <a>Ver todo</a></h5>
+        <div class="fl"><span class="tile v"><i class="ph ph-check-circle"></i></span><div><b>Visita Orbe Retail</b><small>09:30 · hecha</small></div></div>
+        <div class="fl"><span class="tile az"><i class="ph ph-map-pin"></i></span><div><b>Visita Grupo Atlas</b><small class="num">15:00 · a 12 km</small></div><span class="r">→</span></div>
+        <div class="fl"><span class="tile am"><i class="ph ph-receipt"></i></span><div><b>Viático por aprobar</b><small>Combustible</small></div><span class="r num">$ 38.500</span></div>
+      </div>
+      <div class="accion">Registrar parte</div>
+      <div class="barra"><span class="on"><i class="ph-fill ph-house"></i></span><span><i class="ph ph-calendar-blank"></i></span><span><i class="ph ph-check-square"></i></span><span><i class="ph ph-user"></i></span></div></div>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast"><span class="okc"><i class="ph ph-check" style="font-size:16px"></i></span><div><b>Descuento aprobado · PR-0241</b><small>Lucía ya puede enviar la propuesta</small></div><a onclick="deshacer()">Deshacer</a></div>
+
+<script>
+const $=s=>document.querySelector(s);
+document.querySelectorAll('#tema button').forEach(b=>b.onclick=()=>{document.documentElement.dataset.tema=b.dataset.t;document.querySelectorAll('#tema button').forEach(x=>x.classList.toggle('on',x===b))});
+function curva(p){let d=`M${p[0][0]},${p[0][1]}`;for(let i=0;i<p.length-1;i++){const a=p[i-1]||p[i],b=p[i],c=p[i+1],e=p[i+2]||c;d+=` C${b[0]+(c[0]-a[0])/6},${b[1]+(c[1]-a[1])/6} ${c[0]-(e[0]-b[0])/6},${c[1]-(e[1]-b[1])/6} ${c[0]},${c[1]}`}return d}
+function linea(svg,v,col,w,h,blanco){const mx=Math.max(...v),mn=Math.min(...v),p=v.map((x,i)=>[i*w/(v.length-1),h-6-(x-mn)/(mx-mn)*(h-14)]),d=curva(p),id='g'+Math.random().toString(36).slice(2);svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.setAttribute('preserveAspectRatio','none');
+ svg.innerHTML=`<defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity="${blanco?.28:.2}"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs><path d="${d} L${w},${h} L0,${h}Z" fill="url(#${id})"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.8" vector-effect="non-scaling-stroke"/><circle cx="${p[8][0]}" cy="${p[8][1]}" r="4" fill="${blanco?'#fff':'var(--superficie)'}" stroke="${blanco?'#5a50f0':col}" stroke-width="2.5" vector-effect="non-scaling-stroke"/>`}
+linea($('#hsvg'),[120,128,122,140,135,150,146,162,158,171,184],'#fff',300,92,1);
+linea($('#ps'),[3,4,3,5,4,4,6,5,9,7],'#3b6fe0',260,56);
+$('#tk').innerHTML=Array.from({length:34},(_,i)=>`<i style="${i<23?'background:#25a866':''}"></i>`).join('');
+$('#sg').innerHTML=Array.from({length:11},(_,i)=>`<i style="${i<2?'background:var(--rojo)':''}"></i>`).join('');
+$('#pa').innerHTML=Array.from({length:10},(_,i)=>`<i style="${i<4?'background:#3b6fe0':''}"></i>`).join('');
+const acc=$('#acc'),orig=acc.innerHTML;let t;
+function aprobar(){$('#it').classList.add('ok');acc.innerHTML='<span class="chip v"><i class="ph ph-check" style="font-size:12px"></i>Aprobado</span><button class="btn chico">Abrir</button>';$('#toast').classList.add('ver');clearTimeout(t);t=setTimeout(()=>$('#toast').classList.remove('ver'),5000)}
+function deshacer(){$('#it').classList.remove('ok');acc.innerHTML=orig;$('#toast').classList.remove('ver')}
+</script>
+</body>
+</html>
