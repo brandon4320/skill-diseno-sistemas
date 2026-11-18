@@ -234,6 +234,20 @@ Solo valores de `--espacio-*` (`tokens.css`). La única excepción literal es el
 - **Recorridos:** F en listas y fichas (lo urgente en las primeras filas, montos encolumnados a la derecha); Z en tableros, cabeceras y hojas (qué es arriba a la izquierda, acción arriba a la derecha, salida abajo a la derecha); I en celular (cifra, lo de hoy, acción fija abajo).
 - Tabla de 23 tipos de bloque con su énfasis: `guias/jerarquia-y-espacios.md` §9.
 
+### 4g. Simetría y alineación (`guias/simetria.md` · `ejemplos/simetria.html`)
+Lo premium se nota en que todo cae en su lugar. Un desfase de 2 px se ve aunque nadie sepa decir qué está mal.
+- **Bordes comunes.** Todo bloque de una columna arranca en la misma x: títulos de sección, tarjetas, tablas y filtros comparten borde izquierdo. Lo mismo a la derecha con acciones, montos y ⋯. Nada "casi alineado": o está en la línea o está claramente adentro (16 o más).
+- **Padding simétrico.** En tarjetas y botones, el padding de arriba es igual al de abajo y el de la izquierda igual al de la derecha. Si el contenido de abajo es un pie, el pie lleva su propio padding simétrico. Excepción: el ícono de un botón con texto (izquierda 12, derecha 14 compensa visualmente).
+- **Filas de hermanos iguales.** Las tarjetas de una misma fila tienen el mismo alto (`grid` + `align-items:stretch`) y sus partes internas caen a la misma altura. Título con título, número con número y pie con pie (subgrid, o alto fijo por zona). El pie va pegado abajo (`margin-top:auto`) aunque una tarjeta tenga menos contenido.
+- **Anchos que se repiten.** Las columnas de una grilla son iguales salvo que haya un protagonista declarado (1.25fr). Dos botones lado a lado al pie de una capa tienen el mismo ancho o están alineados a la derecha, nunca uno largo y otro corto centrados. Los íconos de una lista van en una columna de ancho fijo.
+- **Centro óptico.** Ícono centrado en su cuadro (`display:grid; place-items:center`, mismo tamaño par: 16 en 32, 18 en 36, 20 en 40). Los íconos con peso a un lado se corren 1 px hacia el lado liviano (play →, flechas). Texto y ícono en la misma línea: `align-items:center`. Si mezclan tamaños de letra, alineá por la línea base (`align-items:baseline`).
+- **Números alineados.** En columnas de cifras: `tabular-nums`, todos a la derecha, mismos decimales. En una fila de KPIs, las cifras caen en la misma línea base.
+- **Ritmo parejo.** El espacio entre hermanos es siempre el mismo (gap, nunca márgenes sueltos). Si en una lista una fila tiene una línea y otra dos, el alto mínimo es el mismo y el contenido se centra verticalmente.
+- **Radios concéntricos.** Radio interno = radio externo − padding. Una tarjeta de 20 con padding 4 lleva adentro una de 16.
+- **Simetría con intención.** Centrado solo en piezas aisladas (vacíos, acceso, modal, éxito). Lo que se lee de corrido va alineado a la izquierda. Una cabecera con algo a la izquierda y algo a la derecha alinea los dos al mismo eje vertical (centro o base, el mismo en toda la app).
+- **Bordes de 1 px que coinciden.** Bordes de celdas, divisores y tarjetas pegadas no se duplican (2 px) ni dejan medio píxel borroso. Usá `box-shadow` interno o `border-collapse` en tablas y medidas enteras.
+- **Comprobación.** Pasá `revisar.mjs`, que mide bordes izquierdos, altos de hermanos, padding asimétrico y centro de íconos. Mirá la captura con una grilla de 4 px encima (`?grilla` en los ejemplos, o un `repeating-linear-gradient` temporal).
+
 ### 4f. Superficies, radios y sombras (análisis 04)
 **Radios en capas** (interno ≈ externo − padding), solo los de `tokens.css`:
 
@@ -490,6 +504,7 @@ Solo valores de `--espacio-*` (`tokens.css`). La única excepción literal es el
 - En un overhaul: renombrar o "limpiar" una firma de datos, borrar un comportamiento, mezclar tokens globales con piezas en un commit, apagar la guardia.
 
 ## 8. Antes de entregar
+- **Simetría:** ¿los bordes coinciden, los hermanos tienen el mismo alto, el padding es simétrico y los íconos están centrados? (§4g)
 1. **Revisor:** `node scripts/revisar.mjs <pantalla>`, con `--celular` y `--oscuro` → **≥ 85 en 1440, 390 y oscuro**. Con 85 igual se compara a ojo.
 2. **Referencias:** captura al lado de la referencia del mismo tipo y de 06, 07, 08 y 14; si se ve más pobre o más plana, no está terminada. Mirá a 2× bordes, alineaciones y números.
 3. **Overhaul:** `node scripts/guardia-datos.mjs --base main` en PASA (lo permitido con motivo y OK); typecheck, pruebas y build verdes; misma red y mismos permisos por rol; lista de comportamiento en [x]; informe con capturas del antes y del después.

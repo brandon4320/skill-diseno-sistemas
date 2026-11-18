@@ -1,0 +1,485 @@
+<!doctype html>
+<!--
+  simetria.html · 10 pares antes/después de errores de simetría (guias/simetria.md, SKILL.md §4g).
+  Los "antes" están MAL A PROPÓSITO: pies corridos, tarjetas de distinto alto, borde izquierdo a 4 px,
+  ícono descentrado, padding asimétrico, cifras sin alinear, botones de distinto ancho, radios no
+  concéntricos, borde doble y controles de distinto alto. El revisor (revisar.mjs, "Simetría · …")
+  tiene que encontrarlos: son la prueba del chequeo. Se revisa con --galeria (cada par repite el botón
+  relleno a propósito). ?grilla superpone la grilla de 4 px y las guías de los bordes izquierdos.
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simetría · diseno-sistemas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+/* Mismos tokens que tokens.css; acento índigo y tinte frío de ejemplo */
+:root{
+  --lienzo:#eceef1; --panel:#f7f8fa; --superficie:#fff; --bandeja:#f1f2f5; --suave:#e8eaee; --hover:#f6f7f9;
+  --borde:#e3e5ea; --borde-fuerte:#d3d6dd; --divisor:#eef0f3;
+  --tinta:#16181d; --texto-2:#565b68; --texto-3:#646979;
+  --acento:#4f46e5; --acento-texto:#4338ca;
+  --verde:#147638; --verde-f:#e8f7ee; --ambar:#b45309; --ambar-f:#fef3e2; --rojo:#b91c1c; --rojo-f:#fdecec;
+  --azul:#1d4ed8; --azul-f:#eaf2fe; --gris:#52525b; --gris-f:#eff0f3;
+  --e1:#3b6fe0; --e4:#25a866;
+  --display:'Outfit',sans-serif; --ui:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --s-min:0 1px 2px rgb(22 24 29/.05);
+  --s-principal:inset 0 1px 0 rgb(255 255 255/.12),0 4px 10px -2px rgb(22 24 29/.35);
+  --ease:cubic-bezier(.23,1,.32,1); --neg:#16181d; --neg-t:#fff;
+  --espacio-1:2px; --espacio-2:4px; --espacio-3:6px; --espacio-4:8px; --espacio-5:12px;
+  --espacio-6:16px; --espacio-7:20px; --espacio-8:24px; --espacio-9:28px; --espacio-10:40px;
+  --guia:rgb(79 70 229/.55); --guia-mal:#dc2626; --grilla:rgb(79 70 229/.07);
+}
+[data-tema=oscuro]{
+  --lienzo:#0a0a0a; --panel:#111113; --superficie:#1b1b1e; --bandeja:#151518; --suave:#26262a; --hover:#222226;
+  --borde:#2a2a2e; --borde-fuerte:#3f3f46; --divisor:#232327;
+  --tinta:#fafafa; --texto-2:#b4b4bd; --texto-3:#8f8f9a; --acento-texto:#a5a0ff;
+  --verde:#4ade80; --verde-f:rgb(34 197 94/.12); --ambar:#fbbf24; --ambar-f:rgb(245 184 0/.12); --rojo:#f87171; --rojo-f:rgb(239 68 68/.12);
+  --azul:#60a5fa; --azul-f:rgb(59 130 246/.12); --gris:#a1a1aa; --gris-f:#27272a;
+  --e1:#6b93f0; --e4:#4cc785;
+  --s-min:none; --s-principal:none; --neg:#fafafa; --neg-t:#16181d;
+  --guia:rgb(165 160 255/.6); --guia-mal:#f87171; --grilla:rgb(165 160 255/.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--lienzo)}
+body{font-family:var(--ui);background:var(--lienzo);color:var(--tinta);font-size:13px;line-height:1.4;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;font-size:inherit;color:inherit}
+.ph,.ph-fill{font-size:16px;line-height:1}
+.num{font-variant-numeric:tabular-nums}
+code{font-family:var(--mono);font-size:12px;color:var(--tinta)}
+:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:2px}
+
+/* página */
+.pag{max-width:1240px;margin:0 auto;padding:var(--espacio-10) var(--espacio-9) 80px}
+.cabeza{display:flex;align-items:flex-end;gap:var(--espacio-6)}
+.cabeza .eti{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--texto-3)}
+.cabeza h1{font-family:var(--display);font-size:44px;font-weight:300;line-height:1.05;letter-spacing:-.03em;margin-top:var(--espacio-2)}
+.cabeza p{color:var(--texto-2);font-size:14px;line-height:1.5;margin-top:var(--espacio-2);max-width:68ch}
+.cabeza p b{color:var(--tinta);font-weight:500}
+.cabeza .der{margin-left:auto;display:flex;gap:var(--espacio-4);align-items:center}
+.bloque{margin-top:var(--espacio-10)}
+.bloque>h2{font-family:var(--display);font-size:20px;font-weight:500;line-height:1.2;letter-spacing:-.02em;display:flex;align-items:center;gap:var(--espacio-4)}
+.bloque>h2 span{font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:0;color:var(--texto-3)}
+.bloque>p.reg{color:var(--texto-2);font-size:14px;line-height:1.5;margin:var(--espacio-2) 0 var(--espacio-5);max-width:68ch}
+.bloque>p.reg code{font-family:var(--mono);font-size:12px;color:var(--tinta)}
+.par{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.lado{display:flex;flex-direction:column;gap:var(--espacio-4);min-width:0}
+.lado-rot{display:flex;align-items:center;gap:var(--espacio-4);min-height:24px}
+.lado-rot small{font-size:12px;color:var(--texto-3)}
+.lamina{position:relative;flex:1;background:var(--panel);border:1px solid var(--borde);border-radius:20px;padding:var(--espacio-8);min-width:0}
+
+/* piezas comunes */
+.btn{height:36px;padding:0 var(--espacio-6);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:var(--espacio-4);font-weight:500;font-size:13px;border:1px solid var(--borde);background:var(--superficie);cursor:pointer;box-shadow:var(--s-min);white-space:nowrap}
+.btn:has(> .ph:first-child){padding-left:var(--espacio-5)}
+.btn:hover{background:var(--hover)}
+.btn.neg{background:var(--neg);border-color:var(--neg);color:var(--neg-t);box-shadow:var(--s-principal)}
+.btn.neg:hover{background:color-mix(in oklch,var(--neg) 88%,var(--superficie))}
+.seg{display:inline-flex;background:var(--bandeja);border:1px solid var(--borde);padding:3px;border-radius:12px;gap:2px}
+.seg button{border:0;background:none;height:28px;min-width:28px;padding:0 10px;border-radius:9px;font-weight:500;font-size:13px;color:var(--texto-2);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:var(--espacio-3)}
+.seg button.on{background:var(--superficie);color:var(--tinta);box-shadow:0 1px 2px rgb(22 24 29/.1),0 0 0 1px var(--borde)}
+[data-tema=oscuro] .seg button.on{background:var(--tinta);color:var(--superficie);box-shadow:none}
+.chip{display:inline-flex;align-items:center;gap:var(--espacio-3);height:24px;padding:0 8px;border-radius:8px;font-weight:500;font-size:12px;white-space:nowrap}
+.chip .ph{font-size:13px}
+.v{background:var(--verde-f);color:var(--verde)}.ro{background:var(--rojo-f);color:var(--rojo)}.am{background:var(--ambar-f);color:var(--ambar)}.gr{background:var(--gris-f);color:var(--gris)}
+.sube{color:var(--verde)}.baja{color:var(--rojo)}
+
+/* 1. KPIs: pies a la misma altura */
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--espacio-5)}
+.kpi{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:var(--espacio-6);display:flex;flex-direction:column;min-width:0}
+.kpi .k-rot{font-size:13px;font-weight:500;color:var(--texto-2)}
+.kpi .k-n{font-family:var(--display);font-size:24px;font-weight:500;line-height:1.1;letter-spacing:-.02em;margin-top:var(--espacio-2);font-variant-numeric:tabular-nums}
+.kpi .k-pie{font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:var(--espacio-2);font-size:12px;font-weight:500;color:var(--texto-3);margin-top:var(--espacio-5);padding-top:var(--espacio-4);border-top:1px solid var(--divisor)}
+.kpi .k-pie .ph{font-size:13px}
+/* después: subgrid, las tres zonas caen a la misma altura en todas */
+.kpis.bien{grid-template-rows:auto auto auto}
+.kpis.bien .kpi{display:grid;grid-row:span 3;grid-template-rows:subgrid;row-gap:0}
+.kpis.bien .k-rot{align-self:end}
+
+/* 2. tarjetas del mismo alto */
+.proys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--espacio-5)}
+.proys.mal{align-items:start}
+.proy{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:var(--espacio-6);display:flex;flex-direction:column;min-width:0}
+.proy h4{font-family:var(--display);font-size:16px;font-weight:500;letter-spacing:-.01em}
+.proy p{color:var(--texto-2);font-size:13px;line-height:1.5;margin-top:var(--espacio-2)}
+.proys.bien .proy p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.proy .p-pie{display:flex;align-items:center;gap:var(--espacio-4);margin-top:var(--espacio-6);font-size:12px;color:var(--texto-3)}
+.proys.bien .p-pie{margin-top:auto;padding-top:var(--espacio-6)}
+.segs{display:flex;gap:3px;flex:1}
+.segs i{flex:1;height:6px;border-radius:3px;background:var(--suave)}
+.segs i.h{background:var(--e1)}
+
+/* 3. título y tabla en el mismo borde */
+.tarjeta{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;overflow:hidden;min-width:0}
+.t-cab{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-6) var(--espacio-7) var(--espacio-4)}
+.t-cab h4{font-family:var(--display);font-size:16px;font-weight:500;letter-spacing:-.01em}
+.t-cab .c{color:var(--texto-3);font-weight:500}
+.tabla{width:100%;border-collapse:collapse;font-size:13px}
+.tabla th{height:32px;text-align:left;font-size:12px;font-weight:500;color:var(--texto-2);padding:0 var(--espacio-6)}
+.tabla td{height:36px;padding:0 var(--espacio-6);border-top:1px solid var(--divisor);white-space:nowrap}
+.tabla .der{text-align:right}
+.tabla.extremos th:first-child,.tabla.extremos td:first-child{padding-left:var(--espacio-7)}
+.tabla.extremos th:last-child,.tabla.extremos td:last-child{padding-right:var(--espacio-7)}
+.tabla td.gris{color:var(--texto-3)}
+
+/* 4. ícono centrado en su cuadro */
+.filas{display:flex;flex-direction:column;background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:var(--espacio-2) var(--espacio-6)}
+.fila{display:flex;align-items:center;gap:var(--espacio-5);height:56px}
+.fila+.fila{border-top:1px solid var(--divisor)}
+.fila b{font-weight:500;display:block}
+.fila small{color:var(--texto-3);font-size:12px;display:block}
+.fila .fin{margin-left:auto}
+.cuadro{width:36px;height:36px;border-radius:12px;background:var(--suave);color:var(--texto-2);flex:none}
+.cuadro .ph,.cuadro .ph-fill{font-size:18px}
+.play{width:36px;height:36px;border-radius:50%;border:1px solid var(--borde);background:var(--superficie);cursor:pointer;flex:none;box-shadow:var(--s-min)}
+.play .ph-fill{font-size:16px}
+/* antes: el cuadro centra con flex, pero la regla general de íconos de fila le deja un margin-right */
+.filas.mal .cuadro{display:flex;align-items:center;justify-content:center}
+.filas.mal .fila .ph{margin-right:6px}
+.filas.mal .play{display:flex;align-items:center;justify-content:center}
+/* después: grid + place-items, sin márgenes; el play se corre 1 px a su lado liviano */
+.filas.bien .cuadro,.filas.bien .play{display:grid;place-items:center}
+.filas.bien .play .ph-fill{transform:translateX(1px)}
+
+/* 5. padding simétrico */
+.aviso{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;display:flex;gap:var(--espacio-5);align-items:flex-start}
+.aviso .ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--ambar-f);color:var(--ambar);flex:none}
+.aviso h4{font-size:14px;font-weight:500}
+.aviso p{color:var(--texto-2);margin-top:var(--espacio-1)}
+.aviso .acc{display:flex;gap:var(--espacio-4);margin-top:var(--espacio-5)}
+.aviso.tarjeta-mal{padding:var(--espacio-6) var(--espacio-7) 10px}
+.aviso.tarjeta-mal .btn{height:auto;padding:9px 16px 7px}
+.aviso.tarjeta-bien{padding:var(--espacio-7)}
+
+/* 6. cifras alineadas */
+.montos td{font-size:13px}
+.montos.mal td.m{text-align:left;font-variant-numeric:proportional-nums}
+.montos.bien td.m,.montos.bien th.m{text-align:right;font-variant-numeric:tabular-nums}
+
+/* 7. botones del pie */
+.capa{background:var(--superficie);border:1px solid var(--borde);border-radius:20px;box-shadow:0 6px 16px rgb(22 24 29/.06);overflow:hidden}
+.capa .cuerpo{padding:var(--espacio-7)}
+.capa h4{font-family:var(--display);font-size:16px;font-weight:500}
+.capa p{font-variant-numeric:tabular-nums;color:var(--texto-2);margin-top:var(--espacio-2);line-height:1.5}
+.capa .pie{display:grid;gap:var(--espacio-4);padding:var(--espacio-6) var(--espacio-7);border-top:1px solid var(--divisor);background:var(--panel)}
+.capa .pie.mal{grid-template-columns:1fr 1.4fr}
+.capa .pie.bien{grid-template-columns:1fr 1fr}
+
+/* 8. radios concéntricos */
+.marco{background:var(--bandeja);border:1px solid var(--borde);border-radius:20px;padding:var(--espacio-4)}
+.marco .rot{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-3) var(--espacio-4) var(--espacio-4);font-weight:500;color:var(--texto-2)}
+.marco .rot .ph{color:var(--texto-3)}
+.marco .adentro{background:var(--superficie);border:1px solid var(--borde);padding:var(--espacio-6);box-shadow:var(--s-min)}
+.marco.mal .adentro{border-radius:20px}
+.marco.bien .adentro{border-radius:12px}
+.adentro .k-n{font-family:var(--display);font-size:32px;font-weight:500;line-height:1.05;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.adentro .ctx{color:var(--texto-3);font-size:12px;margin-top:var(--espacio-2)}
+
+/* 9. borde de 1 px que no se duplica */
+.mets{display:flex}
+.met{flex:1;min-width:0;padding:var(--espacio-6);background:var(--superficie)}
+.met span{display:block;font-size:12px;font-weight:500;color:var(--texto-2)}
+.met b{display:block;font-family:var(--display);font-size:20px;font-weight:500;margin-top:var(--espacio-1);font-variant-numeric:tabular-nums}
+.mets.mal .met{border:1px solid var(--borde)}
+.mets.mal .met:first-child{border-radius:16px 0 0 16px}
+.mets.mal .met:last-child{border-radius:0 16px 16px 0}
+.mets.bien{border:1px solid var(--borde);border-radius:16px;overflow:hidden}
+.mets.bien .met+.met{border-left:1px solid var(--borde)}
+
+/* 10. cabecera: un solo eje */
+.cab{display:flex;gap:var(--espacio-5);flex-wrap:wrap}
+.cab .tit h3{font-family:var(--display);font-size:24px;font-weight:500;line-height:1.15;letter-spacing:-.02em}
+.cab .tit small{font-variant-numeric:tabular-nums;display:block;color:var(--texto-3);font-size:12px;margin-top:var(--espacio-1)}
+.cab .ctrl{margin-left:auto;display:flex;gap:var(--espacio-4);flex-wrap:wrap}
+.buscar{display:flex;align-items:center;gap:var(--espacio-4);width:180px;border:1px solid var(--borde-fuerte);border-radius:12px;background:var(--superficie);padding:0 var(--espacio-5);color:var(--texto-3);box-shadow:var(--s-min)}
+.cab.mal{align-items:flex-start}
+.cab.mal .ctrl{align-items:flex-start}
+.cab.mal .buscar{height:40px}
+.cab.mal .seg button{height:26px}
+.cab.mal .btn{height:38px}
+.cab.bien{align-items:flex-end}
+.cab.bien .ctrl{align-items:center}
+.cab.bien .buscar{height:36px}
+.cab.bien .seg button{height:28px}
+
+/* ?grilla: grilla de 4 px y guías de los bordes izquierdos */
+.guias{position:absolute;inset:0;pointer-events:none;display:none;border-radius:inherit;overflow:hidden}
+html.grilla .guias{display:block}
+.guias::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--grilla) 1px,transparent 1px),linear-gradient(90deg,var(--grilla) 1px,transparent 1px);background-size:4px 4px}
+.guias i{position:absolute;top:0;bottom:0;width:1px;background:var(--guia)}
+.guias i.mal{background:var(--guia-mal)}
+.guias i b{position:absolute;top:6px;left:4px;font:500 11px var(--mono);color:var(--guia-mal);white-space:nowrap}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:1023px){.par{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:767px){
+  body{font-size:14px}
+  .pag{padding:var(--espacio-8) var(--espacio-6) 64px}
+  .cabeza{flex-wrap:wrap}.cabeza h1{font-size:36px}.cabeza .der{margin-left:0}
+  .bloque{margin-top:var(--espacio-9)}
+  .lamina{padding:var(--espacio-6)}
+  .kpis,.proys{grid-template-columns:minmax(0,1fr)}
+  .kpis.bien{grid-template-rows:none}.kpis.bien .kpi{display:flex;grid-row:auto}.kpis.bien .k-rot{align-self:auto}
+  .bloque>h2{flex-direction:column;align-items:flex-start;gap:var(--espacio-1)}
+  .btn,.cab.mal .btn{height:44px;min-width:44px}
+  .aviso.tarjeta-mal .btn{height:44px}
+  .seg button,.cab.mal .seg button,.cab.bien .seg button{height:44px;min-width:44px}
+  .play{width:44px;height:44px}
+  .buscar,.cab.mal .buscar,.cab.bien .buscar{height:44px;width:100%}
+  .cab .ctrl{margin-left:0;width:100%}
+  .mets{flex-direction:column}
+  .mets.mal .met:first-child{border-radius:16px 16px 0 0}.mets.mal .met:last-child{border-radius:0 0 16px 16px}
+  .mets.bien .met+.met{border-left:0;border-top:1px solid var(--borde)}
+  .t-cab{padding:var(--espacio-6) var(--espacio-6) var(--espacio-4)}
+  .tabla th,.tabla td{padding:0 var(--espacio-5)}
+  .tabla.extremos th:first-child,.tabla.extremos td:first-child{padding-left:var(--espacio-6)}
+  .tabla.extremos th:last-child,.tabla.extremos td:last-child{padding-right:var(--espacio-6)}
+}
+</style>
+</head>
+<body>
+<main class="pag">
+  <header class="cabeza">
+    <div>
+      <span class="eti">diseno-sistemas · simetría</span>
+      <h1>Todo cae en su lugar</h1>
+      <p><b>10 errores reales</b> de simetría, cada uno al lado de su arreglo. Ninguno es grosero: son desfases de 2 a 8 px que se notan sin que nadie sepa decir qué está mal. Regla en <code>guias/simetria.md</code>.</p>
+    </div>
+    <div class="der">
+      <button class="btn" id="btnGrilla" aria-pressed="false"><i class="ph ph-grid-four"></i>Grilla</button>
+      <div class="seg" id="tema" role="group" aria-label="Tema"><button class="on" data-t="claro" aria-label="Tema claro" aria-pressed="true" title="Claro"><i class="ph ph-sun"></i></button><button data-t="oscuro" aria-label="Tema oscuro" aria-pressed="false" title="Oscuro"><i class="ph ph-moon"></i></button></div>
+    </div>
+  </header>
+
+  <!-- 1 -->
+  <section class="bloque">
+    <h2>Pies a la misma altura <span>§4 · subgrid</span></h2>
+    <p class="reg">Un rótulo que ocupa dos líneas empuja la cifra y el pie de su tarjeta. Las tres miden lo mismo, pero adentro nada coincide. Con <code>grid-template-rows:subgrid</code> las zonas se comparten.</p>
+    <div class="par">
+      <div class="lado"><div class="lado-rot"><span class="chip ro"><i class="ph ph-x"></i>Antes</span><small>cada tarjeta acomoda lo suyo</small></div>
+        <div class="lamina"><div class="kpis">
+          <div class="kpi"><span class="k-rot">Cobrado</span><span class="k-n">$ 18,4 M</span><span class="k-pie"><i class="ph ph-trend-up sube"></i>+12 % vs. oct.</span></div>
+          <div class="kpi"><span class="k-rot">Por cobrar a más de 30 días</span><span class="k-n">$ 6,1 M</span><span class="k-pie baja"><i class="ph ph-warning"></i>4 vencidas</span></div>
+          <div class="kpi"><span class="k-rot">Días de cobro</span><span class="k-n">38</span><span class="k-pie"><i class="ph ph-trend-down sube"></i>−3 días</span></div>
+        </div></div>
+      </div>
+      <div class="lado"><div class="lado-rot"><span class="chip v"><i class="ph ph-check"></i>Después</span><small>rótulo, cifra y pie en filas compartidas</small></div>
+        <div class="lamina"><div class="kpis bien">
+          <div class="kpi"><span class="k-rot">Cobrado</span><span class="k-n">$ 18,4 M</span><span class="k-pie"><i class="ph ph-trend-up sube"></i>+12 % vs. oct.</span></div>
+          <div class="kpi"><span class="k-rot">Por cobrar a más de 30 días</span><span class="k-n">$ 6,1 M</span><span class="k-pie baja"><i class="ph ph-warning"></i>4 vencidas</span></div>
+          <div class="kpi"><span class="k-rot">Días de cobro</span><span class="k-n">38</span><span class="k-pie"><i class="ph ph-trend-down sube"></i>−3 días</span></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="bloque">
+    <h2>Hermanos del mismo alto <span>§3 · stretch + margin-top:auto</span></h2>
+    <p class="reg">Con <code>align-items:start</code> cada tarjeta mide lo que su texto. Estiradas y con el pie pegado abajo, la fila se lee como una sola pieza.</p>
+    <div class="par">
+      <div class="lado"><div class="lado-rot"><span class="chip ro"><i class="ph ph-x"></i>Antes</span><small>align-items:start en la grilla</small></div>
+        <div class="lamina"><div class="proys mal">
+          <article class="proy"><h4>Portal de clientes</h4><p>Alta de usuarios, permisos por empresa y descarga de facturas desde el portal.</p><div class="p-pie"><div class="segs"><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i></div><span class="num">3 de 6</span></div></article>
+          <article class="proy"><h4>Migración de caja</h4><p>Pasar los saldos de octubre.</p><div class="p-pie"><div class="segs"><i class="h"></i><i></i><i></i><i></i></div><span class="num">1 de 4</span></div></article>
+        </div></div>
+      </div>
+      <div class="lado"><div class="lado-rot"><span class="chip v"><i class="ph ph-check"></i>Después</span><small>mismo alto, pie abajo, descripción a 2 líneas</small></div>
+        <div class="lamina"><div class="proys bien">
+          <article class="proy"><h4>Portal de clientes</h4><p>Alta de usuarios, permisos por empresa y descarga de facturas desde el portal.</p><div class="p-pie"><div class="segs"><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i></div><span class="num">3 de 6</span></div></article>
+          <article class="proy"><h4>Migración de caja</h4><p>Pasar los saldos de octubre.</p><div class="p-pie"><div class="segs"><i class="h"></i><i></i><i></i><i></i></div><span class="num">1 de 4</span></div></article>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="bloque">
+    <h2>Título y tabla en el mismo borde <span>§1 · un borde por columna</span></h2>
+    <p class="reg">La cabecera de la tarjeta tiene 20 de padding y las celdas 16: el título queda 4 px adentro de la primera columna. Las celdas de los extremos llevan el mismo 20.</p>
+    <div class="par">
+      <div class="lado"><div class="lado-rot"><span class="chip ro"><i class="ph ph-x"></i>Antes</span><small>cabecera 20, celdas 16</small></div>
+        <div class="lamina"><section class="tarjeta">
+          <div class="t-cab" data-guia><h4>Por vencer esta semana</h4><span class="c num">3</span></div>
+          <table class="tabla" data-guia><thead><tr><th>Cliente</th><th>Vence</th><th class="der">Saldo</th></tr></thead>
+            <tbody><tr><td>Puerto Norte</td><td class="gris">Hoy</td><td class="der num">$ 1.250.000</td></tr><tr><td>Agro Sur</td><td class="gris">Jue 20</td><td class="der num">$ 840.000</td></tr><tr><td>Lumen</td><td class="gris">Vie 21</td><td class="der num">$ 312.500</td></tr></tbody></table>
+        </section></div>
+      </div>
+      <div class="lado"><div class="lado-rot"><span class="chip v"><i class="ph ph-check"></i>Después</span><small>20 en la cabecera y en las celdas de los extremos</small></div>
+        <div class="lamina"><section class="tarjeta">
+          <div class="t-cab" data-guia><h4>Por vencer esta semana</h4><span class="c num">3</span></div>
+          <table class="tabla extremos" data-guia><thead><tr><th>Cliente</th><th>Vence</th><th class="der">Saldo</th></tr></thead>
+            <tbody><tr><td>Puerto Norte</td><td class="gris">Hoy</td><td class="der num">$ 1.250.000</td></tr><tr><td>Agro Sur</td><td class="gris">Jue 20</td><td class="der num">$ 840.000</td></tr><tr><td>Lumen</td><td class="gris">Vie 21</td><td class="der num">$ 312.500</td></tr></tbody></table>
+        </section></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="bloque">
+    <h2>Ícono en el centro de su cuadro <span>§5 · centro óptico</span></h2>
+    <p class="reg">La regla de los íconos de fila (<code>margin-right:6px</code>) también le pega al ícono del cuadro y lo corre 3 px. Grid con <code>place-items:center</code> y nada de márgenes; el play se corre 1 px hacia su lado liviano.</p>
+    <div class="par">
+      <div class="lado"><div class="lado-rot"><span class="chip ro"><i class="ph ph-x"></i>Antes</span><small>flex que centra, margen que descentra</small></div>
+        <div class="lamina"><div class="filas mal">
+          <div class="fila"><span class="cuadro"><i class="ph ph-receipt"></i></span><div><b>Factura A 0003-00012845</b><small>Puerto Norte · hoy 10:24</small></div><button class="play fin" aria-label="Escuchar nota de voz"><i class="ph-fill ph-play"></i></button></div>
+          <div class="fila"><span class="cuadro"><i class="ph ph-truck"></i></span><div><b>Remito de entrega</b><small>Agro Sur · ayer</small></div><button class="play fin" aria-label="Escuchar nota de voz"><i class="ph-fill ph-play"></i></button></div>
+        </div></div>
+      </div>
+      <div class="lado"><div class="lado-rot"><span class="chip v"><i class="ph ph-check"></i>Después</span><small>place-items:center, play +1 px</small></div>
+        <div class="lamina"><div class="filas bien">
+          <div class="fila"><span class="cuadro"><i class="ph ph-receipt"></i></span><div><b>Factura A 0003-00012845</b><small>Puerto Norte · hoy 10:24</small></div><button class="play fin" aria-label="Escuchar nota de voz"><i class="ph-fill ph-play"></i></button></div>
+          <div class="fila"><span class="cuadro"><i class="ph ph-truck"></i></span><div><b>Remito de entrega</b><small>Agro Sur · ayer</small></div><button class="play fin" aria-label="Escuchar nota de voz"><i class="ph-fill ph-play"></i></button></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="bloque">
+    <h2>Padding simétrico <span>§2 · arriba = abajo</span></h2>
+    <p class="reg">El botón con 9 arriba y 7 abajo "para que el texto quede centrado" y la tarjeta con 10 abajo porque el botón ya "tiene aire". Alto fijo y padding lateral en el botón; 20 parejo en la tarjeta.</p>
+    <div class="par">
+      <div class="lado"><div class="lado-rot"><span class="chip ro"><i class="ph ph-x"></i>Antes</span><small>tarjeta 16/20/10, botón 9/7</small></div>
+        <div class="lamina"><div class="aviso tarjeta-mal">
+          <span class="ic"><i class="ph ph-warning"></i></span>
+          <div><h4>Puerto Norte no tiene contacto de cobranzas</h4><p>Las 3 facturas de noviembre no tienen a quién reclamarse.</p><div class="acc"><button class="btn">Cargar contacto</button><button class="btn">Después</button></div></div>
+        </div></div>
+      </div>
+      <div class="lado"><div class="lado-rot"><span class="chip v"><i class="ph ph-check"></i>Después</span><small>tarjeta 20 parejo, botón de 36 con 16 a los lados</small></div>
+        <div class="lamina"><div class="aviso tarjeta-bien">
+          <span class="ic"><i class="ph ph-warning"></i></span>
+          <div><h4>Puerto Norte no tiene contacto de cobranzas</h4><p>Las 3 facturas de noviembre no tienen a quién reclamarse.</p><div class="acc"><button class="btn">Cargar contacto</button><button class="btn">Después</button></div></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="bloque">
+    <h2>Cifras alineadas <span>§6 · tabular-nums a la derecha</span></h2>
+    <p class="reg">Montos a la izquierda, con dígitos proporcionales y decimales sueltos: no se pueden comparar de un vistazo. A la derecha, <code>tabular-nums</code> y los mismos decimales, las unidades quedan encolumnadas.</p>
+    <div class="par">
+      <div class="lado"><div class="lado-rot"><span class="chip ro"><i class="ph ph-x"></i>Antes</span><small>a la izquierda, decimales mezclados</small></div>
+        <div class="lamina"><section class="tarjeta"><table class="tabla extremos montos mal"><thead><tr><th>Concepto</th><th>Importe</th></tr></thead>
+          <tbody><tr><td>Alquiler de módulos</td><td class="m">$ 1.250.000</td></tr><tr><td>Limpiezas extra</td><td class="m">$ 98.400,5</td></tr><tr><td>Flete de retiro</td><td class="m">$ 112.000</td></tr><tr><td>Ajuste IPC</td><td class="m">$ 41.117,80</td></tr></tbody></table></section></div>
+      </div>
+      <div class="lado"><div class="lado-rot"><span class="chip v"><i class="ph ph-check"></i>Después</span><small>derecha, tabular, dos decimales en todas</small></div>
+        <div class="lamina"><section class="tarjeta"><table class="tabla extremos montos bien"><thead><tr><th>Concepto</th><th class="m">Importe</th></tr></thead>
+          <tbody><tr><td>Alquiler de módulos</td><td class="m">$ 1.250.000,00</td></tr><tr><td>Limpiezas extra</td><td class="m">$ 98.400,50</td></tr><tr><td>Flete de retiro</td><td class="m">$ 112.000,00</td></tr><tr><td>Ajuste IPC</td><td class="m">$ 41.117,80</td></tr></tbody></table></section></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="bloque">
+    <h2>Botones del pie del mismo ancho <span>§4 · anchos que se repiten</span></h2>
+    <p class="reg">Dos botones que ocupan todo el pie con <code>1fr 1.4fr</code>: el principal "gana" 40 px y la fila queda torcida. Si llenan el ancho, van iguales; si no, a la derecha con su ancho natural.</p>
+    <div class="par">
+      <div class="lado"><div class="lado-rot"><span class="chip ro"><i class="ph ph-x"></i>Antes</span><small>1fr 1.4fr</small></div>
+        <div class="lamina"><div class="capa"><div class="cuerpo"><h4>¿Anular la factura A 0003-00012845?</h4><p>Se genera la nota de crédito y el saldo de Puerto Norte vuelve a $ 0.</p></div>
+          <div class="pie mal"><button class="btn">Cancelar</button><button class="btn neg">Anular factura</button></div></div></div>
+      </div>
+      <div class="lado"><div class="lado-rot"><span class="chip v"><i class="ph ph-check"></i>Después</span><small>1fr 1fr</small></div>
+        <div class="lamina"><div class="capa"><div class="cuerpo"><h4>¿Anular la factura A 0003-00012845?</h4><p>Se genera la nota de crédito y el saldo de Puerto Norte vuelve a $ 0.</p></div>
+          <div class="pie bien"><button class="btn">Cancelar</button><button class="btn neg">Anular factura</button></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="bloque">
+    <h2>Radios concéntricos <span>§8 · interno = externo − padding</span></h2>
+    <p class="reg">Bandeja de 20 con 8 de padding y la tarjeta de adentro también en 20: las esquinas se separan más que los lados. Adentro va 20 − 8 = 12.</p>
+    <div class="par">
+      <div class="lado"><div class="lado-rot"><span class="chip ro"><i class="ph ph-x"></i>Antes</span><small>20 adentro de 20</small></div>
+        <div class="lamina"><div class="marco mal"><div class="rot"><i class="ph ph-wallet"></i>Saldo en caja</div><div class="adentro"><div class="k-n">$ 4,82 M</div><div class="ctx">ARS · al cierre de ayer</div></div></div></div>
+      </div>
+      <div class="lado"><div class="lado-rot"><span class="chip v"><i class="ph ph-check"></i>Después</span><small>12 adentro de 20 con 8 de padding</small></div>
+        <div class="lamina"><div class="marco bien"><div class="rot"><i class="ph ph-wallet"></i>Saldo en caja</div><div class="adentro"><div class="k-n">$ 4,82 M</div><div class="ctx">ARS · al cierre de ayer</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="bloque">
+    <h2>Un solo borde entre piezas pegadas <span>§10 · 1 px que no se duplica</span></h2>
+    <p class="reg">Tres celdas con borde completo y sin espacio entre ellas: entre cada par se ve una línea de 2 px. El borde va en el contenedor y los divisores en un solo lado.</p>
+    <div class="par">
+      <div class="lado"><div class="lado-rot"><span class="chip ro"><i class="ph ph-x"></i>Antes</span><small>border en cada celda, gap 0</small></div>
+        <div class="lamina"><div class="mets mal"><div class="met"><span>Facturado</span><b>$ 22,9 M</b></div><div class="met"><span>Cobrado</span><b>$ 18,4 M</b></div><div class="met"><span>Pendiente</span><b>$ 4,5 M</b></div></div></div>
+      </div>
+      <div class="lado"><div class="lado-rot"><span class="chip v"><i class="ph ph-check"></i>Después</span><small>borde en el contenedor, divisor a la izquierda</small></div>
+        <div class="lamina"><div class="mets bien"><div class="met"><span>Facturado</span><b>$ 22,9 M</b></div><div class="met"><span>Cobrado</span><b>$ 18,4 M</b></div><div class="met"><span>Pendiente</span><b>$ 4,5 M</b></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="bloque">
+    <h2>Cabecera con un solo eje <span>§9 · controles del mismo alto</span></h2>
+    <p class="reg">Buscador de 40, segmentado de 34 y botón de 38 alineados arriba: tres pisos distintos. Todos a 36, centrados entre sí, y el grupo apoyado en la base del título.</p>
+    <div class="par">
+      <div class="lado"><div class="lado-rot"><span class="chip ro"><i class="ph ph-x"></i>Antes</span><small>40 / 34 / 38, alineados arriba</small></div>
+        <div class="lamina"><div class="cab mal"><div class="tit"><h3>Cobranzas</h3><small>18 facturas · $ 20,9 M</small></div>
+          <div class="ctrl"><label class="buscar"><i class="ph ph-magnifying-glass"></i><span>Buscar</span></label><div class="seg" role="group" aria-label="Período"><button class="on">Mes</button><button>Año</button></div><button class="btn"><i class="ph ph-export"></i>Exportar</button></div></div></div>
+      </div>
+      <div class="lado"><div class="lado-rot"><span class="chip v"><i class="ph ph-check"></i>Después</span><small>36 / 36 / 36, centrados, apoyados abajo</small></div>
+        <div class="lamina"><div class="cab bien"><div class="tit"><h3>Cobranzas</h3><small>18 facturas · $ 20,9 M</small></div>
+          <div class="ctrl"><label class="buscar"><i class="ph ph-magnifying-glass"></i><span>Buscar</span></label><div class="seg" role="group" aria-label="Período"><button class="on">Mes</button><button>Año</button></div><button class="btn"><i class="ph ph-export"></i>Exportar</button></div></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+
+/* tema */
+$$('#tema button').forEach(b=>b.onclick=()=>{document.documentElement.dataset.tema=b.dataset.t;$$('#tema button').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)})});
+$$('.seg:not(#tema)').forEach(s=>s.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>s.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)))));
+
+/* ?grilla: grilla de 4 px + una guía por cada borde izquierdo de las piezas de la lámina.
+   Dos guías a 1–6 px una de otra se pintan en rojo con la distancia: eso es un "casi alineado". */
+function bordeIzq(el){
+  // el borde que se ve: la caja si tiene fondo o borde izquierdo; si no, el primer texto
+  const s=getComputedStyle(el), r=el.getBoundingClientRect();
+  const caja=(s.backgroundColor!=='rgba(0, 0, 0, 0)'&&s.backgroundColor!=='transparent')||parseFloat(s.borderLeftWidth)>0;
+  if(caja&&!el.hasAttribute('data-guia'))return r.left;
+  const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.textContent.trim()?1:3});
+  const t=w.nextNode(); if(!t)return r.left;
+  const rg=document.createRange(); rg.selectNodeContents(t); return rg.getClientRects()[0]?.left ?? r.left;
+}
+function dibujarGuias(){
+  $$('.guias').forEach(g=>g.remove());
+  if(!document.documentElement.classList.contains('grilla'))return;
+  $$('.lamina').forEach(l=>{
+    const g=document.createElement('div'); g.className='guias'; g.setAttribute('aria-hidden','true'); l.appendChild(g);
+    const base=l.getBoundingClientRect().left+parseFloat(getComputedStyle(l).borderLeftWidth);
+    // piezas: el primer nivel de la lámina y, adentro de las tarjetas, sus hijos directos
+    const piezas=[...l.querySelectorAll(':scope > * > *, [data-guia], .tarjeta > *, .aviso > *, .marco > *, .capa > *')].filter(e=>!e.classList.contains('guias')&&e.getClientRects().length);
+    const xs=[...new Set(piezas.map(e=>Math.round((bordeIzq(e)-base)*2)/2))].sort((a,b)=>a-b);
+    xs.forEach((x,i)=>{
+      const cerca=xs.find((y,j)=>j!==i&&Math.abs(y-x)>=1&&Math.abs(y-x)<=6);
+      const i_=document.createElement('i'); i_.style.left=x+'px';
+      if(cerca!==undefined){i_.className='mal'; if(x>cerca){const b=document.createElement('b'); b.textContent=(x-cerca)+' px'; i_.appendChild(b)}}
+      g.appendChild(i_);
+    });
+  });
+}
+function grilla(on){
+  document.documentElement.classList.toggle('grilla',on);
+  $('#btnGrilla').setAttribute('aria-pressed',on);
+  const u=new URL(location.href); on?u.searchParams.set('grilla',''):u.searchParams.delete('grilla');
+  try{history.replaceState(null,'',u.toString().replace('grilla=','grilla'))}catch(e){}
+  dibujarGuias();
+}
+$('#btnGrilla').onclick=()=>grilla(!document.documentElement.classList.contains('grilla'));
+if(new URLSearchParams(location.search).has('grilla'))document.fonts.ready.then(()=>grilla(true));
+addEventListener('resize',()=>{clearTimeout(window.__g);window.__g=setTimeout(dibujarGuias,150)});
+</script>
+</body>
+</html>

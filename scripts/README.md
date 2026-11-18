@@ -47,12 +47,13 @@ Siempre hace dos pasadas: la principal (`--ancho`, 1440 por defecto) y otra a 39
 | Tamaños de letra | aviso | 11 / 12 / 13 / 14 / 16 / 20 / 24 / 32 / 40, y de 36 a 44 para títulos grandes. |
 | Desborde a 390 px | falla | `scrollWidth` mayor que la ventana. Lista los elementos de más afuera que se salen y no están dentro de un contenedor con scroll. Si `body` esconde el desborde, avisa igual "contenido cortado". |
 | Errores en la consola | aviso | Errores de JS y de consola de las dos pasadas. |
+| Simetría y alineación | aviso (tope 10 entre todos) | Ver `guias/simetria.md` §15. **Hermanos de distinto alto:** tarjetas de la misma clase en una fila de grid o flex (tops a ≤ 2 px, hasta 520 de alto) que difieren en más de 2 px. **Pies a distinta altura:** en esas filas con el mismo alto, el último hijo no coincide ni arriba ni abajo (> 2 px). **Padding asimétrico:** botones y pastillas con fondo o borde de hasta 48 px y tarjetas con clase de tarjeta, > 1 px de diferencia; se tolera hasta 4 px con un ícono del lado más chico y 10 con un avatar redondo; no cuentan apilados en columna ni tarjetas con padding 0 en un lado. **Ícono descentrado:** `svg` o `i.ph*` solo en un cuadro de 24–48 px, centro a más de 1,5 px. **Bordes casi alineados:** bloques apilados del contenido principal (`main`) y de cada tarjeta, por su caja (fondo o borde izquierdo) y su primer texto o ícono, a entre 1 y 6 px (1 px exacto se tolera; los íconos colgados con margen negativo y lo centrado no cuentan). **Botones de distinto ancho:** 2–4 botones estirados que llenan su fila, > 2 px. **Borde duplicado:** hermanos pegados con borde en los dos lados que se tocan. **Medio píxel:** piezas con borde de 1 px movidas por un `transform` a una posición con decimales. |
 
 La nota parte de 100 y cada problema resta según su peso, con tope por chequeo. 85 o más: lista para comparar contra las referencias. Entre 65 y 84: hay que corregir antes de entregar. Menos de 65: rehacer.
 
 ### Lo que no ve
 
-El revisor mide reglas, no el gusto. No sabe si la pantalla tiene vida, si hay un protagonista o si se ve tan bien como 06, 07, 08 y 14. Para eso: abrí la captura al lado de la referencia. Tampoco mide el contraste de texto dentro de un SVG ni el foco con teclado.
+El revisor mide reglas, no el gusto. No sabe si la pantalla tiene vida, si hay un protagonista o si se ve tan bien como 06, 07, 08 y 14. Para eso: abrí la captura al lado de la referencia. Tampoco mide el contraste de texto dentro de un SVG ni el foco con teclado. De simetría no mide radios concéntricos, la línea base de las cifras ni el alto de los controles de una barra: eso se mira con `?grilla` (`ejemplos/simetria.html`). `ejemplos/simetria.html` es la prueba del chequeo: sus "antes" tienen que salir todos como avisos (se revisa con `--galeria`).
 
 ## guardia-datos.mjs: que un overhaul no toque los datos
 
