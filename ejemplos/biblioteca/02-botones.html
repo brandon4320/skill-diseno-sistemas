@@ -1,0 +1,1480 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Botones y acciones · Biblioteca</title>
+<meta name="description" content="Biblioteca de diseno-sistemas, categoría 02: botones y acciones vivos con sus variantes y estados, en claro, oscuro y celular.">
+<script>try{var t=JSON.parse(localStorage.getItem('bib-tema'));if(t)document.documentElement.dataset.tema=t}catch(e){}</script>
+<link rel="stylesheet" href="base.css">
+<style>
+/* ── ajustes finos del botón ── */
+.btn>.ph:first-child,.btn>.ph-fill:first-child,.btn .cap>span>.ph:first-child{margin-left:-2px}
+.btn .fin{font-size:14px;opacity:.7;margin-right:-2px}
+.btn .k{font-family:var(--mono);font-size:11px;font-weight:500;height:18px;min-width:18px;padding:0 4px;border-radius:5px;display:inline-grid;place-items:center;border:1px solid color-mix(in oklch,currentColor 22%,transparent);opacity:.7;margin-right:-4px}
+.btn.chico .k{height:16px;min-width:16px;font-size:11px}
+.btn.pild{border-radius:99px;background:var(--bandeja)}
+.btn.pild:hover{background:var(--suave)}
+.btn .gira-c{transition:rotate var(--t-2) var(--ease)}
+.btn[aria-expanded=true] .gira-c{rotate:180deg}
+.btn.neg[aria-busy=true]{color:var(--neg-t);background:color-mix(in oklch,var(--neg) 82%,var(--superficie))}
+.btn.texto.peligro{color:var(--rojo)}
+.btn.texto.peligro:hover{background:var(--rojo-f)}
+.btn.peligro.lleno{background:var(--rojo);border-color:var(--rojo);color:#fff;box-shadow:var(--s-principal)}
+.btn.peligro.lleno:hover{background:color-mix(in oklch,var(--rojo) 88%,black)}
+[data-tema=oscuro] .btn.peligro.lleno{background:#dc2626;border-color:#dc2626}
+.btn[aria-pressed=true]{background:var(--suave);color:var(--tinta);box-shadow:none}
+.btn[aria-pressed=true] .ph-fill{color:var(--ambar)}
+.btn.ic.redondo{border-radius:50%;width:40px;height:40px}
+/* capas del botón que carga: todas en la misma celda, el ancho es el de la más larga */
+.cap{display:inline-grid;place-items:center}
+.cap>span{grid-area:1/1;display:inline-flex;align-items:center;gap:var(--espacio-4);transition:opacity var(--t-1),filter var(--t-1)}
+.btn.chico .cap>span{gap:var(--espacio-2)}
+.cap>.b,.cap>.c{visibility:hidden;opacity:0}
+.btn[aria-busy=true] .cap>.a{visibility:hidden;opacity:0}
+.btn[aria-busy=true] .cap>.b{visibility:visible;opacity:1}
+.btn[aria-busy=true]:hover .cap>.b.para{visibility:hidden;opacity:0}
+.btn[aria-busy=true]:hover .cap>.c.para{visibility:visible;opacity:1}
+.btn.listo .cap>.a{visibility:hidden;opacity:0}
+.btn.listo .cap>.c{visibility:visible;opacity:1}
+.btn.listo{color:var(--verde)}
+.btn.neg.listo{color:var(--neg-t)}
+/* insignia que salta al cambiar */
+.btn .insignia{min-width:14px;height:14px;font-size:11px;top:-4px;right:-4px;padding:0 3px}
+.btn .insignia.vacia{display:none}
+.pop{animation:pop var(--t-3) var(--ease-resorte)}
+@keyframes pop{from{transform:scale(calc(1 - .45*var(--mueve)))}}
+.btn .c-in{color:var(--texto-3);font-variant-numeric:tabular-nums;font-weight:500}
+.btn.neg .c-in{color:inherit;opacity:.6}
+.btn .pto{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--acento);box-shadow:0 0 0 2px var(--superficie)}
+.btn.chico .pto{top:5px;right:6px}
+/* grupo y dividido */
+.variante>.seg,.variante>.grupo,.variante>.dividido,.variante .fila>.seg{align-self:flex-start}
+.demo .pila>.rot-g{display:flex;gap:var(--espacio-3);align-items:center}
+.proc .avs>.av{margin-left:-6px;border-width:2px}
+.proc .avs>.av:first-child{margin-left:0}
+.notas{max-width:56ch}
+.grupo,.dividido{display:inline-flex;border-radius:var(--radius-control);box-shadow:var(--s-min);flex:none}
+.grupo>.btn,.dividido>.btn{box-shadow:none}
+.grupo>.btn{border-radius:0;margin-left:-1px}
+.grupo>.btn:first-child{border-radius:var(--radius-control) 0 0 var(--radius-control);margin-left:0}
+.grupo>.btn:last-child{border-radius:0 var(--radius-control) var(--radius-control) 0}
+.grupo>.btn:focus-visible,.grupo>.btn[aria-pressed=true]{z-index:1}
+.grupo.chico>.btn:first-child{border-radius:var(--radius-chip) 0 0 var(--radius-chip)}
+.grupo.chico>.btn:last-child{border-radius:0 var(--radius-chip) var(--radius-chip) 0}
+.dividido>.btn:first-child{border-top-right-radius:0;border-bottom-right-radius:0}
+.dividido>.btn:last-child{border-top-left-radius:0;border-bottom-left-radius:0;width:34px;padding:0;margin-left:-1px}
+.dividido>.btn.neg:last-child{margin-left:0;border-left:1px solid rgb(255 255 255/.16)}
+[data-tema=oscuro] .dividido>.btn.neg:last-child{border-left-color:rgb(0 0 0/.14)}
+.dividido>.btn.neg:first-child{border-right:0}
+/* matriz de estados forzados */
+.matriz{overflow-x:auto;margin:0 calc(var(--espacio-2)*-1);padding:var(--espacio-2)}
+.matriz table{border-collapse:separate;border-spacing:var(--espacio-4) 0;min-width:820px}
+.matriz th{font-size:12px;font-weight:500;color:var(--texto-3);text-align:left;padding:0 0 var(--espacio-5);white-space:nowrap}
+.matriz td{padding:var(--espacio-4) 0;vertical-align:middle}
+.matriz td:first-child{font-size:12px;color:var(--texto-2);font-weight:500;white-space:nowrap;padding-right:var(--espacio-4)}
+.f-hover{background:var(--hover)}
+.btn.neg.f-hover{background:color-mix(in oklch,var(--neg) 88%,var(--superficie))}
+.btn.texto.f-hover{background:var(--hover);color:var(--tinta)}
+.f-press{transform:scale(.97)}
+.f-foco{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:2px}
+.btn.f-ok{background:var(--verde-f);border-color:transparent;color:var(--verde);box-shadow:none}
+/* filas de demo */
+.lst{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);overflow:hidden}
+.lst-cab{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-5) var(--espacio-6) var(--espacio-5) var(--espacio-7);border-bottom:1px solid var(--divisor);flex-wrap:wrap}
+.lst-cab h3{font-family:var(--display);font-size:16px;font-weight:500;letter-spacing:-.01em}
+.lst-cab .c{color:var(--texto-3);font-weight:500;font-variant-numeric:tabular-nums}
+.lst-cab .der{margin-left:auto;display:flex;gap:var(--espacio-4);align-items:center}
+.fx{position:relative;display:flex;align-items:center;gap:var(--espacio-5);min-height:56px;padding:var(--espacio-4) var(--espacio-6) var(--espacio-4) var(--espacio-7);border-top:1px solid var(--divisor);transition:background var(--t-3) var(--ease)}
+.fx:first-of-type{border-top:0}
+.fx:hover{background:var(--hover)}
+.fx .nom{flex:1;min-width:0}
+.fx .nom b{display:block;font-weight:500;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx .nom small{display:block;font-size:12px;color:var(--texto-3);margin-top:var(--espacio-1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx .col{font-size:12px;color:var(--texto-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.fx .mt{width:118px;text-align:right;font-size:13px}
+.fx .monto .u,.lst .monto .u{font-size:11px}
+.fx.ok{background:color-mix(in oklch,var(--verde-f) 70%,var(--superficie))}
+.fx .rayita{align-self:stretch;margin:var(--espacio-2) 0}
+/* acciones rápidas: aparecen con hover y foco, sobre un degradé del fondo */
+.fx .acc{position:absolute;right:var(--espacio-6);top:50%;transform:translateY(-50%);display:flex;gap:var(--espacio-2);align-items:center;padding-left:var(--espacio-10);background:linear-gradient(90deg,transparent,var(--hover) var(--espacio-10));opacity:0;pointer-events:none;transition:opacity var(--t-1) var(--ease)}
+.fx:hover .acc,.fx:focus-within .acc{opacity:1;pointer-events:auto}
+.fx.ok .acc{background:linear-gradient(90deg,transparent,color-mix(in oklch,var(--verde-f) 70%,var(--superficie)) var(--espacio-10))}
+.fx .acc .btn.chico.ic{color:var(--texto-2)}
+/* éxito en el lugar */
+.btn.a-pastilla{transition:background var(--t-3) var(--ease),color var(--t-3),border-color var(--t-3),box-shadow var(--t-3)}
+.btn.a-pastilla.hecho{background:var(--verde-f);border-color:transparent;color:var(--verde);box-shadow:none;cursor:default;transform:none}
+.btn.a-pastilla.hecho .cap>.a,.btn.a-pastilla.hecho .cap>.b{visibility:hidden;opacity:0}
+.btn.a-pastilla.hecho .cap>.c{visibility:visible;opacity:1}
+/* control con la causa */
+.causa{display:flex;flex-wrap:wrap;align-items:center;gap:var(--espacio-4) var(--espacio-5)}
+.causa .por{font-size:12px;color:var(--texto-2);display:inline-flex;align-items:center;gap:var(--espacio-3)}
+.causa .por .ph{font-size:14px;color:var(--ambar)}
+.causa .por .btn.enlace{height:auto;font-size:12px}
+.reloj{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.mini-form{display:flex;flex-direction:column;gap:var(--espacio-5);padding:var(--espacio-7);border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie)}
+.mini-form .campo .in{height:38px}
+.mini-form .pie{display:flex;align-items:center;gap:var(--espacio-4);flex-wrap:wrap;padding-top:var(--espacio-2)}
+.mini-form .pie .falta{font-size:12px;color:var(--texto-3);margin-right:auto}
+/* ejecutar en la fila */
+.proc .tile{background:var(--bandeja);color:var(--texto-2)}
+.proc .pasos-m{display:flex;gap:3px;width:72px}
+.proc .pasos-m i{flex:1;height:6px;border-radius:2px;background:var(--suave);transition:background var(--t-3)}
+.proc .pasos-m i.ya{background:var(--verde)}
+.proc .pasos-m i.ahora{background:color-mix(in oklch,var(--acento) 45%,var(--suave));animation:late 900ms ease-in-out infinite}
+@keyframes late{50%{opacity:.45}}
+.proc .ultima{width:150px;font-size:12px;color:var(--texto-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proc .ultima.v{color:var(--verde);font-weight:500;background:none}
+.proc .ultima.am{color:var(--ambar);font-weight:500;background:none}
+/* agregar al final */
+.pasos-c{padding:var(--espacio-4) var(--espacio-7) var(--espacio-5)}
+.paso.nuevo .in{height:32px;flex:1;box-shadow:none}
+.paso.nuevo .in input{font-size:13px}
+/* comunicación */
+.contacto{display:flex;align-items:center;gap:var(--espacio-5);flex-wrap:wrap;padding:var(--espacio-7);border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie)}
+.contacto .quien{flex:1;min-width:180px}
+.contacto .quien b{display:block;font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em}
+.contacto .quien small{display:block;font-size:13px;color:var(--texto-2);margin-top:var(--espacio-1)}
+.contacto .accs{display:flex;align-items:center;gap:var(--espacio-4);flex-wrap:wrap}
+.btn.en-llamada{background:var(--verde-f);border-color:transparent;color:var(--verde);box-shadow:none;width:auto;padding:0 12px}
+.dato-copia{display:inline-flex;align-items:center;gap:var(--espacio-2);font-size:13px;color:var(--texto-2);border-radius:8px;padding:0 0 0 var(--espacio-4);height:32px}
+.dato-copia:hover{background:var(--hover)}
+.dato-copia .btn{opacity:0;transition:opacity var(--t-1)}
+.dato-copia:hover .btn,.dato-copia:focus-within .btn{opacity:1}
+.accesos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--espacio-4);max-width:360px}
+.accesos button{display:flex;flex-direction:column;align-items:center;gap:var(--espacio-3);padding:var(--espacio-5) 0 var(--espacio-4);border:0;border-radius:var(--radius-interno);background:var(--superficie);color:var(--texto-2);font-size:12px;font-weight:500;min-height:64px;transition:transform var(--t-1) var(--ease)}
+.accesos button:active{transform:scale(.96)}
+.accesos button .ph-fill{font-size:22px;color:var(--acento-texto)}
+/* celular */
+.con-tel{display:grid;grid-template-columns:340px minmax(0,1fr);gap:var(--espacio-10);align-items:center}
+.tel .tit-t{font-family:var(--display);font-size:24px;font-weight:500;letter-spacing:-.02em;margin:var(--espacio-2) 0 var(--espacio-2)}
+.tel .sub-t{font-size:13px;color:var(--texto-2);margin-bottom:var(--espacio-6)}
+.tel .grp{font-size:12px;font-weight:500;color:var(--texto-3);margin:var(--espacio-6) 0 var(--espacio-4)}
+.tel .fl .tile{background:var(--bandeja);color:var(--texto-2)}
+.fab{position:absolute;right:var(--espacio-6);bottom:88px;height:56px;min-width:56px;border-radius:99px;border:0;background:var(--acento);color:#fff;display:flex;align-items:center;justify-content:center;gap:0;padding:0 18px;box-shadow:0 10px 24px -8px color-mix(in oklch,var(--acento) 70%,transparent),0 2px 6px rgb(23 23 33/.18);font-weight:500;font-size:14px;z-index:3;transition:transform var(--t-4) var(--ease),padding var(--t-4) var(--ease),gap var(--t-4) var(--ease)}
+.fab .ph{font-size:22px;transition:rotate var(--t-3) var(--ease-resorte)}
+.fab .et{max-width:120px;overflow:hidden;white-space:nowrap;transition:max-width var(--t-4) var(--ease),opacity var(--t-2);margin-left:var(--espacio-4)}
+.fab.corto{padding:0}
+.fab.corto .et{max-width:0;opacity:0;margin-left:0}
+.fab.oculto{transform:translateY(calc(140px*var(--mueve))) scale(.9)}
+.fab[aria-expanded=true] .ph{rotate:45deg}
+.fab:active{transform:scale(.95)}
+.dial{position:absolute;right:var(--espacio-6);bottom:156px;display:flex;flex-direction:column;align-items:flex-end;gap:var(--espacio-4);z-index:3}
+.dial button{display:flex;align-items:center;gap:var(--espacio-4);height:44px;padding:0 var(--espacio-6) 0 var(--espacio-5);border:0;border-radius:99px;background:var(--superficie);color:var(--tinta);font-weight:500;font-size:14px;box-shadow:var(--s-flot);opacity:0;transform:translateY(calc(10px*var(--mueve))) scale(.96);transition:opacity var(--t-2) var(--ease),transform var(--t-3) var(--ease);transition-delay:calc(var(--i,0)*30ms)}
+.dial button .ph{color:var(--acento-texto)}
+.dial.abierto button{opacity:1;transform:none}
+.velo-tel{position:absolute;inset:0;background:color-mix(in oklch,var(--lienzo) 70%,transparent);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity var(--t-2);z-index:2}
+.velo-tel.ver{opacity:1;pointer-events:auto}
+.tel .accion{transition:background var(--t-3) var(--ease),color var(--t-3),transform var(--t-1) var(--ease)}
+.tel .accion.sola{bottom:var(--espacio-6)}
+.tel .accion.falta{background:var(--superficie);color:var(--texto-2);border:1px solid var(--borde);box-shadow:var(--s-flot)}
+.tel .accion.falta b{color:var(--tinta);font-weight:500}
+.tel .accion.hecha{background:var(--verde);color:#fff}
+[data-tema=oscuro] .tel .accion.hecha{color:#0a0a0d}
+.tel .accion:active{transform:scale(.98)}
+.chk{display:flex;align-items:center;gap:var(--espacio-4);background:var(--superficie);border-radius:var(--radius-interno);padding:var(--espacio-3) var(--espacio-5) var(--espacio-3) var(--espacio-3);margin-bottom:var(--espacio-4);min-height:56px;font-size:14px}
+.chk .t{flex:1;min-width:0}
+.chk .t small{display:block;font-size:12px;color:var(--texto-3)}
+.chk .btn{height:36px}
+.chk.marca{animation:destello 1.6s var(--ease)}
+/* notas al costado */
+.notas{display:flex;flex-direction:column;gap:var(--espacio-6)}
+.nota-r{display:flex;gap:var(--espacio-5);align-items:flex-start}
+.nota-r .tile{width:32px;height:32px;border-radius:10px;background:var(--superficie);border:1px solid var(--borde);color:var(--texto-2)}
+.nota-r .tile .ph{font-size:16px}
+.nota-r b{display:block;font-weight:500;font-size:13px}
+.nota-r p{font-size:13px;color:var(--texto-2);line-height:1.5;margin-top:var(--espacio-1)}
+/* cabecera de muestra */
+.cab-m{display:flex;align-items:flex-end;gap:var(--espacio-6);flex-wrap:wrap;padding:var(--espacio-7);border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie)}
+.cab-m h3{font-family:var(--display);font-size:24px;font-weight:400;letter-spacing:-.02em;line-height:1.1}
+.cab-m p{font-size:13px;color:var(--texto-2);margin-top:var(--espacio-2)}
+.cab-m .der{margin-left:auto;display:flex;gap:var(--espacio-4);flex-wrap:wrap}
+.pie-capa{display:flex;gap:var(--espacio-4);align-items:center;padding:var(--espacio-5) var(--espacio-6);border:1px solid var(--borde);border-radius:var(--radius-interno);background:var(--bandeja);flex-wrap:wrap}
+.pie-capa .izq{margin-right:auto}
+/* pestañas con línea que viaja y segmentado con pastilla que se desliza */
+.pestanas.viaja{position:relative}
+.pestanas.viaja button.on::after{display:none}
+.pestanas.viaja .linea{position:absolute;left:0;bottom:-1px;height:2px;border-radius:2px;background:var(--tinta);width:0;transition:transform var(--t-3) var(--ease),width var(--t-3) var(--ease)}
+.panel-p{padding:var(--espacio-6) 0 0;font-size:13px;color:var(--texto-2);min-height:72px}
+.seg.desliza{position:relative}
+.seg.desliza button{position:relative;z-index:1}
+.seg.desliza button.on{background:none;box-shadow:none}
+.seg.desliza .pastilla{position:absolute;top:3px;left:0;height:30px;border-radius:9px;background:var(--superficie);box-shadow:0 1px 2px rgb(23 23 33/.1),0 0 0 1px var(--borde);transition:transform var(--t-3) var(--ease),width var(--t-3) var(--ease)}
+.seg.chico.desliza .pastilla{height:24px;border-radius:6px}
+[data-tema=oscuro] .seg.desliza .pastilla{background:var(--tinta);box-shadow:none}
+[data-tema=oscuro] .seg.desliza button.on{color:var(--superficie)}
+/* quieta, la activa lleva su propio fondo (igual a la pastilla): mientras viaja, solo la pastilla */
+.seg.desliza.fijo button.on{background:var(--superficie);box-shadow:0 1px 2px rgb(23 23 33/.1),0 0 0 1px var(--borde)}
+[data-tema=oscuro] .seg.desliza.fijo button.on{background:var(--tinta);box-shadow:none}
+.resultado{display:flex;align-items:baseline;gap:var(--espacio-4);flex-wrap:wrap}
+.resultado .n{font-family:var(--display);font-size:32px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.resultado .n .u{font-size:20px;color:var(--texto-3);font-weight:400;margin-right:var(--espacio-2)}
+/* compositor con ⌘↵ */
+.compositor{border:1px solid var(--borde-fuerte);border-radius:var(--radius-interno);background:var(--superficie);padding:var(--espacio-4);display:flex;flex-direction:column;gap:var(--espacio-4);box-shadow:var(--s-min)}
+.compositor textarea{border:0;outline:0;background:none;resize:none;min-height:56px;font-size:14px;line-height:1.5;padding:var(--espacio-2) var(--espacio-4);color:var(--tinta)}
+.compositor textarea::placeholder{color:var(--texto-3)}
+.compositor .barra-c{display:flex;align-items:center;gap:var(--espacio-2)}
+.compositor .barra-c .empuja{margin-left:auto}
+.compositor:focus-within{border-color:var(--acento);box-shadow:0 0 0 3px color-mix(in oklch,var(--acento) 18%,transparent)}
+.mensajes{display:flex;flex-direction:column;gap:var(--espacio-4)}
+.mensajes .msj{align-self:flex-end;max-width:80%;background:var(--bandeja);border-radius:var(--radius-interno) var(--radius-interno) 6px var(--radius-interno);padding:var(--espacio-4) var(--espacio-5);font-size:13px;line-height:1.45}
+.mensajes .msj small{display:block;font-size:12px;color:var(--texto-3);margin-top:var(--espacio-1)}
+@media (max-width:1023px){.con-tel{grid-template-columns:minmax(0,1fr);justify-items:center}.con-tel .notas{justify-self:stretch}}
+@media (max-width:767px){
+  .dividido>.btn:last-child{width:44px}
+  .btn.ic.redondo{width:44px;height:44px}
+  .btn .pto{top:9px;right:10px}
+  .fx{flex-wrap:wrap;padding:var(--espacio-5) var(--espacio-6);row-gap:var(--espacio-4)}
+  .fx .nom{flex-basis:calc(100% - 140px)}
+  .fx .col.ocu{display:none}
+  .fx .acc{position:static;transform:none;opacity:1;pointer-events:auto;background:none;padding:0;width:100%;justify-content:flex-end}
+  .fx.ok .acc{background:none}
+  .proc .ultima{width:auto;flex:1}
+  .proc .pasos-m{display:none}
+  .ocu-c{display:none}
+  .fx .mt{width:auto;margin-left:auto}
+  .fx.simple .nom{flex-basis:0}
+  .proc .nom{flex-basis:calc(100% - 48px)}
+  .proc .ultima{padding-left:44px}
+  .contacto .btn-sep{display:none}
+  .lst-cab{padding:var(--espacio-5) var(--espacio-6)}
+  .contacto{padding:var(--espacio-6)}
+  .mini-form{padding:var(--espacio-6)}
+  .cab-m{padding:var(--espacio-6)}
+  .cab-m .der{margin-left:0}
+  .dato-copia .btn{opacity:1}
+  .pasos-c{padding:var(--espacio-4) var(--espacio-6) var(--espacio-5)}
+  .seg.desliza .pastilla{height:44px}
+  .accesos button{min-height:72px}
+  .resultado .n{font-size:32px}
+  .mini-form .campo .in{height:52px}
+  .f-press{transform:none;filter:brightness(.92)}
+  .causa .por .btn.enlace,.campo .ayuda .btn.enlace{height:44px}
+  .chk .btn{height:44px}
+}
+</style>
+</head>
+<body class="bib">
+<div class="bib-pag">
+  <aside class="bib-indice" data-volver="index.html" data-titulo="Botones y acciones"></aside>
+
+  <main class="bib-main">
+    <header class="bib-cab">
+      <div>
+        <span class="eti"><a href="index.html">Biblioteca</a> / 02</span>
+        <h1>Botones y acciones</h1>
+        <p><b>24 piezas</b> vivas: las variantes, los siete estados, las acciones que viven en la fila y las del celular. Un solo relleno por pantalla; todo lo demás con borde, de texto o de ícono.</p>
+      </div>
+      <div class="der"></div>
+    </header>
+
+    <!-- ══════════ 1 · Botón principal ══════════ -->
+    <section class="lamina" id="boton-principal">
+      <header class="lamina-cab">
+        <h2>Botón principal</h2>
+        <span class="lamina-sec">§5 Botones rellenos</span>
+        <p class="lamina-regla">Uno solo por pantalla, arriba a la derecha: <b>negro en claro y blanco en oscuro</b>, 38 px, radio 12, ícono 17 + verbo y objeto. Uno más por capa que cierra una decisión.</p>
+        <p class="lamina-ref">Patrones 16.1 · ref. 06, 07, 14 · tweets 02, 46</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="cab-m">
+            <div class="min0"><h3>Cobranzas</h3><p class="num">32 facturas · $ 48,2 M por cobrar · 4 vencidas</p></div>
+            <div class="der">
+              <button class="btn" data-acc="exportar"><i class="ph ph-export"></i>Exportar</button>
+              <button class="btn neg" data-acc="cobro"><i class="ph ph-hand-coins"></i>Registrar cobro</button>
+            </div>
+          </div>
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-circle-half"></i>Tinta: se invierte con el tema</span>
+              <div class="fila"><button class="btn neg" data-acc="factura"><i class="ph ph-plus"></i>Nueva factura</button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-drop"></i>Acento, si la marca lo define</span>
+              <div class="fila"><button class="btn acento" data-acc="propuesta"><i class="ph ph-paper-plane-tilt"></i>Enviar propuesta</button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-arrow-right"></i>Con flecha: avanza un paso</span>
+              <div class="fila"><button class="btn neg" data-acc="continuar">Continuar<i class="ph ph-arrow-right fin"></i></button></div>
+            </div>
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-sidebar-simple"></i>Al pie de una capa: cancelar de texto a la izquierda, el relleno repite la acción</span>
+              <div class="pie-capa"><button class="btn texto izq" data-acc="cancelar">Cancelar</button><button class="btn" data-acc="borrador">Guardar borrador</button><button class="btn neg" data-acc="emitir"><i class="ph ph-receipt"></i>Emitir factura</button></div>
+            </div>
+            <div class="variante mal">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: dos rellenos o un color por acción</span>
+              <div class="fila"><button class="btn neg" tabindex="-1">Guardar</button><button class="btn acento" tabindex="-1">Enviar</button><button class="btn peligro lleno" tabindex="-1">Borrar</button></div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Cuando se abre una hoja o un modal, el relleno de la pantalla pasa a borde.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 2 · Botón con borde ══════════ -->
+    <section class="lamina" id="boton-con-borde">
+      <header class="lamina-cab">
+        <h2>Botón con borde</h2>
+        <span class="lamina-sec">§5 Acciones</span>
+        <p class="lamina-regla">El secundario de todos los días: <b>superficie, borde de 1 px y sombra mínima</b>; ícono a 12 del borde y texto a 14 para que se vea centrado. Dos al pie, alineados a la derecha.</p>
+        <p class="lamina-ref">Patrones 7.10 · ref. 06, 08 · tweet 46</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-text-aa"></i>Ícono + verbo</span>
+              <div class="fila"><button class="btn" data-acc="tarea"><i class="ph ph-check-square"></i>Nueva tarea</button><button class="btn" data-acc="compartir"><i class="ph ph-share-network"></i>Compartir</button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-caret-down"></i>Disparador con caret que gira</span>
+              <div class="fila"><button class="btn" data-menu="#menu-agrupar" data-menu-lado="izq">Agrupar: Cliente<i class="ph ph-caret-down fin gira-c"></i></button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-text-t"></i>Solo texto</span>
+              <div class="fila"><button class="btn" data-acc="duplicar">Duplicar</button><button class="btn" data-acc="pdf">Descargar PDF</button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-pill"></i>Pastilla, para filtros y opciones</span>
+              <div class="fila"><button class="btn pild" data-menu="#menu-opciones" data-menu-lado="izq">Opciones<i class="ph ph-caret-down fin gira-c"></i></button></div>
+            </div>
+            <div class="variante mal">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: verde para guardar, rojo para borrar</span>
+              <div class="fila"><button class="btn" tabindex="-1" style="background:#15803d;color:#fff;border-color:#15803d">Guardar</button><button class="btn" tabindex="-1" style="background:#dc2626;color:#fff;border-color:#dc2626">Borrar</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 3 · Botón chico ══════════ -->
+    <section class="lamina" id="boton-chico">
+      <header class="lamina-cab">
+        <h2>Botón chico</h2>
+        <span class="lamina-sec">§5 Acciones · §2 Alturas</span>
+        <p class="lamina-regla">28 px, radio 8, ícono 14 a 4 del texto: <b>para cabeceras de tarjeta y filas</b>. En celular crece a 44 de toque sin cambiar de aspecto.</p>
+        <p class="lamina-ref">Patrones 4.5 y 7.10 · ref. 06, 07</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="grilla g-2">
+            <div class="lst">
+              <div class="lst-cab"><h3>Equipo</h3><span class="c">5</span><div class="der"><button class="btn chico" data-acc="invitar"><i class="ph ph-plus"></i>Invitar</button><button class="btn chico texto" data-acc="vertodo">Ver todo<i class="ph ph-arrow-up-right fin"></i></button></div></div>
+              <div class="fx"><span class="av" style="--ent:var(--e1)" role="img" aria-label="Lucía Benítez">LB</span><div class="nom"><b>Lucía Benítez</b><small>Dirección de arte · 6 abiertas</small></div><button class="btn chico" data-acc="asignar">Asignar</button></div>
+              <div class="fx"><span class="av" style="--ent:var(--e3)" role="img" aria-label="Martín Ferreyra">MF</span><div class="nom"><b>Martín Ferreyra</b><small>Producción · 2 abiertas</small></div><button class="btn chico" data-acc="asignar">Asignar</button></div>
+            </div>
+            <div class="pila g6">
+              <span class="rot-g"><i class="ph ph-ruler"></i>Las tres alturas</span>
+              <div class="fila g5"><button class="btn chico" data-acc="medida">28 · chico</button><button class="btn" data-acc="medida">38 · normal</button></div>
+              <span class="rot-g"><i class="ph ph-check-circle"></i>Relleno chico solo para la decisión de la fila (máx. 2)</span>
+              <div class="fila"><button class="btn chico neg" data-acc="aprobar-chico"><i class="ph ph-check"></i>Aprobar</button><button class="btn chico" data-acc="rechazar">Rechazar</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 4 · Botón de solo ícono ══════════ -->
+    <section class="lamina" id="boton-de-solo-icono">
+      <header class="lamina-cab">
+        <h2>Botón de solo ícono</h2>
+        <span class="lamina-sec">§6d Accesibilidad</span>
+        <p class="lamina-regla">Cuadrado de 38 (28 chico, 40 redondo en celular) con <b>aria-label y tooltip con su atajo</b>; el tooltip sale con mouse o teclado, nunca con el toque. Un punto de aviso obliga a decirlo en el nombre.</p>
+        <p class="lamina-ref">Patrones 11.5 y 15.8 · ref. 02, 14 · tweets 46, 52</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-square"></i>Con borde, 38</span>
+              <div class="fila"><button class="btn ic" aria-label="Buscar" data-tip="Buscar" data-atajo="⌘K" data-acc="buscar"><i class="ph ph-magnifying-glass"></i></button><button class="btn ic" aria-label="Filtrar" data-tip="Filtrar" data-atajo="F" data-acc="filtrar"><i class="ph ph-funnel-simple"></i></button><button class="btn ic" aria-label="Descargar" data-tip="Descargar CSV" data-acc="csv"><i class="ph ph-download-simple"></i></button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-selection"></i>De texto, 28, en una barra</span>
+              <div class="fila g3"><button class="btn ic chico texto" aria-label="Copiar link" data-tip="Copiar link" data-acc="link"><i class="ph ph-link-simple"></i></button><button class="btn ic chico texto" aria-label="Fijar arriba" data-tip="Fijar arriba" data-acc="fijar"><i class="ph ph-push-pin"></i></button><button class="btn ic chico texto" aria-label="Archivar" data-tip="Archivar" data-atajo="E" data-acc="archivar"><i class="ph ph-archive"></i></button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-bell"></i>Con aviso y relleno mientras su panel está abierto</span>
+              <div class="fila"><button class="btn ic" id="campana" aria-label="Avisos, 3 sin leer" aria-pressed="false" data-tip="Avisos · 3 sin leer"><i class="ph ph-bell"></i><span class="pto"></span></button><span class="t-12 gris" id="campana-est">Panel cerrado</span></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-device-mobile"></i>Redondo de 40 en la cabecera del celular</span>
+              <div class="fila"><button class="btn ic redondo" aria-label="Buscar" data-acc="buscar"><i class="ph ph-magnifying-glass"></i></button><button class="btn ic redondo" aria-label="Avisos, 2 sin leer"><i class="ph ph-bell"></i><span class="pto"></span></button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 5 · Botón de texto y enlace ══════════ -->
+    <section class="lamina" id="boton-de-texto-y-enlace">
+      <header class="lamina-cab">
+        <h2>Botón de texto y enlace</h2>
+        <span class="lamina-sec">§5 Acciones · §6 Textos</span>
+        <p class="lamina-regla">Sin caja para lo de poco peso ("Restaurar", "Ver todo"); <b>el enlace del acento corrige en el lugar</b>, con el dato concreto ("Usar ese").</p>
+        <p class="lamina-ref">Patrones 13.4 · ref. 01, 04</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-text-t"></i>De texto, gris que se oscurece</span>
+              <div class="fila"><button class="btn texto" data-acc="restaurar"><i class="ph ph-arrow-counter-clockwise"></i>Restaurar</button><button class="btn texto" data-acc="vertodo">Ver todo<i class="ph ph-arrow-up-right fin"></i></button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-link"></i>Corrección como enlace</span>
+              <div class="campo" style="max-width:320px">
+                <label for="correo-c">Correo de facturación</label>
+                <div class="in" id="correo-in"><i class="ph ph-envelope-simple"></i><input id="correo-c" type="email" inputmode="email" autocapitalize="off" value="sofia@orberetail.com.ra"></div>
+                <span class="ayuda" id="correo-ay">¿Es <b class="tinta peso">sofia@orberetail.com.ar</b>? <button class="btn enlace" id="usar-ese">Usar ese</button></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 6 · Botón destructivo ══════════ -->
+    <section class="lamina" id="boton-destructivo">
+      <header class="lamina-cab">
+        <h2>Botón destructivo</h2>
+        <span class="lamina-sec">§5 Acciones · Deshacer antes que confirmar</span>
+        <p class="lamina-regla">Lo reversible se hace y ofrece <b>Deshacer</b>; solo lo irreversible pide confirmación, con la consecuencia y <b>un botón que repite la acción</b>. Rojo de texto, relleno rojo solo dentro del modal.</p>
+        <p class="lamina-ref">Patrones 11.3 · ref. 05 · tweet 52</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="lst">
+            <div class="lst-cab"><h3>Facturas de Orbe Retail</h3><span class="c" id="dest-c">3</span></div>
+            <div id="dest-filas">
+              <div class="fx" data-cod="FAC-01098"><span class="cod">FAC-01098</span><div class="nom"><b>Plan anual · cuota 11</b><small>Emitida 2 nov · vence 2 dic</small></div><span class="monto mt"><span class="u">$</span>1.840.000</span><button class="btn chico texto peligro" data-anular>Anular</button></div>
+              <div class="fx" data-cod="FAC-01104"><span class="cod">FAC-01104</span><div class="nom"><b>Borrador · campaña verano</b><small>Sin emitir · editado hace 2 h</small></div><span class="monto mt"><span class="u">$</span>620.000</span><button class="btn chico texto peligro" data-borrar><i class="ph ph-trash"></i>Borrar</button></div>
+              <div class="fx" data-cod="FAC-01105"><span class="cod">FAC-01105</span><div class="nom"><b>Borrador · fotos de producto</b><small>Sin emitir · editado ayer</small></div><span class="monto mt"><span class="u">$</span>385.500</span><button class="btn chico texto peligro" data-borrar><i class="ph ph-trash"></i>Borrar</button></div>
+            </div>
+          </div>
+          <div class="fila g5"><span class="rot-g">Borrar un borrador → papelera + Deshacer · Anular una emitida → modal con la consecuencia</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 7 · Atajo a la vista ══════════ -->
+    <section class="lamina" id="atajo-de-teclado-a-la-vista">
+      <header class="lamina-cab">
+        <h2>Atajo de teclado a la vista</h2>
+        <span class="lamina-sec">§11.5 Atajos</span>
+        <p class="lamina-regla">El atajo se muestra <b>donde está la acción</b>: teclita mono de 18 px dentro del botón, en el tooltip de los de ícono y a la derecha del menú. Y funciona: probá <span class="kbd">N</span> o <span class="kbd" id="k-env">⌘ ↵</span> en el compositor.</p>
+        <p class="lamina-ref">Patrones 11.5 · tweets 42, 46, 51</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="grilla g-2">
+            <div class="pila g6">
+              <span class="rot-g"><i class="ph ph-keyboard"></i>Dentro del botón</span>
+              <div class="fila"><button class="btn neg" id="b-nueva"><i class="ph ph-plus"></i>Nueva factura<span class="k">N</span></button><button class="btn" id="b-buscar"><i class="ph ph-magnifying-glass"></i>Buscar<span class="k" id="k-buscar">⌘K</span></button></div>
+              <span class="rot-g"><i class="ph ph-chat-circle-dots"></i>En el tooltip</span>
+              <div class="fila"><button class="btn ic" aria-label="Archivar" data-tip="Archivar" data-atajo="E" data-acc="archivar"><i class="ph ph-archive"></i></button><button class="btn ic" aria-label="Recordatorio" data-tip="Recordatorio" data-atajo="R" data-acc="recordatorio"><i class="ph ph-alarm"></i></button></div>
+            </div>
+            <div class="pila g4">
+              <div class="mensajes" id="mensajes"><div class="msj">Sofía, te paso el presupuesto del rediseño con el ajuste de noviembre.<small>Vos · 15:31</small></div></div>
+              <div class="compositor">
+                <label class="sr" for="redactar">Mensaje para Sofía Ibarra</label>
+                <textarea id="redactar" placeholder="Escribile a Sofía…">¿Lo vemos el jueves a las 11?</textarea>
+                <div class="barra-c"><button class="btn ic chico texto" aria-label="Adjuntar archivo" data-tip="Adjuntar" data-acc="adjuntar"><i class="ph ph-paperclip"></i></button><button class="btn ic chico texto" aria-label="Mencionar" data-tip="Mencionar" data-atajo="@" data-acc="mencionar"><i class="ph ph-at"></i></button><button class="btn chico neg empuja" id="enviar"><i class="ph ph-paper-plane-tilt"></i>Enviar<span class="k" id="k-enviar">⌘↵</span></button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 8 · Botón con contador ══════════ -->
+    <section class="lamina" id="boton-con-contador">
+      <header class="lamina-cab">
+        <h2>Botón con contador</h2>
+        <span class="lamina-sec">§1c.5 Filtros</span>
+        <p class="lamina-regla">Todo botón que esconde algo <b>dice cuántos hay</b>: círculo de 14 en tinta sobre "Filtrar", conteo gris dentro de "Aprobar 4". El número salta cuando cambia.</p>
+        <p class="lamina-ref">Patrones 2.5 · ref. 04 · tweet 25</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-funnel-simple"></i>Insignia sobre el botón</span>
+              <div class="fila"><button class="btn" id="b-filtrar" aria-label="Filtrar, 2 activos"><i class="ph ph-funnel-simple"></i>Filtrar<span class="insignia" id="ins-f">2</span></button><button class="btn texto chico" id="limpiar-f">Limpiar</button></div>
+              <div class="fila g3" id="facetas">
+                <button class="tag" aria-pressed="true" data-f>Vencidas</button><button class="tag" aria-pressed="true" data-f>Orbe Retail</button><button class="tag" aria-pressed="false" data-f>En dólares</button><button class="tag" aria-pressed="false" data-f>Sin remito</button>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-hash"></i>Conteo dentro, para acciones en lote</span>
+              <div class="fila"><button class="btn neg" id="b-aprobar"><i class="ph ph-check"></i>Aprobar <span class="c-in" id="c-aprob">4</span></button><button class="btn" id="b-sumar">Sumar un gasto</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 9 · Botón dividido ══════════ -->
+    <section class="lamina" id="boton-dividido">
+      <header class="lamina-cab">
+        <h2>Botón dividido</h2>
+        <span class="lamina-sec">§5 Acciones</span>
+        <p class="lamina-regla">La acción de siempre a la izquierda y <b>sus variantes en el caret</b>: mismo alto, una rayita de 1 px entre las dos mitades, el caret de 34 gira al abrir y el menú se alinea al borde derecho.</p>
+        <p class="lamina-ref">Patrones 11.2 · tweet 46 ("Quick Chat ⌄")</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-columns"></i>Principal</span>
+              <div class="fila"><div class="dividido"><button class="btn neg" id="b-guardar-div"><span class="cap"><span class="a"><i class="ph ph-floppy-disk"></i>Guardar contrato</span><span class="b"><i class="ph ph-circle-notch gira"></i>Guardando…</span><span class="c"><i class="ph ph-check"></i>Guardado</span></span></button><button class="btn neg" aria-label="Más formas de guardar" data-menu="#menu-guardar"><i class="ph ph-caret-down gira-c"></i></button></div></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-columns"></i>Con borde</span>
+              <div class="fila"><div class="dividido"><button class="btn" data-acc="pdf"><i class="ph ph-file-pdf"></i>Descargar PDF</button><button class="btn" aria-label="Otros formatos" data-menu="#menu-formatos"><i class="ph ph-caret-down gira-c"></i></button></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 10 · Grupo de botones ══════════ -->
+    <section class="lamina" id="grupo-de-botones">
+      <header class="lamina-cab">
+        <h2>Grupo de botones</h2>
+        <span class="lamina-sec">§5 Acciones</span>
+        <p class="lamina-regla">Acciones hermanas pegadas en una sola caja: <b>bordes compartidos, radio solo en las puntas</b>, sombra una vez. Sirve para navegar (‹ Hoy ›) o para elegir uno de varios con aria-pressed.</p>
+        <p class="lamina-ref">Patrones 8.2 · ref. 02, 10</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-calendar-blank"></i>Navegar el período</span>
+              <div class="fila g5"><div class="grupo" role="group" aria-label="Semana"><button class="btn ic" aria-label="Semana anterior" data-tip="Semana anterior" id="sem-ant"><i class="ph ph-caret-left"></i></button><button class="btn" id="sem-hoy">Hoy</button><button class="btn ic" aria-label="Semana siguiente" data-tip="Semana siguiente" id="sem-sig"><i class="ph ph-caret-right"></i></button></div><span class="display t-16 peso num" id="sem-txt" aria-live="polite">16 – 22 nov</span></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-squares-four"></i>Elegir la vista</span>
+              <div class="grupo" role="group" aria-label="Vista" id="g-vista"><button class="btn ic" aria-label="Tabla" aria-pressed="true" data-tip="Tabla"><i class="ph ph-table"></i></button><button class="btn ic" aria-label="Tablero" aria-pressed="false" data-tip="Tablero"><i class="ph ph-kanban"></i></button><button class="btn ic" aria-label="Calendario" aria-pressed="false" data-tip="Calendario"><i class="ph ph-calendar-blank"></i></button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-text-align-left"></i>Chico, en una barra de formato</span>
+              <div class="grupo chico" role="group" aria-label="Alineación" id="g-alin"><button class="btn ic chico" aria-label="Alinear a la izquierda" aria-pressed="true"><i class="ph ph-text-align-left"></i></button><button class="btn ic chico" aria-label="Centrar" aria-pressed="false"><i class="ph ph-text-align-center"></i></button><button class="btn ic chico" aria-label="Alinear a la derecha" aria-pressed="false"><i class="ph ph-text-align-right"></i></button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 11 · Botón conmutable ══════════ -->
+    <section class="lamina" id="boton-conmutable">
+      <header class="lamina-cab">
+        <h2>Botón conmutable</h2>
+        <span class="lamina-sec">§15.8 Microinteracciones</span>
+        <p class="lamina-regla">Un botón que queda prendido usa <b>aria-pressed</b>, fondo suave e ícono relleno; el texto pasa al estado ("Seguir" → "Siguiendo"), nunca a la orden contraria.</p>
+        <p class="lamina-ref">Patrones 15.8 · tweets 17, 52, 65</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-star"></i>Favorito</span>
+              <div class="fila"><button class="btn conm" aria-pressed="false" data-on="Destacado" data-off="Destacar" data-ico="star"><i class="ph ph-star"></i><span>Destacar</span></button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-eye"></i>Seguir un proyecto</span>
+              <div class="fila"><button class="btn conm" aria-pressed="true" data-on="Siguiendo" data-off="Seguir" data-ico="eye"><i class="ph-fill ph-eye"></i><span>Siguiendo</span></button><span class="t-12 gris" id="seg-txt">Te avisamos cada cambio de Casa Lumen</span></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-push-pin"></i>Solo ícono, con el estado en el nombre</span>
+              <div class="fila"><button class="btn ic conm" aria-pressed="false" aria-label="Fijar arriba" data-ico="push-pin" data-tip="Fijar arriba"><i class="ph ph-push-pin"></i></button><button class="btn ic conm" aria-pressed="false" aria-label="Silenciar recordatorios" data-ico="bell-slash" data-tip="Silenciar recordatorios"><i class="ph ph-bell-slash"></i></button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 12 · Estados del botón ══════════ -->
+    <section class="lamina" id="estados-del-boton">
+      <header class="lamina-cab">
+        <h2>Estados del botón</h2>
+        <span class="lamina-sec">§5 Acciones · §15 Movimiento</span>
+        <p class="lamina-regla">Siete estados, siempre los mismos: hover un escalón de luz, <b class="num">presionado a 0,97 en 120 ms</b>, foco con anillo del acento a 2 px, cargando con el ancho fijo, éxito en verde y deshabilitado al 45 % con su motivo.</p>
+        <p class="lamina-ref">Patrones 5.6 y 15.8 · ref. 06, 07, 14</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="matriz">
+            <table>
+              <thead><tr><th scope="col"><span class="sr">Variante</span></th><th scope="col">Reposo</th><th scope="col">Hover</th><th scope="col">Presionado</th><th scope="col">Foco</th><th scope="col">Cargando</th><th scope="col">Éxito</th><th scope="col">Deshabilitado</th></tr></thead>
+              <tbody>
+                <tr><td>Principal</td><td><button class="btn neg" tabindex="-1">Emitir</button></td><td><button class="btn neg f-hover" tabindex="-1">Emitir</button></td><td><button class="btn neg f-press" tabindex="-1">Emitir</button></td><td><button class="btn neg f-foco" tabindex="-1">Emitir</button></td><td><button class="btn neg" aria-busy="true" tabindex="-1"><i class="ph ph-circle-notch gira"></i>Emitiendo…</button></td><td><button class="btn f-ok" tabindex="-1"><i class="ph ph-check"></i>Emitida</button></td><td><button class="btn neg" aria-disabled="true" tabindex="-1">Emitir</button></td></tr>
+                <tr><td>Con borde</td><td><button class="btn" tabindex="-1">Enviar</button></td><td><button class="btn f-hover" tabindex="-1">Enviar</button></td><td><button class="btn f-press" tabindex="-1">Enviar</button></td><td><button class="btn f-foco" tabindex="-1">Enviar</button></td><td><button class="btn" aria-busy="true" tabindex="-1"><i class="ph ph-circle-notch gira"></i>Enviando…</button></td><td><button class="btn f-ok" tabindex="-1"><i class="ph ph-check"></i>Enviada</button></td><td><button class="btn" aria-disabled="true" tabindex="-1">Enviar</button></td></tr>
+                <tr><td>Texto</td><td><button class="btn texto" tabindex="-1">Restaurar</button></td><td><button class="btn texto f-hover" tabindex="-1">Restaurar</button></td><td><button class="btn texto f-press" tabindex="-1">Restaurar</button></td><td><button class="btn texto f-foco" tabindex="-1">Restaurar</button></td><td><button class="btn texto" aria-busy="true" tabindex="-1"><i class="ph ph-circle-notch gira"></i>Restaurando…</button></td><td><button class="btn texto" tabindex="-1" style="color:var(--verde)"><i class="ph ph-check"></i>Restaurada</button></td><td><button class="btn texto" aria-disabled="true" tabindex="-1">Restaurar</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="fila g5">
+            <span class="rot-g">Probalo:</span>
+            <button class="btn neg" id="ciclo"><span class="cap"><span class="a"><i class="ph ph-receipt"></i>Emitir factura</span><span class="b"><i class="ph ph-circle-notch gira"></i>Emitiendo…</span><span class="c"><i class="ph ph-check"></i>Emitida</span></span></button>
+            <span class="t-12 gris" id="ciclo-txt">Tab para ver el foco · clic para cargar y terminar</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 13 · Guardando con ancho fijo ══════════ -->
+    <section class="lamina" id="guardando-con-ancho-fijo">
+      <header class="lamina-cab">
+        <h2>Guardando con ancho fijo</h2>
+        <span class="lamina-sec">§5 Acciones · Guardando</span>
+        <p class="lamina-regla">El botón ya reserva el ancho del gerundio desde el primer render: <b>"Guardar" y "Guardando…" ocupan la misma celda</b>, no salta nada, lleva aria-busy y no pierde el foco. Si tarda, cambia a "Detener" al pasar.</p>
+        <p class="lamina-ref">Patrones 4.6 y 5.6 · tweets 17, 27</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-check-circle"></i>Ancho fijo (las dos capas en la misma celda)</span>
+              <div class="fila"><button class="btn neg" id="g-bien"><span class="cap"><span class="a"><i class="ph ph-floppy-disk"></i>Guardar</span><span class="b"><i class="ph ph-circle-notch gira"></i>Guardando…</span><span class="c"><i class="ph ph-check"></i>Guardado</span></span></button></div>
+            </div>
+            <div class="variante mal">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: el texto cambia y el botón salta</span>
+              <div class="fila"><button class="btn neg" id="g-mal"><i class="ph ph-floppy-disk"></i>Guardar</button><button class="btn" tabindex="-1">Vecino que se corre</button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-stop-circle"></i>Larga: "Recalculando…" → al pasar, "Detener"</span>
+              <div class="fila"><button class="btn" id="g-ipc"><span class="cap"><span class="a"><i class="ph ph-arrows-clockwise"></i>Recalcular IPC</span><span class="b para"><i class="ph ph-circle-notch gira"></i>Recalculando…</span><span class="c para"><i class="ph ph-stop"></i>Detener</span></span></button><span class="t-12 gris num" id="ipc-txt">42 contratos</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 14 · Éxito en el lugar ══════════ -->
+    <section class="lamina" id="exito-en-el-lugar">
+      <header class="lamina-cab">
+        <h2>Éxito en el lugar</h2>
+        <span class="lamina-sec">§5 Acciones · Éxito</span>
+        <p class="lamina-regla">La fila se tiñe de verde tenue y <b>el botón se convierte en la pastilla "✓ Aprobado"</b>; nada desaparece en el momento. Toast con participio, código y monto, la consecuencia y Deshacer.</p>
+        <p class="lamina-ref">Patrones 4.6 y 15.8 · ref. 01, 07</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="lst">
+            <div class="lst-cab"><h3>Gastos por aprobar</h3><span class="c" id="ex-c">3</span><div class="der"><span class="t-12 gris num" id="ex-tot">$ 412.300 en total</span></div></div>
+            <div id="ex-filas">
+              <div class="fx" data-cod="GAS-0412" data-monto="184500"><span class="rayita" style="--ent:var(--e1)"></span><div class="nom"><b>Impresión de catálogos · Casa Lumen</b><small><span class="cod gris">GAS-0412</span> · Lucía Benítez · ayer</small></div><span class="monto mt"><span class="u">$</span>184.500</span><button class="btn chico neg a-pastilla"><span class="cap"><span class="a"><i class="ph ph-check"></i>Aprobar</span><span class="b"><i class="ph ph-circle-notch gira"></i>Aprobando…</span><span class="c"><i class="ph ph-check-circle"></i>Aprobado</span></span></button></div>
+              <div class="fx" data-cod="GAS-0415" data-monto="162800"><span class="rayita" style="--ent:var(--e3)"></span><div class="nom"><b>Alquiler de estudio de fotos · Bodega Sur</b><small><span class="cod gris">GAS-0415</span> · Martín Ferreyra · hoy</small></div><span class="monto mt"><span class="u">$</span>162.800</span><button class="btn chico neg a-pastilla"><span class="cap"><span class="a"><i class="ph ph-check"></i>Aprobar</span><span class="b"><i class="ph ph-circle-notch gira"></i>Aprobando…</span><span class="c"><i class="ph ph-check-circle"></i>Aprobado</span></span></button></div>
+              <div class="fx" data-cod="GAS-0416" data-monto="65000"><span class="rayita" style="--ent:var(--e4)"></span><div class="nom"><b>Tipografía con licencia · Nativa Café</b><small><span class="cod gris">GAS-0416</span> · Agustina Paz · hoy</small></div><span class="monto mt"><span class="u">$</span>65.000</span><button class="btn chico neg a-pastilla"><span class="cap"><span class="a"><i class="ph ph-check"></i>Aprobar</span><span class="b"><i class="ph ph-circle-notch gira"></i>Aprobando…</span><span class="c"><i class="ph ph-check-circle"></i>Aprobado</span></span></button></div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">La fila queda a la vista aunque el filtro "Por aprobar" ya no la incluya, hasta que cambie el filtro.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 15 · Control con la causa escrita ══════════ -->
+    <section class="lamina" id="control-con-la-causa-escrita">
+      <header class="lamina-cab">
+        <h2>Control con la causa escrita</h2>
+        <span class="lamina-sec">§5 Acciones · Deshabilitado</span>
+        <p class="lamina-regla">Nunca un control apagado sin decir por qué: <b>la causa al lado o en el tooltip</b>, un contador si espera tiempo, y si falta algo, el botón lo dice y te lleva ahí.</p>
+        <p class="lamina-ref">Patrones 5.11, 5.12 y 13.6 · ref. 01, 15, 17, 27</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-warning"></i>Apagado con la causa y el arreglo</span>
+              <div class="causa"><button class="btn neg" aria-disabled="true" aria-describedby="causa-cuit" data-tip="Falta el CUIT de Orbe Retail" id="b-emitir-c"><i class="ph ph-receipt"></i>Emitir factura</button><span class="por" id="causa-cuit"><i class="ph ph-warning"></i>Falta el CUIT · <button class="btn enlace" id="cargar-cuit">Cargarlo</button></span></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-timer"></i>Espera tiempo: contador</span>
+              <div class="causa"><button class="btn" id="b-reenviar"><i class="ph ph-arrow-clockwise"></i>Reenviar código</button><span class="por" id="reenviar-txt" aria-live="polite"></span></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: apagado y mudo</span>
+              <div class="fila"><button class="btn neg" disabled>Emitir factura</button></div>
+            </div>
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-list-checks"></i>Falta algo: el botón no se apaga, lleva al primer problema y lo sacude</span>
+              <div class="mini-form" id="f-alta">
+                <div class="grilla g-3">
+                  <div class="campo"><label for="fa-cli">Cliente</label><div class="in"><input id="fa-cli" value="Casa Lumen" autocomplete="organization"></div></div>
+                  <div class="campo"><label for="fa-mon">Monto mensual</label><div class="in"><span class="mon">ARS</span><input id="fa-mon" inputmode="decimal" placeholder="0,00"></div></div>
+                  <div class="campo"><label for="fa-ini">Empieza</label><div class="in"><input id="fa-ini" placeholder="dd/mm/aaaa" inputmode="numeric"></div></div>
+                </div>
+                <div class="pie"><span class="falta num" id="fa-falta" aria-live="polite">Faltan 2 para crear</span><button class="btn texto" id="fa-cancelar">Cancelar</button><button class="btn neg" id="fa-crear"><i class="ph ph-plus"></i>Crear contrato</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 16 · Menú de más acciones ══════════ -->
+    <section class="lamina" id="menu-de-mas-acciones">
+      <header class="lamina-cab">
+        <h2>Menú de más acciones</h2>
+        <span class="lamina-sec">§5 Acciones · Menú ⋯</span>
+        <p class="lamina-regla">Editar y borrar viven en el ⋯, no en cada fila. Grupos: <b>lo reversible arriba, silenciar al medio, lo destructivo último y en rojo</b>; atajos a la derecha; ↑↓, Esc y salto por letra.</p>
+        <p class="lamina-ref">Patrones 11.2 y 11.3 · tweet 52</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo puntos centro">
+          <div class="lst" style="width:min(100%,520px)">
+            <div class="fx simple"><span class="cuadro" style="--ent:var(--e5)"><i class="ph-fill ph-storefront"></i></span><div class="nom"><b>FAC-01098 · Orbe Retail</b><small>Plan anual · cuota 11 · vence 2 dic</small></div><span class="monto num"><span class="u">$</span>1.840.000</span><button class="btn ic chico texto" aria-label="Más acciones de FAC-01098" data-tip="Más acciones" data-menu="#menu-fac"><i class="ph ph-dots-three"></i></button></div>
+          </div>
+          <div class="fila g5"><span class="rot-g">Disparador en pastilla (el caret gira 180° en 150 ms):</span><button class="btn pild" data-menu="#menu-opciones" data-menu-lado="izq">Opciones<i class="ph ph-caret-down fin gira-c"></i></button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 17 · Acciones rápidas de la fila ══════════ -->
+    <section class="lamina" id="acciones-rapidas-de-la-fila">
+      <header class="lamina-cab">
+        <h2>Acciones rápidas de la fila</h2>
+        <span class="lamina-sec">§5 Acciones · §1.14</span>
+        <p class="lamina-regla">Aparecen con <b>hover y con foco de teclado</b>, encima de la fila con un degradé de su fondo; en celular están siempre. Pasá el mouse o recorré con Tab.</p>
+        <p class="lamina-ref">Patrones 1.14 · ref. 01, 07</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="lst" id="rap">
+            <div class="lst-cab"><h3>Por cobrar</h3><span class="c">4</span></div>
+            <div class="fx" data-cod="FAC-01087" data-cli="Grupo Atlas"><span class="cuadro" style="--ent:var(--e1)"><i class="ph-fill ph-buildings"></i></span><div class="nom"><b>Grupo Atlas</b><small><span class="cod gris">FAC-01087</span> · Soporte mensual</small></div><span class="col ocu vencida">vencida hace 6 días</span><span class="monto mt"><span class="u">$</span>2.150.000</span><div class="acc"><button class="btn chico neg" data-cobrar><i class="ph ph-hand-coins"></i>Cobrar</button><button class="btn ic chico" aria-label="Enviar recordatorio a Grupo Atlas" data-tip="Enviar recordatorio" data-recordar><i class="ph ph-paper-plane-tilt"></i></button><button class="btn ic chico" aria-label="Más acciones de FAC-01087" data-tip="Más acciones" data-menu="#menu-fila"><i class="ph ph-dots-three"></i></button></div></div>
+            <div class="fx" data-cod="FAC-01093" data-cli="Casa Lumen"><span class="cuadro" style="--ent:var(--e2)"><i class="ph-fill ph-lamp"></i></span><div class="nom"><b>Casa Lumen</b><small><span class="cod gris">FAC-01093</span> · Rediseño de marca, hito 2</small></div><span class="col ocu">vence mañana</span><span class="monto mt"><span class="u">$</span>3.400.000</span><div class="acc"><button class="btn chico neg" data-cobrar><i class="ph ph-hand-coins"></i>Cobrar</button><button class="btn ic chico" aria-label="Enviar recordatorio a Casa Lumen" data-tip="Enviar recordatorio" data-recordar><i class="ph ph-paper-plane-tilt"></i></button><button class="btn ic chico" aria-label="Más acciones de FAC-01093" data-tip="Más acciones" data-menu="#menu-fila"><i class="ph ph-dots-three"></i></button></div></div>
+            <div class="fx" data-cod="FAC-01099" data-cli="Bodega Sur"><span class="cuadro" style="--ent:var(--e3)"><i class="ph-fill ph-wine"></i></span><div class="nom"><b>Bodega Sur</b><small><span class="cod gris">FAC-01099</span> · Etiquetas cosecha 2026</small></div><span class="col ocu">vence en 9 días</span><span class="monto mt"><span class="u">US$</span>4.800</span><div class="acc"><button class="btn chico neg" data-cobrar><i class="ph ph-hand-coins"></i>Cobrar</button><button class="btn ic chico" aria-label="Enviar recordatorio a Bodega Sur" data-tip="Enviar recordatorio" data-recordar><i class="ph ph-paper-plane-tilt"></i></button><button class="btn ic chico" aria-label="Más acciones de FAC-01099" data-tip="Más acciones" data-menu="#menu-fila"><i class="ph ph-dots-three"></i></button></div></div>
+            <div class="fx" data-cod="FAC-01101" data-cli="Nativa Café"><span class="cuadro" style="--ent:var(--e4)"><i class="ph-fill ph-coffee"></i></span><div class="nom"><b>Nativa Café</b><small><span class="cod gris">FAC-01101</span> · Menú y señalética</small></div><span class="col ocu">vence en 14 días</span><span class="monto mt"><span class="u">$</span>890.000</span><div class="acc"><button class="btn chico neg" data-cobrar><i class="ph ph-hand-coins"></i>Cobrar</button><button class="btn ic chico" aria-label="Enviar recordatorio a Nativa Café" data-tip="Enviar recordatorio" data-recordar><i class="ph ph-paper-plane-tilt"></i></button><button class="btn ic chico" aria-label="Más acciones de FAC-01101" data-tip="Más acciones" data-menu="#menu-fila"><i class="ph ph-dots-three"></i></button></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 18 · Ejecutar en la fila ══════════ -->
+    <section class="lamina" id="ejecutar-en-la-fila">
+      <header class="lamina-cab">
+        <h2>Ejecutar en la fila</h2>
+        <span class="lamina-sec">§4.5 Procesos repetibles</span>
+        <p class="lamina-regla">Cobro mensual, IPC o reporte semanal son filas con <b>su botón de 28 a la derecha</b>: "Ejecutar" → "Corriendo…" con el ancho fijo y los pasos en cascada → el resultado en verbos y cifras.</p>
+        <p class="lamina-ref">Patrones 4.5 y 5.6 · tweets 15, 17, 27</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="lst">
+            <div class="lst-cab"><h3>Procesos</h3><span class="c">3</span></div>
+            <div class="fx proc" data-pasos="6" data-res="18 facturas emitidas · $ 20,9 M"><span class="tile ch"><i class="ph ph-receipt"></i></span><div class="nom"><b>Facturación mensual</b><small>El 1º de cada mes · 6 pasos</small></div><span class="avs ocu-c">
+              <span class="av ch" style="--ent:var(--e1)" role="img" aria-label="Lucía Benítez">LB</span><span class="av ch" style="--ent:var(--e3)" role="img" aria-label="Martín Ferreyra">MF</span></span><span class="pasos-m" aria-hidden="true"></span><span class="ultima">Corrió el 1 nov</span><button class="btn chico corre"><span class="cap"><span class="a"><i class="ph ph-play"></i>Ejecutar</span><span class="b para"><i class="ph ph-circle-notch gira"></i>Corriendo…</span><span class="c para"><i class="ph ph-stop"></i>Detener</span></span></button></div>
+            <div class="fx proc" data-pasos="4" data-res="42 contratos ajustados · +2,3 %"><span class="tile ch"><i class="ph ph-trend-up"></i></span><div class="nom"><b>Ajuste por IPC</b><small>Trimestral · 4 pasos</small></div><span class="avs ocu-c"><span class="av ch" style="--ent:var(--e5)" role="img" aria-label="Agustina Paz">AP</span></span><span class="pasos-m" aria-hidden="true"></span><span class="ultima">Corrió el 1 oct</span><button class="btn chico corre"><span class="cap"><span class="a"><i class="ph ph-play"></i>Ejecutar</span><span class="b para"><i class="ph ph-circle-notch gira"></i>Corriendo…</span><span class="c para"><i class="ph ph-stop"></i>Detener</span></span></button></div>
+            <div class="fx proc" data-pasos="3" data-res="Enviado a 4 personas"><span class="tile ch"><i class="ph ph-chart-bar"></i></span><div class="nom"><b>Reporte semanal</b><small>Los lunes 9:00 · 3 pasos</small></div><span class="avs ocu-c"><span class="av ch" style="--ent:var(--e2)" role="img" aria-label="Sofía Ibarra">SI</span></span><span class="pasos-m" aria-hidden="true"></span><span class="ultima">Corrió el lunes</span><button class="btn chico corre"><span class="cap"><span class="a"><i class="ph ph-play"></i>Ejecutar</span><span class="b para"><i class="ph ph-circle-notch gira"></i>Corriendo…</span><span class="c para"><i class="ph ph-stop"></i>Detener</span></span></button></div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Pasá el mouse sobre "Corriendo…" para detenerlo; queda escrito en qué paso se paró.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 19 · Agregar al final de la lista ══════════ -->
+    <section class="lamina" id="agregar-al-final-de-la-lista">
+      <header class="lamina-cab">
+        <h2>Agregar al final de la lista</h2>
+        <span class="lamina-sec">§5 Acciones</span>
+        <p class="lamina-regla">"+ Agregar …" va <b>al final de su propia lista, en gris</b>, y se convierte en el renglón nuevo: Enter guarda y deja el siguiente listo, Esc cierra.</p>
+        <p class="lamina-ref">Patrones 7.4 · ref. 06</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="grilla g-2">
+            <div class="card">
+              <div class="tit"><h3>Próximos pasos</h3><span class="c num" id="ag-c">3 abiertas</span></div>
+              <div class="pasos-c" id="ag-lista">
+                <div class="paso"><button class="check" role="checkbox" aria-checked="false" aria-label="Marcar hecha: Presentar 3 rutas de logo"></button><span class="t">Presentar 3 rutas de logo</span><span class="f vencida">ayer</span></div>
+                <div class="paso"><button class="check" role="checkbox" aria-checked="false" aria-label="Marcar hecha: Prueba de color en imprenta"></button><span class="t">Prueba de color en imprenta</span><span class="f">20 nov</span></div>
+                <div class="paso"><button class="check" role="checkbox" aria-checked="false" aria-label="Marcar hecha: Manual de marca v1"></button><span class="t">Manual de marca v1</span><span class="f">2 dic</span></div>
+                <button class="btn chico texto agregar" id="ag-btn"><i class="ph ph-plus"></i>Agregar tarea</button>
+              </div>
+            </div>
+            <div class="notas">
+              <div class="nota-r"><span class="tile"><i class="ph ph-arrow-down"></i></span><div><b>Donde termina la lista</b><p>El que agrega no tiene que buscar un botón arriba: escribe donde va a quedar lo nuevo.</p></div></div>
+              <div class="nota-r"><span class="tile"><i class="ph ph-keyboard"></i></span><div><b>Enter y sigue</b><p>Guarda, entra con un fundido y deja el renglón siguiente abierto para cargar varias seguidas.</p></div></div>
+              <div class="nota-r"><span class="tile"><i class="ph ph-x-circle"></i></span><div><b>No: "+ Nuevo" arriba a la derecha</b><p>Compite con el relleno de la pantalla y obliga a una capa para una línea de texto.</p></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 20 · Acciones de comunicación ══════════ -->
+    <section class="lamina" id="acciones-de-comunicacion">
+      <header class="lamina-cab">
+        <h2>Acciones de comunicación</h2>
+        <span class="lamina-sec">§1c Ficha · §5 Acciones</span>
+        <p class="lamina-regla">Correo, llamar, Meet y WhatsApp como <b>cuadrados de 38 con tooltip que nombra el dato</b>, separados por una rayita del único relleno. Lo que pasa queda en la actividad.</p>
+        <p class="lamina-ref">Patrones 9.3 · ref. 02, 03 · tweet 46</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="contacto">
+            <span class="av grande" style="--ent:var(--e2)" role="img" aria-label="Sofía Ibarra">SI</span>
+            <div class="quien"><b>Sofía Ibarra</b><small>Compras · Orbe Retail</small></div>
+            <div class="accs">
+              <button class="btn ic" aria-label="Escribir a sofia@orberetail.com.ar" data-tip="sofia@orberetail.com.ar" data-com="correo"><i class="ph ph-envelope-simple"></i></button>
+              <button class="btn ic" id="b-llamar" aria-label="Llamar al +54 9 291 412-3380" data-tip="+54 9 291 412-3380" data-com="llamar"><i class="ph ph-phone"></i></button>
+              <button class="btn ic" aria-label="Crear reunión de Meet" data-tip="Reunión de Meet" data-com="meet"><i class="ph ph-video-camera"></i></button>
+              <button class="btn ic" aria-label="Escribir por WhatsApp" data-tip="WhatsApp · +54 9 291 412-3380" data-com="whatsapp"><i class="ph ph-whatsapp-logo"></i></button>
+              <span class="btn-sep"></span>
+              <button class="btn neg" data-acc="tarea"><i class="ph ph-check-square"></i>Nueva tarea</button>
+            </div>
+          </div>
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-copy"></i>El dato se copia al pasar</span>
+              <div class="pila g2">
+                <span class="dato-copia"><i class="ph ph-envelope-simple gris"></i>sofia@orberetail.com.ar<button class="btn ic chico texto" aria-label="Copiar correo" data-copiar="sofia@orberetail.com.ar"><i class="ph ph-copy"></i></button></span>
+                <span class="dato-copia num"><i class="ph ph-phone gris"></i>+54 9 291 412-3380<button class="btn ic chico texto" aria-label="Copiar teléfono" data-copiar="+54 9 291 412-3380"><i class="ph ph-copy"></i></button></span>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-device-mobile"></i>En celular: accesos con rótulo</span>
+              <div class="accesos">
+                <button data-com="correo"><i class="ph-fill ph-envelope-simple"></i>Correo</button>
+                <button data-com="llamar-cel"><i class="ph-fill ph-phone"></i>Llamar</button>
+                <button data-com="meet"><i class="ph-fill ph-video-camera"></i>Meet</button>
+                <button data-com="whatsapp"><i class="ph-fill ph-whatsapp-logo"></i>WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Llamar queda prendido con el tiempo de la llamada; al cortar, se registra en la actividad.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 21 · Selector segmentado ══════════ -->
+    <section class="lamina" id="selector-segmentado">
+      <header class="lamina-cab">
+        <h2>Selector segmentado</h2>
+        <span class="lamina-sec">§5 Segmentado</span>
+        <p class="lamina-regla">Todo cambio de vista o período de 2 a 4 opciones: riel suave y <b>la pastilla que se desliza</b> (sin animar en el primer pintado). En oscuro la activa se invierte.</p>
+        <p class="lamina-ref">Patrones 2.4 y 16.1 · ref. 07, 13, 14</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-calendar"></i>Período, y la cifra rueda desde el valor anterior</span>
+              <div class="fila g8">
+                <div class="seg desliza" role="group" aria-label="Período" id="seg-per"><button data-v="sem">Semana</button><button data-v="mes" class="on">Mes</button><button data-v="tri">Trimestre</button><button data-v="anio">Año</button></div>
+                <div class="resultado"><span class="n"><span class="u">$</span><span id="per-n">31.480.000</span></span><span class="t-13 gris-2" id="per-ctx">cobrado en noviembre</span></div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-hash"></i>Con conteo</span>
+              <div class="seg desliza" role="group" aria-label="Estado"><button class="on">Todas <span class="c">32</span></button><button>Vencidas <span class="c">4</span></button><button>Por vencer <span class="c">7</span></button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-squares-four"></i>Solo íconos, chico</span>
+              <div class="seg chico desliza" role="group" aria-label="Vista"><button class="on" aria-label="Lista" data-tip="Lista"><i class="ph ph-list"></i></button><button aria-label="Tablero" data-tip="Tablero"><i class="ph ph-kanban"></i></button><button aria-label="Calendario" data-tip="Calendario"><i class="ph ph-calendar-blank"></i></button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-currency-dollar"></i>En un formulario, 2 opciones</span>
+              <div class="seg desliza" role="group" aria-label="Moneda"><button class="on">Pesos</button><button>Dólares</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 22 · Pestañas con conteo ══════════ -->
+    <section class="lamina" id="pestanas-con-conteo">
+      <header class="lamina-cab">
+        <h2>Pestañas con conteo</h2>
+        <span class="lamina-sec">§5 Segmentado y pestañas</span>
+        <p class="lamina-regla">Conteo gris al lado ("Archivos 9"); <b>el de la activa se invierte</b> y cambia en el momento. La línea de 2 px viaja de una a otra en 240 ms.</p>
+        <p class="lamina-ref">Patrones 1.3 · ref. 03, 06</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="card pad">
+            <div class="fila entre"><div class="pestanas viaja" role="tablist" aria-label="Ficha de Casa Lumen" id="pest" style="flex:1;min-width:0"><button role="tab" class="on" data-v="act">Actividad <span class="c">16</span></button><button role="tab" data-v="fac">Facturas <span class="c">32</span></button><button role="tab" data-v="con">Contratos <span class="c">4</span></button><button role="tab" data-v="arc">Archivos <span class="c" id="c-arc">9</span></button><span class="linea" aria-hidden="true"></span></div></div>
+            <div class="panel-p" id="pest-panel" role="tabpanel" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 23 · Botón flotante ══════════ -->
+    <section class="lamina" id="boton-flotante">
+      <header class="lamina-cab">
+        <h2>Botón flotante</h2>
+        <span class="lamina-sec">§9 Celular</span>
+        <p class="lamina-regla">Solo en colecciones donde la acción es crear, y <b>nunca junto a la píldora</b>. Extendido arriba, se achica a círculo de 56 al bajar, se esconde al seguir bajando y abre sus opciones con el + girando a ×.</p>
+        <p class="lamina-ref">Patrones 12.4 · ref. 09, 11, 12</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo lienzo">
+          <div class="con-tel">
+            <div class="tel" id="tel-fab">
+              <div class="scr" id="fab-scr">
+                <div class="tit-t">Tareas</div>
+                <div class="sub-t num">12 abiertas · 3 para hoy</div>
+                <div class="grp">Hoy</div>
+                <div class="fl"><span class="tile"><i class="ph ph-camera"></i></span><div class="min0"><b>Fotos de vidriera</b><small>Orbe Retail · 10:30</small></div></div>
+                <div class="fl"><span class="tile"><i class="ph ph-phone"></i></span><div class="min0"><b>Llamar a Sofía</b><small>Presupuesto · 12:00</small></div></div>
+                <div class="fl"><span class="tile"><i class="ph ph-truck"></i></span><div class="min0"><b>Retirar catálogos</b><small>Imprenta Delta · 16:00</small></div></div>
+                <div class="grp">Mañana</div>
+                <div class="fl"><span class="tile"><i class="ph ph-pen-nib"></i></span><div class="min0"><b>Bocetos de etiqueta</b><small>Bodega Sur</small></div></div>
+                <div class="fl"><span class="tile"><i class="ph ph-presentation"></i></span><div class="min0"><b>Presentar rutas de logo</b><small>Casa Lumen · 11:00</small></div></div>
+                <div class="fl"><span class="tile"><i class="ph ph-receipt"></i></span><div class="min0"><b>Facturar hito 2</b><small>Casa Lumen</small></div></div>
+                <div class="grp">Esta semana</div>
+                <div class="fl"><span class="tile"><i class="ph ph-map-pin"></i></span><div class="min0"><b>Medir el local</b><small>Nativa Café · Alsina 410</small></div></div>
+                <div class="fl"><span class="tile"><i class="ph ph-signature"></i></span><div class="min0"><b>Firma del contrato</b><small>Grupo Atlas</small></div></div>
+                <div class="fl"><span class="tile"><i class="ph ph-envelope-simple"></i></span><div class="min0"><b>Mandar manual de marca</b><small>Casa Lumen</small></div></div>
+              </div>
+              <div class="fundido"></div>
+              <div class="velo-tel" id="fab-velo"></div>
+              <div class="dial" id="fab-dial" aria-hidden="true">
+                <button style="--i:2" tabindex="-1" data-crear="Visita"><i class="ph ph-map-pin"></i>Visita</button>
+                <button style="--i:1" tabindex="-1" data-crear="Gasto"><i class="ph ph-receipt"></i>Gasto</button>
+                <button style="--i:0" tabindex="-1" data-crear="Tarea"><i class="ph ph-check-square"></i>Tarea</button>
+              </div>
+              <button class="fab" id="fab" aria-expanded="false" aria-label="Crear"><i class="ph ph-plus"></i><span class="et">Crear</span></button>
+              <nav class="barra" aria-label="Secciones"><button class="on"><i class="ph-fill ph-check-square"></i>Tareas</button><button aria-label="Agenda"><i class="ph ph-calendar-blank"></i></button><button aria-label="Clientes"><i class="ph ph-users"></i></button><button aria-label="Perfil"><i class="ph ph-user"></i></button></nav>
+            </div>
+            <div class="notas">
+              <div class="nota-r"><span class="tile"><i class="ph ph-arrows-in-line-horizontal"></i></span><div><b>Extendido → círculo</b><p>Arriba de todo dice "Crear"; al bajar 24 px se achica a 56 y deja ver la lista.</p></div></div>
+              <div class="nota-r"><span class="tile"><i class="ph ph-arrow-down"></i></span><div><b>Se esconde bajando, vuelve subiendo</b><p>Pasados 160 px se va por abajo en 320 ms; un gesto hacia arriba lo trae.</p></div></div>
+              <div class="nota-r"><span class="tile"><i class="ph ph-plus"></i></span><div><b>Opciones con fundido</b><p>Tres como mucho, de abajo hacia arriba con 30 ms entre cada una; el fondo baja y el + gira a ×.</p></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 24 · Píldora de celular ══════════ -->
+    <section class="lamina" id="pildora-de-celular">
+      <header class="lamina-cab">
+        <h2>Píldora de celular</h2>
+        <span class="lamina-sec">§9 Celular · Acción principal</span>
+        <p class="lamina-regla">La acción principal fija abajo, a todo el ancho, 52 px. <b>Si falta algo nunca se apaga</b>: dice qué falta en gris y te lleva ahí; completo, pasa a tinta; al terminar, verde con el participio.</p>
+        <p class="lamina-ref">Patrones 12.3 · ref. 09, 11, 12</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo lienzo">
+          <div class="con-tel">
+            <div class="tel">
+              <div class="scr" id="pil-scr">
+                <div class="tit-t">Visita</div>
+                <div class="sub-t">Orbe Retail · sucursal Centro · 10:30</div>
+                <div class="grp">Antes de cerrar</div>
+                <div class="chk"><button class="check" role="checkbox" aria-checked="true" aria-label="Fotos de la vidriera"></button><div class="t">Fotos de la vidriera<small>6 fotos con hora y lugar</small></div></div>
+                <div class="chk"><button class="check" role="checkbox" aria-checked="false" aria-label="Medidas del local"></button><div class="t">Medidas del local<small>Frente y profundidad</small></div></div>
+                <div class="chk"><button class="check" role="checkbox" aria-checked="false" aria-label="Conformidad del encargado"></button><div class="t">Conformidad del encargado<small>Diego Ramos</small></div></div>
+                <div class="chk"><button class="check" role="checkbox" aria-checked="false" aria-label="Señalética revisada"></button><div class="t">Señalética revisada<small>4 piezas</small></div></div>
+                <div class="chk" id="chk-firma"><span class="tile ch" style="background:var(--bandeja);color:var(--texto-2)"><i class="ph ph-signature"></i></span><div class="t">Firma<small id="firma-txt">Falta firmar</small></div><button class="btn chico" id="b-firmar">Firmar</button></div>
+              </div>
+              <div class="fundido" style="height:150px"></div>
+              <button class="accion sola falta" id="pildora"><span id="pil-txt">Cerrar visita · <b>faltan 3 + firma</b></span></button>
+            </div>
+            <div class="notas">
+              <div class="nota-r"><span class="tile"><i class="ph ph-hand-pointing"></i></span><div><b>Con lo que falta</b><p>Superficie con borde y el pendiente en tinta: tocarla baja al primer pendiente y lo hace destellar.</p></div></div>
+              <div class="nota-r"><span class="tile"><i class="ph ph-check-circle"></i></span><div><b>Completa</b><p>Pasa a tinta con "Cerrar visita"; al tocar, "Cerrando…" con el mismo ancho y después "✓ Visita cerrada".</p></div></div>
+              <div class="nota-r"><span class="tile"><i class="ph ph-arrows-vertical"></i></span><div><b>Medidas</b><p>52 px, a 16 de los bordes, sobre el padding seguro de abajo; los toasts aparecen arriba de ella.</p></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- menús (base.js los mueve al body y los posiciona) -->
+<div class="menu" id="menu-agrupar">
+  <span class="rot-m">Agrupar por</span>
+  <div class="gr-m"><button data-acc="agrupar" data-v="Cliente"><i class="ph ph-check"></i>Cliente</button><button data-acc="agrupar" data-v="Responsable"><i class="ph"></i>Responsable</button><button data-acc="agrupar" data-v="Estado"><i class="ph"></i>Estado</button></div>
+  <div class="gr-m"><button data-acc="agrupar" data-v="Nada"><i class="ph ph-prohibit"></i>Sin agrupar</button></div>
+</div>
+<div class="menu" id="menu-opciones">
+  <span class="rot-m">Mi cuenta</span>
+  <div class="gr-m"><button data-acc="perfil"><i class="ph ph-user"></i>Perfil<span class="atajo">⇧⌘P</span></button><button data-acc="ajustes"><i class="ph ph-gear"></i>Ajustes<span class="atajo">⌘,</span></button></div>
+  <div class="gr-m"><span class="rot-m">Vista</span><button data-chk="barra" aria-checked="true"><i class="ph ph-check"></i>Barra de estado</button><button data-chk="compacta" aria-checked="false"><i class="ph"></i>Filas compactas</button></div>
+  <div class="gr-m"><button class="peligro" data-acc="salir"><i class="ph ph-sign-out"></i>Cerrar sesión<span class="atajo">⇧⌘Q</span></button></div>
+</div>
+<div class="menu" id="menu-guardar">
+  <div class="gr-m"><button data-acc="guardar-nueva"><i class="ph ph-plus"></i>Guardar y crear otro<span class="atajo">⇧↵</span></button><button data-acc="borrador"><i class="ph ph-note-pencil"></i>Guardar como borrador</button><button data-acc="plantilla"><i class="ph ph-copy-simple"></i>Guardar como plantilla</button></div>
+</div>
+<div class="menu" id="menu-formatos">
+  <div class="gr-m"><button data-acc="xlsx"><i class="ph ph-file-xls"></i>Excel (.xlsx)</button><button data-acc="csv"><i class="ph ph-file-csv"></i>CSV</button><button data-acc="link"><i class="ph ph-link-simple"></i>Copiar link público</button></div>
+</div>
+<div class="menu" id="menu-fac">
+  <div class="gr-m"><button data-acc="duplicar"><i class="ph ph-copy"></i>Duplicar<span class="atajo">⌘D</span></button><button data-acc="pdf"><i class="ph ph-file-pdf"></i>Descargar PDF</button><button data-acc="reenviar"><i class="ph ph-paper-plane-tilt"></i>Reenviar por correo</button></div>
+  <div class="gr-m"><button data-acc="silenciar"><i class="ph ph-bell-slash"></i>Silenciar recordatorios</button><button aria-disabled="true"><i class="ph ph-arrow-u-up-left"></i>Nota de crédito · ya tiene una</button></div>
+  <div class="gr-m"><button class="peligro" data-acc="anular-menu"><i class="ph ph-prohibit"></i>Anular factura</button></div>
+</div>
+<div class="menu" id="menu-fila">
+  <div class="gr-m"><button data-acc="parcial"><i class="ph ph-coins"></i>Cobro parcial</button><button data-acc="pdf"><i class="ph ph-file-pdf"></i>Descargar PDF</button></div>
+  <div class="gr-m"><button data-acc="silenciar"><i class="ph ph-bell-slash"></i>Silenciar recordatorios</button></div>
+  <div class="gr-m"><button class="peligro" data-acc="anular-menu"><i class="ph ph-prohibit"></i>Anular factura</button></div>
+</div>
+
+<script src="base.js"></script>
+<script>
+const { $, $$, fmt, toast, cuenta, destellar, anunciar, quieto } = bib;
+const MAC = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+const espera = ms => new Promise(r => setTimeout(r, quieto ? Math.min(ms, 150) : ms));
+
+/* ── acciones de muestra: cada una con su toast en participio ── */
+const ACC = {
+  exportar: ['Exportación lista', '32 facturas · cobranzas-nov.xlsx', 'ph-export'],
+  cobro: ['Cobro registrado · FAC-01087 · $ 2.150.000', 'Quedó en Cobranzas como cobrada'],
+  factura: ['Factura en borrador · FAC-01106', 'Completá el cliente para emitirla', 'ph-receipt', 'info'],
+  propuesta: ['Propuesta enviada a Casa Lumen', 'Lucía la recibe en lucia@casalumen.com.ar', 'ph-paper-plane-tilt'],
+  continuar: ['Paso 2 de 3 · Cliente', 'Avanzaste sin perder lo cargado', 'ph-arrow-right', 'info'],
+  cancelar: ['Sin cambios', 'Cerraste sin guardar nada', 'ph-x', 'info'],
+  borrador: ['Borrador guardado', 'Lo encontrás en Facturas › Borradores', 'ph-note-pencil'],
+  emitir: ['Factura emitida · FAC-01106 · $ 1.840.000', 'Quedó en Cobranzas como por cobrar', 'ph-receipt'],
+  tarea: ['Tarea creada para Sofía Ibarra', 'Vence el viernes 20 nov', 'ph-check-square'],
+  compartir: ['Link copiado', 'Lo ven solo los del equipo', 'ph-link-simple'],
+  duplicar: ['Factura duplicada · FAC-01107', 'Quedó como borrador', 'ph-copy'],
+  pdf: ['PDF descargado', 'FAC-01098.pdf · 84 KB', 'ph-file-pdf'],
+  invitar: ['Invitación enviada', 'agustina@estudiofaro.com.ar', 'ph-user-plus'],
+  vertodo: ['Lista completa', 'Te dejamos parado en la primera fila', 'ph-arrow-up-right', 'info'],
+  asignar: ['Asignada', 'Le avisamos por correo', 'ph-user-check'],
+  medida: ['Medida de muestra', '28 en filas · 38 en cabeceras · 44 en celular', 'ph-ruler', 'info'],
+  'aprobar-chico': ['Gasto aprobado · GAS-0419 · $ 48.000', 'Pasa a pagos de la semana'],
+  rechazar: ['Gasto rechazado · GAS-0419', 'Le avisamos a Martín con el motivo', 'ph-x', 'info'],
+  buscar: ['Buscador', 'Se abre con ⌘K desde cualquier pantalla', 'ph-magnifying-glass', 'info'],
+  filtrar: ['Filtros', 'Abrís el panel con F', 'ph-funnel-simple', 'info'],
+  csv: ['CSV descargado', 'cobranzas-nov.csv · 32 filas', 'ph-file-csv'],
+  xlsx: ['Excel descargado', 'contrato-casa-lumen.xlsx', 'ph-file-xls'],
+  link: ['Link copiado', 'Vence en 7 días', 'ph-link-simple'],
+  fijar: ['Fijada arriba', 'La ves primera en la lista', 'ph-push-pin'],
+  archivar: ['Archivada · FAC-01098', 'La encontrás en Archivo', 'ph-archive'],
+  recordatorio: ['Recordatorio para mañana 09:00', 'Te avisamos por WhatsApp', 'ph-alarm'],
+  restaurar: ['Vista restaurada', 'Columnas y orden como vienen', 'ph-arrow-counter-clockwise'],
+  adjuntar: ['Elegí un archivo', 'Hasta 25 MB', 'ph-paperclip', 'info'],
+  mencionar: ['Mencionar', 'Escribí @ y el nombre', 'ph-at', 'info'],
+  'guardar-nueva': ['Contrato guardado · CON-0214', 'Abrimos uno nuevo en blanco'],
+  plantilla: ['Plantilla guardada', '"Rediseño de marca" en Plantillas', 'ph-copy-simple'],
+  reenviar: ['Factura reenviada', 'compras@orberetail.com.ar', 'ph-paper-plane-tilt'],
+  silenciar: ['Recordatorios silenciados', 'Hasta que la cobres', 'ph-bell-slash'],
+  parcial: ['Cobro parcial', 'Cargá cuánto entró', 'ph-coins', 'info'],
+  perfil: ['Perfil', 'Agustina Paz · Estudio Faro', 'ph-user', 'info'],
+  ajustes: ['Ajustes', 'Se abren con ⌘,', 'ph-gear', 'info'],
+  salir: ['Sesión cerrada (de muestra)', 'En el sistema real volvés al ingreso', 'ph-sign-out', 'info'],
+};
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-acc]'); if (!b) return;
+  const a = b.dataset.acc;
+  if (a === 'agrupar') {
+    const disp = $('[data-menu="#menu-agrupar"]');
+    disp.firstChild.textContent = b.dataset.v === 'Nada' ? 'Agrupar' : `Agrupar: ${b.dataset.v}`;
+    $$('#menu-agrupar [data-v] .ph').forEach(i => i.className = 'ph');
+    if (b.dataset.v !== 'Nada') b.querySelector('.ph').className = 'ph ph-check';
+    return;
+  }
+  if (a === 'anular-menu') { pedirAnular('FAC-01098', '$ 1.840.000', null); return; }
+  const d = ACC[a]; if (!d) return;
+  toast({ titulo: d[0], detalle: d[1], icono: d[2], tipo: d[3] || 'ok' });
+});
+/* casillas dentro del menú de opciones */
+$$('#menu-opciones [data-chk]').forEach(b => b.addEventListener('click', () => {
+  const on = b.getAttribute('aria-checked') !== 'true';
+  b.setAttribute('aria-checked', on); b.querySelector('.ph').className = on ? 'ph ph-check' : 'ph';
+  anunciar(`${b.textContent.trim()} ${on ? 'activada' : 'desactivada'}`);
+}));
+$$('#menu-opciones [data-chk]').forEach(b => b.setAttribute('role', 'menuitemcheckbox'));
+
+/* ── helper: corre un botón con capas a→b→c ── */
+async function correr(btn, ms = 900, final = 1400) {
+  if (btn.getAttribute('aria-busy') === 'true' || btn.classList.contains('listo')) return false;
+  btn.setAttribute('aria-busy', 'true');
+  await espera(ms);
+  btn.removeAttribute('aria-busy'); btn.classList.add('listo');
+  setTimeout(() => btn.classList.remove('listo'), final);
+  return true;
+}
+
+/* ── 4 · campana que queda rellena con el panel abierto ── */
+$('#campana').addEventListener('click', e => {
+  const b = e.currentTarget, on = b.getAttribute('aria-pressed') !== 'true';
+  b.setAttribute('aria-pressed', on); b.querySelector('i').className = on ? 'ph-fill ph-bell' : 'ph ph-bell';
+  if (on) { b.querySelector('.pto')?.remove(); b.setAttribute('aria-label', 'Avisos'); b.dataset.tip = 'Avisos'; }
+  $('#campana-est').textContent = on ? 'Panel abierto · 3 leídos' : 'Panel cerrado';
+});
+
+/* ── 5 · corrección como enlace ── */
+$('#usar-ese').addEventListener('click', () => {
+  $('#correo-c').value = 'sofia@orberetail.com.ar';
+  $('#correo-ay').innerHTML = '<span style="color:var(--verde)"><i class="ph ph-check" style="font-size:13px"></i> Corregido</span>';
+  destellar($('#correo-in')); $('#correo-c').focus();
+});
+
+/* ── 6 · destructivo: borrar con Deshacer, anular con modal ── */
+function contarDest() { $('#dest-c').textContent = $$('#dest-filas .fx').length; }
+$$('[data-borrar]').forEach(b => b.addEventListener('click', () => {
+  const fila = b.closest('.fx'), sig = fila.nextElementSibling, cod = fila.dataset.cod, padre = fila.parentNode;
+  fila.remove(); contarDest();
+  toast({ titulo: `Borrador a la papelera · ${cod}`, detalle: 'Se borra solo en 30 días', icono: 'ph-trash',
+    deshacer: () => { padre.insertBefore(fila, sig && sig.isConnected ? sig : null); contarDest(); destellar(fila); } });
+}));
+function pedirAnular(cod, monto, fila) {
+  const previo = document.activeElement;
+  const velo = document.createElement('div'); velo.className = 'velo';
+  velo.innerHTML = `<div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="m-t" aria-describedby="m-d">
+    <div class="h"><span class="tile" style="background:var(--rojo-f);color:var(--rojo)"><i class="ph ph-prohibit"></i></span><h4 id="m-t">¿Anular ${cod}?</h4></div>
+    <div class="cuerpo"><p id="m-d" class="gris-2" style="line-height:1.5">Se emite una nota de crédito por <b class="tinta peso">${monto}</b> y la factura queda tachada en Cobranzas. <b class="tinta peso">No se puede deshacer.</b></p></div>
+    <div class="pieh"><button class="btn texto izq" data-no>Cancelar</button><button class="btn peligro lleno" data-si><span class="cap"><span class="a"><i class="ph ph-prohibit"></i>Anular ${cod}</span><span class="b"><i class="ph ph-circle-notch gira"></i>Anulando…</span></span></button></div></div>`;
+  document.body.appendChild(velo);
+  velo.querySelector('.modal').animate?.([{ opacity: 0, transform: `scale(${quieto ? 1 : .97})` }, { opacity: 1, transform: 'none' }], { duration: 180, easing: 'cubic-bezier(.23,1,.32,1)' });
+  const cerrar = () => { velo.remove(); document.removeEventListener('keydown', tecla, true); previo?.focus(); };
+  const tecla = e => {
+    if (e.key === 'Escape') { e.stopPropagation(); cerrar(); }
+    if (e.key === 'Tab') { const f = $$('button', velo), i = f.indexOf(document.activeElement); e.preventDefault(); f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus(); }
+  };
+  document.addEventListener('keydown', tecla, true);
+  velo.addEventListener('click', e => { if (e.target === velo) cerrar(); });
+  velo.querySelector('[data-no]').onclick = cerrar;
+  velo.querySelector('[data-no]').focus();
+  velo.querySelector('[data-si]').onclick = async e => {
+    const s = e.currentTarget; s.setAttribute('aria-busy', 'true'); await espera(700); cerrar();
+    if (fila) { fila.querySelector('.nom b').classList.add('tachado'); fila.querySelector('.monto').classList.add('tachado'); const b = fila.querySelector('[data-anular]'); b.outerHTML = '<span class="chip gr">Anulada</span>'; }
+    toast({ titulo: `Factura anulada · ${cod} · ${monto}`, detalle: 'Nota de crédito NC-00031 emitida', icono: 'ph-prohibit' });
+  };
+}
+$$('[data-anular]').forEach(b => b.addEventListener('click', () => pedirAnular(b.closest('.fx').dataset.cod, '$ 1.840.000', b.closest('.fx'))));
+
+/* ── 7 · atajos que funcionan ── */
+const mod = MAC ? '⌘' : 'Ctrl ';
+$('#k-buscar').textContent = mod + 'K'; $('#k-enviar').textContent = mod + '↵'; $('#k-env').textContent = MAC ? '⌘ ↵' : 'Ctrl ↵';
+function apretar(b) { b.animate?.([{ transform: 'scale(.97)' }, { transform: 'none' }], { duration: 160, easing: 'cubic-bezier(.23,1,.32,1)' }); b.click(); }
+$('#b-nueva').addEventListener('click', () => toast({ titulo: 'Factura en borrador · FAC-01106', detalle: 'La abriste con N', icono: 'ph-receipt', tipo: 'info' }));
+$('#b-buscar').addEventListener('click', () => toast({ titulo: 'Buscador', detalle: `Lo abrís con ${mod}K desde cualquier lado`, icono: 'ph-magnifying-glass', tipo: 'info' }));
+function enviar() {
+  const t = $('#redactar'), v = t.value.trim();
+  if (!v) { t.focus(); t.closest('.compositor').classList.remove('sacude'); void t.offsetWidth; t.closest('.compositor').classList.add('sacude'); return; }
+  const m = document.createElement('div'); m.className = 'msj desenfoque';
+  m.innerHTML = `${bib.escapar(v)}<small>Vos · ${fmt.hora(new Date())}</small>`;
+  $('#mensajes').appendChild(m); t.value = ''; t.focus(); anunciar('Mensaje enviado');
+}
+$('#enviar').addEventListener('click', enviar);
+$('#redactar').addEventListener('keydown', e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); apretar($('#enviar')); } });
+document.addEventListener('keydown', e => {
+  const t = e.target; if (t.closest('input,textarea,select,[contenteditable]') || $('.velo')) return;
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); apretar($('#b-buscar')); return; }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key === 'n' || e.key === 'N') apretar($('#b-nueva'));
+});
+
+/* ── 8 · contadores que saltan ── */
+function saltar(el) { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+function contarFiltros() {
+  const n = $$('#facetas [aria-pressed=true]').length, ins = $('#ins-f');
+  ins.textContent = n; ins.classList.toggle('vacia', !n); saltar(ins);
+  $('#b-filtrar').setAttribute('aria-label', n ? `Filtrar, ${n} ${n === 1 ? 'activo' : 'activos'}` : 'Filtrar');
+  $('#limpiar-f').setAttribute('aria-disabled', !n);
+}
+$$('#facetas [data-f]').forEach(b => b.addEventListener('click', () => { b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true'); contarFiltros(); }));
+$('#limpiar-f').addEventListener('click', () => { $$('#facetas [data-f]').forEach(b => b.setAttribute('aria-pressed', 'false')); contarFiltros(); });
+$('#b-filtrar').addEventListener('click', () => toast({ titulo: 'Panel de filtros', detalle: `${$('#ins-f').textContent} activos · se guardan en la URL`, icono: 'ph-funnel-simple', tipo: 'info' }));
+let porAprobar = 4;
+function pintarAprob() { const c = $('#c-aprob'); c.textContent = porAprobar; saltar(c); $('#b-aprobar').setAttribute('aria-disabled', !porAprobar); }
+$('#b-aprobar').addEventListener('click', () => {
+  if (!porAprobar) { toast({ titulo: 'No hay gastos por aprobar', detalle: 'Sumá uno para probar', tipo: 'info' }); return; }
+  const n = porAprobar; porAprobar = 0; pintarAprob();
+  toast({ titulo: `${n} ${n === 1 ? 'gasto aprobado' : 'gastos aprobados'} · $ 412.300`, detalle: 'Pasan a pagos de la semana', deshacer: () => { porAprobar = n; pintarAprob(); } });
+});
+$('#b-sumar').addEventListener('click', () => { porAprobar++; pintarAprob(); });
+/* las facetas usan .tag como botón: mismo aspecto, invertida la activa */
+const estFac = document.createElement('style');
+estFac.textContent = '#facetas .tag{background:var(--superficie);cursor:pointer}#facetas .tag[aria-pressed=true]{background:var(--neg);color:var(--neg-t);border-color:var(--neg)}@media (max-width:767px){#facetas .tag{height:44px;padding:0 12px}}';
+document.head.appendChild(estFac);
+
+/* ── 9 · dividido ── */
+$('#b-guardar-div').addEventListener('click', async e => { if (await correr(e.currentTarget, 800)) toast({ titulo: 'Contrato guardado · CON-0214', detalle: 'Casa Lumen · $ 980.000 por mes' }); });
+
+/* ── 10 · grupos ── */
+const LUNES = new Date('2026-11-16T12:00:00-03:00'); let semana = 0;
+function pintarSemana() {
+  const a = new Date(LUNES.getTime() + semana * 7 * 864e5), b = new Date(a.getTime() + 6 * 864e5);
+  const mesA = fmt.fecha(a).split(' ')[1], mesB = fmt.fecha(b).split(' ')[1];
+  $('#sem-txt').textContent = mesA === mesB ? `${a.getDate()} – ${b.getDate()} ${mesB}` : `${fmt.fecha(a)} – ${fmt.fecha(b)}`;
+  $('#sem-hoy').setAttribute('aria-pressed', semana === 0);
+}
+$('#sem-ant').onclick = () => { semana--; pintarSemana(); };
+$('#sem-sig').onclick = () => { semana++; pintarSemana(); };
+$('#sem-hoy').onclick = () => { semana = 0; pintarSemana(); };
+pintarSemana();
+['#g-vista', '#g-alin'].forEach(s => $$(`${s} .btn`).forEach(b => b.addEventListener('click', () => {
+  $$(`${s} .btn`).forEach(x => x.setAttribute('aria-pressed', x === b)); anunciar(`${b.getAttribute('aria-label')} elegida`);
+})));
+
+/* ── 11 · conmutables ── */
+$$('.conm').forEach(b => b.addEventListener('click', () => {
+  const on = b.getAttribute('aria-pressed') !== 'true', ico = b.dataset.ico;
+  b.setAttribute('aria-pressed', on);
+  const i = b.querySelector('i'); i.className = `${on ? 'ph-fill' : 'ph'} ph-${ico}`;
+  i.animate?.([{ transform: `scale(${quieto ? 1 : .7})` }, { transform: 'scale(1)' }], { duration: 240, easing: 'cubic-bezier(.34,1.56,.64,1)' });
+  const s = b.querySelector('span'); if (s && b.dataset.on) s.textContent = on ? b.dataset.on : b.dataset.off;
+  if (ico === 'eye') $('#seg-txt').textContent = on ? 'Te avisamos cada cambio de Casa Lumen' : 'No vas a recibir avisos de Casa Lumen';
+  anunciar(`${b.getAttribute('aria-label') || b.dataset.off}: ${on ? 'activado' : 'desactivado'}`);
+}));
+
+/* ── 12 · ciclo de estados ── */
+$('#ciclo').addEventListener('click', async e => {
+  $('#ciclo-txt').textContent = 'Emitiendo… el ancho no cambia';
+  if (await correr(e.currentTarget, 1000, 1600)) { $('#ciclo-txt').textContent = 'Emitida · vuelve solo en 1,6 s'; setTimeout(() => $('#ciclo-txt').textContent = 'Tab para ver el foco · clic para cargar y terminar', 1700); }
+});
+
+/* ── 13 · guardando: bien, mal y largo ── */
+$('#g-bien').addEventListener('click', e => correr(e.currentTarget, 1100));
+$('#g-mal').addEventListener('click', async e => {
+  const b = e.currentTarget; if (b.dataset.c) return; b.dataset.c = 1;
+  b.innerHTML = '<i class="ph ph-circle-notch gira"></i>Guardando cambios del contrato…'; await espera(1100);
+  b.innerHTML = '<i class="ph ph-check"></i>Listo'; await espera(1000);
+  b.innerHTML = '<i class="ph ph-floppy-disk"></i>Guardar'; delete b.dataset.c;
+});
+let ipc = null;
+$('#g-ipc').addEventListener('click', e => {
+  const b = e.currentTarget, txt = $('#ipc-txt');
+  if (ipc) { clearInterval(ipc.t); b.removeAttribute('aria-busy'); txt.innerHTML = `<span style="color:var(--ambar)">Detenido en ${ipc.n} de 42</span>`; ipc = null; return; }
+  b.setAttribute('aria-busy', 'true'); ipc = { n: 0 };
+  ipc.t = setInterval(() => {
+    ipc.n += 3; txt.textContent = `${Math.min(ipc.n, 42)} de 42 contratos`;
+    if (ipc.n >= 42) { clearInterval(ipc.t); ipc = null; b.removeAttribute('aria-busy'); txt.innerHTML = '<span style="color:var(--verde)">42 ajustados · +2,3 %</span>'; }
+  }, quieto ? 20 : 260);
+});
+
+/* ── 14 · éxito en el lugar ── */
+function totalEx() {
+  const pend = $$('#ex-filas .fx').filter(f => !f.classList.contains('ok'));
+  $('#ex-c').textContent = pend.length;
+  $('#ex-tot').textContent = pend.length ? `${fmt.monto(pend.reduce((s, f) => s + +f.dataset.monto, 0))} en total` : 'Todo aprobado';
+}
+function morfar(btn, fn) {
+  const w0 = btn.offsetWidth; fn(); btn.style.width = ''; const w1 = btn.offsetWidth;
+  if (!quieto && w0 !== w1) btn.animate?.([{ width: w0 + 'px' }, { width: w1 + 'px' }], { duration: 240, easing: 'cubic-bezier(.23,1,.32,1)' });
+}
+$$('#ex-filas .a-pastilla').forEach(btn => btn.addEventListener('click', async () => {
+  if (btn.classList.contains('hecho') || btn.getAttribute('aria-busy') === 'true') return;
+  const fila = btn.closest('.fx');
+  btn.setAttribute('aria-busy', 'true'); await espera(650);
+  morfar(btn, () => { btn.removeAttribute('aria-busy'); btn.classList.remove('neg'); btn.classList.add('hecho'); btn.setAttribute('aria-disabled', 'true'); });
+  fila.classList.add('ok'); totalEx();
+  toast({ titulo: `Gasto aprobado · ${fila.dataset.cod} · ${fmt.monto(+fila.dataset.monto)}`, detalle: 'Pasa a pagos del viernes',
+    deshacer: () => { morfar(btn, () => { btn.classList.remove('hecho'); btn.classList.add('neg'); btn.removeAttribute('aria-disabled'); }); fila.classList.remove('ok'); totalEx(); btn.focus(); } });
+}));
+
+/* ── 15 · causa escrita ── */
+$('#b-emitir-c').addEventListener('click', () => { const p = $('#causa-cuit'); p.classList.remove('sacude'); void p.offsetWidth; p.classList.add('sacude'); });
+$('#cargar-cuit').addEventListener('click', () => {
+  const b = $('#b-emitir-c'); b.removeAttribute('aria-disabled'); b.removeAttribute('data-tip'); b.removeAttribute('aria-describedby');
+  $('#causa-cuit').innerHTML = '<i class="ph ph-check" style="color:var(--verde)"></i>CUIT 30-71458823-9 cargado';
+  b.onclick = () => toast({ titulo: 'Factura emitida · FAC-01106 · $ 1.840.000', detalle: 'Quedó en Cobranzas como por cobrar', icono: 'ph-receipt' });
+  b.focus();
+}, { once: true });
+let rel = null;
+function pintarReloj(s) { $('#reenviar-txt').innerHTML = s > 0 ? `Podés pedir otro en <span class="reloj">0:${String(s).padStart(2, '0')}</span>` : ''; }
+$('#b-reenviar').addEventListener('click', e => {
+  const b = e.currentTarget; if (b.getAttribute('aria-disabled') === 'true') return;
+  toast({ titulo: 'Código enviado', detalle: 'Por SMS al •••• 3380', icono: 'ph-chat-circle-text' });
+  let s = 30; b.setAttribute('aria-disabled', 'true'); pintarReloj(s);
+  rel = setInterval(() => { s--; pintarReloj(s); if (s <= 0) { clearInterval(rel); b.removeAttribute('aria-disabled'); } }, 1000);
+});
+const faCampos = ['#fa-cli', '#fa-mon', '#fa-ini'];
+function faltan() { return faCampos.map(s => $(s)).filter(i => !i.value.trim()); }
+function pintarFaltan() { const n = faltan().length; $('#fa-falta').textContent = n ? `${n === 1 ? 'Falta 1' : `Faltan ${n}`} para crear` : 'Listo para crear'; }
+faCampos.forEach(s => $(s).addEventListener('input', () => { $(s).closest('.in').classList.remove('error'); pintarFaltan(); }));
+$('#fa-crear').addEventListener('click', () => {
+  const f = faltan();
+  if (f.length) {
+    f.forEach(i => i.closest('.in').classList.add('error'));
+    const p = f[0].closest('.in'); f[0].focus(); p.classList.remove('sacude'); void p.offsetWidth; p.classList.add('sacude'); return;
+  }
+  toast({ titulo: `Contrato creado · CON-0215 · ${$('#fa-cli').value}`, detalle: `Empieza el ${$('#fa-ini').value}` });
+});
+$('#fa-cancelar').addEventListener('click', () => { faCampos.slice(1).forEach(s => { $(s).value = ''; $(s).closest('.in').classList.remove('error'); }); pintarFaltan(); });
+
+/* ── 17 · acciones rápidas ── */
+/* el mismo botón vuelve con Deshacer, así conserva su listener */
+function cobrar(b) {
+  const f = b.closest('.fx'); f.classList.add('ok');
+  const chip = document.createElement('span'); chip.className = 'chip v desenfoque'; chip.innerHTML = '<i class="ph ph-check-circle"></i>Cobrada';
+  b.replaceWith(chip);
+  toast({ titulo: `Cobro registrado · ${f.dataset.cod}`, detalle: `${f.dataset.cli} · quedó en Cobranzas`, icono: 'ph-hand-coins',
+    deshacer: () => { f.classList.remove('ok'); chip.replaceWith(b); b.focus(); } });
+}
+$$('#rap [data-cobrar]').forEach(b => b.addEventListener('click', () => cobrar(b)));
+$$('#rap [data-recordar]').forEach(b => b.addEventListener('click', () => {
+  const f = b.closest('.fx'); b.innerHTML = '<i class="ph ph-check" style="color:var(--verde)"></i>'; b.dataset.tip = 'Recordatorio enviado';
+  toast({ titulo: `Recordatorio enviado · ${f.dataset.cod}`, detalle: `A ${f.dataset.cli} por correo`, icono: 'ph-paper-plane-tilt' });
+}));
+
+/* ── 18 · ejecutar en la fila ── */
+$$('.proc').forEach(f => {
+  const n = +f.dataset.pasos, pm = f.querySelector('.pasos-m'), ult = f.querySelector('.ultima'), b = f.querySelector('.corre');
+  pm.innerHTML = '<i></i>'.repeat(n);
+  let t = null, paso = 0;
+  b.addEventListener('click', () => {
+    if (t) { clearTimeout(t); t = null; b.removeAttribute('aria-busy'); ult.className = 'ultima am'; ult.textContent = `Detenido en el paso ${paso + 1} de ${n}`; $$('i', pm).forEach(i => i.classList.remove('ahora')); return; }
+    paso = 0; b.setAttribute('aria-busy', 'true'); ult.className = 'ultima'; ult.textContent = `Paso 1 de ${n}…`;
+    $$('i', pm).forEach(i => i.className = '');
+    const avanzar = () => {
+      const is = $$('i', pm); is.forEach((i, k) => { i.classList.toggle('ya', k < paso); i.classList.toggle('ahora', k === paso); });
+      if (paso >= n) { t = null; b.removeAttribute('aria-busy'); ult.className = 'ultima v'; ult.textContent = f.dataset.res; toast({ titulo: `${f.querySelector('.nom b').textContent} · corrió`, detalle: f.dataset.res, icono: 'ph-play' }); return; }
+      ult.textContent = `Paso ${paso + 1} de ${n}…`; paso++; t = setTimeout(avanzar, quieto ? 30 : 420);
+    };
+    avanzar();
+  });
+});
+
+/* ── 19 · agregar al final ── */
+function contarAg() { const n = $$('#ag-lista .paso:not(.nuevo) .check[aria-checked=false]').length; $('#ag-c').textContent = `${n} ${n === 1 ? 'abierta' : 'abiertas'}`; }
+$('#ag-lista').addEventListener('cambio', contarAg);
+$('#ag-btn').addEventListener('click', abrirNueva);
+function abrirNueva() {
+  const btn = $('#ag-btn'); btn.hidden = true;
+  const r = document.createElement('div'); r.className = 'paso nuevo';
+  r.innerHTML = '<span class="check" aria-hidden="true" style="opacity:.5"></span><label class="sr" for="ag-in">Nueva tarea</label><div class="in"><input id="ag-in" placeholder="Escribí la tarea y Enter"></div>';
+  btn.before(r); const i = r.querySelector('input'); i.focus();
+  const cerrar = () => { r.remove(); btn.hidden = false; btn.focus(); };
+  i.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.stopPropagation(); cerrar(); }
+    if (e.key === 'Enter' && i.value.trim()) {
+      const p = document.createElement('div'); p.className = 'paso entra';
+      const txt = bib.escapar(i.value.trim());
+      p.innerHTML = `<button class="check" role="checkbox" aria-checked="false" aria-label="Marcar hecha: ${txt}"></button><span class="t">${txt}</span><span class="f">sin fecha</span>`;
+      r.before(p); i.value = ''; contarAg(); anunciar('Tarea agregada');
+    }
+  });
+  i.addEventListener('blur', () => setTimeout(() => { if (r.isConnected && !i.value.trim() && document.activeElement !== i) { r.remove(); btn.hidden = false; } }, 120));
+}
+
+/* ── 20 · comunicación ── */
+let llamada = null;
+function cortar() {
+  const b = $('#b-llamar'); clearInterval(llamada.t); const s = llamada.s; llamada = null;
+  b.classList.remove('en-llamada'); b.innerHTML = '<i class="ph ph-phone"></i>'; b.setAttribute('aria-label', 'Llamar al +54 9 291 412-3380'); b.dataset.tip = '+54 9 291 412-3380';
+  toast({ titulo: `Llamada registrada · ${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`, detalle: 'Quedó en la actividad de Sofía Ibarra', icono: 'ph-phone' });
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-com]'); if (!b) return;
+  const c = b.dataset.com;
+  if (c === 'llamar') {
+    if (llamada) return cortar();
+    llamada = { s: 0 }; b.classList.add('en-llamada'); b.setAttribute('aria-label', 'Cortar llamada'); b.dataset.tip = 'Cortar';
+    const pinta = () => b.innerHTML = `<i class="ph-fill ph-phone"></i><span class="num">0:${String(llamada.s).padStart(2, '0')}</span>`;
+    pinta(); llamada.t = setInterval(() => { llamada.s++; pinta(); }, 1000); return;
+  }
+  const T = {
+    correo: ['Borrador abierto', 'Para sofia@orberetail.com.ar · queda en la actividad', 'ph-envelope-simple'],
+    meet: ['Reunión creada · link copiado', 'meet.google.com/fro-xqte-lmn · hoy 16:30', 'ph-video-camera'],
+    whatsapp: ['Abriendo WhatsApp', '+54 9 291 412-3380 · Sofía Ibarra', 'ph-whatsapp-logo'],
+    'llamar-cel': ['Llamando a Sofía Ibarra', '+54 9 291 412-3380', 'ph-phone'],
+  }[c];
+  toast({ titulo: T[0], detalle: T[1], icono: T[2] });
+});
+$$('[data-copiar]').forEach(b => b.addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(b.dataset.copiar); } catch {}
+  b.innerHTML = '<i class="ph ph-check" style="color:var(--verde)"></i>'; anunciar('Copiado');
+  setTimeout(() => b.innerHTML = '<i class="ph ph-copy"></i>', 1200);
+}));
+
+/* ── 21 · segmentado con pastilla que se desliza ── */
+function deslizar(seg, animar) {
+  let p = seg.querySelector('.pastilla');
+  if (!p) { p = document.createElement('span'); p.className = 'pastilla'; p.setAttribute('aria-hidden', 'true'); seg.prepend(p); }
+  const on = seg.querySelector('button.on'); if (!on) return;
+  if (!animar) p.style.transition = 'none';
+  p.style.width = on.offsetWidth + 'px'; p.style.height = on.offsetHeight + 'px'; p.style.transform = `translateX(${on.offsetLeft}px)`; p.style.top = on.offsetTop + 'px';
+  if (!animar) { void p.offsetWidth; p.style.transition = ''; }
+}
+$$('.seg.desliza').forEach(s => {
+  deslizar(s, false); s.classList.add('fijo');
+  s.addEventListener('cambio', () => { s.classList.remove('fijo'); deslizar(s, true); clearTimeout(s._t); s._t = setTimeout(() => s.classList.add('fijo'), quieto ? 0 : 260); });
+});
+const PER = { sem: [6120000, 'cobrado esta semana'], mes: [31480000, 'cobrado en noviembre'], tri: [94200000, 'cobrado desde septiembre'], anio: [388250000, 'cobrado en 2026'] };
+let perAct = 'mes';
+$('#seg-per').addEventListener('cambio', e => { cuenta($('#per-n'), PER[e.detail][0], { desde: PER[perAct][0] }); $('#per-ctx').textContent = PER[e.detail][1]; perAct = e.detail; });
+
+/* ── 22 · pestañas con línea que viaja ── */
+const PANEL = {
+  act: 'Hoy 11:20 · Lucía subió "rutas-logo-v3.pdf" · Ayer · Llamada con Sofía, 14 min',
+  fac: '32 facturas · $ 18,4 M emitidos en 2026 · 1 por cobrar (FAC-01093, vence mañana)',
+  con: '4 contratos · 1 activo: Rediseño de marca, $ 980.000 por mes hasta junio',
+  arc: '',
+};
+let archivos = 9;
+function pintarPanel(v) {
+  const p = $('#pest-panel');
+  if (v === 'arc') { p.innerHTML = `<div class="fila entre"><span class="num">${archivos} archivos · el último hace 4 h</span><button class="btn chico" id="subir"><i class="ph ph-upload-simple"></i>Subir archivo</button></div>`; $('#subir').onclick = () => { archivos++; const c = $('#c-arc'); c.textContent = archivos; saltar(c); pintarPanel('arc'); toast({ titulo: 'Archivo subido', detalle: 'manual-marca-v1.pdf · 2,4 MB', icono: 'ph-upload-simple' }); }; }
+  else p.textContent = PANEL[v];
+  p.classList.remove('desenfoque'); void p.offsetWidth; p.classList.add('desenfoque');
+}
+function linea(animar) {
+  const l = $('#pest .linea'), on = $('#pest button.on');
+  if (!animar) l.style.transition = 'none';
+  l.style.width = on.offsetWidth + 'px'; l.style.transform = `translateX(${on.offsetLeft - $('#pest').scrollLeft}px)`;
+  if (!animar) { void l.offsetWidth; l.style.transition = ''; }
+}
+$('#pest').addEventListener('cambio', e => { linea(true); pintarPanel(e.detail); });
+$('#pest').addEventListener('scroll', () => linea(false));
+pintarPanel('act');
+document.fonts?.ready.then(() => { linea(false); $$('.seg.desliza').forEach(s => deslizar(s, false)); });
+addEventListener('resize', () => { linea(false); $$('.seg.desliza').forEach(s => deslizar(s, false)); });
+
+/* ── 23 · FAB ── */
+const fab = $('#fab'), dial = $('#fab-dial'), veloT = $('#fab-velo');
+let ultY = 0;
+$('#fab-scr').addEventListener('scroll', e => {
+  const y = e.target.scrollTop;
+  fab.classList.toggle('corto', y > 24);
+  if (fab.getAttribute('aria-expanded') !== 'true') fab.classList.toggle('oculto', y > 160 && y > ultY);
+  ultY = y;
+}, { passive: true });
+function dialAbierto(on) {
+  fab.setAttribute('aria-expanded', on); fab.setAttribute('aria-label', on ? 'Cerrar opciones' : 'Crear');
+  dial.classList.toggle('abierto', on); dial.setAttribute('aria-hidden', !on); veloT.classList.toggle('ver', on);
+  $$('button', dial).forEach(b => b.tabIndex = on ? 0 : -1);
+  if (on) $$('button', dial).at(-1).focus();
+}
+fab.addEventListener('click', () => dialAbierto(fab.getAttribute('aria-expanded') !== 'true'));
+veloT.addEventListener('click', () => dialAbierto(false));
+dial.addEventListener('keydown', e => { if (e.key === 'Escape') { e.stopPropagation(); dialAbierto(false); fab.focus(); } });
+$$('[data-crear]', dial).forEach(b => b.addEventListener('click', () => { dialAbierto(false); fab.focus(); toast({ titulo: `${b.dataset.crear} nueva`, detalle: 'Se abre la hoja de alta desde abajo', icono: b.querySelector('i').className.split(' ')[1], tipo: 'info' }); }));
+
+/* ── 24 · píldora ── */
+const pil = $('#pildora');
+let firmado = false, cerrada = false;
+function pendientes() { return $$('#pil-scr .check[aria-checked=false]').map(c => c.closest('.chk')); }
+function pintarPil() {
+  if (cerrada) return;
+  const p = pendientes().length;
+  if (p || !firmado) {
+    pil.className = 'accion sola falta';
+    const partes = [p ? `${p === 1 ? 'falta 1' : `faltan ${p}`}` : '', firmado ? '' : (p ? '+ firma' : 'falta la firma')].filter(Boolean).join(' ');
+    $('#pil-txt').innerHTML = `Cerrar visita · <b>${partes}</b>`;
+  } else { pil.className = 'accion sola'; $('#pil-txt').innerHTML = '<i class="ph ph-check-circle"></i> Cerrar visita'; }
+}
+$('#pil-scr').addEventListener('cambio', pintarPil);
+$('#b-firmar').addEventListener('click', e => {
+  firmado = !firmado; e.currentTarget.textContent = firmado ? 'Borrar' : 'Firmar';
+  $('#firma-txt').textContent = firmado ? 'Firmó Diego Ramos · 10:52' : 'Falta firmar'; pintarPil();
+});
+pil.addEventListener('click', async () => {
+  if (cerrada) return;
+  const p = pendientes();
+  if (p.length || !firmado) {
+    const obj = p[0] || $('#chk-firma'), scr = $('#pil-scr');
+    scr.scrollTo({ top: obj.offsetTop - 120, behavior: quieto ? 'auto' : 'smooth' });
+    obj.classList.remove('marca'); void obj.offsetWidth; obj.classList.add('marca');
+    (obj.querySelector('.check,.btn'))?.focus({ preventScroll: true }); return;
+  }
+  $('#pil-txt').innerHTML = '<i class="ph ph-circle-notch gira"></i> Cerrando…'; await espera(900);
+  cerrada = true; pil.className = 'accion sola hecha'; $('#pil-txt').innerHTML = '<i class="ph ph-check"></i> Visita cerrada';
+  toast({ titulo: 'Visita cerrada · Orbe Retail', detalle: 'El informe le llega a Sofía Ibarra', deshacer: () => { cerrada = false; pintarPil(); } });
+});
+pintarPil();
+</script>
+</body>
+</html>

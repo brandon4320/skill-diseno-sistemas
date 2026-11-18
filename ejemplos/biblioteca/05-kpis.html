@@ -1,0 +1,1807 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KPIs y cifras · Biblioteca</title>
+<meta name="description" content="Biblioteca de diseno-sistemas: 25 piezas de KPIs y cifras vivas (bandeja, protagonista, metas, comparativos, ranking, monitoreo, celular y estados) con datos de Estudio Faro.">
+<script>try{var t=JSON.parse(localStorage.getItem('bib-tema'));if(t)document.documentElement.dataset.tema=t}catch(e){}</script>
+<link rel="stylesheet" href="base.css">
+<style>
+/* casi todo es cifra: números tabulares en toda la página */
+.bib-main,.bib-main button{font-variant-numeric:tabular-nums}
+/* ── grillas propias ── */
+.k-auto{display:grid;gap:var(--espacio-gap);grid-template-columns:repeat(auto-fit,minmax(min(100%,232px),1fr))}
+.k-auto>*{min-width:0}
+.k-cinco{display:grid;gap:var(--espacio-gap);grid-template-columns:repeat(6,minmax(0,1fr))}
+.k-cinco>*{min-width:0;grid-column:span 2}
+.k-cinco>:nth-child(n+4){grid-column:span 3}
+.heroe:not(.k-mini){padding-bottom:84px}
+.k-dos{display:grid;gap:var(--espacio-gap);grid-template-columns:repeat(2,minmax(0,1fr))}
+.k-dos>*{min-width:0}
+.k-barra-ctl{display:flex;gap:var(--espacio-4);align-items:center;flex-wrap:wrap}
+.k-barra-ctl .empuja{margin-left:auto}
+
+/* ── dentro de la bandeja ── */
+.adentro svg.k-spark{width:100%;height:44px;margin-top:var(--espacio-4);overflow:visible}
+.k-anillo{display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-5)}
+.k-anillo svg{flex:none}
+.k-apilada{display:flex;gap:3px;height:8px;margin-top:var(--espacio-5)}
+.k-apilada>i{display:block;border-radius:99px;min-width:4px;background:var(--ent);transition:flex-grow var(--t-4) var(--ease),opacity var(--t-2)}
+.k-ley{display:flex;flex-wrap:wrap;gap:var(--espacio-2) var(--espacio-5);font-size:12px;color:var(--texto-3);margin-top:var(--espacio-4)}
+.k-ley span{display:inline-flex;align-items:center;gap:var(--espacio-2)}
+.k-ley b{font-weight:500;color:var(--tinta);font-variant-numeric:tabular-nums}
+.k-ley span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ent);flex:none}
+.bandeja .pie.k-am,.bandeja .pie.k-am .ph{color:var(--ambar)}
+.bandeja .pie.k-ro,.bandeja .pie.k-ro .ph{color:var(--rojo)}
+.bandeja .pie .gris{color:var(--texto-3)}
+.bandeja>.rot .c{margin-left:auto;font-size:12px;color:var(--texto-3);font-variant-numeric:tabular-nums}
+
+/* ── protagonista con lectura al pasar ── */
+.heroe .k-lee{position:absolute;bottom:var(--espacio-4);height:24px;padding:0 var(--espacio-4);border-radius:99px;background:rgb(255 255 255/.94);color:#2c2493;font-size:12px;font-weight:500;display:flex;align-items:center;white-space:nowrap;transform:translateX(-50%);pointer-events:none;opacity:0;transition:opacity var(--t-1);font-variant-numeric:tabular-nums;z-index:2}
+.heroe.leyendo .k-lee{opacity:1}
+.heroe .k-guia{position:absolute;top:var(--espacio-8);bottom:0;width:1px;background:rgb(255 255 255/.35);opacity:0;pointer-events:none;transition:opacity var(--t-1)}
+.heroe.leyendo .k-guia{opacity:1}
+.heroe .k-zona{position:absolute;left:0;right:0;bottom:0;height:96px;z-index:1;cursor:crosshair}
+.heroe.k-verde{background:radial-gradient(120% 140% at 100% 0%,#1d7f56 0%,transparent 55%),linear-gradient(150deg,#0a5638,#0d6b47 60%,#0b5f3f);box-shadow:0 18px 36px -18px rgb(19 138 92/.6),inset 0 1px 0 rgb(255 255 255/.18)}
+.heroe.k-mini{min-height:120px;padding:var(--espacio-6)}
+.heroe.k-mini .n{font-size:24px}
+
+/* ── KPI compacto (7.1) ── */
+.k-compacto{display:flex;align-items:center;gap:var(--espacio-5);min-height:76px;padding:var(--espacio-5) var(--espacio-6);background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-interno);min-width:0}
+.k-compacto .n{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.k-compacto .n sup{font-family:var(--ui);font-size:11px;font-weight:400;color:var(--texto-3);margin-left:var(--espacio-1);vertical-align:super;letter-spacing:0}
+.k-compacto .r13{font-size:13px;color:var(--texto-2);font-weight:500}
+.k-compacto .empuja{margin-left:auto}
+.tile.k-t{background:var(--ent-f,var(--suave));color:var(--ent,var(--texto-2))}
+.k-meta-dia{display:inline-flex;align-items:center;gap:var(--espacio-4);height:36px;padding:0 var(--espacio-5) 0 var(--espacio-4);border-radius:99px;border:1px solid var(--borde);background:var(--superficie);font-size:13px;font-weight:500;color:var(--texto-2)}
+.k-meta-dia b{color:var(--tinta);font-weight:500;font-variant-numeric:tabular-nums}
+
+/* ── rayitas con meta y rango ── */
+.k-rango{width:100%;accent-color:var(--acento);height:24px}
+.ticks.k-alto{height:24px}
+.ticks i.k-pasa{filter:brightness(.62) saturate(1.2)}
+
+/* ── anillo de puntos ── */
+.k-puntos{display:grid;grid-template-columns:220px minmax(0,520px);gap:var(--espacio-8);align-items:center}
+.k-puntos .aro{position:relative;width:220px;height:220px}
+.k-puntos .aro svg{width:100%;height:100%}
+.k-puntos .aro circle{transition:opacity var(--t-2) var(--ease),r var(--t-2) var(--ease)}
+.k-puntos .centro{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.k-puntos .centro b{font-family:var(--display);font-size:24px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.k-puntos .centro span{font-size:12px;color:var(--texto-3)}
+.k-filas-ley{display:flex;flex-direction:column;gap:var(--espacio-3)}
+.k-filas-ley button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;align-items:center;column-gap:var(--espacio-4);row-gap:var(--espacio-1);padding:var(--espacio-4) var(--espacio-5);border-radius:var(--radius-control);background:var(--bandeja);cursor:pointer;transition:background var(--t-1),opacity var(--t-2)}
+.k-filas-ley button:hover,.k-filas-ley button:focus-visible,.k-filas-ley button.on{background:var(--hover);box-shadow:0 0 0 1px var(--borde)}
+.k-filas-ley button:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent)}
+.k-filas-ley .pt{width:8px;height:8px;border-radius:50%;background:var(--ent)}
+.k-filas-ley .ph{font-size:20px;color:var(--ent)}
+.k-filas-ley .nom{font-weight:500;font-size:14px}
+.k-filas-ley .pc{font-family:var(--display);font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.k-filas-ley small{grid-column:3/-1;font-size:12px;color:var(--texto-3);font-variant-numeric:tabular-nums}
+.k-filas-ley.atenua button:not(.on){opacity:.55}
+
+/* ── barra por antigüedad ── */
+.k-aging{display:flex;gap:3px;height:44px;margin-top:var(--espacio-2)}
+.k-aging button{all:unset;cursor:pointer;display:flex;align-items:center;border-radius:8px;min-width:6px;transition:opacity var(--t-2),flex-grow var(--t-4) var(--ease),transform var(--t-1)}
+.k-aging button:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:2px}
+.k-aging button::before{content:"";flex:1;height:12px;border-radius:99px;background:var(--ent)}
+.k-aging.filtra button:not(.on){opacity:.3}
+.k-cubos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--espacio-4);margin-top:var(--espacio-5)}
+.k-cubos button{all:unset;box-sizing:border-box;cursor:pointer;padding:var(--espacio-4) var(--espacio-5);border-radius:var(--radius-control);display:flex;flex-direction:column;gap:var(--espacio-1);transition:background var(--t-1)}
+.k-cubos button:hover,.k-cubos button.on{background:var(--bandeja)}
+.k-cubos button:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent)}
+.k-cubos .r{display:flex;align-items:center;gap:var(--espacio-3);font-size:12px;color:var(--texto-2);font-weight:500;text-align:left}
+.k-cubos .r::before{content:"";width:8px;height:8px;border-radius:3px;background:var(--ent)}
+.k-cubos b{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.k-cubos small{font-size:12px;color:var(--texto-3);font-variant-numeric:tabular-nums}
+.k-filas{display:flex;flex-direction:column;margin-top:var(--espacio-4)}
+.k-fila{display:flex;align-items:center;gap:var(--espacio-5);min-height:44px;border-top:1px solid var(--divisor);font-size:13px}
+.k-fila .monto .u{font-size:12px}
+.k-fila .nom{flex:1;min-width:0;font-weight:500}
+.k-fila .cuando{min-width:132px;white-space:nowrap;text-align:right;font-size:12px;color:var(--texto-3);font-variant-numeric:tabular-nums}
+.k-fila .monto{width:120px;text-align:right}
+.k-fila.sale{animation:sale var(--t-3) var(--ease) forwards}
+@keyframes sale{to{opacity:0;transform:translateX(calc(12px*var(--mueve)))}}
+
+/* ── KPI en una línea ── */
+.k-linea{display:flex;flex-direction:column;justify-content:center;gap:var(--espacio-2);min-height:64px;padding:var(--espacio-4) var(--espacio-6);background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-interno);min-width:0;transition:box-shadow var(--t-2),transform var(--t-2) var(--ease)}
+a.k-linea:hover{box-shadow:var(--s-hover);transform:translateY(calc(-2px*var(--mueve)))}
+.k-linea .rl{display:flex;align-items:center;gap:var(--espacio-3);font-size:12px;font-weight:500;color:var(--texto-2)}
+.k-linea .rl::before{content:"";width:2px;height:10px;border-radius:2px;background:var(--ent)}
+.k-linea .val{display:flex;align-items:baseline;gap:var(--espacio-3);min-width:0}
+.k-linea .val b{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.k-linea .val span{font-size:13px;color:var(--texto-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ── fila con divisores ── */
+.k-divide{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.k-divide>div{padding:var(--espacio-6) var(--espacio-7) var(--espacio-7);border-left:1px solid var(--divisor);min-width:0}
+.k-divide>div:first-child{border-left:0}
+.k-divide .rl{display:flex;align-items:center;gap:var(--espacio-3);font-size:13px;font-weight:500;color:var(--texto-2)}
+.k-divide .rl .ph{font-size:16px;color:var(--texto-3)}
+.k-divide .cifra{margin-top:var(--espacio-4)}
+.k-frescura{display:inline-flex;align-items:center;gap:var(--espacio-3);font-size:12px;color:var(--texto-3)}
+.k-frescura .vivo{width:6px;height:6px;border-radius:50%;background:var(--verde)}
+
+/* ── total con composición ── */
+.k-comp{display:flex;gap:3px;height:6px;margin-top:var(--espacio-6)}
+.k-comp>i{border-radius:99px;background:var(--ent);transition:flex-grow var(--t-4) var(--ease),background var(--t-2)}
+.k-comp-ley{display:flex;flex-wrap:wrap;gap:var(--espacio-3) var(--espacio-6);margin-top:var(--espacio-5);font-size:13px;color:var(--texto-2)}
+.k-comp-ley span{display:inline-flex;align-items:center;gap:var(--espacio-3);animation:desenfoque 180ms var(--ease) both}
+.k-comp-ley span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ent)}
+.k-comp-ley b{font-weight:600;color:var(--tinta);font-variant-numeric:tabular-nums}
+.k-tarjeta-exp{position:relative}
+.k-tarjeta-exp .k-comp-ley{margin-bottom:var(--espacio-4)}
+.k-expande{position:absolute;left:50%;bottom:0;transform:translate(-50%,50%);width:32px;height:32px;border-radius:50%;border:1px solid var(--borde);background:var(--superficie);box-shadow:var(--s-min);display:grid;place-items:center;color:var(--texto-2);transition:transform var(--t-2) var(--ease)}
+.k-expande[aria-expanded=true] .ph{transform:rotate(180deg)}
+.k-expande .ph{transition:transform var(--t-2) var(--ease);font-size:16px}
+
+/* ── avance contra meta en dos bloques ── */
+.k-dosb{display:flex;gap:var(--espacio-2);height:40px;margin-top:var(--espacio-6)}
+.k-dosb>i{display:block;border-radius:var(--radius-control);transition:flex-grow var(--t-4) var(--ease)}
+.k-dosb .logrado{background:var(--acento);min-width:12px}
+.k-dosb .falta{background-color:var(--bandeja);border:1px solid var(--borde)}
+.k-dosb .sobra{background:color-mix(in oklch,var(--acento) 55%,var(--superficie))}
+.k-dosb-pie{display:flex;justify-content:space-between;margin-top:var(--espacio-4);font-size:13px;color:var(--texto-3)}
+.k-dosb-pie{gap:var(--espacio-5)}
+.k-dosb-pie b{white-space:nowrap;color:var(--tinta);font-weight:500;font-variant-numeric:tabular-nums}
+
+/* ── meta con proyección ── */
+.k-proy{position:relative;height:14px;border-radius:99px;background:var(--suave);margin-top:var(--espacio-10)}
+.k-proy .hecho,.k-proy .proy{position:absolute;top:0;bottom:0;left:0;border-radius:99px;transition:width var(--t-4) var(--ease)}
+.k-proy .hecho{background:var(--acento);z-index:1}
+.k-proy .proy{background-color:color-mix(in oklch,var(--acento) 16%,var(--superficie))}
+.k-proy .meta{position:absolute;top:-8px;bottom:-8px;width:0;border-left:2px dashed var(--tinta);z-index:2}
+.k-proy .meta span{position:absolute;bottom:calc(100% + 4px);left:0;transform:translateX(-50%);font-size:12px;font-weight:500;white-space:nowrap;color:var(--tinta);font-variant-numeric:tabular-nums}
+.k-proy .hoy{position:absolute;top:calc(100% + 6px);font-size:12px;color:var(--texto-3);transform:translateX(-50%);white-space:nowrap;font-variant-numeric:tabular-nums}
+.k-proy [data-tip]{position:absolute;top:-15px;bottom:-15px;z-index:3;border-radius:8px}
+.k-proy-txt{margin-top:var(--espacio-9);font-size:13px;color:var(--texto-2);display:flex;gap:var(--espacio-3);align-items:flex-start;line-height:1.45}
+.k-proy-txt .ph{font-size:16px;margin-top:1px;flex:none}
+.k-proy-txt b{font-weight:500;color:var(--tinta);font-variant-numeric:tabular-nums}
+
+/* ── comparativo ── */
+.k-cmp{display:flex;flex-direction:column;gap:var(--espacio-5);margin-top:var(--espacio-6)}
+.k-cmp .b{display:grid;grid-template-columns:84px minmax(0,1fr);align-items:center;gap:var(--espacio-5)}
+.k-cmp .b>span{font-size:12px;color:var(--texto-2);font-weight:500}
+.k-cmp .pista{height:28px;position:relative}
+.k-cmp .pista i{position:absolute;left:0;top:0;bottom:0;border-radius:var(--radius-chip);transition:width var(--t-4) var(--ease)}
+.k-cmp .pista b{position:absolute;top:50%;transform:translateY(-50%);font-size:12px;font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums;transition:left var(--t-4) var(--ease)}
+.k-cmp .actual i{background:var(--acento)}
+.k-cmp .previo i{background-color:var(--suave)}
+
+/* ── ranking ── */
+.k-rank{display:flex;flex-direction:column;margin-top:var(--espacio-5)}
+.k-rank button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:16px 112px minmax(0,1fr) 52px;align-items:center;gap:var(--espacio-4);min-height:30px;padding:0;border-radius:var(--radius-chip);font-size:13px;transition:background var(--t-1)}
+.k-rank button:hover,.k-rank button:focus-visible{background:var(--hover)}
+.k-rank button:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent)}
+.k-rank .n{font-family:var(--mono);font-size:11px;color:var(--texto-3)}
+.k-rank .nom{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.k-rank .barra{height:6px;border-radius:99px;background:var(--suave);overflow:hidden}
+.k-rank .barra i{display:block;height:100%;border-radius:inherit;background:color-mix(in oklch,var(--texto-3) 45%,transparent);transform-origin:left;animation:crece-x .7s var(--ease) both;animation-delay:calc(var(--i)*40ms)}
+.k-rank button:first-child .barra i{background:var(--acento)}
+.k-rank .pc{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+
+/* ── desglose ── */
+.k-desg{display:flex;flex-direction:column;border-top:1px solid var(--divisor);border-bottom:1px solid var(--divisor);padding:var(--espacio-4) 0;margin-top:var(--espacio-5)}
+.k-desg button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:var(--espacio-4);min-height:36px;padding:0;border-radius:var(--radius-chip);font-size:13px;color:var(--texto-2)}
+.k-desg button:hover,.k-desg button:focus-visible{background:var(--hover);color:var(--tinta)}
+.k-desg button:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent)}
+.k-desg .aro{width:14px;height:14px;border-radius:50%;border:2px solid var(--ent);flex:none}
+.k-desg .val{margin-left:auto;font-family:var(--display);font-size:16px;font-weight:500;color:var(--tinta);font-variant-numeric:tabular-nums}
+.k-desg .val sup{font-family:var(--ui);font-size:11px;color:var(--texto-3);font-weight:400;margin-left:var(--espacio-1)}
+.k-hundidos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--espacio-4);margin-top:var(--espacio-5)}
+.k-hundidos>div{background:var(--bandeja);border-radius:var(--radius-control);padding:var(--espacio-5) var(--espacio-5);display:flex;align-items:flex-end;justify-content:space-between;gap:var(--espacio-4);min-width:0}
+.k-hundidos b{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;display:block}
+.k-hundidos b sup{font-family:var(--ui);font-size:11px;color:var(--texto-3);font-weight:400;margin-left:var(--espacio-1)}
+.k-hundidos small{font-size:12px;color:var(--texto-3)}
+.k-hundidos .ph{font-size:20px;color:var(--ent);flex:none}
+
+/* ── KPIs como selector ── */
+.k-sel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--espacio-4)}
+.k-sel button{all:unset;box-sizing:border-box;cursor:pointer;padding:var(--espacio-5) var(--espacio-6);border-radius:var(--radius-interno);display:flex;flex-direction:column;gap:var(--espacio-1);transition:background var(--t-2),box-shadow var(--t-2);min-width:0}
+.k-sel button:hover{background:var(--hover)}
+.k-sel button[aria-selected=true]{background:var(--superficie);box-shadow:var(--s-min),0 0 0 1px var(--borde)}
+[data-tema=oscuro] .k-sel button[aria-selected=true]{background:var(--suave);box-shadow:none}
+.k-sel button:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent)}
+.k-sel .rl{font-size:13px;color:var(--texto-2);font-weight:500}
+.k-sel .cifra{font-size:24px}
+.k-sel small{font-size:12px;color:var(--texto-3)}
+.k-graf{position:relative;height:180px;margin-top:var(--espacio-6)}
+.k-graf svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.k-graf .guia{position:absolute;left:0;right:0;border-top:1px dashed var(--borde)}
+.k-graf .guia span{position:absolute;right:0;top:-18px;font-size:11px;color:var(--texto-3);font-variant-numeric:tabular-nums}
+.k-mini-tabla{margin-top:var(--espacio-6);border-top:1px solid var(--divisor)}
+.k-mini-tabla div{display:flex;justify-content:space-between;align-items:center;min-height:36px;border-bottom:1px solid var(--divisor);font-size:13px;color:var(--texto-2)}
+.k-mini-tabla b{font-weight:500;color:var(--tinta);font-variant-numeric:tabular-nums}
+.k-tabla-meses{width:100%;border-collapse:collapse;font-size:13px;margin-top:var(--espacio-6)}
+.k-tabla-meses th{font-weight:500;color:var(--texto-3);font-size:12px;text-align:left;height:32px;border-bottom:1px solid var(--divisor)}
+.k-tabla-meses td{height:36px;border-bottom:1px solid var(--divisor);font-variant-numeric:tabular-nums}
+.k-tabla-meses .r{text-align:right}
+
+.k-graf{margin-bottom:var(--espacio-8)}
+.k-meses-g{position:absolute;left:0;right:0;top:calc(100% + 6px);height:16px}
+.k-meses-g span{position:absolute;transform:translateX(-50%);font-size:11px;color:var(--texto-3)}
+.k-lee-g{position:absolute;transform:translateX(-50%);height:24px;padding:0 var(--espacio-4);border-radius:99px;background:var(--neg);color:var(--neg-t);font-size:12px;font-weight:500;display:flex;align-items:center;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity var(--t-1);font-variant-numeric:tabular-nums;z-index:2}
+.k-lee-g.ver{opacity:1}
+.tel .fl .der{white-space:nowrap}
+.tel .fl small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tel .fl.sale{animation:sale var(--t-3) var(--ease) forwards}
+
+/* ── cifra con equivalente ── */
+.k-eq .cifra .u{font-size:16px}
+.k-eq .eq{font-size:13px;color:var(--texto-3);margin-top:var(--espacio-2);font-variant-numeric:tabular-nums}
+.k-eq .fina{height:3px;border-radius:99px;background:var(--suave);margin-top:var(--espacio-6);overflow:hidden}
+.k-eq .fina i{display:block;height:100%;background:var(--ent);border-radius:inherit;transition:width var(--t-4) var(--ease)}
+.k-eq .pc{font-size:12px;color:var(--texto-3);margin-top:var(--espacio-3);font-variant-numeric:tabular-nums}
+.k-tc{display:flex;align-items:center;gap:var(--espacio-4);flex-wrap:wrap;font-size:13px;color:var(--texto-2)}
+.k-tc .in{height:36px;width:150px}
+.k-col-montos{display:flex;flex-direction:column;align-items:flex-end;gap:var(--espacio-3);font-family:var(--display);font-size:20px;font-weight:500;font-variant-numeric:tabular-nums}
+.k-col-montos sup{font-family:var(--ui);font-size:11px;color:var(--texto-3);font-weight:400;margin-left:var(--espacio-1)}
+
+/* ── resumen de cabecera ── */
+.k-cab .fecha{font-size:13px;color:var(--texto-3);font-weight:500}
+.k-cab .tit{font-family:var(--display);font-size:40px;font-weight:300;letter-spacing:-.03em;line-height:1.08;margin-top:var(--espacio-2)}
+.k-cab .resumen{display:flex;flex-wrap:wrap;gap:var(--espacio-2) var(--espacio-4);margin-top:var(--espacio-4);font-size:14px;color:var(--texto-3)}
+.k-cab .resumen b{color:var(--tinta);font-weight:500;font-variant-numeric:tabular-nums}
+.k-cab .resumen .vencida b{color:var(--rojo)}
+.k-cab .resumen i.sep-p{font-style:normal;color:var(--texto-3)}
+.k-res-lista{display:flex;flex-wrap:wrap;gap:var(--espacio-1) var(--espacio-3);font-size:13px;color:var(--texto-3);min-height:20px}
+.k-res-lista b{color:var(--tinta);font-weight:500;font-variant-numeric:tabular-nums}
+
+/* ── mapa de calor ── */
+.k-calor{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:var(--espacio-8);align-items:start}
+.k-cal-wrap{overflow-x:auto;scrollbar-width:thin;padding-bottom:var(--espacio-2)}
+.k-cal{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,auto);grid-auto-columns:minmax(0,1fr);gap:4px;width:100%;min-width:480px}
+.k-cal i{display:block;aspect-ratio:1;border-radius:7px;background:var(--suave);transition:background var(--t-2),transform var(--t-1)}
+.k-cal i[data-n="1"]{background:color-mix(in oklch,var(--acento) 25%,var(--superficie))}
+.k-cal i[data-n="2"]{background:color-mix(in oklch,var(--acento) 50%,var(--superficie))}
+.k-cal i[data-n="3"]{background:color-mix(in oklch,var(--acento) 75%,var(--superficie))}
+.k-cal i[data-n="4"]{background:var(--acento)}
+.k-cal i.hoy{box-shadow:0 0 0 2px var(--tinta)}
+.k-cal i:hover{transform:scale(1.2)}
+.k-cal i.fut{background:transparent;box-shadow:inset 0 0 0 1px var(--divisor)}
+.k-cal-meses{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:4px;font-size:11px;color:var(--texto-3);height:16px;width:100%;min-width:480px}
+.k-cal-meses span{white-space:nowrap}
+.k-cal-ley{display:flex;align-items:center;gap:var(--espacio-2);font-size:12px;color:var(--texto-3);margin-top:var(--espacio-4)}
+.k-cal-ley i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.k-tres{display:flex;flex-direction:column;gap:var(--espacio-5)}
+.k-tres>div{padding:var(--espacio-5) var(--espacio-6);background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-interno)}
+.k-tres .rl{font-size:12px;color:var(--texto-3);font-weight:500;display:flex;align-items:center;gap:var(--espacio-3)}
+.k-tres b{display:block;font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em;margin-top:var(--espacio-2);font-variant-numeric:tabular-nums}
+.k-tres small{font-size:12px;color:var(--texto-3)}
+.k-tres .am{background:none;color:var(--ambar)}
+
+/* ── comparar entidades ── */
+.k-ent{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--divisor);border-bottom:1px solid var(--divisor)}
+.k-ent>button{all:unset;box-sizing:border-box;cursor:pointer;padding:var(--espacio-7);border-left:1px solid var(--divisor);min-width:0;transition:background var(--t-2),opacity var(--t-2)}
+.k-ent>button:first-child{border-left:0}
+.k-ent>button:hover{background:var(--hover)}
+.k-ent>button:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:-2px}
+.k-ent.foco>button:not([aria-pressed=true]){opacity:.5}
+.k-ent .quien{display:flex;align-items:center;gap:var(--espacio-4)}
+.k-ent .quien b{font-weight:600;font-size:16px;display:block}
+.k-ent .quien small{font-size:13px;color:var(--texto-3)}
+.k-ent .cifra{font-size:40px;margin-top:var(--espacio-6)}
+.k-ent .estados-b{display:flex;gap:2px;height:6px;margin-top:var(--espacio-5);border-radius:99px;overflow:hidden;background:var(--suave)}
+.k-ent .estados-b i{display:block;height:100%;transition:width var(--t-4) var(--ease)}
+.k-ent .d{font-family:var(--mono);font-size:12px;margin-top:var(--espacio-4);color:var(--texto-3)}
+.k-ent-pie{font-family:var(--mono);font-size:12px;color:var(--texto-3);padding:var(--espacio-5) var(--espacio-7)}
+
+/* ── monitoreo oscuro ── */
+.k-mon{background:var(--lienzo);color:var(--tinta);border-radius:var(--radius-tarjeta);padding:var(--espacio-7);display:flex;flex-direction:column;gap:var(--espacio-6)}
+.k-mon .cab{display:flex;align-items:flex-end;gap:var(--espacio-5);flex-wrap:wrap}
+.k-mon .cab h3{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em}
+.k-mon .cab p{font-size:12px;color:var(--texto-3);margin-top:var(--espacio-1);font-variant-numeric:tabular-nums}
+.k-mon-grilla{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--espacio-gap)}
+.k-mon-t{background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-interno);padding:var(--espacio-6);min-width:0;transition:border-color var(--t-2)}
+.k-mon-t.caido{border-color:color-mix(in oklch,var(--rojo) 40%,var(--borde))}
+.k-mon-t .top{display:flex;align-items:center;gap:var(--espacio-4)}
+.k-mon-t .dom{font-family:var(--mono);font-size:13px;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.k-mon-t .est{margin-left:auto;display:inline-flex;align-items:center;gap:var(--espacio-2);font-size:12px;font-weight:500;flex:none}
+.k-mon-t .est .ph-fill{font-size:12px}
+.k-mon-t .val{font-family:var(--mono);font-size:32px;font-weight:500;letter-spacing:-.02em;margin-top:var(--espacio-5);font-variant-numeric:tabular-nums;line-height:1.1}
+.k-mon-t .val small{font-size:13px;color:var(--texto-3);margin-left:var(--espacio-2);font-weight:400;letter-spacing:0}
+.k-mon-t .pista{height:4px;border-radius:99px;background:var(--suave);margin-top:var(--espacio-5);overflow:hidden}
+.k-mon-t .pista i{display:block;height:100%;border-radius:inherit;transition:width var(--t-4) var(--ease),background var(--t-2)}
+.k-mon-t .lim{display:flex;justify-content:space-between;font-size:12px;color:var(--texto-3);margin-top:var(--espacio-3);font-variant-numeric:tabular-nums}
+.k-mon-t .tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--divisor);margin-top:var(--espacio-5);padding-top:var(--espacio-5)}
+.k-mon-t .tri>div{padding-left:var(--espacio-4);border-left:1px solid var(--divisor);min-width:0}
+.k-mon-t .tri>div:first-child{padding-left:0;border-left:0}
+.k-mon-t .tri span{display:block;font-size:11px;color:var(--texto-3)}
+.k-mon-t .tri b{font-family:var(--mono);font-size:13px;white-space:nowrap;font-weight:500;font-variant-numeric:tabular-nums}
+.k-mon .seg button.on{background:var(--tinta);color:var(--superficie);box-shadow:none}
+.k-late{animation:late 320ms var(--ease)}
+@keyframes late{50%{color:var(--acento-texto)}}
+
+/* ── celular ── */
+.k-tel-fila{display:flex;gap:var(--espacio-10);align-items:center;justify-content:center;flex-wrap:wrap}
+.tel .scr.k-scr{padding-top:var(--espacio-10)}
+.k-tel-top{display:flex;align-items:center;gap:var(--espacio-4)}
+.k-tel-top .btn{border-radius:50%;width:44px;height:44px;margin-left:auto}
+.k-tel-top b{font-weight:500;font-size:14px;display:block}
+.k-tel-top small{font-size:12px;color:var(--texto-3)}
+.k-tel-cifra{font-family:var(--display);font-size:36px;font-weight:500;letter-spacing:-.03em;line-height:1.05;font-variant-numeric:tabular-nums;margin-top:var(--espacio-2)}
+.k-tel-cifra .u{font-size:20px;color:var(--texto-3);font-weight:400;margin-right:var(--espacio-2)}
+.k-carrusel{display:flex;gap:var(--espacio-4);overflow-x:auto;scroll-snap-type:x mandatory;margin:var(--espacio-6) calc(var(--espacio-6)*-1) 0;padding:0 var(--espacio-6);scrollbar-width:none}
+.k-carrusel>.bandeja{flex:0 0 84%;scroll-snap-align:start;scroll-margin-left:var(--espacio-6)}
+.k-puntitos{display:flex;gap:var(--espacio-3);justify-content:center;margin-top:var(--espacio-4)}
+.k-puntitos i{width:6px;height:6px;border-radius:99px;background:var(--borde-fuerte);transition:width var(--t-2) var(--ease),background var(--t-2)}
+.k-puntitos i.on{width:18px;background:var(--tinta)}
+.k-tel-sec{font-size:13px;font-weight:500;color:var(--texto-2);margin:var(--espacio-7) 0 var(--espacio-4)}
+.k-anat{display:flex;flex-direction:column;gap:var(--espacio-5);max-width:320px;font-size:13px;color:var(--texto-2);line-height:1.45}
+.k-anat div{display:flex;gap:var(--espacio-4)}
+.k-anat .n{font-family:var(--mono);font-size:12px;color:var(--acento-texto);width:20px;flex:none;padding-top:1px}
+.k-anat b{color:var(--tinta);font-weight:500}
+
+/* ── estados ── */
+.k-esq .esq,.bandeja .adentro.k-esq .esq{border-radius:8px}
+.k-err{display:flex;flex-direction:column;gap:var(--espacio-4);color:var(--texto-2);font-size:13px;line-height:1.4}
+.k-err .t{display:flex;align-items:center;gap:var(--espacio-3);color:var(--rojo);font-weight:500}
+.k-sin .n{color:var(--texto-3)}
+.k-pie-btn{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-4);min-height:36px;padding:0 var(--espacio-5);font-size:12px;font-weight:500;cursor:pointer;border-radius:0 0 var(--radius-interno) var(--radius-interno)}
+.k-pie-btn span{display:inline-flex;align-items:center;gap:var(--espacio-2)}
+.k-pie-btn:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent)}
+.k-pie-btn:disabled{cursor:default}
+.k-candado{display:inline-flex;align-items:center;gap:var(--espacio-3);font-size:12px;color:var(--texto-3);margin-top:var(--espacio-5)}
+.k-nota-mal{font-family:var(--mono)}
+
+/* ── cortes ── */
+@media (max-width:1279px){
+  .k-cinco{grid-template-columns:repeat(2,minmax(0,1fr))}.k-cinco>*,.k-cinco>:nth-child(n+4){grid-column:span 1}.k-cinco>:last-child{grid-column:1/-1}
+  .k-mon-grilla{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .k-calor{grid-template-columns:minmax(0,1fr)}
+  .k-tres{flex-direction:row;flex-wrap:wrap}.k-tres>div{flex:1 1 180px}
+}
+@media (max-width:1023px){
+  .k-divide{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .k-divide>div:nth-child(3){border-left:0}
+  .k-divide>div:nth-child(n+3){border-top:1px solid var(--divisor)}
+  .k-puntos{grid-template-columns:minmax(0,1fr);justify-items:center}
+  .k-puntos .k-filas-ley{width:100%}
+}
+@media (max-width:767px){
+  .k-dos,.k-sel,.k-ent,.k-mon-grilla,.k-cinco{grid-template-columns:minmax(0,1fr)}
+  .k-cubos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .k-aging button{min-width:44px}
+  .k-ent>button{border-left:0;border-top:1px solid var(--divisor)}.k-ent>button:first-child{border-top:0}
+  .k-ent .cifra{font-size:32px}
+  .k-sel button{min-height:44px}
+  .k-rank button{grid-template-columns:16px minmax(0,96px) minmax(0,1fr) 48px;min-height:44px}
+  .k-desg button,.k-filas-ley button,.k-cubos button{min-height:44px}
+  .k-divide>div{padding:var(--espacio-6)}
+  .k-cab .tit{font-size:32px}
+  .k-fila .cuando{display:none}
+  .k-fila .monto{width:auto}
+  .k-fila{flex-wrap:wrap;row-gap:var(--espacio-2);padding:var(--espacio-4) 0}
+  .k-fila .nom{order:-1;flex-basis:100%}
+  .k-fila .monto{margin-left:auto}
+  .k-mon{padding:var(--espacio-6)}
+  .k-rango{height:44px}
+  .k-tc .in{width:100%;height:52px}
+  #at-pie{min-height:44px!important}
+  .k-compacto{flex-wrap:wrap}
+}
+</style>
+</head>
+<body class="bib">
+<div class="bib-pag">
+  <aside class="bib-indice" data-volver="index.html" data-titulo="KPIs y cifras"></aside>
+
+  <main class="bib-main">
+    <header class="bib-cab">
+      <div>
+        <span class="eti"><a href="index.html">Biblioteca</a> / 05</span>
+        <h1>KPIs y cifras</h1>
+        <p><b>25 piezas</b> con <b>74 variantes</b> vivas · toda cifra con contexto, dibujo, período y link a su lista. Datos de Estudio Faro al 18 nov 2026.</p>
+      </div>
+      <div class="der"></div>
+    </header>
+
+    <!-- ══════════ 1 · KPI en bandeja ══════════ -->
+    <section class="lamina" id="kpi-en-bandeja">
+      <header class="lamina-cab">
+        <h2>KPI en bandeja</h2>
+        <span class="lamina-sec">§1b.9 · §5 KPI</span>
+        <p class="lamina-regla">Bandeja gris con la tarjeta blanca adentro: <b>el dibujo sale del tipo de dato</b> (rayitas para meta, curva para serie, bloques para "7 de 12", anillo para %, barra apilada para antigüedad), nunca el mismo sparkline en todas.</p>
+        <p class="lamina-ref">Patrones 7.1, 7.13 · ref. 06, 07, 33</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="k-barra-ctl">
+            <div class="seg" id="b-periodo" role="group" aria-label="Período de los KPIs"><button data-v="sem">Semana</button><button data-v="mes" class="on">Mes</button><button data-v="tri">Trimestre</button></div>
+            <span class="k-frescura empuja"><span class="vivo" aria-hidden="true"></span><span id="b-fresco">Al 18 nov, 15:42</span></span>
+          </div>
+          <div class="k-cinco">
+            <div class="bandeja">
+              <div class="rot"><i class="ph ph-seal-check"></i>Cobrado<button class="btn ic chico texto" aria-label="Más opciones de Cobrado" data-tip="Más opciones" data-menu="#menu-cobrado"><i class="ph ph-dots-three"></i></button></div>
+              <div class="adentro">
+                <div class="n"><span class="u">$</span><span id="b1-n">31.480.000</span></div>
+                <div class="ctx num" id="b1-ctx">72 % de la meta de $ 43,7 M</div>
+                <div class="ticks" id="b1-d"></div>
+              </div>
+              <a class="pie" href="#kpi-en-bandeja" data-lista="Cobranzas · cobradas"><span class="sube num" id="b1-p"><i class="ph ph-trend-up"></i>+8,1 %</span><span>vs. octubre <i class="ph ph-arrow-up-right"></i></span></a>
+            </div>
+            <div class="bandeja">
+              <div class="rot"><i class="ph ph-receipt"></i>Facturado</div>
+              <div class="adentro">
+                <div class="n"><span class="u">$</span><span id="b2-n">43.910.000</span></div>
+                <div class="ctx num" id="b2-ctx">38 facturas · ticket $ 1,16 M</div>
+                <svg class="k-spark" id="b2-d"></svg>
+              </div>
+              <a class="pie" href="#kpi-en-bandeja" data-lista="Facturas de noviembre"><span class="sube num" id="b2-p"><i class="ph ph-trend-up"></i>+12,4 %</span><span>vs. octubre <i class="ph ph-arrow-up-right"></i></span></a>
+            </div>
+            <div class="bandeja">
+              <div class="rot"><i class="ph ph-package"></i>Entregas</div>
+              <div class="adentro">
+                <div class="n"><span id="b3-n">7</span><span class="u" style="margin:0 0 0 var(--espacio-2)">de 12</span></div>
+                <div class="ctx" id="b3-ctx">5 vencen antes del 30 nov</div>
+                <div class="segs" id="b3-d"></div>
+              </div>
+              <a class="pie" href="#kpi-en-bandeja" data-lista="Proyectos por entregar"><span class="neutro num" id="b3-p"><i class="ph ph-minus"></i>igual</span><span>que octubre <i class="ph ph-arrow-up-right"></i></span></a>
+            </div>
+            <div class="bandeja">
+              <div class="rot"><i class="ph ph-clock"></i>Horas facturables</div>
+              <div class="adentro k-anillo">
+                <div class="min0">
+                  <div class="n"><span id="b4-n">78</span><span class="u" style="margin:0 0 0 var(--espacio-1)">%</span></div>
+                  <div class="ctx num" id="b4-ctx">1.212 de 1.552 h</div>
+                </div>
+                <span id="b4-d"></span>
+              </div>
+              <a class="pie" href="#kpi-en-bandeja" data-lista="Horas cargadas"><span class="baja num" id="b4-p"><i class="ph ph-trend-down"></i>−2,3 pts</span><span>vs. octubre <i class="ph ph-arrow-up-right"></i></span></a>
+            </div>
+            <div class="bandeja">
+              <div class="rot"><i class="ph ph-hourglass-medium"></i>Por cobrar</div>
+              <div class="adentro">
+                <div class="n"><span class="u">$</span><span id="b5-n">48.215.300</span></div>
+                <div class="k-apilada" id="b5-d" role="img" aria-label="Por cobrar por antigüedad"></div>
+                <div class="k-ley" id="b5-ley"></div>
+              </div>
+              <a class="pie k-ro" href="#kpi-en-bandeja" data-lista="Cobranzas · vencidas"><span id="b5-p"><i class="ph ph-warning-circle"></i>$ 5,2 M con más de 60 días</span><span><i class="ph ph-arrow-up-right"></i></span></a>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Cambiá el período: las cifras ruedan desde el valor anterior y los dibujos se rehacen.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 2 · Protagonista ══════════ -->
+    <section class="lamina" id="protagonista">
+      <header class="lamina-cab">
+        <h2>Protagonista</h2>
+        <span class="lamina-sec">§1b.3</span>
+        <p class="lamina-regla">Uno por pantalla: degradé del acento, cifra blanca de 40 y <b>curva blanca que se lee al pasar el mouse</b>. El delta va en pastilla de vidrio y su color sale de si es bueno, no del signo.</p>
+        <p class="lamina-ref">Patrones 7.1 · ref. 08, 09</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-cursor"></i>Con lectura de la curva y registro en el lugar</span>
+              <div class="heroe" id="p1">
+                <span class="ico"><i class="ph ph-wallet"></i></span>
+                <span class="pill" id="p1-delta"><i class="ph ph-trend-up" style="font-size:13px"></i>+12,4 %<span class="sr">vs. octubre, favorable</span></span>
+                <span class="rot">Por cobrar</span>
+                <div class="n"><span class="u">$</span><span id="p1-n">48.215.300</span></div>
+                <div class="ctx num" id="p1-ctx">32 facturas · 4 vencidas</div>
+                <svg class="curva" id="p1-c" aria-hidden="true"></svg>
+                <span class="k-guia" aria-hidden="true"></span><span class="k-lee" aria-hidden="true"></span>
+                <div class="k-zona" aria-hidden="true"></div>
+              </div>
+              <div class="fila"><button class="btn chico" id="p1-cobrar"><i class="ph ph-hand-coins"></i>Registrar cobro de $ 1,25 M</button></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-arrows-down-up"></i>Gastos: bajar es bueno, el −4,2 % va como favorable</span>
+              <div class="heroe k-verde">
+                <span class="ico"><i class="ph ph-receipt-x"></i></span>
+                <span class="pill"><i class="ph ph-trend-down" style="font-size:13px"></i>−4,2 %<span class="sr">vs. octubre, favorable</span></span>
+                <span class="rot">Gastos del mes</span>
+                <div class="n"><span class="u">$</span><span data-cuenta="12840600">12.840.600</span></div>
+                <div class="ctx">Alquiler, sueldos y licencias · 21 movimientos</div>
+                <svg class="curva" id="p2-c" aria-hidden="true"></svg>
+              </div>
+            </div>
+            <div class="variante mal">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: dos protagonistas compiten</span>
+              <div class="pila g4">
+                <div class="heroe k-mini"><span class="rot" style="margin-top:0">Facturado</span><div class="n">$ 43,9 M</div></div>
+                <div class="heroe k-mini k-verde"><span class="rot" style="margin-top:0">Cobrado</span><div class="n">$ 31,5 M</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Pasá el mouse por la curva: guía vertical y pastilla con día y monto. En celular se lee con el dedo.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 3 · Rayitas hasta la meta ══════════ -->
+    <section class="lamina" id="rayitas-hasta-la-meta">
+      <header class="lamina-cab">
+        <h2>Rayitas hasta la meta</h2>
+        <span class="lamina-sec">§1b.2</span>
+        <p class="lamina-regla">34 rayitas de 3 px: <b>las llenas son el % de la meta</b> en el color de la entidad; si pasa la meta, las de más se oscurecen y el texto lo dice.</p>
+        <p class="lamina-ref">Patrones 7.1 · ref. 07</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-sliders-horizontal"></i>Movela: el texto cambia con el tramo</span>
+              <div class="adentro">
+                <div class="n"><span class="u">$</span><span id="r-n">31.480.000</span></div>
+                <div class="ctx num" id="r-ctx">72 % de la meta de $ 43,7 M</div>
+                <div class="ticks k-alto" id="r-d"></div>
+              </div>
+              <label class="sr" for="r-rango">Cobrado simulado</label>
+              <input class="k-rango" id="r-rango" type="range" min="0" max="60000000" step="250000" value="31480000">
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-trophy"></i>Pasó la meta</span>
+              <div class="adentro">
+                <div class="n"><span data-cuenta="118">118</span><span class="u" style="margin:0 0 0 var(--espacio-1)">%</span></div>
+                <div class="ctx num">Horas de diseño · 18 % arriba de la meta de 400 h</div>
+                <div class="ticks k-alto" id="r2-d"></div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-warning"></i>Lejos de la meta</span>
+              <div class="adentro">
+                <div class="n"><span data-cuenta="9">9</span><span class="u" style="margin:0 0 0 var(--espacio-2)">de 40</span></div>
+                <div class="ctx">Reuniones con clientes nuevos · faltan 31 en 12 días hábiles</div>
+                <div class="ticks k-alto" id="r3-d"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 4 · Bloques de avance ══════════ -->
+    <section class="lamina" id="bloques-de-avance">
+      <header class="lamina-cab">
+        <h2>Bloques de avance</h2>
+        <span class="lamina-sec">§1b.4</span>
+        <p class="lamina-regla">Para cosas que se cuentan de a una: <b>"3 de 10" en bloques</b> del color de la entidad, con el % a la derecha. Tildar un paso llena un bloque en el lugar.</p>
+        <p class="lamina-ref">Patrones 7.1 · ref. 06</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="k-dos">
+            <div class="card pad" id="bq1" style="--ent:var(--e1)">
+              <div class="fila entre"><span class="cli"><span class="cuadro ch" style="--ent:var(--e1)" aria-hidden="true"></span>Rediseño Casa Lumen</span><span class="chip am">Media</span></div>
+              <div class="fila g5" style="margin-top:var(--espacio-6)"><div class="segs min0" id="bq1-d" style="flex:1"></div><span class="peso num" id="bq1-pc">30 %</span></div>
+              <div class="ctx num" id="bq1-ctx">3 de 10 hechos · entrega 9 dic</div>
+              <div class="pila g2" id="bq1-pasos" style="margin-top:var(--espacio-5)"></div>
+            </div>
+            <div class="card pad" id="bq2" style="--ent:var(--e2)">
+              <div class="fila entre"><span class="cli"><span class="cuadro ch" style="--ent:var(--e2)" aria-hidden="true"></span>Sitio Bodega Sur</span><span class="chip ro">Alta</span></div>
+              <div class="fila g5" style="margin-top:var(--espacio-6)"><div class="segs min0" id="bq2-d" style="flex:1"></div><span class="peso num" id="bq2-pc">50 %</span></div>
+              <div class="ctx num" id="bq2-ctx">3 de 6 hechos · entrega 26 nov</div>
+              <div class="pila g2" id="bq2-pasos" style="margin-top:var(--espacio-5)"></div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Al completar el último, los bloques destellan y el estado pasa a "Listo para entregar".</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 5 · Anillo ══════════ -->
+    <section class="lamina" id="anillo">
+      <header class="lamina-cab">
+        <h2>Anillo</h2>
+        <span class="lamina-sec">§1b.2 · §5 KPI</span>
+        <p class="lamina-regla">Solo para un % de un total: <b>KPI compacto de 76 px</b> con ícono en cuadro, cifra con unidad en superíndice y anillo a la derecha; la meta del día va como anillo chico en la barra.</p>
+        <p class="lamina-ref">Patrones 7.1, 7.20 · ref. 33, 60</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-rows"></i>Compacto, 76 px</span>
+              <div class="pila g4">
+                <div class="k-compacto"><span class="tile k-t" style="--ent:var(--e1);--ent-f:color-mix(in oklch,var(--e1) 14%,var(--superficie))"><i class="ph ph-clock"></i></span><div class="min0"><div class="n">78<sup>%</sup></div><div class="r13">Horas facturables</div></div><span class="empuja" id="a1"></span></div>
+                <div class="k-compacto"><span class="tile k-t" style="--ent:var(--e4);--ent-f:color-mix(in oklch,var(--e4) 14%,var(--superficie))"><i class="ph ph-smiley"></i></span><div class="min0"><div class="n">92<sup>%</sup></div><div class="r13">Clientes que renuevan</div></div><span class="empuja" id="a2"></span></div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-circle-half"></i>Grande con su total</span>
+              <div class="adentro k-anillo">
+                <div class="min0">
+                  <div class="rot-g">Presupuesto de licencias</div>
+                  <div class="n" style="margin-top:var(--espacio-4)"><span class="u">$</span>1.846.000</div>
+                  <div class="ctx num">de $ 2.400.000 · quedan $ 554 mil</div>
+                </div>
+                <span id="a3"></span>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-phone"></i>Meta del día en la barra</span>
+              <div class="fila">
+                <span class="k-meta-dia" id="a4"><span id="a4-d"></span><span><b id="a4-n">6</b> de 20 llamadas hoy</span></span>
+                <button class="btn chico" id="a4-mas"><i class="ph ph-plus"></i>Registrar llamada</button>
+              </div>
+              <span class="ctx">El anillo avanza en el lugar; al llegar a 20 se pone verde con ✓.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 6 · Anillo de puntos ══════════ -->
+    <section class="lamina" id="anillo-de-puntos">
+      <header class="lamina-cab">
+        <h2>Anillo de puntos</h2>
+        <span class="lamina-sec">§5 Gráficos</span>
+        <p class="lamina-regla">En lugar de dona: <b>40 puntos repartidos por proporción</b> con el total al centro y la leyenda en filas-tarjeta. Pasar por una fila apaga el resto.</p>
+        <p class="lamina-ref">Patrones 7.11 · ref. 34, 58</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="k-puntos">
+            <div class="aro"><svg id="ap-svg" viewBox="0 0 220 220" role="img" aria-label="Facturado por servicio en 2026"></svg><div class="centro"><b id="ap-total">$ 184,2 M</b><span id="ap-sub">facturado en 2026</span></div></div>
+            <div class="k-filas-ley" id="ap-ley"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 7 · Barra por antigüedad ══════════ -->
+    <section class="lamina" id="barra-por-antiguedad">
+      <header class="lamina-cab">
+        <h2>Barra por antigüedad</h2>
+        <span class="lamina-sec">§5 KPI · Cobranzas</span>
+        <p class="lamina-regla">Lo que se debe, partido en <b>al día · 1–30 · 31–60 · más de 60</b>: cada tramo es un botón que filtra la lista de abajo y deja la fila destellando.</p>
+        <p class="lamina-ref">Patrones 7.2, 7.3 · ref. 07, 56</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="card pad">
+            <div class="fila entre"><div><div class="rot-g">Por cobrar al 18 nov</div><div class="cifra" style="margin-top:var(--espacio-2)"><span class="u">$</span><span id="ag-total">48.215.300</span></div></div><button class="btn chico texto" id="ag-limpiar" hidden><i class="ph ph-x"></i>Quitar filtro</button></div>
+            <div class="k-aging" id="ag-barra" role="group" aria-label="Tramos de antigüedad"></div>
+            <div class="k-cubos" id="ag-cubos"></div>
+            <div class="k-filas" id="ag-lista" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 8 · KPI en una línea ══════════ -->
+    <section class="lamina" id="kpi-en-una-linea">
+      <header class="lamina-cab">
+        <h2>KPI en una línea</h2>
+        <span class="lamina-sec">§5 KPI</span>
+        <p class="lamina-regla">Cuando los KPIs no son protagonistas: <b>64 px de alto</b>, rayita de color de 2×10 antes del rótulo y la cifra con su contexto en la misma línea.</p>
+        <p class="lamina-ref">Patrones 7.17 · ref. 28, 41</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="grilla g-4">
+            <a class="k-linea" href="#kpi-en-una-linea" data-lista="Propuestas" style="--ent:var(--e1)"><span class="rl">Propuestas</span><span class="val"><b>38</b><span>enviadas en noviembre</span></span></a>
+            <a class="k-linea" href="#kpi-en-una-linea" data-lista="Propuestas activas" style="--ent:var(--e5)"><span class="rl">En negociación</span><span class="val"><b>14</b><span>por $ 52,6 M</span></span></a>
+            <a class="k-linea" href="#kpi-en-una-linea" data-lista="Ganadas" style="--ent:var(--e4)"><span class="rl">Tasa de cierre</span><span class="val"><b>31,6 %</b><span>12 ganadas</span></span></a>
+            <a class="k-linea" href="#kpi-en-una-linea" data-lista="Clientes nuevos" style="--ent:var(--e3)"><span class="rl">Clientes nuevos</span><span class="val"><b>4</b><span>2 por referencia</span></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 9 · Fila de KPIs con divisores ══════════ -->
+    <section class="lamina" id="fila-de-kpis-con-divisores">
+      <header class="lamina-cab">
+        <h2>Fila de KPIs con divisores</h2>
+        <span class="lamina-sec">§4 Capas</span>
+        <p class="lamina-regla">Métricas hermanas en <b>una sola tarjeta partida con divide-x</b>, no cuatro cajas. Arriba a la derecha dice cuándo se sincronizó y deja recargar.</p>
+        <p class="lamina-ref">Patrones 7.17, 7.18 · ref. 41, 43</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="card">
+            <div class="tit"><h3>Operación de noviembre</h3><div class="der"><span class="k-frescura"><span class="vivo" aria-hidden="true"></span><span id="dv-fresco">Sincronizado hace 12 min</span></span><button class="btn ic chico texto" id="dv-recargar" aria-label="Sincronizar ahora" data-tip="Sincronizar ahora"><i class="ph ph-arrows-clockwise"></i></button></div></div>
+            <div class="k-divide" id="dv">
+              <div><span class="rl"><i class="ph ph-kanban"></i>Proyectos activos</span><div class="cifra" id="dv1">12</div><div class="ctx">3 se entregan esta semana</div></div>
+              <div><span class="rl"><i class="ph ph-timer"></i>Horas cargadas</span><div class="cifra"><span id="dv2">1.284</span><span class="u" style="margin:0 0 0 var(--espacio-2)">h</span></div><div class="ctx num" id="dv2c">86 % facturables</div></div>
+              <div><span class="rl"><i class="ph ph-calendar-x"></i>Tareas vencidas</span><div class="cifra" id="dv3">5</div><div class="ctx"><span class="vencida">1 en riesgo</span> · Sitio Bodega Sur</div></div>
+              <div><span class="rl"><i class="ph ph-star"></i>Satisfacción</span><div class="cifra"><span id="dv4">4,7</span><span class="u" style="margin:0 0 0 var(--espacio-2)">de 5</span></div><div class="ctx num">38 respuestas del mes</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 10 · Total con su composición ══════════ -->
+    <section class="lamina" id="total-con-su-composicion">
+      <header class="lamina-cab">
+        <h2>Total con su composición</h2>
+        <span class="lamina-sec">§5 Gráficos</span>
+        <p class="lamina-regla">Cifra + subtítulo con números reales + <b>barra segmentada de 6 px</b>. Solo lo que está en la leyenda lleva color; el resto, grises escalonados con "Otros" y un botón para abrirlos.</p>
+        <p class="lamina-ref">Patrones 7.2, 7.3 · ref. 35, 56, 57</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="k-barra-ctl"><div class="seg chico" id="tc-vista" role="group" aria-label="Ver composición por"><button data-v="serv" class="on">Por servicio</button><button data-v="cli">Por cliente</button></div></div>
+          <div class="card pad k-tarjeta-exp">
+            <div class="rot-g">Facturado en 2026</div>
+            <div class="cifra" style="margin-top:var(--espacio-2)"><span class="u">$</span>184.215.300</div>
+            <div class="ctx" id="tc-sub">En 4 servicios · 64 facturas · nada anulado</div>
+            <div class="k-comp" id="tc-barra" role="img"></div>
+            <div class="k-comp-ley" id="tc-ley"></div>
+            <button class="k-expande" id="tc-exp" aria-expanded="false" aria-label="Ver todos los clientes" hidden><i class="ph ph-caret-down"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 11 · Avance contra meta en dos bloques ══════════ -->
+    <section class="lamina" id="avance-contra-meta-en-dos-bloques">
+      <header class="lamina-cab">
+        <h2>Avance contra meta en dos bloques</h2>
+        <span class="lamina-sec">§5 KPI</span>
+        <p class="lamina-regla">"84,3 %" grande y <b>lo que falta escrito en plata</b>; barra de 40 px partida en logrado sólido y faltante rayado. Pasada la meta, lo de más va en un tercer bloque.</p>
+        <p class="lamina-ref">Patrones 7.8 · ref. 28</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="card pad">
+            <div class="fila entre">
+              <div class="fila g5" style="align-items:baseline"><span class="cifra" style="font-size:40px"><span id="m2-pc">84,3</span><span class="u" style="margin:0 0 0 var(--espacio-1)">%</span></span><span class="gris t-14 num" id="m2-falta">Faltan $ 23.550.000</span></div>
+              <button class="btn chico" id="m2-sumar"><i class="ph ph-plus"></i>Facturar $ 6 M</button>
+            </div>
+            <div class="k-dosb" id="m2-barra" role="img" aria-label="84,3 % de la meta"><i class="logrado" style="flex-grow:84.3"></i><i class="falta rayado" style="flex-grow:15.7"></i><i class="sobra" style="flex-grow:0"></i></div>
+            <div class="k-dosb-pie"><span>Meta de facturación del 4.º trimestre</span><b>$ 150.000.000</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 12 · Meta con proyección ══════════ -->
+    <section class="lamina" id="meta-con-proyeccion">
+      <header class="lamina-cab">
+        <h2>Meta con proyección</h2>
+        <span class="lamina-sec">§5 KPI · §1b.6</span>
+        <p class="lamina-regla">Logrado sólido, <b>proyección a fin de mes rayada</b>, meta como línea punteada con su rótulo y la marca de hoy. Abajo, en una oración, si llega y cuánto hace falta por día.</p>
+        <p class="lamina-ref">Patrones 7.7, 7.8 · ref. 28, 61</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="k-dos">
+            <div class="card pad" id="pr1"></div>
+            <div class="card pad" id="pr2"></div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Proyección = ritmo de días hábiles hasta hoy × días hábiles del mes. Pasá el mouse o el foco por cada tramo.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 13 · Comparativo con el mes anterior ══════════ -->
+    <section class="lamina" id="comparativo-con-el-mes-anterior">
+      <header class="lamina-cab">
+        <h2>Comparativo con el mes anterior</h2>
+        <span class="lamina-sec">§5 KPI</span>
+        <p class="lamina-regla">Dos barras: el mes en curso en acento y el anterior rayado. <b>Compará al mismo día</b> por defecto; el mes completo engaña los primeros días.</p>
+        <p class="lamina-ref">Patrones 7.7, 7.13 · ref. 28, 07</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="card pad">
+            <div class="fila entre">
+              <div class="seg chico" id="cm-met" role="group" aria-label="Métrica"><button data-v="fac" class="on">Facturado</button><button data-v="cob">Cobrado</button><button data-v="hs">Horas</button></div>
+              <div class="seg chico" id="cm-base" role="group" aria-label="Comparar contra"><button data-v="dia" class="on">Al día 18</button><button data-v="mes">Mes completo</button></div>
+            </div>
+            <div class="fila g5" style="margin-top:var(--espacio-7);align-items:baseline"><span class="cifra" id="cm-n">$ 43.910.000</span><span class="chip redondo v" id="cm-delta"><i class="ph ph-trend-up"></i>+12,3 %</span></div>
+            <div class="ctx" id="cm-ctx">Noviembre al día 18 contra octubre al día 18</div>
+            <div class="k-cmp" id="cm"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 14 · KPI con ranking ══════════ -->
+    <section class="lamina" id="kpi-con-ranking">
+      <header class="lamina-cab">
+        <h2>KPI con ranking</h2>
+        <span class="lamina-sec">§5 KPI</span>
+        <p class="lamina-regla">La cifra es la del primero y debajo <b>el top 6 numerado en mono</b>: el líder en acento, el resto en gris. Cada fila lleva a su ficha.</p>
+        <p class="lamina-ref">ref. 14 (Plants by performance)</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="k-dos">
+            <div class="card pad">
+              <div class="fila entre"><span class="rot-g" id="rk-rot">Participación en lo facturado</span><div class="seg chico" id="rk-vista" role="group" aria-label="Ranking de"><button data-v="cli" class="on">Clientes</button><button data-v="per">Equipo</button></div></div>
+              <div class="cifra" style="margin-top:var(--espacio-4)"><span id="rk-n">17,3</span><span class="u" style="margin:0 0 0 var(--espacio-1)">%</span></div>
+              <div class="ctx" id="rk-ctx">Orbe Retail lidera el año</div>
+              <div class="k-rank" id="rk"></div>
+            </div>
+            <div class="bandeja">
+              <div class="rot"><i class="ph ph-ranking"></i>Más horas sin facturar<span class="c">top 4</span></div>
+              <div class="adentro">
+                <div class="n"><span data-cuenta="64">64</span><span class="u" style="margin:0 0 0 var(--espacio-2)">h</span></div>
+                <div class="ctx">Soporte Grupo Atlas · fuera del abono</div>
+                <div class="k-rank" id="rk2"></div>
+              </div>
+              <a class="pie" href="#kpi-con-ranking" data-lista="Horas sin facturar"><span>Revisar antes del cierre</span><span><i class="ph ph-arrow-up-right"></i></span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 15 · KPI con desglose ══════════ -->
+    <section class="lamina" id="kpi-con-desglose">
+      <header class="lamina-cab">
+        <h2>KPI con desglose</h2>
+        <span class="lamina-sec">§5 KPI · anatomía fija</span>
+        <p class="lamina-regla">Tres filas "◯ rótulo ··· valor y unidad" entre dos hairlines y debajo <b>4 mini-KPIs hundidos</b> con su ícono de color. El pie cuenta lo que viene.</p>
+        <p class="lamina-ref">Patrones 7.15 · ref. 33</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="k-dos" style="align-items:start">
+            <div class="card pad">
+              <div class="fila entre"><span class="tile blanco" aria-hidden="true"><i class="ph ph-users-three"></i></span><button class="btn ic chico texto" aria-label="Más opciones de Capacidad" data-tip="Más opciones" data-menu="#menu-capacidad"><i class="ph ph-dots-three"></i></button></div>
+              <h3 class="display t-20 peso" style="margin-top:var(--espacio-5)">Capacidad del estudio</h3>
+              <div class="k-desg" id="dg">
+                <button style="--ent:var(--e4)" data-ir="Horas disponibles"><span class="aro" aria-hidden="true"></span>Horas disponibles<span class="val">1.480<sup>h</sup></span></button>
+                <button style="--ent:var(--e3)" data-ir="Horas vendidas"><span class="aro" aria-hidden="true"></span>Horas vendidas<span class="val">1.212<sup>h</sup></span></button>
+                <button style="--ent:var(--e1)" data-ir="Ocupación"><span class="aro" aria-hidden="true"></span>Ocupación<span class="val">81,9<sup>%</sup></span></button>
+              </div>
+              <div class="k-hundidos">
+                <div style="--ent:var(--e5)"><div class="min0"><b>486<sup>h</sup></b><small>Diseño</small></div><i class="ph ph-pen-nib"></i></div>
+                <div style="--ent:var(--e1)"><div class="min0"><b>402<sup>h</sup></b><small>Desarrollo</small></div><i class="ph ph-code"></i></div>
+                <div style="--ent:var(--e6)"><div class="min0"><b>188<sup>h</sup></b><small>Contenido</small></div><i class="ph ph-article"></i></div>
+                <div style="--ent:var(--e3)"><div class="min0"><b>136<sup>h</sup></b><small>Gestión</small></div><i class="ph ph-kanban"></i></div>
+              </div>
+              <p class="ctx" style="margin-top:var(--espacio-5)">Si se confirma la propuesta de Bodega Sur, la ocupación sube a 86 %.</p>
+            </div>
+            <div class="bandeja">
+              <div class="rot"><i class="ph ph-currency-circle-dollar"></i>Margen del mes</div>
+              <div class="adentro">
+                <div class="n"><span data-cuenta="38" >38</span><span class="u" style="margin:0 0 0 var(--espacio-1)">%</span></div>
+                <div class="ctx num">$ 16,7 M sobre $ 43,9 M facturados</div>
+                <div class="k-desg">
+                  <button style="--ent:var(--e1)" data-ir="Sueldos"><span class="aro" aria-hidden="true"></span>Sueldos<span class="val">$ 19,8<sup>M</sup></span></button>
+                  <button style="--ent:var(--e5)" data-ir="Licencias"><span class="aro" aria-hidden="true"></span>Licencias y nube<span class="val">$ 2,9<sup>M</sup></span></button>
+                  <button style="--ent:var(--e3)" data-ir="Oficina"><span class="aro" aria-hidden="true"></span>Oficina y otros<span class="val">$ 4,5<sup>M</sup></span></button>
+                </div>
+              </div>
+              <div class="pie"><span class="sube num"><i class="ph ph-trend-up"></i>+3 pts</span><span>vs. octubre</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 16 · KPIs como selector del gráfico ══════════ -->
+    <section class="lamina" id="kpis-como-selector-del-grafico">
+      <header class="lamina-cab">
+        <h2>KPIs como selector del gráfico</h2>
+        <span class="lamina-sec">§5 Gráficos</span>
+        <p class="lamina-regla">Tres KPIs sin cajas que son <b>las pestañas del gráfico</b> (←/→ las recorre); el elegido sube a superficie. Debajo, el resumen en números y "Ver tabla".</p>
+        <p class="lamina-ref">Patrones 7.4, 7.5, 7.6 · ref. 34, 58</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="card pad">
+            <div class="fila entre"><div><h3 class="display t-16 peso">Últimos 12 meses</h3><div class="ctx">De facturas emitidas y cobros confirmados · dic 2025 a nov 2026</div></div><button class="btn chico" id="ks-tabla" aria-pressed="false"><i class="ph ph-table"></i>Ver tabla</button></div>
+            <div class="k-sel" id="ks" role="tablist" aria-label="Serie del gráfico" style="margin-top:var(--espacio-6)">
+              <button role="tab" aria-selected="true" aria-controls="ks-panel" data-v="fac"><span class="rl">Facturado</span><span class="cifra">$ 412,9 M</span><small>286 facturas</small></button>
+              <button role="tab" aria-selected="false" aria-controls="ks-panel" data-v="cob" tabindex="-1"><span class="rl">Cobrado</span><span class="cifra">$ 388,3 M</span><small>94 % de lo facturado</small></button>
+              <button role="tab" aria-selected="false" aria-controls="ks-panel" data-v="gas" tabindex="-1"><span class="rl">Gastos</span><span class="cifra">$ 251,6 M</span><small>61 % de lo cobrado</small></button>
+            </div>
+            <div id="ks-panel" role="tabpanel">
+              <div class="k-graf" id="ks-graf"><svg id="ks-svg"></svg></div>
+              <div class="k-mini-tabla" id="ks-res"></div>
+              <table class="k-tabla-meses" id="ks-t" hidden><thead><tr><th>Mes</th><th class="r">Monto</th><th class="r">vs. mes anterior</th></tr></thead><tbody></tbody></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 17 · Cifra con equivalente ══════════ -->
+    <section class="lamina" id="cifra-con-equivalente">
+      <header class="lamina-cab">
+        <h2>Cifra con equivalente</h2>
+        <span class="lamina-sec">§6c Bimoneda</span>
+        <p class="lamina-regla">La moneda original manda; <b>"≈ $ … al TC" siempre en segunda línea</b>, con el TC a la vista y editable. En columna, la unidad en superíndice para que alineen.</p>
+        <p class="lamina-ref">Patrones 7.14 · ref. 56, 33</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="k-tc"><label for="eq-tc">TC del día (BNA vendedor)</label><span class="in"><span class="mon">$</span><input id="eq-tc" inputmode="decimal" value="1.170" aria-describedby="eq-tc-a"></span><span class="ctx" id="eq-tc-a" style="margin:0">Cambialo: los equivalentes se recalculan</span></div>
+          <div class="grilla g-4" id="eq"></div>
+          <div class="variantes">
+            <div class="variante"><span class="rot-g"><i class="ph ph-align-right"></i>En columna, unidad en superíndice</span>
+              <div class="card pad"><div class="k-col-montos"><span>18.400<sup>USD</sup></span><span>2.450<sup>USD</sup></span><span>1.168.000<sup>ARS</sup></span><span>640<sup>EUR</sup></span></div></div></div>
+            <div class="variante mal"><span class="rot-g"><i class="ph ph-x-circle no"></i>No: sumar monedas o equivalente sin TC</span>
+              <div class="card pad"><div class="cifra">$ 23.115.000</div><div class="ctx k-nota-mal">USD + ARS sumados · ¿a qué cambio?</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 18 · Resumen de cabecera ══════════ -->
+    <section class="lamina" id="resumen-de-cabecera">
+      <header class="lamina-cab">
+        <h2>Resumen de cabecera</h2>
+        <span class="lamina-sec">§8.5 Títulos</span>
+        <p class="lamina-regla">Cuando la pantalla es una lista, <b>los números van en línea bajo el título</b> en vez de tarjetas KPI; el título puede contar el estado.</p>
+        <p class="lamina-ref">Patrones 7.12 · ref. 08, 38, 48, 26</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante ancha"><span class="rot-g"><i class="ph ph-house"></i>Inicio: el título cuenta el estado</span>
+              <div class="k-cab"><div class="fecha">Miércoles 18 de noviembre</div><div class="tit">Noviembre viene arriba de la meta</div>
+                <div class="resumen"><span><b>69 %</b> facturado con 8 días hábiles por delante</span><i class="sep-p" aria-hidden="true">·</i><span><b>3</b> entregas esta semana</span><i class="sep-p" aria-hidden="true">·</i><span class="vencida"><b>4</b> facturas vencidas</span></div></div>
+            </div>
+            <div class="variante ancha"><span class="rot-g"><i class="ph ph-list"></i>Lista: el resumen sigue al filtro</span>
+              <div class="pila g4"><div class="fila entre"><h3 class="display t-20 peso">Cobranzas</h3><div class="seg chico" id="rc-f" role="group" aria-label="Filtro de cobranzas"><button data-v="todas" class="on">Todas</button><button data-v="venc">Vencidas</button><button data-v="sem">Vencen esta semana</button></div></div><div class="k-res-lista" id="rc" aria-live="polite"></div></div>
+            </div>
+            <div class="variante mal ancha"><span class="rot-g"><i class="ph ph-x-circle no"></i>No: tarjetas KPI arriba de una lista</span>
+              <div class="grilla g-3"><div class="card pad"><div class="rot-g">Facturas</div><div class="cifra" style="font-size:20px">64</div></div><div class="card pad"><div class="rot-g">Vencidas</div><div class="cifra" style="font-size:20px">4</div></div><div class="card pad"><div class="rot-g">Total</div><div class="cifra" style="font-size:20px">$ 48,2 M</div></div></div></div>
+            <div class="variante"><span class="rot-g"><i class="ph ph-folder"></i>Colección</span>
+              <div class="k-res-lista"><span><b>8</b> documentos</span><span><b>139,1 mil</b> palabras</span><span>· actualizado hace 3 días</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 19 · Mapa de calor de actividad ══════════ -->
+    <section class="lamina" id="mapa-de-calor-de-actividad">
+      <header class="lamina-cab">
+        <h2>Mapa de calor de actividad</h2>
+        <span class="lamina-sec">§5 Gráficos · Equipo</span>
+        <p class="lamina-regla">La constancia de una persona: <b>semanas en columnas de 7</b>, 4 intensidades del acento y al lado sus 3 cifras (día más activo, racha, días sin actividad).</p>
+        <p class="lamina-ref">Patrones 7.16 · ref. 32</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="k-barra-ctl"><div class="seg chico" id="mc-quien" role="group" aria-label="Persona"><button data-v="ana" class="on">Ana Ferreyra</button><button data-v="martin">Martín Sosa</button><button data-v="lucia">Lucía Paz</button></div></div>
+          <div class="k-calor">
+            <div class="card pad min0">
+              <div class="fila entre"><span class="rot-g" id="mc-tit">Tareas cerradas · últimas 26 semanas</span><span class="ctx num" style="margin:0" id="mc-total">412 en total</span></div>
+              <div class="k-cal-wrap" style="margin-top:var(--espacio-5)"><div class="k-cal-meses" id="mc-meses" aria-hidden="true"></div><div class="k-cal" id="mc" role="img"></div></div>
+              <div class="k-cal-ley" aria-hidden="true">Menos <i style="background:var(--suave)"></i><i style="background:color-mix(in oklch,var(--acento) 25%,var(--superficie))"></i><i style="background:color-mix(in oklch,var(--acento) 50%,var(--superficie))"></i><i style="background:color-mix(in oklch,var(--acento) 75%,var(--superficie))"></i><i style="background:var(--acento)"></i> Más</div>
+            </div>
+            <div class="k-tres" id="mc-tres"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 20 · Comparar entidades ══════════ -->
+    <section class="lamina" id="comparar-entidades">
+      <header class="lamina-cab">
+        <h2>Comparar entidades</h2>
+        <span class="lamina-sec">§5 KPI · Equipo</span>
+        <p class="lamina-regla">2 a 4 personas o meses en <b>columnas dentro de una tarjeta</b>: cifra de 40, barra por estado con proporciones reales y delta en mono. Clic en una columna la destaca.</p>
+        <p class="lamina-ref">Patrones 7.10 · ref. 53</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="card">
+            <div class="tit"><div><h3>Propuestas de noviembre</h3><div class="ctx" style="margin-top:var(--espacio-1)">Por responsable · al 18 nov</div></div><div class="der"><div class="seg chico" id="ce-met" role="group" aria-label="Métrica"><button data-v="cierre" class="on">Tasa de cierre</button><button data-v="monto">Ganado</button></div></div></div>
+            <div class="k-ent" id="ce" style="margin-top:var(--espacio-5)"></div>
+            <div class="k-ent-pie" id="ce-pie">48 propuestas · 3 responsables · ticket promedio $ 3,8 M</div>
+          </div>
+          <div class="k-ley" style="margin-top:0"><span style="--ent:var(--verde)"><b>Ganadas</b></span><span style="--ent:var(--ambar)"><b>En curso</b></span><span style="--ent:var(--rojo)"><b>Perdidas</b></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 21 · Monitoreo en oscuro ══════════ -->
+    <section class="lamina" id="monitoreo-en-oscuro">
+      <header class="lamina-cab">
+        <h2>Monitoreo en oscuro</h2>
+        <span class="lamina-sec">§16 Oscuro</span>
+        <p class="lamina-regla">Muchas tarjetas iguales: <b>el número manda en mono</b> y el nombre es rótulo. Estado como ícono + palabra sin pastilla, barra contra el límite y 3 cifras con divisores.</p>
+        <p class="lamina-ref">Patrones 16.2, 16.3 · ref. 14</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo sin-aire">
+          <div class="k-mon" data-tema="oscuro">
+            <div class="cab"><div><h3>Sitios de clientes</h3><p id="mo-res">12 de 14 en línea · respuesta media 186 ms</p></div><div class="seg chico empuja" id="mo-vivo" role="group" aria-label="Actualización"><button data-v="vivo" class="on"><i class="ph ph-broadcast"></i>En vivo</button><button data-v="pausa"><i class="ph ph-pause"></i>Pausado</button></div></div>
+            <div class="k-mon-grilla" id="mo"></div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Se actualiza cada 3 s solo mientras está a la vista; con movimiento reducido arranca pausado.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 22 · KPI de celular ══════════ -->
+    <section class="lamina" id="kpi-de-celular">
+      <header class="lamina-cab">
+        <h2>KPI de celular</h2>
+        <span class="lamina-sec">§14 Celular</span>
+        <p class="lamina-regla">Arriba <b>la cifra protagonista de 36</b> con su delta; los demás KPIs en carrusel con encastre al 84 % y puntitos; lo de hoy en filas de 64 y la acción en píldora fija.</p>
+        <p class="lamina-ref">ref. 09, 11, 12</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo centro">
+          <div class="k-tel-fila">
+            <div class="tel">
+              <div class="scr k-scr" id="cel-scr">
+                <div class="k-tel-top"><span class="av grande" style="--ent:var(--e5)" role="img" aria-label="Ana Ferreyra">AF</span><div><b>Hola, Ana</b><small>Miércoles 18 nov</small></div><button class="btn ic" aria-label="Avisos, 3 sin leer"><i class="ph ph-bell"></i><span class="insignia" aria-hidden="true">3</span></button></div>
+                <div style="margin-top:var(--espacio-8)"><span class="rot-g">Por cobrar</span>
+                  <div class="k-tel-cifra"><span class="u">$</span><span id="cel-n">48.215.300</span></div>
+                  <div class="fila g3" style="margin-top:var(--espacio-2)"><span class="delta"><b class="sube"><i class="ph ph-trend-down"></i>−6,2 %</b> vs. octubre</span><span class="ctx" style="margin:0">· bajar es bueno</span></div></div>
+                <div class="k-carrusel" id="cel-car" aria-label="Más indicadores" tabindex="0">
+                  <div class="bandeja"><div class="rot"><i class="ph ph-seal-check"></i>Cobrado</div><div class="adentro"><div class="n"><span class="u">$</span><span id="cel-cob">31.480.000</span></div><div class="ctx num">72 % de la meta</div><div class="ticks" id="cel-t"></div></div></div>
+                  <div class="bandeja"><div class="rot"><i class="ph ph-receipt"></i>Facturado</div><div class="adentro"><div class="n"><span class="u">$</span>43.910.000</div><div class="ctx">38 facturas</div><svg class="k-spark" id="cel-s"></svg></div></div>
+                  <div class="bandeja"><div class="rot"><i class="ph ph-package"></i>Entregas</div><div class="adentro"><div class="n">7<span class="u" style="margin:0 0 0 var(--espacio-2)">de 12</span></div><div class="ctx">5 antes del 30 nov</div><div class="segs" id="cel-b"></div></div></div>
+                </div>
+                <div class="k-puntitos" id="cel-pt" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+                <div class="k-tel-sec">Vence esta semana</div>
+                <div id="cel-lista"></div>
+              </div>
+              <div class="fundido"></div>
+              <button class="accion" id="cel-cobrar"><i class="ph ph-hand-coins"></i>Registrar cobro</button>
+              <nav class="barra" aria-label="Secciones"><button class="on" aria-current="page"><i class="ph-fill ph-house"></i>Inicio</button><button aria-label="Cobranzas"><i class="ph ph-receipt"></i></button><button aria-label="Proyectos"><i class="ph ph-kanban"></i></button><button aria-label="Más"><i class="ph ph-dots-three"></i></button></nav>
+            </div>
+            <div class="k-anat">
+              <div><span class="n">01</span><span><b>Cifra de 36</b> con la moneda en gris y el delta con su período.</span></div>
+              <div><span class="n">02</span><span><b>Carrusel al 84 %</b>: se asoma la siguiente para que se note que hay más.</span></div>
+              <div><span class="n">03</span><span><b>Filas de 64</b> con cuadro de 40 y el monto a la derecha.</span></div>
+              <div><span class="n">04</span><span><b>Una sola píldora</b> fija arriba de la barra; registrar cobro descuenta en vivo.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 23 · Requiere atención ══════════ -->
+    <section class="lamina" id="requiere-atencion">
+      <header class="lamina-cab">
+        <h2>Requiere atención</h2>
+        <span class="lamina-sec">§3 Color · §5 KPI</span>
+        <p class="lamina-regla">El aviso vive <b>en el pie, con ícono + motivo + cifra</b>, nunca pintando la tarjeta. Resuelto, el pie vuelve a gris y dice "Nada vencido".</p>
+        <p class="lamina-ref">Patrones 7.13 · ref. 06 (Needs attention)</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="grilla g-3">
+            <div class="bandeja"><div class="rot"><i class="ph ph-receipt"></i>Por facturar</div><div class="adentro"><div class="n"><span class="u">$</span>6.380.000</div><div class="ctx">5 hitos terminados</div></div><div class="pie"><span class="gris"><i class="ph ph-check"></i>Todo al día</span></div></div>
+            <div class="bandeja"><div class="rot"><i class="ph ph-calendar-dots"></i>Vencen esta semana</div><div class="adentro"><div class="n"><span class="u">$</span>4.120.000</div><div class="ctx">3 facturas · Orbe, Delta, Atlas</div></div><a class="pie k-am" href="#requiere-atencion" data-lista="Vencen esta semana"><span><i class="ph ph-clock-countdown"></i>La primera vence mañana</span><span><i class="ph ph-arrow-up-right"></i></span></a></div>
+            <div class="bandeja" id="at-k"><div class="rot"><i class="ph ph-warning-octagon"></i>Vencidas</div><div class="adentro"><div class="n"><span class="u">$</span><span id="at-n">6.210.000</span></div><div class="ctx num" id="at-ctx">4 facturas · la más vieja hace 38 días</div></div><button class="pie k-pie-btn k-ro" id="at-pie"><span id="at-pie-t"><i class="ph ph-warning-circle"></i>Requiere atención · ver las 4</span><span><i class="ph ph-arrow-down"></i></span></button></div>
+          </div>
+          <div class="card" style="padding:var(--espacio-2) var(--espacio-6)"><div class="k-filas" id="at-lista" style="margin:0"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 24 · KPI cargando ══════════ -->
+    <section class="lamina" id="kpi-cargando">
+      <header class="lamina-cab">
+        <h2>KPI cargando</h2>
+        <span class="lamina-sec">§6b Estados</span>
+        <p class="lamina-regla">Esqueleto <b>con la forma final</b> (rótulo, cifra, dibujo, pie) que aparece recién a los 300 ms para no parpadear; si falla, el error queda en el lugar con Reintentar.</p>
+        <p class="lamina-ref">Patrones 15 · SKILL §6b</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="k-barra-ctl"><span class="rot-g">Simular</span><button class="btn chico" data-carga="180"><i class="ph ph-lightning"></i>Rápida (180 ms)</button><button class="btn chico" data-carga="1600"><i class="ph ph-hourglass"></i>Lenta (1,6 s)</button><button class="btn chico peligro" data-carga="falla"><i class="ph ph-plugs"></i>Falla</button></div>
+          <div class="grilla g-3" id="cg"></div>
+          <div class="variantes">
+            <div class="variante"><span class="rot-g"><i class="ph ph-check-circle"></i>Forma quieta (lo que se ve)</span>
+              <div class="bandeja" aria-busy="true" aria-label="Cargando Cobrado"><div class="rot"><span class="esq" style="width:96px"></span></div><div class="adentro k-esq"><span class="esq" style="height:32px;width:70%;display:block"></span><span class="esq" style="width:50%;display:block;margin-top:var(--espacio-3)"></span><span class="esq" style="height:16px;display:block;margin-top:var(--espacio-5)"></span></div><div class="pie"><span class="esq" style="width:120px;height:10px"></span></div></div></div>
+            <div class="variante mal"><span class="rot-g"><i class="ph ph-x-circle no"></i>No: ruedita en el medio y salto al cargar</span>
+              <div class="card pad" style="min-height:140px;display:grid;place-items:center"><i class="ph ph-spinner gira" style="font-size:24px;color:var(--texto-3)" aria-hidden="true"></i><span class="sr">Cargando</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 25 · KPI sin datos ══════════ -->
+    <section class="lamina" id="kpi-sin-datos">
+      <header class="lamina-cab">
+        <h2>KPI sin datos</h2>
+        <span class="lamina-sec">§6b Estados · §6c</span>
+        <p class="lamina-regla">Sin dato es <b>"—" en gris con el motivo</b>; cero es un dato y se festeja si es bueno. Sin conexión, el último valor con su hora; sin permiso, se dice quién lo ve.</p>
+        <p class="lamina-ref">Patrones 7.13, 7.18 · SKILL §5 KPI</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="grilla g-4">
+            <div class="bandeja k-sin" id="sd1"><div class="rot"><i class="ph ph-hand-coins"></i>Cobrado en diciembre</div><div class="adentro"><div class="n" id="sd1-n">—</div><div class="ctx" id="sd1-ctx">Empieza a contar con el primer cobro</div><div class="ticks" id="sd1-t"></div></div><div class="pie"><button class="btn chico" id="sd1-b"><i class="ph ph-plus"></i>Registrar el primero</button></div></div>
+            <div class="bandeja"><div class="rot"><i class="ph ph-warning-octagon"></i>Vencidas</div><div class="adentro"><div class="n"><span class="u">$</span>0</div><div class="ctx">Nada vencido · 3 cobros entran esta semana</div><div class="ticks" id="sd2-t"></div></div><div class="pie"><span class="sube"><i class="ph ph-check-circle"></i>Al día desde el 2 nov</span></div></div>
+            <div class="bandeja" id="sd3"><div class="rot"><i class="ph ph-bank"></i>Saldo en bancos</div><div class="adentro"><div class="n"><span class="u">$</span><span>21.840.500</span></div><div class="ctx">Galicia, Santander y Mercado Pago</div><svg class="k-spark" id="sd3-s"></svg></div><div class="pie k-am" style="color:var(--ambar)"><span><i class="ph ph-cloud-slash"></i><span id="sd3-t">Dato de hace 2 h</span></span><button class="btn chico texto" id="sd3-b" aria-label="Reintentar la conexión con los bancos"><i class="ph ph-arrows-clockwise"></i>Reintentar</button></div></div>
+            <div class="bandeja"><div class="rot"><i class="ph ph-users"></i>Sueldos del mes</div><div class="adentro"><div class="n gris" aria-label="Oculto">$ •••••••</div><div class="k-candado"><i class="ph ph-lock-simple"></i>Solo lo ven Administración y Dirección</div></div><div class="pie"><span class="gris">Pedí acceso a Lucía Paz</span></div></div>
+          </div>
+          <div class="variantes">
+            <div class="variante mal"><span class="rot-g"><i class="ph ph-x-circle no"></i>No: cero cuando no hay dato</span><div class="adentro"><div class="n">$ 0</div><div class="ctx">Cobrado en diciembre</div></div></div>
+            <div class="variante mal"><span class="rot-g"><i class="ph ph-x-circle no"></i>No: lo que escupe el código</span><div class="adentro"><div class="n k-nota-mal">NaN %</div><div class="ctx k-nota-mal">undefined vs. null</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="menu" id="menu-cobrado">
+  <div class="gr-m"><button data-acc="ver"><i class="ph ph-list-magnifying-glass"></i>Ver cobros<span class="atajo">G C</span></button><button data-acc="exp"><i class="ph ph-export"></i>Exportar CSV</button><button data-acc="meta"><i class="ph ph-target"></i>Cambiar meta</button></div>
+  <div class="gr-m"><button class="peligro" data-acc="ocultar"><i class="ph ph-eye-slash"></i>Ocultar del tablero</button></div>
+</div>
+<div class="menu" id="menu-capacidad">
+  <div class="gr-m"><button><i class="ph ph-users"></i>Ver por persona</button><button><i class="ph ph-calendar"></i>Ver feriados y licencias</button></div>
+</div>
+
+<script src="base.js"></script>
+<script>
+/* Script de 05-kpis: después de base.js, usando bib.* */
+const { $, $$, fmt, linea, ticks, bloques, anillo, cuenta, toast, destellar, anunciar, quieto, escapar } = bib;
+const n0 = n => fmt.numero(n);
+const corto = n => fmt.monto(n, 'ARS', { corto: true });
+const pesos = n => fmt.monto(n, 'ARS', { centavos: false });
+const EASE = 'cubic-bezier(.23,1,.32,1)';
+
+/* cifra que rueda desde el valor anterior (sin animar si no hay "desde") */
+function rueda(el, hasta, desde, f = n0) { if (desde == null || desde === hasta) { el.textContent = f(hasta); return; } cuenta(el, hasta, { desde, formato: f }); }
+/* delta con flecha: el color sale de si es bueno para el negocio, no del signo */
+function delta(v, o = {}) {
+  const r = Math.round(v * 10) / 10, bueno = o.sentido === 'baja' ? r < 0 : r > 0;
+  const tono = r === 0 ? 'neutro' : bueno ? 'sube' : 'baja';
+  const ic = r > 0 ? 'trend-up' : r < 0 ? 'trend-down' : 'minus';
+  const txt = r === 0 ? (o.cero || 'igual') : o.u === 'pts' ? `${r > 0 ? '+' : '−'}${fmt.numero(Math.abs(r), 1)} pts` : o.u === 'n' ? `${r > 0 ? '+' : '−'}${fmt.numero(Math.abs(r))}` : fmt.pct(r);
+  return { tono, html: `<i class="ph ph-${ic}"></i>${txt}<span class="sr">, ${tono === 'neutro' ? 'estable' : tono === 'sube' ? 'favorable' : 'desfavorable'}</span>` };
+}
+/* anillo que gira desde donde estaba */
+function anilloVivo(el, tam, frac, o = {}) {
+  const prev = el._frac ?? 0; el._frac = frac;
+  el.innerHTML = anillo(tam, Math.min(1, frac), o);
+  const c = el.querySelectorAll('circle')[1]; if (quieto || !c) return;
+  const L = parseFloat(c.getAttribute('stroke-dasharray'));
+  c.animate([{ strokeDashoffset: L * (1 - Math.min(1, prev)) }, { strokeDashoffset: L * (1 - Math.min(1, frac)) }], { duration: 700, easing: EASE });
+}
+/* rayitas que se repintan sin re-animar */
+function repintarTicks(el, llenos, color, pasaDesde = Infinity) {
+  [...el.children].forEach((i, k) => { i.style.background = k < llenos ? color : ''; i.classList.toggle('k-pasa', k >= pasaDesde && k < llenos); });
+}
+function brillo(el) { if (!el || quieto) return; el.classList.remove('destello'); void el.offsetWidth; el.classList.add('destello'); }
+
+/* todo pie con data-lista lleva a su lista filtrada (en la demo: aviso) */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-lista]'); if (!a) return;
+  e.preventDefault();
+  toast({ tipo: 'info', titulo: `Abre ${a.dataset.lista}`, detalle: 'Con el filtro puesto y la primera fila destellando' });
+});
+$$('#menu-cobrado [data-acc]').forEach(b => b.addEventListener('click', () => {
+  const t = { ver: 'Abre Cobranzas · cobradas en noviembre', exp: 'Exportando 38 cobros a CSV', meta: 'Abre el cambio de meta del mes', ocultar: 'Cobrado ya no se ve en tu tablero' }[b.dataset.acc];
+  toast({ titulo: t, ...(b.dataset.acc === 'ocultar' ? { deshacer: () => {} } : {}) });
+}));
+
+/* ═════ 1 · KPI en bandeja ═════ */
+const AGING = [
+  { k: 'al', nom: 'Al día', monto: 21400000, ent: 'var(--e4)' },
+  { k: '30', nom: '1 a 30 días', monto: 12900000, ent: 'var(--dato-4)' },
+  { k: '60', nom: '31 a 60 días', monto: 8715300, ent: 'var(--e3)' },
+  { k: 'mas', nom: 'Más de 60', monto: 5200000, ent: 'var(--rojo)' },
+];
+const BAND = {
+  sem: { cob: 6120000, meta: 10900000, dCob: 2.4, fac: 9840000, nFac: 9, dFac: 5.1, serie: [1.1, 1.6, 1.2, 2.4, 1.9, 0.6, 1.0], ent: 2, entT: 4, entCtx: '2 vencen el viernes 20', dEnt: 1, hs: 81, hsN: 296, hsT: 366, dHs: 1.2, vs: 'vs. semana pasada' },
+  mes: { cob: 31480000, meta: 43700000, dCob: 8.1, fac: 43910000, nFac: 38, dFac: 12.4, serie: [2.1, 3.4, 2.8, 4.6, 3.9, 5.2, 4.1, 6.3, 5.4, 7.1, 6.2, 8.4, 7.6], ent: 7, entT: 12, entCtx: '5 vencen antes del 30 nov', dEnt: 0, hs: 78, hsN: 1212, hsT: 1552, dHs: -2.3, vs: 'vs. octubre' },
+  tri: { cob: 112600000, meta: 131100000, dCob: -1.3, fac: 128450000, nFac: 109, dFac: 3.8, serie: [31.2, 33.4, 36.1, 34.8, 38.6, 40.2, 39.1, 42.5, 44.9, 43.9], ent: 19, entT: 31, entCtx: '12 se entregan en diciembre', dEnt: 4, hs: 80, hsN: 3690, hsT: 4610, dHs: 0.6, vs: 'vs. 3.er trimestre' },
+};
+let bAct = null;
+function pieBand(el, d, extra = '') { el.innerHTML = `<span class="${d.tono} num">${d.html}</span><span>${extra}<i class="ph ph-arrow-up-right"></i></span>`; }
+function pintarBandeja(clave) {
+  const d = BAND[clave], a = bAct && BAND[bAct];
+  const pc = d.cob / d.meta * 100;
+  rueda($('#b1-n'), d.cob, a?.cob);
+  $('#b1-ctx').textContent = `${fmt.numero(pc)} % de la meta de ${corto(d.meta)}`;
+  if (!a) ticks($('#b1-d'), 34, Math.round(34 * Math.min(1, pc / 100)), 'var(--e4)'); else repintarTicks($('#b1-d'), Math.round(34 * Math.min(1, pc / 100)), 'var(--e4)');
+  pieBand($('#b1-d').closest('.bandeja').querySelector('.pie'), delta(d.dCob), d.vs + ' ');
+  rueda($('#b2-n'), d.fac, a?.fac);
+  $('#b2-ctx').textContent = `${fmt.plural(d.nFac, 'factura', 'facturas')} · ticket ${corto(d.fac / d.nFac)}`;
+  linea($('#b2-d'), d.serie, { color: 'var(--e1)', ancho: 240, alto: 44 });
+  pieBand($('#b2-d').closest('.bandeja').querySelector('.pie'), delta(d.dFac), d.vs + ' ');
+  rueda($('#b3-n'), d.ent, a?.ent);
+  $('#b3-n').nextElementSibling.textContent = `de ${d.entT}`;
+  $('#b3-ctx').textContent = d.entCtx;
+  bloques($('#b3-d'), d.entT > 12 ? 12 : d.entT, Math.round(d.ent / d.entT * Math.min(12, d.entT)), 'var(--e5)');
+  pieBand($('#b3-d').closest('.bandeja').querySelector('.pie'), delta(d.dEnt, { u: 'n' }), (d.dEnt === 0 ? d.vs.replace('vs.', 'que') : d.vs) + ' ');
+  rueda($('#b4-n'), d.hs, a?.hs);
+  $('#b4-ctx').textContent = `${n0(d.hsN)} de ${n0(d.hsT)} h`;
+  anilloVivo($('#b4-d'), 56, d.hs / 100, { grosor: 6, color: 'var(--e3)' });
+  pieBand($('#b4-d').closest('.bandeja').querySelector('.pie'), delta(d.dHs, { u: 'pts' }), d.vs + ' ');
+  bAct = clave;
+}
+(function aging() {
+  const tot = AGING.reduce((s, x) => s + x.monto, 0);
+  $('#b5-d').innerHTML = AGING.map(x => `<i style="--ent:${x.ent};flex-grow:${x.monto / tot * 100}"></i>`).join('');
+  $('#b5-d').setAttribute('aria-label', 'Por antigüedad: ' + AGING.map(x => `${x.nom} ${corto(x.monto)}`).join(', '));
+  $('#b5-ley').innerHTML = AGING.map(x => `<span style="--ent:${x.ent}">${x.nom.replace(' días', ' d').replace('Más de 60', '+60 d')} <b>${fmt.numero(x.monto / tot * 100)} %</b></span>`).join('');
+})();
+pintarBandeja('mes');
+$('#b-periodo').addEventListener('cambio', e => pintarBandeja(e.detail));
+
+/* ═════ 2 · Protagonista ═════ */
+const P1 = { n: 48215300, venc: 4, fac: 32, serie: [] };
+(function () { let v = 41.2; for (let i = 0; i < 30; i++) { v += Math.sin(i * 1.7) * 0.9 + 0.32; P1.serie.push(Math.round(v * 1e6)); } P1.serie[29] = P1.n; })();
+let p1Puntos = linea($('#p1-c'), P1.serie, { color: '#fff', blanco: true, ancho: 300, alto: 80 }).puntos;
+function pintarP1(desde) {
+  rueda($('#p1-n'), P1.n, desde);
+  $('#p1-ctx').textContent = `${P1.fac} facturas · ${P1.venc} vencidas`;
+}
+(function lectura() {
+  const h = $('#p1'), zona = $('.k-zona', h), guia = $('.k-guia', h), lee = $('.k-lee', h), svg = $('#p1-c'), pto = () => $('.pto', svg);
+  const mover = x => {
+    const r = h.getBoundingClientRect(), rel = Math.max(0, Math.min(1, (x - r.left) / r.width));
+    const i = Math.round(rel * (P1.serie.length - 1)), p = p1Puntos[i], px = p[0] / 300 * r.width;
+    guia.style.left = px + 'px'; lee.style.left = Math.max(70, Math.min(r.width - 70, px)) + 'px';
+    const dia = new Date(Date.UTC(2026, 9, 20 + i)); const iso = dia.toISOString().slice(0, 10);
+    lee.textContent = `${fmt.fecha(iso)} · ${corto(P1.serie[i])}`;
+    pto()?.setAttribute('cx', p[0]); pto()?.setAttribute('cy', p[1]);
+    h.classList.add('leyendo');
+  };
+  zona.addEventListener('pointermove', e => mover(e.clientX));
+  zona.addEventListener('pointerdown', e => mover(e.clientX));
+  zona.addEventListener('pointerleave', () => { h.classList.remove('leyendo'); const m = p1Puntos[28]; pto()?.setAttribute('cx', m[0]); pto()?.setAttribute('cy', m[1]); });
+})();
+$('#p1-cobrar').addEventListener('click', () => {
+  const antes = { ...P1 }, m = 1250000;
+  P1.n -= m; P1.fac -= 1; P1.serie = [...P1.serie.slice(0, 29), P1.n];
+  p1Puntos = linea($('#p1-c'), P1.serie, { color: '#fff', blanco: true, ancho: 300, alto: 80, animar: false }).puntos;
+  pintarP1(antes.n);
+  toast({ titulo: `Cobro registrado · FAC-01102 · ${pesos(m)}`, detalle: 'Orbe Retail · quedó en Cobranzas como cobrada', deshacer: () => { const ahora = P1.n; Object.assign(P1, antes); p1Puntos = linea($('#p1-c'), P1.serie, { color: '#fff', blanco: true, ancho: 300, alto: 80, animar: false }).puntos; pintarP1(ahora); } });
+});
+linea($('#p2-c'), [14.1, 13.6, 13.9, 13.2, 13.5, 12.9, 13.1, 12.6, 12.84], { color: '#fff', blanco: true, ancho: 300, alto: 80, marca: false });
+
+/* ═════ 3 · Rayitas hasta la meta ═════ */
+(function () {
+  const META = 43700000, el = $('#r-d');
+  ticks(el, 34, 25, 'var(--e4)');
+  const pintar = v => {
+    const pc = v / META * 100, ll = Math.round(34 * Math.min(1, pc / 100));
+    $('#r-n').textContent = n0(v);
+    repintarTicks(el, ll, 'var(--e4)');
+    const ctx = $('#r-ctx');
+    if (pc >= 100) ctx.innerHTML = `<span class="sube"><i class="ph ph-check-circle"></i> Meta cumplida</span> · ${corto(v - META)} arriba`;
+    else if (pc < 50) ctx.innerHTML = `${fmt.numero(pc)} % de la meta · <span class="vencida">faltan ${corto(META - v)} en 8 días hábiles</span>`;
+    else ctx.textContent = `${fmt.numero(pc)} % de la meta de ${corto(META)}`;
+  };
+  $('#r-rango').addEventListener('input', e => pintar(+e.target.value));
+  $('#r-rango').setAttribute('aria-valuetext', '');
+  $('#r-rango').addEventListener('change', e => anunciar($('#r-ctx').textContent));
+  const r2 = $('#r2-d'); ticks(r2, 34, 34, 'var(--e5)'); repintarTicks(r2, 34, 'var(--e5)', Math.round(34 / 1.18));
+  ticks($('#r3-d'), 34, Math.round(34 * 9 / 40), 'var(--e2)');
+})();
+
+/* ═════ 4 · Bloques de avance ═════ */
+const PROY = {
+  bq1: { nom: 'Rediseño Casa Lumen', entrega: '9 dic', pasos: ['Brief y referencias', 'Moodboard', 'Propuesta de logo', 'Ajustes de logo', 'Paleta y tipografías', 'Papelería', 'Manual de marca', 'Plantillas para redes', 'Revisión con el cliente', 'Entrega de archivos'], hechos: 3 },
+  bq2: { nom: 'Sitio Bodega Sur', entrega: '26 nov', pasos: ['Mapa del sitio', 'Wireframes', 'Diseño de portada', 'Diseño de páginas internas', 'Carga de contenidos', 'Publicación'], hechos: 3 },
+};
+Object.entries(PROY).forEach(([id, p]) => {
+  const card = $('#' + id), seg = $(`#${id}-d`);
+  $(`#${id}-pasos`).innerHTML = p.pasos.map((t, i) => `<div class="fila g3 k-paso" style="min-height:32px;flex-wrap:nowrap"><button class="check" role="checkbox" aria-checked="${i < p.hechos}" aria-label="${escapar(t)}"></button><span class="t-13 trunca ${i < p.hechos ? 'gris' : ''}">${escapar(t)}</span></div>`).join('');
+  const pintar = () => {
+    const ch = $$('.check', card), h = ch.filter(c => c.getAttribute('aria-checked') === 'true').length, pc = Math.round(h / p.pasos.length * 100);
+    ch.forEach(c => c.nextElementSibling.classList.toggle('gris', c.getAttribute('aria-checked') === 'true'));
+    bloques(seg, p.pasos.length, h, 'var(--ent)');
+    $(`#${id}-pc`).textContent = pc + ' %';
+    $(`#${id}-ctx`).textContent = h === p.pasos.length ? `Todo hecho · listo para entregar el ${p.entrega}` : `${h} de ${p.pasos.length} hechos · entrega ${p.entrega}`;
+    return h;
+  };
+  pintar();
+  card.addEventListener('cambio', () => { const h = pintar(); if (h === p.pasos.length) { brillo(card); toast({ titulo: `${p.nom} · listo para entregar`, detalle: 'Los 10 pasos están hechos'.replace('10', p.pasos.length) }); } });
+});
+
+/* ═════ 5 · Anillo ═════ */
+anilloVivo($('#a1'), 44, .78, { grosor: 5, color: 'var(--e1)', aria: '78 % de horas facturables' });
+anilloVivo($('#a2'), 44, .92, { grosor: 5, color: 'var(--e4)', aria: '92 % de clientes renuevan' });
+anilloVivo($('#a3'), 76, 1846 / 2400, { grosor: 7, color: 'var(--e5)', texto: '77 %', aria: '77 % del presupuesto usado' });
+(function () {
+  let n = 6; const META = 20, btn = $('#a4-mas');
+  const pintar = () => {
+    anilloVivo($('#a4-d'), 22, n / META, { grosor: 3, color: n >= META ? 'var(--verde)' : 'var(--acento)' });
+    $('#a4-n').textContent = n;
+    if (n >= META) { btn.setAttribute('aria-disabled', 'true'); btn.innerHTML = '<i class="ph ph-check"></i>Meta del día cumplida'; }
+  };
+  pintar();
+  btn.addEventListener('click', () => { if (n >= META) return; n++; pintar(); anunciar(`${n} de ${META} llamadas hoy`); if (n === META) toast({ titulo: 'Meta del día cumplida', detalle: '20 llamadas · la mejor marca de la semana' }); });
+})();
+
+/* ═════ 6 · Anillo de puntos ═════ */
+const SERV = [
+  { nom: 'Diseño de marca', ic: 'pen-nib', pc: 38, monto: 70000000, det: '23 proyectos', ent: 'var(--e5)' },
+  { nom: 'Sitios web', ic: 'browser', pc: 27, monto: 49740000, det: '14 sitios', ent: 'var(--e1)' },
+  { nom: 'Mantenimiento', ic: 'wrench', pc: 21, monto: 38690000, det: '12 abonos', ent: 'var(--e6)' },
+  { nom: 'Consultoría', ic: 'chats-circle', pc: 14, monto: 25785300, det: '15 encargos', ent: 'var(--e3)' },
+];
+(function () {
+  const TOT = 40, cuantos = [15, 11, 8, 6], svg = $('#ap-svg');
+  let html = '', k = 0;
+  cuantos.forEach((c, g) => { for (let j = 0; j < c; j++, k++) { const a = -Math.PI / 2 + k / TOT * Math.PI * 2; html += `<circle data-g="${g}" cx="${(110 + 94 * Math.cos(a)).toFixed(1)}" cy="${(110 + 94 * Math.sin(a)).toFixed(1)}" r="6" style="fill:${SERV[g].ent}"/>`; } });
+  svg.innerHTML = html;
+  if (!quieto) $$('circle', svg).forEach((c, i) => c.animate([{ opacity: 0, transform: 'scale(.4)' }, { opacity: 1, transform: 'none' }], { duration: 320, delay: i * 14, easing: EASE, fill: 'backwards' }) && (c.style.transformOrigin = `${c.getAttribute('cx')}px ${c.getAttribute('cy')}px`));
+  const ley = $('#ap-ley');
+  ley.innerHTML = SERV.map((s, g) => `<button data-g="${g}" style="--ent:${s.ent}" aria-label="${s.nom}: ${s.pc} %, ${corto(s.monto)}"><span class="pt"></span><i class="ph ph-${s.ic}"></i><span class="nom">${s.nom}</span><span class="pc">${s.pc} %</span><small>${corto(s.monto)} · ${s.det}</small></button>`).join('');
+  const marcar = g => {
+    $$('circle', svg).forEach(c => { c.style.opacity = g == null || +c.dataset.g === g ? 1 : .18; });
+    ley.classList.toggle('atenua', g != null);
+    $$('button', ley).forEach(b => b.classList.toggle('on', +b.dataset.g === g));
+    $('#ap-total').textContent = g == null ? '$ 184,2 M' : corto(SERV[g].monto);
+    $('#ap-sub').textContent = g == null ? 'facturado en 2026' : SERV[g].nom.toLowerCase();
+  };
+  $$('button', ley).forEach(b => { b.addEventListener('pointerenter', () => marcar(+b.dataset.g)); b.addEventListener('focus', () => marcar(+b.dataset.g)); b.addEventListener('click', () => toast({ tipo: 'info', titulo: `Abre Facturas · ${SERV[b.dataset.g].nom}` })); });
+  ley.addEventListener('pointerleave', () => marcar(null)); ley.addEventListener('focusout', e => { if (!ley.contains(e.relatedTarget)) marcar(null); });
+})();
+
+/* ═════ 7 · Barra por antigüedad ═════ */
+const FACT_AG = [
+  { cod: 'FAC-01102', cli: 'Orbe Retail', monto: 8400000, venc: '2026-12-04', t: 'al' },
+  { cod: 'FAC-01099', cli: 'Casa Lumen', monto: 6250000, venc: '2026-11-28', t: 'al' },
+  { cod: 'FAC-01097', cli: 'Nube Austral', monto: 6750000, venc: '2026-11-25', t: 'al' },
+  { cod: 'FAC-01090', cli: 'Grupo Atlas', monto: 7300000, venc: '2026-11-04', t: '30' },
+  { cod: 'FAC-01086', cli: 'Ferretería Delta', monto: 5600000, venc: '2026-10-27', t: '30' },
+  { cod: 'FAC-01079', cli: 'Clínica Norte', monto: 8715300, venc: '2026-10-10', t: '60' },
+  { cod: 'FAC-01061', cli: 'Bodega Sur', monto: 5200000, venc: '2026-09-02', t: 'mas' },
+];
+function cuandoVence(iso) { const d = fmt.dias(iso); return d < 0 ? `<span class="vencida">venció hace ${-d} días</span>` : d === 0 ? 'vence hoy' : d === 1 ? 'vence mañana' : `vence en ${d} días`; }
+function filaFac(f, extra = '') { return `<div class="k-fila" data-cod="${f.cod}"><span class="cod" style="width:88px;flex:none">${f.cod}</span><span class="nom trunca">${escapar(f.cli)}</span><span class="cuando">${cuandoVence(f.venc)}</span><span class="monto"><span class="u">$</span>${n0(f.monto)}</span>${extra}</div>`; }
+(function () {
+  const tot = AGING.reduce((s, x) => s + x.monto, 0); let filtro = null;
+  $('#ag-barra').innerHTML = AGING.map(x => `<button data-t="${x.k}" style="--ent:${x.ent};flex-grow:${x.monto / tot * 100}" aria-label="${x.nom}: ${corto(x.monto)}" data-tip="${x.nom} · ${corto(x.monto)}"></button>`).join('');
+  $('#ag-cubos').innerHTML = AGING.map(x => { const n = FACT_AG.filter(f => f.t === x.k).length; return `<button data-t="${x.k}" style="--ent:${x.ent}" aria-pressed="false"><span class="r">${x.nom}</span><b>${corto(x.monto)}</b><small>${fmt.plural(n, 'factura', 'facturas')} · ${fmt.numero(x.monto / tot * 100)} %</small></button>`; }).join('');
+  const pintar = () => {
+    const lista = FACT_AG.filter(f => !filtro || f.t === filtro);
+    $('#ag-lista').innerHTML = lista.map(f => filaFac(f)).join('');
+    $('#ag-barra').classList.toggle('filtra', !!filtro);
+    $$('#ag-barra button, #ag-cubos button').forEach(b => { b.classList.toggle('on', b.dataset.t === filtro); if (b.closest('#ag-cubos')) b.setAttribute('aria-pressed', b.dataset.t === filtro); });
+    $('#ag-limpiar').hidden = !filtro;
+    if (filtro) brillo($('#ag-lista .k-fila'));
+  };
+  $$('#ag-barra button, #ag-cubos button').forEach(b => b.addEventListener('click', () => { filtro = filtro === b.dataset.t ? null : b.dataset.t; pintar(); anunciar(filtro ? `${AGING.find(x => x.k === filtro).nom}: ${$$('#ag-lista .k-fila').length} facturas` : 'Sin filtro'); }));
+  $('#ag-limpiar').addEventListener('click', () => { filtro = null; pintar(); });
+  pintar();
+})();
+
+/* ═════ 9 · Fila con divisores ═════ */
+(function () {
+  let sinc = Date.now() - 12 * 60000, hs = 1284;
+  const txt = () => { const m = Math.round((Date.now() - sinc) / 60000); $('#dv-fresco').textContent = m < 1 ? 'Sincronizado recién' : `Sincronizado hace ${m} min`; };
+  setInterval(txt, 30000);
+  $('#dv-recargar').addEventListener('click', e => {
+    const b = e.currentTarget; if (b.getAttribute('aria-busy') === 'true') return;
+    b.setAttribute('aria-busy', 'true'); $('.ph', b).classList.add('gira'); $('#dv-fresco').textContent = 'Sincronizando…';
+    setTimeout(() => {
+      const antes = hs; hs += 13; rueda($('#dv2'), hs, antes); $('#dv2c').textContent = '86 % facturables · +13 h desde las 15:30';
+      sinc = Date.now(); txt(); b.removeAttribute('aria-busy'); $('.ph', b).classList.remove('gira'); anunciar('Sincronizado: 13 horas nuevas');
+    }, 900);
+  });
+})();
+
+/* ═════ 10 · Total con su composición ═════ */
+const CLI = [['Orbe Retail', 31870000], ['Casa Lumen', 24310000], ['Grupo Atlas', 22100000], ['Bodega Sur', 19340000], ['Clínica Norte', 17500000], ['Ferretería Delta', 15660000], ['Nube Austral', 14740000], ['Estudio Brío', 12890000], ['Otros 5 clientes', 25805300]];
+(function () {
+  const TOT = 184215300, COL = ['var(--e1)', 'var(--e2)', 'var(--e3)', 'var(--e4)', 'var(--e5)', 'var(--e6)', 'var(--dato-4)', 'var(--dato-2)', 'var(--dato-6)'];
+  const GRIS = [70, 58, 48, 40, 32, 26].map(x => `color-mix(in oklch,var(--texto-3) ${x}%,var(--superficie))`);
+  let vista = 'serv', abierto = false;
+  const pc = m => fmt.numero(m / TOT * 100, 1).replace(/,0$/, '');
+  const pintar = () => {
+    let partes, ley, sub;
+    if (vista === 'serv') { partes = SERV.map(s => [s.nom, s.monto, s.ent]); ley = partes; sub = 'En 4 servicios · 64 facturas · nada anulado'; }
+    else {
+      partes = CLI.map((c, i) => [c[0], c[1], abierto ? COL[i] : i < 3 ? COL[i] : GRIS[i - 3] || GRIS[5]]);
+      const resto = CLI.slice(3).reduce((s, c) => s + c[1], 0);
+      ley = abierto ? partes : [...partes.slice(0, 3), [`Otros ${CLI.length - 3 + 4}`, resto, 'var(--texto-3)']];
+      sub = 'De 13 clientes · el mayor pesa 17,3 %';
+    }
+    $('#tc-sub').textContent = sub;
+    const barra = $('#tc-barra');
+    if (barra.children.length !== partes.length) barra.innerHTML = partes.map(() => '<i></i>').join('');
+    [...barra.children].forEach((i, k) => { i.style.flexGrow = partes[k][1]; i.style.setProperty('--ent', partes[k][2]); });
+    barra.setAttribute('aria-label', partes.map(p => `${p[0]} ${pc(p[1])} %`).join(', '));
+    $('#tc-ley').innerHTML = ley.map(p => `<span style="--ent:${p[2]}">${escapar(p[0])} <b>${pc(p[1])} %</b></span>`).join('');
+    const exp = $('#tc-exp'); exp.hidden = vista !== 'cli'; exp.setAttribute('aria-expanded', abierto); exp.setAttribute('aria-label', abierto ? 'Ver solo los 3 mayores' : 'Ver todos los clientes');
+  };
+  $('#tc-vista').addEventListener('cambio', e => { vista = e.detail; abierto = false; pintar(); });
+  $('#tc-exp').addEventListener('click', () => { abierto = !abierto; pintar(); });
+  pintar();
+})();
+
+/* ═════ 11 · Avance contra meta en dos bloques ═════ */
+(function () {
+  const META = 150000000; let fac = 126450000;
+  const pintar = desde => {
+    const pc = fac / META * 100;
+    rueda($('#m2-pc'), pc, desde != null ? desde / META * 100 : null, n => fmt.numero(n, 1));
+    const [lo, fa, so] = $('#m2-barra').children;
+    lo.style.flexGrow = Math.min(100, pc); fa.style.flexGrow = Math.max(0, 100 - pc); fa.style.display = pc >= 100 ? 'none' : ''; so.style.flexGrow = Math.max(0, pc - 100); so.style.display = pc > 100 ? '' : 'none';
+    $('#m2-falta').innerHTML = pc >= 100 ? `<span class="sube"><i class="ph ph-check-circle"></i> Meta cumplida · ${pesos(fac - META)} arriba</span>` : `Faltan ${pesos(META - fac)}`;
+    $('#m2-barra').setAttribute('aria-label', `${fmt.numero(pc, 1)} % de la meta de ${pesos(META)}`);
+  };
+  pintar();
+  $('#m2-sumar').addEventListener('click', () => {
+    const antes = fac; fac += 6000000; pintar(antes);
+    toast({ titulo: `Factura emitida · FAC-01105 · ${pesos(6000000)}`, detalle: 'Grupo Atlas · suma a la meta del trimestre', deshacer: () => { const a = fac; fac = antes; pintar(a); } });
+  });
+})();
+
+/* ═════ 12 · Meta con proyección ═════ */
+(function () {
+  const HAB = 20, HECHOS = 13;
+  const cards = [
+    { el: '#pr1', ico: 'receipt', tit: 'Facturación de noviembre', hecho: 43910000, meta: 60000000 },
+    { el: '#pr2', ico: 'hand-coins', tit: 'Cobranza de noviembre', hecho: 31480000, meta: 55000000 },
+  ];
+  cards.forEach(c => {
+    const proy = c.hecho / HECHOS * HAB, max = Math.max(proy, c.meta) * 1.1;
+    const w = v => (v / max * 100).toFixed(2) + '%', llega = proy >= c.meta;
+    const porDia = (c.meta - c.hecho) / (HAB - HECHOS);
+    $(c.el).innerHTML = `<span class="rot-g fila g3"><i class="ph ph-${c.ico}"></i>${c.tit}</span>
+      <div class="cifra" style="margin-top:var(--espacio-4)"><span class="u">$</span>${n0(c.hecho)}</div>
+      <div class="ctx num">de ${corto(c.meta)} · día hábil ${HECHOS} de ${HAB}</div>
+      <div class="k-proy" role="img" aria-label="Logrado ${corto(c.hecho)}, proyección ${corto(proy)}, meta ${corto(c.meta)}">
+        <i class="proy rayado" style="width:0"></i><i class="hecho" style="width:0"></i>
+        <span class="meta" style="left:${w(c.meta)}"><span>Meta ${corto(c.meta)}</span></span>
+        <span class="hoy" style="left:${w(c.hecho)}">hoy</span>
+        <span tabindex="0" role="img" aria-label="Al 18 nov: ${corto(c.hecho)}" data-tip="Al 18 nov: ${corto(c.hecho)}" style="left:0;width:${w(c.hecho)}"></span>
+        <span tabindex="0" role="img" aria-label="Proyección al 30 nov: ${corto(proy)}" data-tip="Proyección al 30 nov: ${corto(proy)}" style="left:${w(c.hecho)};width:calc(${w(proy)} - ${w(c.hecho)})"></span>
+      </div>
+      <p class="k-proy-txt">${llega
+        ? `<i class="ph ph-check-circle" style="color:var(--verde)"></i><span>A este ritmo cerrás en <b>${corto(proy)}</b>, ${fmt.numero(proy / c.meta * 100)} % de la meta. Sobran ${corto(proy - c.meta)}.</span>`
+        : `<i class="ph ph-warning" style="color:var(--ambar)"></i><span>A este ritmo cerrás en <b>${corto(proy)}</b> (${fmt.numero(proy / c.meta * 100)} %). Para llegar hacen falta <b>${corto(porDia)} por día hábil</b> en los ${HAB - HECHOS} que quedan.</span>`}</p>`;
+    requestAnimationFrame(() => requestAnimationFrame(() => { $(c.el + ' .hecho').style.width = w(c.hecho); setTimeout(() => { $(c.el + ' .proy').style.width = w(proy); }, quieto ? 0 : 200); }));
+  });
+})();
+
+/* ═════ 13 · Comparativo ═════ */
+(function () {
+  const D = {
+    fac: { nov: 43910000, dia: 39100000, mes: 61200000, f: n => pesos(n), c: corto },
+    cob: { nov: 31480000, dia: 33900000, mes: 52400000, f: n => pesos(n), c: corto },
+    hs: { nov: 1212, dia: 1180, mes: 1960, f: n => `${n0(n)} h`, c: n => `${n0(n)} h` },
+  };
+  let met = 'fac', base = 'dia', prevN = null;
+  const pintar = () => {
+    const d = D[met], prev = d[base], dl = (d.nov / prev - 1) * 100, mx = Math.max(d.nov, prev), esc = v => (v / mx * 74).toFixed(1);
+    const nEl = $('#cm-n');
+    if (prevN != null && met === prevN.met) nEl.textContent = d.f(d.nov); else rueda(nEl, d.nov, prevN?.v ?? null, d.f);
+    prevN = { met, v: d.nov };
+    const ch = $('#cm-delta'); ch.className = 'chip redondo ' + (dl >= 0 ? 'v' : 'ro');
+    ch.innerHTML = `<i class="ph ph-trend-${dl >= 0 ? 'up' : 'down'}"></i>${fmt.pct(dl)}<span class="sr">, ${dl >= 0 ? 'favorable' : 'desfavorable'}</span>`;
+    $('#cm-ctx').innerHTML = base === 'dia' ? 'Noviembre al día 18 contra octubre al día 18' : 'Noviembre al día 18 contra octubre completo · <span class="vencida">compara 18 días con 31</span>';
+    const cm = $('#cm');
+    if (!cm.children.length) cm.innerHTML = `<div class="b actual"><span>Noviembre</span><div class="pista"><i style="width:0"></i><b></b></div></div><div class="b previo"><span>Octubre</span><div class="pista"><i class="rayado" style="width:0"></i><b></b></div></div>`;
+    const [a, p] = cm.children;
+    requestAnimationFrame(() => {
+      $('i', a).style.width = esc(d.nov) + '%'; $('b', a).style.left = `calc(${esc(d.nov)}% + 8px)`; $('b', a).textContent = d.c(d.nov);
+      $('i', p).style.width = esc(prev) + '%'; $('b', p).style.left = `calc(${esc(prev)}% + 8px)`; $('b', p).textContent = d.c(prev);
+    });
+  };
+  $('#cm-met').addEventListener('cambio', e => { met = e.detail; pintar(); });
+  $('#cm-base').addEventListener('cambio', e => { base = e.detail; pintar(); });
+  pintar();
+})();
+
+/* ═════ 14 · Ranking ═════ */
+(function () {
+  const R = {
+    cli: { rot: 'Participación en lo facturado', lider: 'Orbe Retail lidera el año', filas: [['Orbe Retail', 17.3], ['Casa Lumen', 13.2], ['Grupo Atlas', 12.0], ['Bodega Sur', 10.5], ['Clínica Norte', 9.5], ['Ferretería Delta', 8.5]] },
+    per: { rot: 'Participación en horas facturadas', lider: 'Ana Ferreyra lidera noviembre', filas: [['Ana Ferreyra', 31.2], ['Martín Sosa', 24.8], ['Lucía Paz', 18.1], ['Tomás Ibarra', 14.6], ['Julia Ríos', 7.9], ['Nico Vera', 3.4]] },
+  };
+  let act = null;
+  const pintar = v => {
+    const r = R[v], mx = r.filas[0][1];
+    $('#rk-rot').textContent = r.rot; $('#rk-ctx').textContent = r.lider;
+    rueda($('#rk-n'), mx, act ? R[act].filas[0][1] : null, n => fmt.numero(n, 1));
+    $('#rk').innerHTML = r.filas.map((f, i) => `<button style="--i:${i}" data-n="${escapar(f[0])}"><span class="n">${i + 1}</span><span class="nom">${escapar(f[0])}</span><span class="barra" aria-hidden="true"><i style="width:${f[1] / mx * 100}%"></i></span><span class="pc">${fmt.numero(f[1], 1)} %</span></button>`).join('');
+    act = v;
+  };
+  $('#rk-vista').addEventListener('cambio', e => pintar(e.detail));
+  pintar('cli');
+  const R2 = [['Grupo Atlas', 64], ['Orbe Retail', 38], ['Casa Lumen', 21], ['Clínica Norte', 12]];
+  $('#rk2').innerHTML = R2.map((f, i) => `<button style="--i:${i}" data-n="${f[0]}"><span class="n">${i + 1}</span><span class="nom">${f[0]}</span><span class="barra" aria-hidden="true"><i style="width:${f[1] / 64 * 100}%"></i></span><span class="pc">${f[1]} h</span></button>`).join('');
+  document.addEventListener('click', e => { const b = e.target.closest('.k-rank button'); if (b) toast({ tipo: 'info', titulo: `Abre la ficha de ${b.dataset.n}` }); });
+})();
+$$('.k-desg button').forEach(b => b.addEventListener('click', () => toast({ tipo: 'info', titulo: `Abre el detalle de ${b.dataset.ir}` })));
+
+/* ═════ 16 · KPIs como selector del gráfico ═════ */
+(function () {
+  const MESES = ['dic 2025', 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov'];
+  const S = {
+    fac: [26.4, 28.1, 23.9, 30.2, 32.6, 29.8, 33.7, 31.5, 34.9, 36.7, 61.2, 43.9],
+    cob: [24.8, 27.6, 25.1, 28.3, 31.4, 30.2, 32.0, 32.9, 34.1, 38.0, 52.4, 31.5],
+    gas: [19.9, 20.5, 20.8, 21.1, 21.4, 21.7, 22.0, 22.3, 22.6, 22.9, 23.6, 12.8],
+  };
+  const graf = $('#ks-graf'), svg = $('#ks-svg'), W = 800, H = 180;
+  graf.insertAdjacentHTML('beforeend', '<span class="guia" style="top:30px"><span></span></span><span class="guia" style="top:80px"><span></span></span><span class="guia" style="top:130px"><span></span></span><span class="k-lee-g" aria-hidden="true"></span>');
+  const meses = document.createElement('div'); meses.className = 'k-meses-g'; meses.setAttribute('aria-hidden', 'true');
+  meses.innerHTML = MESES.map((m, i) => `<span style="left:${(i / 11 * 100).toFixed(2)}%">${m.split(' ')[0]}</span>`).join(''); graf.appendChild(meses);
+  let act = 'fac', pts = [];
+  const M = v => v * 1e6;
+  const pintar = v => {
+    act = v; const s = S[v], mx = Math.max(...s), mn = Math.min(...s), rango = mx - mn || 1, im = s.indexOf(mx);
+    pts = linea(svg, s, { color: 'var(--acento)', ancho: W, alto: H, marca: im, aria: `Serie mensual de ${v === 'fac' ? 'facturado' : v === 'cob' ? 'cobrado' : 'gastos'}` }).puntos;
+    $$('.guia', graf).forEach(g => { const y = parseFloat(g.style.top); g.firstChild.textContent = corto(M(mn + (H - 6 - y) / (H - 16) * rango)); });
+    const tot = s.reduce((a, b) => a + b, 0), prom = tot / 12, ib = s.indexOf(Math.min(...s.slice(0, 11)));
+    $('#ks-res').innerHTML = `<div><span>Total del rango</span><b>${corto(M(tot))}</b></div><div><span>Mes pico</span><b>${corto(M(mx))} · ${MESES[im]}</b></div><div><span>Mes más bajo (completo)</span><b>${corto(M(s[ib]))} · ${MESES[ib]}</b></div><div><span>Promedio mensual</span><b>${corto(M(prom))}</b></div>`;
+    $('#ks-t tbody').innerHTML = s.map((x, i) => `<tr><td>${MESES[i]}${i === 11 ? ' <span class="gris">· en curso</span>' : ''}</td><td class="r"><span class="monto">${corto(M(x))}</span></td><td class="r">${i ? `<span class="${x >= s[i - 1] ? 'sube' : 'baja'}">${fmt.pct((x / s[i - 1] - 1) * 100)}</span>` : '<span class="gris">—</span>'}</td></tr>`).join('');
+  };
+  const tabs = $$('#ks button');
+  const elegir = (b, foco) => { tabs.forEach(t => { const on = t === b; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; }); if (foco) b.focus(); pintar(b.dataset.v); };
+  tabs.forEach((b, i) => {
+    b.addEventListener('click', () => elegir(b));
+    b.addEventListener('keydown', e => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (d) { e.preventDefault(); elegir(tabs[(i + d + tabs.length) % tabs.length], true); } });
+  });
+  const lee = $('.k-lee-g', graf);
+  graf.addEventListener('pointermove', e => {
+    const r = graf.getBoundingClientRect(), i = Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * 11), p = pts[i];
+    lee.style.left = Math.max(60, Math.min(r.width - 60, p[0] / W * r.width)) + 'px'; lee.style.top = (p[1] / H * r.height - 34) + 'px';
+    lee.textContent = `${MESES[i]} · ${corto(M(S[act][i]))}`; lee.classList.add('ver');
+    const c = $('.pto', svg); c?.setAttribute('cx', p[0]); c?.setAttribute('cy', p[1]);
+  });
+  graf.addEventListener('pointerleave', () => { lee.classList.remove('ver'); const s = S[act], im = s.indexOf(Math.max(...s)), c = $('.pto', svg); c?.setAttribute('cx', pts[im][0]); c?.setAttribute('cy', pts[im][1]); });
+  $('#ks-tabla').addEventListener('click', e => {
+    const b = e.currentTarget, ver = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', ver); b.innerHTML = ver ? '<i class="ph ph-chart-line"></i>Ver gráfico' : '<i class="ph ph-table"></i>Ver tabla';
+    $('#ks-t').hidden = !ver; graf.hidden = ver; $('#ks-res').hidden = ver;
+  });
+  pintar('fac');
+})();
+
+/* ═════ 17 · Cifra con equivalente ═════ */
+(function () {
+  const C = [
+    { nom: 'Cuenta en dólares · Galicia', mon: 'USD', n: 18400, ent: 'var(--e1)' },
+    { nom: 'Por cobrar a Nube Austral (Chile)', mon: 'USD', n: 2450, ent: 'var(--e6)' },
+    { nom: 'Reserva para licencias', mon: 'USD', n: 1200, ent: 'var(--e5)' },
+    { nom: 'Cuenta en pesos · Santander', mon: 'ARS', n: 1168000, ent: 'var(--e3)' },
+  ];
+  let tc = 1170;
+  const pintar = () => {
+    const ars = c => c.mon === 'USD' ? c.n * tc : c.n, tot = C.reduce((s, c) => s + ars(c), 0);
+    $('#eq').innerHTML = C.map(c => `<div class="card pad k-eq" style="--ent:${c.ent}"><div class="rot-g trunca">${c.nom}</div>
+      <div class="cifra" style="margin-top:var(--espacio-4)"><span class="u">${c.mon === 'USD' ? 'US$' : '$'}</span>${n0(c.n)}</div>
+      <div class="eq">${c.mon === 'USD' ? `≈ ${pesos(c.n * tc)} al TC ${pesos(tc)}` : `≈ US$ ${n0(Math.round(c.n / tc))} al TC ${pesos(tc)}`}</div>
+      <div class="fina"><i style="width:${(ars(c) / tot * 100).toFixed(1)}%"></i></div><div class="pc">${fmt.numero(ars(c) / tot * 100)} % del total en pesos</div></div>`).join('');
+  };
+  const inp = $('#eq-tc');
+  inp.addEventListener('input', () => {
+    const v = parseFloat(inp.value.replace(/\./g, '').replace(',', '.'));
+    const ok = v > 100 && v < 100000; inp.closest('.in').classList.toggle('error', !ok);
+    $('#eq-tc-a').textContent = ok ? 'Los equivalentes se recalculan' : 'Escribí un TC entre 100 y 100.000';
+    if (ok) { tc = v; pintar(); }
+  });
+  inp.addEventListener('blur', () => { inp.value = fmt.numero(tc, 2).replace(/,00$/, ''); inp.closest('.in').classList.remove('error'); $('#eq-tc-a').textContent = 'Cambialo: los equivalentes se recalculan'; });
+  pintar();
+})();
+
+/* ═════ 18 · Resumen de cabecera ═════ */
+(function () {
+  const T = {
+    todas: '<span><b>64</b> facturas</span><span>· <b>$ 48,2 M</b> por cobrar</span><span>· <b class="vencida">4</b> vencidas</span>',
+    venc: '<span><b class="vencida">4</b> vencidas</span><span>· <b>$ 6,2 M</b></span><span>· la más vieja hace 38 días</span>',
+    sem: '<span><b>3</b> vencen esta semana</span><span>· <b>$ 4,1 M</b></span><span>· la primera mañana</span>',
+  };
+  const el = $('#rc'), pintar = v => { el.innerHTML = T[v]; el.classList.remove('desenfoque'); void el.offsetWidth; el.classList.add('desenfoque'); };
+  $('#rc-f').addEventListener('cambio', e => pintar(e.detail)); el.innerHTML = T.todas;
+})();
+
+/* ═════ 19 · Mapa de calor ═════ */
+(function () {
+  const SEM = 26, HOY_ISO = '2026-11-18', DIAS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'], MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  const inicio = Date.UTC(2026, 10, 16) - (SEM - 1) * 7 * 864e5; // lunes 6 jul 2026
+  const P = { ana: { semilla: 11, dens: .86, vac: null }, martin: { semilla: 29, dens: .7, vac: null }, lucia: { semilla: 47, dens: .62, vac: [Date.UTC(2026, 7, 10), Date.UTC(2026, 7, 21)] } };
+  const nivel = n => n === 0 ? 0 : n <= 2 ? 1 : n <= 4 ? 2 : n <= 6 ? 3 : 4;
+  const pintar = quien => {
+    const p = P[quien]; let s = p.semilla; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    const dias = [];
+    for (let k = 0; k < SEM * 7; k++) {
+      const t = inicio + k * 864e5, iso = new Date(t).toISOString().slice(0, 10), dow = k % 7, fut = iso > HOY_ISO;
+      const vac = p.vac && t >= p.vac[0] && t <= p.vac[1];
+      let n = 0; if (!fut && !vac) n = dow >= 5 ? (rnd() < .12 ? 1 + Math.floor(rnd() * 2) : 0) : rnd() < p.dens ? 1 + Math.floor(rnd() * 9 * p.dens) : 0;
+      dias.push({ iso, dow, n, fut, t });
+    }
+    const pasados = dias.filter(d => !d.fut), total = pasados.reduce((a, d) => a + d.n, 0);
+    $('#mc').innerHTML = dias.map(d => `<i data-n="${nivel(d.n)}" class="${d.fut ? 'fut' : ''}${d.iso === HOY_ISO ? ' hoy' : ''}"${d.fut ? '' : ` data-tip="${DIAS[d.dow]} ${fmt.fecha(d.iso)} · ${d.n === 0 ? 'sin actividad' : fmt.plural(d.n, 'tarea', 'tareas')}"`}></i>`).join('');
+    $('#mc-meses').innerHTML = Array.from({ length: SEM }, (_, w) => { const d = new Date(inicio + w * 7 * 864e5); return `<span>${d.getUTCDate() <= 7 ? MES[d.getUTCMonth()] : ''}</span>`; }).join('');
+    $('#mc-total').textContent = `${n0(total)} en total`;
+    $('#mc').setAttribute('aria-label', `${n0(total)} tareas cerradas en 26 semanas`);
+    const max = pasados.reduce((a, d) => d.n > a.n ? d : a);
+    let racha = 0, cur = 0; pasados.forEach(d => { if (d.dow >= 5) return; cur = d.n > 0 ? cur + 1 : 0; racha = Math.max(racha, cur); });
+    const sinNov = pasados.filter(d => d.iso >= '2026-11-01' && d.dow < 5 && d.n === 0).length;
+    $('#mc-tres').innerHTML = `<div><span class="rl"><i class="ph ph-lightning"></i>Día más activo</span><b>${fmt.fecha(max.iso)}</b><small>${fmt.plural(max.n, 'tarea', 'tareas')} · ${DIAS[max.dow].toLowerCase()}</small></div>
+      <div><span class="rl"><i class="ph ph-flame"></i>Racha más larga</span><b>${racha} días hábiles</b><small>seguidos con algo cerrado</small></div>
+      <div><span class="rl ${sinNov > 2 ? 'am' : ''}"><i class="ph ph-${sinNov > 2 ? 'warning' : 'calendar-blank'}"></i>Sin actividad</span><b>${sinNov} ${sinNov === 1 ? 'día' : 'días'}</b><small>hábiles en noviembre</small></div>`;
+    $('#mc').closest('.k-cal-wrap').scrollLeft = 9999;
+  };
+  $('#mc-quien').addEventListener('cambio', e => pintar(e.detail));
+  pintar('ana');
+})();
+
+/* ═════ 20 · Comparar entidades ═════ */
+(function () {
+  const G = [
+    { nom: 'Ana Ferreyra', sub: 'Cuentas grandes', gan: 8, cur: 3, per: 2, dc: 7, monto: 31200000, dm: 4100000, ent: 'var(--e5)' },
+    { nom: 'Martín Sosa', sub: 'Pymes', gan: 5, cur: 9, per: 4, dc: -4, monto: 14600000, dm: -2300000, ent: 'var(--e1)' },
+    { nom: 'Lucía Paz', sub: 'Sitios web', gan: 6, cur: 7, per: 4, dc: 2, monto: 12900000, dm: 900000, ent: 'var(--e6)' },
+  ];
+  let met = 'cierre';
+  const ce = $('#ce');
+  ce.innerHTML = G.map((g, i) => `<button aria-pressed="false" data-i="${i}"><div class="quien">${bib.avatar(g.nom, { color: g.ent, clase: 'grande', titulo: false })}<div class="min0"><b class="trunca">${g.nom}</b><small>${g.sub}</small></div></div><div class="cifra"></div>
+    <div class="estados-b" role="img" aria-label="${g.gan} ganadas, ${g.cur} en curso, ${g.per} perdidas"><i style="width:${g.gan / (g.gan + g.cur + g.per) * 100}%;background:var(--verde)"></i><i style="width:${g.cur / (g.gan + g.cur + g.per) * 100}%;background:var(--ambar)"></i><i style="width:${g.per / (g.gan + g.cur + g.per) * 100}%;background:var(--rojo)"></i></div>
+    <div class="ctx num">${g.gan} ganadas · ${g.cur} en curso · ${g.per} perdidas</div><div class="d"></div></button>`).join('');
+  const pintar = () => {
+    $$('button', ce).forEach((b, i) => {
+      const g = G[i], tot = g.gan + g.cur + g.per;
+      const c = $('.cifra', b), d = $('.d', b);
+      if (met === 'cierre') { c.innerHTML = `${fmt.numero(g.gan / tot * 100, 1)}<span class="u" style="margin:0 0 0 var(--espacio-1)">%</span>`; d.textContent = `${g.dc > 0 ? '+' : '−'}${Math.abs(g.dc)} pts vs. octubre`; d.style.color = g.dc > 0 ? 'var(--verde)' : 'var(--rojo)'; }
+      else { c.innerHTML = `<span class="u">$</span>${fmt.numero(g.monto / 1e6, 1)}<span class="u" style="margin:0 0 0 var(--espacio-2)">M</span>`; d.textContent = `${g.dm > 0 ? '+' : '−'}${corto(Math.abs(g.dm))} vs. octubre`; d.style.color = g.dm > 0 ? 'var(--verde)' : 'var(--rojo)'; }
+    });
+    const gan = G.reduce((s, g) => s + g.monto, 0), ng = G.reduce((s, g) => s + g.gan, 0);
+    $('#ce-pie').textContent = `48 propuestas · 3 responsables · ${ng} ganadas · ticket promedio ${corto(gan / ng)}`;
+  };
+  ce.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const on = b.getAttribute('aria-pressed') !== 'true'; $$('button', ce).forEach(x => x.setAttribute('aria-pressed', x === b && on)); ce.classList.toggle('foco', on); });
+  $('#ce-met').addEventListener('cambio', e => { met = e.detail; pintar(); });
+  pintar();
+})();
+
+/* ═════ 21 · Monitoreo en oscuro ═════ */
+(function () {
+  const LIM = 400;
+  const S = [
+    { dom: 'orbe-retail.com.ar', ms: 142, disp: 99.98, err: 0.2, vis: 12400 },
+    { dom: 'casalumen.com', ms: 98, disp: 100, err: 0.1, vis: 3810 },
+    { dom: 'bodegasur.com.ar', ms: 352, disp: 99.41, err: 1.8, vis: 6920 },
+    { dom: 'clinicanorte.com.ar', ms: null, disp: 97.2, err: 6.4, vis: 2140, caido: 4 },
+    { dom: 'grupoatlas.com', ms: 211, disp: 99.95, err: 0.3, vis: 8760 },
+    { dom: 'deltaferreteria.com.ar', ms: 176, disp: 99.9, err: 0.4, vis: 4310 },
+    { dom: 'nubeaustral.cl', ms: 124, disp: 99.99, err: 0.1, vis: 1980 },
+    { dom: 'estudiobrio.com', ms: 233, disp: 99.87, err: 0.6, vis: 920 },
+  ];
+  const est = s => s.ms == null ? ['Caído', 'x-circle', 'var(--rojo)'] : s.ms > 300 ? ['Lento', 'warning-circle', 'var(--ambar)'] : ['En línea', 'check-circle', 'var(--verde)'];
+  const g = $('#mo');
+  g.innerHTML = S.map((s, i) => `<div class="k-mon-t" data-i="${i}"><div class="top"><span class="dom" title="${s.dom}">${s.dom}</span><span class="est"></span></div><div class="val"></div><div class="pista"><i></i></div><div class="lim"><span class="pc"></span><span>límite ${LIM} ms</span></div>
+    <div class="tri"><div><span>Disp.</span><b class="disp"></b></div><div><span>Errores</span><b class="err"></b></div><div><span>Visitas</span><b class="vis"></b></div></div></div>`).join('');
+  const pintar = (cambio) => {
+    S.forEach((s, i) => {
+      const t = g.children[i], [e, ic, col] = est(s);
+      t.classList.toggle('caido', s.ms == null);
+      $('.est', t).innerHTML = `<i class="ph-fill ph-${ic}" style="color:${col}"></i><span style="color:${s.ms != null && s.ms <= 300 ? 'var(--texto-2)' : col}">${e}</span>`;
+      const v = $('.val', t), nuevo = s.ms == null ? '—<small>sin respuesta</small>' : `${n0(s.ms)}<small>ms</small>`;
+      if (v.innerHTML !== nuevo) { v.innerHTML = nuevo; if (cambio) { v.classList.remove('k-late'); void v.offsetWidth; v.classList.add('k-late'); } }
+      const pc = s.ms == null ? 0 : Math.min(100, s.ms / LIM * 100);
+      $('.pista i', t).style.width = pc + '%'; $('.pista i', t).style.background = s.ms == null ? 'var(--rojo)' : s.ms > 300 ? 'var(--ambar)' : 'var(--texto-2)';
+      $('.pc', t).textContent = s.ms == null ? `caído hace ${s.caido} min` : `${fmt.numero(pc)} % del límite`;
+      $('.disp', t).textContent = fmt.numero(s.disp, s.disp === 100 ? 0 : 2) + ' %'; $('.err', t).textContent = fmt.numero(s.err, 1) + ' %'; $('.vis', t).textContent = fmt.corto(s.vis);
+    });
+    const ok = S.filter(s => s.ms != null), prom = ok.reduce((a, s) => a + s.ms, 0) / ok.length;
+    $('#mo-res').textContent = `${ok.length} de ${S.length} en línea · respuesta media ${n0(prom)} ms · ${fmt.hora(new Date())}`;
+  };
+  pintar(false);
+  let vivo = !quieto, visible = false, ticks3 = 0;
+  if (quieto) $$('#mo-vivo button').forEach(b => { const on = b.dataset.v === 'pausa'; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+  $('#mo-vivo').addEventListener('cambio', e => { vivo = e.detail === 'vivo'; });
+  new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(g);
+  setInterval(() => {
+    if (!vivo || !visible || document.hidden) return;
+    ticks3++;
+    S.forEach(s => { if (s.ms != null) s.ms = Math.max(60, Math.round(s.ms * (0.92 + Math.random() * 0.16))); s.vis += Math.round(Math.random() * 12); });
+    const cn = S[3];
+    if (cn.ms == null) { cn.caido++; if (ticks3 === 4) { cn.ms = 268; cn.caido = 0; toast({ titulo: 'clinicanorte.com.ar volvió', detalle: `Estuvo caído 7 min · ${fmt.hora(new Date())}` }); } }
+    pintar(true);
+  }, 3000);
+})();
+
+/* ═════ 22 · KPI de celular ═════ */
+(function () {
+  ticks($('#cel-t'), 26, 19, 'var(--e4)');
+  linea($('#cel-s'), [2.1, 3.4, 2.8, 4.6, 3.9, 5.2, 4.1, 6.3, 7.6], { color: 'var(--e1)', ancho: 240, alto: 44 });
+  bloques($('#cel-b'), 12, 7, 'var(--e5)');
+  const car = $('#cel-car'), pts = $$('#cel-pt i');
+  car.addEventListener('scroll', () => { const i = Math.round(car.scrollLeft / (car.children[0].offsetWidth + 8)); pts.forEach((p, k) => p.classList.toggle('on', k === i)); }, { passive: true });
+  let L = [
+    { cli: 'Grupo Atlas', cod: 'FAC-01104', monto: 1850000, cuando: 'vence mañana', ent: 'var(--e1)' },
+    { cli: 'Ferretería Delta', cod: 'FAC-01100', monto: 1320000, cuando: 'vence el viernes', ent: 'var(--e3)' },
+    { cli: 'Orbe Retail', cod: 'FAC-01098', monto: 950000, cuando: 'vence el sábado', ent: 'var(--e2)' },
+  ];
+  let porCobrar = 48215300, cobrado = 31480000;
+  const pintar = () => {
+    $('#cel-lista').innerHTML = L.length ? L.map(f => `<div class="fl" data-cod="${f.cod}"><span class="tile" style="background:color-mix(in oklch,${f.ent} 14%,var(--superficie));color:${f.ent}"><i class="ph ph-receipt"></i></span><div class="min0"><b class="trunca">${f.cli}</b><small>${f.cuando} · ${f.cod}</small></div><span class="der">${corto(f.monto)}</span></div>`).join('')
+      : '<div class="fl"><span class="tile" style="background:var(--verde-f);color:var(--verde)"><i class="ph ph-check"></i></span><div><b>Nada más vence esta semana</b><small>El próximo, Nube Austral el 25 nov</small></div></div>';
+  };
+  pintar();
+  $('#cel-cobrar').addEventListener('click', () => {
+    if (!L.length) { toast({ tipo: 'info', titulo: 'No hay cobros pendientes esta semana' }); return; }
+    const f = L[0], antes = [porCobrar, cobrado], fila = $(`#cel-lista [data-cod="${f.cod}"]`);
+    const hacer = () => { L = L.slice(1); porCobrar -= f.monto; cobrado += f.monto; rueda($('#cel-n'), porCobrar, antes[0]); rueda($('#cel-cob'), cobrado, antes[1]); pintar(); };
+    if (fila && !quieto) { fila.classList.add('sale'); setTimeout(hacer, 220); } else hacer();
+    toast({ titulo: `Cobro registrado · ${f.cod}`, detalle: `${f.cli} · ${pesos(f.monto)}`, deshacer: () => { L = [f, ...L]; const a = [porCobrar, cobrado]; [porCobrar, cobrado] = antes; rueda($('#cel-n'), porCobrar, a[0]); rueda($('#cel-cob'), cobrado, a[1]); pintar(); } });
+  });
+})();
+
+/* ═════ 23 · Requiere atención ═════ */
+(function () {
+  let V = [
+    { cod: 'FAC-01058', cli: 'Bodega Sur', monto: 2150000, venc: '2026-10-11' },
+    { cod: 'FAC-01071', cli: 'Clínica Norte', monto: 1840000, venc: '2026-10-24' },
+    { cod: 'FAC-01083', cli: 'Ferretería Delta', monto: 1320000, venc: '2026-11-02' },
+    { cod: 'FAC-01093', cli: 'Grupo Atlas', monto: 900000, venc: '2026-11-09' },
+  ];
+  const lista = $('#at-lista'), pie = $('#at-pie');
+  const total = () => V.reduce((s, f) => s + f.monto, 0);
+  const pintar = desde => {
+    rueda($('#at-n'), total(), desde);
+    lista.innerHTML = V.length ? V.map(f => filaFac(f, `<button class="btn chico" data-cobrar="${f.cod}" aria-label="Cobrar ${f.cod} de ${escapar(f.cli)}"><i class="ph ph-hand-coins"></i>Cobrar</button>`)).join('')
+      : '<div class="k-fila" style="border:0;color:var(--texto-3)"><i class="ph ph-check-circle" style="color:var(--verde)"></i>Nada vencido · 3 cobros entran esta semana</div>';
+    if (V.length) {
+      const mas = V.reduce((a, f) => fmt.dias(f.venc) < fmt.dias(a.venc) ? f : a);
+      $('#at-ctx').textContent = `${fmt.plural(V.length, 'factura', 'facturas')} · la más vieja hace ${-fmt.dias(mas.venc)} días`;
+      pie.classList.add('k-ro'); pie.style.color = ''; pie.disabled = false;
+      $('#at-pie-t').innerHTML = `<i class="ph ph-warning-circle"></i>Requiere atención · ver ${V.length === 1 ? 'la única' : `las ${V.length}`}`;
+      pie.lastElementChild.hidden = false;
+    } else {
+      $('#at-ctx').textContent = 'Al día desde hoy';
+      pie.classList.remove('k-ro'); pie.style.color = 'var(--texto-3)'; pie.disabled = true;
+      $('#at-pie-t').innerHTML = '<i class="ph ph-check"></i>Nada vencido'; pie.lastElementChild.hidden = true;
+    }
+  };
+  pintar();
+  pie.addEventListener('click', () => { const f = $('.k-fila', lista); if (f) destellar(f); });
+  lista.addEventListener('click', e => {
+    const b = e.target.closest('[data-cobrar]'); if (!b) return;
+    const i = V.findIndex(f => f.cod === b.dataset.cobrar), f = V[i], antes = total(), copia = [...V];
+    b.closest('.k-fila').classList.add('sale');
+    setTimeout(() => { V = V.filter(x => x !== f); pintar(antes); }, quieto ? 0 : 220);
+    toast({ titulo: `Cobro registrado · ${f.cod} · ${pesos(f.monto)}`, detalle: f.cli, deshacer: () => { const a = total(); V = copia; pintar(a); } });
+  });
+})();
+
+/* ═════ 24 · KPI cargando ═════ */
+(function () {
+  const K = [
+    { rot: 'Cobrado', ic: 'seal-check', n: '31.480.000', u: '$', ctx: '72 % de la meta de $ 43,7 M', dib: 'ticks', pie: '<span class="sube num"><i class="ph ph-trend-up"></i>+8,1 %</span><span>vs. octubre</span>' },
+    { rot: 'Facturado', ic: 'receipt', n: '43.910.000', u: '$', ctx: '38 facturas · ticket $ 1,16 M', dib: 'curva', pie: '<span class="sube num"><i class="ph ph-trend-up"></i>+12,4 %</span><span>vs. octubre</span>' },
+    { rot: 'Entregas', ic: 'package', n: '7', u: '', ctx: '5 vencen antes del 30 nov', dib: 'segs', pie: '<span class="neutro num"><i class="ph ph-minus"></i>igual</span><span>que octubre</span>' },
+  ];
+  const cg = $('#cg');
+  cg.innerHTML = K.map(k => `<div class="bandeja"><div class="rot"><i class="ph ph-${k.ic}"></i>${k.rot}</div><div class="adentro"></div><div class="pie"></div></div>`).join('');
+  const listo = (i, anim) => {
+    const k = K[i], b = cg.children[i], ad = $('.adentro', b);
+    b.removeAttribute('aria-busy');
+    ad.innerHTML = `<div class="n">${k.u ? `<span class="u">${k.u}</span>` : ''}${k.n}${k.u ? '' : '<span class="u" style="margin:0 0 0 var(--espacio-2)">de 12</span>'}</div><div class="ctx num">${k.ctx}</div>${k.dib === 'curva' ? '<svg class="k-spark"></svg>' : `<div class="${k.dib}"></div>`}`;
+    if (k.dib === 'ticks') ticks($('.ticks', ad), 34, 25, 'var(--e4)'); else if (k.dib === 'segs') bloques($('.segs', ad), 12, 7, 'var(--e5)'); else linea($('svg', ad), BAND.mes.serie, { color: 'var(--e1)', ancho: 240, alto: 44, animar: anim });
+    $('.pie', b).innerHTML = k.pie;
+    if (anim) { ad.classList.remove('desenfoque'); void ad.offsetWidth; ad.classList.add('desenfoque'); }
+  };
+  const esqueleto = i => { const b = cg.children[i]; $('.adentro', b).innerHTML = '<div class="k-esq" aria-hidden="true"><span class="esq" style="height:32px;width:70%;display:block"></span><span class="esq" style="width:50%;display:block;margin-top:var(--espacio-3)"></span><span class="esq" style="height:16px;display:block;margin-top:var(--espacio-5)"></span></div>'; $('.pie', b).innerHTML = '<span class="esq" style="width:120px;height:10px" aria-hidden="true"></span>'; };
+  const error = i => { const b = cg.children[i]; b.removeAttribute('aria-busy'); $('.adentro', b).innerHTML = `<div class="k-err" role="alert"><span class="t"><i class="ph ph-plugs"></i>No pudimos traer los cobros</span><span>Galicia no respondió a las ${fmt.hora(new Date())}. Lo demás del tablero está al día.</span><div><button class="btn chico" data-reintentar><i class="ph ph-arrows-clockwise"></i>Reintentar</button></div></div>`; $('.pie', b).innerHTML = '<span class="gris">Último dato: hoy 14:10</span>'; };
+  const cargar = (ms, falla) => {
+    [0, 1, 2].forEach(i => {
+      const b = cg.children[i]; b.setAttribute('aria-busy', 'true');
+      const t0 = setTimeout(() => esqueleto(i), 300);              // recién a los 300 ms: sin parpadeo
+      const dur = falla && i === 0 ? 1100 : falla ? 700 + i * 300 : ms + i * (ms > 500 ? 220 : 0);
+      setTimeout(() => { clearTimeout(t0); falla && i === 0 ? error(i) : listo(i, true); }, dur);
+    });
+    anunciar('Cargando indicadores');
+  };
+  K.forEach((_, i) => listo(i, false));
+  $$('[data-carga]').forEach(b => b.addEventListener('click', () => b.dataset.carga === 'falla' ? cargar(0, true) : cargar(+b.dataset.carga)));
+  cg.addEventListener('click', e => { if (!e.target.closest('[data-reintentar]')) return; const b = cg.children[0]; b.setAttribute('aria-busy', 'true'); esqueleto(0); setTimeout(() => { listo(0, true); toast({ titulo: 'Cobros actualizados', detalle: 'Galicia respondió al segundo intento' }); }, 1200); });
+})();
+
+/* ═════ 25 · KPI sin datos ═════ */
+(function () {
+  ticks($('#sd1-t'), 34, 0); ticks($('#sd2-t'), 34, 0);
+  linea($('#sd3-s'), [18.2, 19.4, 18.9, 20.6, 21.1, 20.4, 21.84], { color: 'var(--texto-3)', ancho: 240, alto: 44 });
+  const b1 = $('#sd1-b'), k1 = $('#sd1');
+  const pie1 = b1.closest('.pie'), pieOrig = pie1.innerHTML;
+  const vacio = () => { k1.classList.add('k-sin'); $('#sd1-n').textContent = '—'; $('#sd1-ctx').textContent = 'Empieza a contar con el primer cobro'; repintarTicks($('#sd1-t'), 0, ''); pie1.innerHTML = pieOrig; enlazar(); };
+  const enlazar = () => $('#sd1-b').addEventListener('click', () => {
+    k1.classList.remove('k-sin'); $('#sd1-n').innerHTML = '<span class="u">$</span>1.250.000'; $('#sd1-ctx').textContent = '3 % de la meta de $ 45 M';
+    repintarTicks($('#sd1-t'), 1, 'var(--e4)'); pie1.innerHTML = '<span class="gris"><i class="ph ph-seal-check"></i>Primer cobro · Orbe Retail</span>';
+    toast({ titulo: 'Cobro registrado · FAC-01106', detalle: 'Ya cuenta para diciembre', deshacer: vacio });
+  });
+  enlazar();
+  $('#sd3-b').addEventListener('click', e => {
+    const b = e.currentTarget, pie = b.closest('.pie'); if (b.getAttribute('aria-busy') === 'true') return;
+    b.setAttribute('aria-busy', 'true'); $('.ph', b).classList.add('gira'); $('#sd3-t').textContent = 'Conectando…';
+    setTimeout(() => { pie.classList.remove('k-am'); pie.style.color = ''; pie.innerHTML = '<span class="gris"><i class="ph ph-check"></i>Sincronizado recién</span>'; anunciar('Saldos sincronizados'); }, 1200);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1966 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tarjetas · Biblioteca</title>
+<meta name="description" content="Biblioteca de diseno-sistemas, categoría 08: 18 tarjetas vivas (entidad, persona, kanban, pipeline, procesos, integraciones, documentos, galería, monitoreo, uso, reunión, promos y vista rápida) en claro y oscuro.">
+<script>try{var t=JSON.parse(localStorage.getItem('bib-tema'));if(t)document.documentElement.dataset.tema=t}catch(e){}</script>
+<link rel="stylesheet" href="base.css">
+<style>
+/* ───────── comunes de esta categoría ───────── */
+.grilla-t{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--min,280px)),1fr));gap:var(--espacio-gap);align-items:start}
+.barra-demo{display:flex;align-items:center;gap:var(--espacio-4);flex-wrap:wrap}
+.barra-demo .gris{font-size:12px}
+.hl{height:1px;background:var(--divisor);border:0}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:var(--espacio-5);row-gap:var(--espacio-3);font-size:12px}
+.kv dt{color:var(--texto-3)}
+.kv dd{text-align:right;color:var(--tinta);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plegar{display:grid;grid-template-rows:1fr;transition:grid-template-rows var(--t-3) var(--ease),opacity var(--t-2),margin var(--t-3) var(--ease)}
+.plegar>*{min-height:0;overflow:hidden}
+.plegar.fuera{grid-template-rows:0fr;opacity:0}
+.ic-btn{width:28px;height:28px;border-radius:var(--radius-chip);border:0;background:none;color:var(--texto-3);display:inline-grid;place-items:center;flex:none;transition:background var(--t-1),color var(--t-1)}
+.ic-btn:hover{background:var(--hover);color:var(--tinta)}
+.ic-btn .ph{font-size:16px}
+.vivo-punto{width:7px;height:7px;border-radius:50%;background:var(--verde);flex:none;box-shadow:0 0 0 0 color-mix(in oklch,var(--verde) 50%,transparent);animation:late 1.8s var(--ease) infinite}
+@keyframes late{70%{box-shadow:0 0 0 6px transparent}100%{box-shadow:0 0 0 0 transparent}}
+
+/* ───────── 1. entidad (usa .proy de base) ───────── */
+.proy .paso .check{margin-left:-5px}
+.proy .paso.hecho .t{text-decoration:line-through;text-decoration-color:var(--borde-fuerte)}
+.proy .paso{transition:opacity var(--t-3) var(--ease)}
+.proy .cab b{color:var(--texto-2);font-weight:500}
+.proy .agregar-in{display:flex;align-items:center;gap:var(--espacio-4);height:36px;border-top:1px solid var(--divisor)}
+.proy .agregar-in input{flex:1;min-width:0;border:0;outline:0;background:none;font-size:13px;color:var(--tinta)}
+.proy .agregar-in input::placeholder{color:var(--texto-3)}
+.proy .vacio-pasos{font-size:13px;color:var(--texto-3);padding:var(--espacio-4) 0 var(--espacio-2)}
+.proy.cargando .tope,.proy.cargando .graf,.proy.cargando .pasos{display:none}
+.proy .esq-t{display:none;padding:var(--espacio-7);flex-direction:column;gap:var(--espacio-5)}
+.proy.cargando .esq-t{display:flex}
+.proy.cerrada{opacity:.62}
+.proy.cerrada .segs i{filter:saturate(.3)}
+
+/* ───────── 2. persona con su carga ───────── */
+.per{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);padding:var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-5);min-width:0}
+.per .top{display:flex;align-items:center;gap:var(--espacio-4)}
+.per .quien{display:flex;align-items:center;gap:var(--espacio-5);min-width:0}
+.per .quien b{font-family:var(--display);font-size:16px;font-weight:500;letter-spacing:-.01em;display:block}
+.per .quien small{font-size:12px;color:var(--texto-3)}
+.per .carga{display:flex;align-items:center;gap:var(--espacio-5)}
+.per .carga .segs{flex:1}
+.per .carga .segs i{height:8px;border-radius:2px;transition:background var(--t-3) var(--ease)}
+.per .carga b{font-size:13px;font-weight:500;white-space:nowrap}
+.per .semana{font-size:12px;color:var(--texto-3);margin-top:calc(var(--espacio-3)*-1)}
+.per .semana .vencida{font-weight:500}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--borde);border-radius:var(--radius-control);background:var(--bandeja)}
+.trio>div{padding:var(--espacio-4) var(--espacio-5);min-width:0}
+.trio>div+div{border-left:1px solid var(--borde)}
+.trio span{display:block;font-size:12px;color:var(--texto-3)}
+.trio b{font-family:var(--display);font-size:16px;font-weight:500;font-variant-numeric:tabular-nums}
+.trio b.vencida{color:var(--rojo)}
+.per .prox .cab{display:flex;justify-content:space-between;font-size:12px;color:var(--texto-3);margin-bottom:var(--espacio-1)}
+.per .prox .fila-t{display:flex;align-items:center;gap:var(--espacio-4);height:32px;font-size:13px;border-bottom:1px solid var(--divisor)}
+.per .prox .fila-t:last-child{border-bottom:0}
+.per .prox .fila-t .o{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--borde-fuerte);flex:none}
+.per .prox .fila-t .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.per .prox .fila-t .f{font-size:12px;color:var(--texto-3);white-space:nowrap}
+.per .prox .nada{font-size:13px;color:var(--texto-3);height:64px;display:flex;align-items:center}
+.per .avs .av{width:20px;height:20px;font-size:11px;border-width:2px;margin-left:-6px}
+.per .avs .av:first-child{margin-left:0}
+.per.invitada .quien .av{border:1.5px dashed var(--borde-fuerte);background:none;color:var(--texto-3)}
+.per .entra-nueva{animation:entra var(--t-4) var(--ease) both}
+
+/* ───────── 3. vista rápida de cliente ───────── */
+.clr-texto{font-size:14px;line-height:1.7;color:var(--texto-2);max-width:62ch}
+.clr-texto b{color:var(--tinta);font-weight:500}
+.clr-gat{all:unset;cursor:default;color:var(--tinta);font-weight:500;text-decoration:underline;text-decoration-color:var(--borde-fuerte);text-decoration-thickness:1.5px;text-underline-offset:3px;display:inline-flex;align-items:center;gap:var(--espacio-3);border-radius:6px;transition:text-decoration-color var(--t-1)}
+.clr-gat:hover,.clr-gat[aria-expanded=true]{text-decoration-color:var(--tinta)}
+.clr-gat:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:2px}
+.clr-gat .cuadro.ch{margin-bottom:-1px}
+.clr{position:fixed;z-index:65;width:320px;max-width:calc(100vw - 32px);background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-interno);box-shadow:var(--s-flot);opacity:0;transform:translateY(calc(4px*var(--mueve))) scale(.98);transform-origin:top left;transition:opacity var(--t-2) var(--ease),transform var(--t-2) var(--ease);pointer-events:none}
+.clr.ver{opacity:1;transform:none;pointer-events:auto}
+.clr .c1{display:flex;gap:var(--espacio-5);padding:var(--espacio-6) var(--espacio-6) var(--espacio-5);align-items:flex-start}
+.clr .c1 .cuadro{width:40px;height:40px;border-radius:var(--radius-control)}
+.clr .c1 .cuadro .ph-fill{font-size:20px}
+.clr .c1 b{font-family:var(--display);font-size:16px;font-weight:500;display:block;letter-spacing:-.01em}
+.clr .c1 small{font-size:12px;color:var(--texto-3);display:flex;gap:var(--espacio-3);align-items:center;flex-wrap:wrap;margin-top:var(--espacio-1)}
+.clr .met{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--divisor);border-bottom:1px solid var(--divisor)}
+.clr .met>div{padding:var(--espacio-4) var(--espacio-6)}
+.clr .met>div+div{border-left:1px solid var(--divisor)}
+.clr .met span{font-size:12px;color:var(--texto-3);display:block}
+.clr .met b{font-size:14px;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+.clr .met b.vencida{color:var(--rojo)}
+.clr .ult{padding:var(--espacio-5) var(--espacio-6);font-size:12px;color:var(--texto-3);display:flex;align-items:center;gap:var(--espacio-4)}
+.clr .ult b{color:var(--tinta);font-weight:500}
+.clr .acc{display:flex;gap:var(--espacio-4);padding:0 var(--espacio-6) var(--espacio-6)}
+.clr .acc .btn{flex:1}
+.clr-tabla{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);overflow:hidden}
+.clr-tabla .r1{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 120px 110px;align-items:center;gap:var(--espacio-5);height:48px;padding:0 var(--espacio-7);border-top:1px solid var(--divisor);font-size:13px}
+.clr-tabla .r1:first-child{border-top:0;height:36px;background:var(--bandeja);font-size:12px;color:var(--texto-2);font-weight:500}
+.clr-tabla .r1>*{min-width:0}
+
+/* ───────── 4. oportunidad ───────── */
+.opo{border:1px solid var(--borde);border-radius:var(--radius-interno);background:var(--superficie);padding:var(--espacio-5) var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-3);min-width:0;box-shadow:var(--s-min);transition:transform var(--t-3) var(--ease),box-shadow var(--t-3) var(--ease),opacity var(--t-3)}
+@media (hover:hover){.opo:hover{transform:translateY(calc(-1px*var(--mueve)));box-shadow:var(--s-hover)}}
+.opo .l1{display:flex;align-items:center;gap:var(--espacio-4)}
+.opo .l1 h4{font-size:14px;font-weight:500;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.opo .l2{display:flex;align-items:center;gap:var(--espacio-4);font-size:12px;color:var(--texto-3);min-width:0}
+.opo .l2 .cli{font-weight:400;color:var(--texto-2);font-size:12px;gap:var(--espacio-3)}
+.opo .l3{display:flex;align-items:baseline;gap:var(--espacio-4)}
+.opo .l3 .monto{font-family:var(--display);font-size:16px;font-weight:500;letter-spacing:-.01em}
+.opo .l3 .prob{font-size:12px;color:var(--texto-3)}
+.opo .l3 .cierra{margin-left:auto;font-size:12px;color:var(--texto-3);white-space:nowrap}
+.opo .prox{display:flex;align-items:center;gap:var(--espacio-3);height:32px;margin:var(--espacio-1) calc(var(--espacio-3)*-1) 0;padding:0 var(--espacio-1) 0 var(--espacio-4);border-radius:var(--radius-chip);background:var(--bandeja);font-size:12px;color:var(--texto-2);min-width:0}
+.opo .prox .ph{font-size:14px;flex:none}
+.opo .prox .tx{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.opo .prox.mal{background:var(--rojo-f);color:var(--rojo)}
+.opo .prox.falta{background:var(--ambar-f);color:var(--ambar)}
+.opo .prox .btn.chico{height:24px;padding:0 var(--espacio-4);background:var(--superficie);border-color:var(--borde);color:var(--tinta)}
+.opo.ganada .l3 .monto{color:var(--verde)}
+.opo.perdida{opacity:.6}
+.opo.perdida .l3 .monto{text-decoration:line-through;color:var(--texto-3)}
+.etapa{display:inline-flex;align-items:center;gap:var(--espacio-2);font-size:12px;font-weight:500;color:var(--ent);white-space:nowrap}
+.etapa .ph-fill{font-size:13px}
+.prox-chips{display:flex;gap:var(--espacio-3);flex-wrap:wrap}
+.prox-chips button{height:28px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);border:1px solid var(--borde);background:var(--superficie);font-size:12px;font-weight:500;color:var(--texto-2)}
+.prox-chips button:hover{color:var(--tinta);border-color:var(--borde-fuerte)}
+
+/* ───────── 5. tarea en kanban ───────── */
+.kt{border:1px solid var(--borde);border-radius:var(--radius-control);background:var(--superficie);padding:var(--espacio-5);display:flex;flex-direction:column;gap:var(--espacio-4);min-width:0;box-shadow:var(--s-min);cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;transition:opacity var(--t-2),box-shadow var(--t-2),transform var(--t-3) var(--ease)}
+@media (hover:hover) and (pointer:fine){.kt{touch-action:none}}
+.kt:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:2px}
+.kt .etq{display:flex;gap:var(--espacio-3);flex-wrap:wrap}
+.kt .etq .chip{height:20px;padding:0 var(--espacio-3);font-size:12px;background:none;border:1px solid color-mix(in oklch,var(--ent) 40%,transparent);color:color-mix(in oklch,var(--ent) 80%,var(--tinta))}
+.kt .etq .chip::before{background:var(--ent)}
+[data-tema=oscuro] .kt .etq .chip{padding:0 var(--espacio-3)}
+.kt h4{font-size:14px;font-weight:500;line-height:1.35}
+.kt .sub{display:flex;align-items:center;gap:var(--espacio-4);font-size:12px;color:var(--texto-3)}
+.kt .sub .barra-av{flex:1;height:2px}
+.kt .pie-k{display:flex;align-items:center;gap:var(--espacio-4);font-family:var(--mono);font-size:12px;color:var(--texto-3);white-space:nowrap;min-width:0}
+.kt .pie-k>span:not(.av){display:inline-flex;align-items:center;gap:var(--espacio-2)}
+.kt .pie-k .ph{font-size:13px}
+.kt .pie-k .av{margin-left:auto}
+.kt .pie-k .nadie{margin-left:auto;font-family:var(--ui);color:var(--texto-3)}
+.prio{display:inline-flex;gap:1px;align-items:flex-end;height:10px}
+.prio i{width:3px;border-radius:1px;background:var(--deshabilitado)}
+.prio i:nth-child(1){height:5px}.prio i:nth-child(2){height:8px}.prio i:nth-child(3){height:10px}
+.prio[data-n="1"] i:nth-child(-n+1),.prio[data-n="2"] i:nth-child(-n+2){background:var(--texto-2)}
+.prio[data-n="3"] i{background:var(--rojo)}
+.kt .hoy{color:var(--ambar)}.kt .venc{color:var(--rojo)}
+.kt.hecha h4{color:var(--texto-3);text-decoration:line-through;text-decoration-color:var(--borde-fuerte)}
+.kt.hecha{box-shadow:none;background:var(--bandeja)}
+.kt.origen{opacity:.35;box-shadow:none}
+.kt.selec{border-color:var(--acento);box-shadow:0 0 0 3px color-mix(in oklch,var(--acento) 16%,transparent)}
+.kt.volando{position:fixed;z-index:80;pointer-events:none;cursor:grabbing;box-shadow:var(--s-flot);transform:rotate(calc(1.5deg*var(--mueve))) scale(1.02);transition:none;margin:0}
+.kt.quieto-r{transform:rotate(calc(1.5deg*var(--mueve)));box-shadow:var(--s-flot)}
+
+/* ───────── 6. columna de kanban ───────── */
+.tablero{display:grid;grid-template-columns:repeat(3,minmax(250px,1fr));gap:var(--espacio-6);overflow-x:auto;padding-bottom:var(--espacio-2);scroll-snap-type:x mandatory;scrollbar-width:thin}
+.col{background:var(--bandeja);border:1px solid transparent;border-radius:var(--radius-interno);padding:var(--espacio-4);display:flex;flex-direction:column;min-height:420px;scroll-snap-align:start;transition:background var(--t-2),border-color var(--t-2)}
+.col .ch{display:flex;align-items:center;gap:var(--espacio-3);height:32px;padding:0 var(--espacio-2) 0 var(--espacio-3)}
+.col .ch .ph-fill{font-size:15px;color:var(--ent)}
+.col .ch h3{font-size:14px;font-weight:500}
+.col .ch .c{min-width:20px;height:20px;padding:0 6px;border-radius:99px;background:var(--suave);font-size:12px;font-weight:500;color:var(--texto-2);display:inline-grid;place-items:center;font-variant-numeric:tabular-nums;transition:transform var(--t-2) var(--ease-resorte)}
+.col .ch .c.pulso{transform:scale(1.2)}
+.col .ch .acc{margin-left:auto;display:flex;gap:var(--espacio-1);opacity:0;transition:opacity var(--t-1)}
+.col:hover .ch .acc,.col:focus-within .ch .acc{opacity:1}
+@media (hover:none){.col .ch .acc{opacity:1}}
+.col .lista-k{flex:1;display:flex;flex-direction:column;gap:var(--espacio-4);padding:var(--espacio-2) 0;min-height:60px}
+.col .hueco{border-radius:var(--radius-control);border:1px dashed color-mix(in oklch,var(--acento) 55%,transparent);background:color-mix(in oklch,var(--acento) 6%,transparent);flex:none;transition:height var(--t-2) var(--ease)}
+.col.destino{background:color-mix(in oklch,var(--acento) 8%,var(--bandeja));border:1px dashed color-mix(in oklch,var(--acento) 45%,transparent)}
+.col .vacia{flex:1;display:grid;place-items:center;text-align:center;color:var(--texto-3);font-size:12px;border:1px dashed var(--borde-fuerte);border-radius:var(--radius-control);padding:var(--espacio-6)}
+.col .vacia .ph{font-size:20px;margin:0 auto var(--espacio-2)}
+.col .tot{display:flex;align-items:center;justify-content:space-between;height:36px;padding:0 var(--espacio-3);border-top:1px solid var(--divisor);margin-top:var(--espacio-2);font-size:12px;color:var(--texto-3)}
+.col .tot b{color:var(--tinta);font-weight:500;font-variant-numeric:tabular-nums}
+.col .mas-k{justify-content:flex-start;color:var(--texto-3)}
+
+/* ───────── 7. proceso ───────── */
+.pro{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:transform var(--t-3) var(--ease),box-shadow var(--t-3) var(--ease),opacity var(--t-3)}
+@media (hover:hover){.pro:hover{transform:translateY(calc(-2px*var(--mueve)));box-shadow:var(--s-hover)}}
+.pro .mini{height:132px;position:relative;margin:var(--espacio-2);border-radius:var(--radius-interno);background-color:var(--bandeja);background-image:radial-gradient(color-mix(in oklch,var(--texto-3) 26%,transparent) 1px,transparent 1.2px);background-size:12px 12px;display:flex;align-items:center;justify-content:center;gap:var(--espacio-2);padding:0 var(--espacio-5);overflow:hidden}
+.pro .mini .est{position:absolute;top:var(--espacio-4);left:var(--espacio-4)}
+.pro .mini .nodo{display:inline-flex;align-items:center;gap:var(--espacio-3);height:26px;padding:0 var(--espacio-4);border-radius:99px;background:var(--superficie);border:1px solid var(--borde);box-shadow:var(--s-min);font-size:12px;font-weight:500;white-space:nowrap;flex:none}
+.pro .mini .nodo .punto{width:7px;height:7px}
+.pro .mini .flecha{width:14px;height:1px;background:var(--borde-fuerte);flex:none;position:relative}
+.pro .mini .flecha.anda::after{content:"";position:absolute;top:-2px;left:0;width:5px;height:5px;border-radius:50%;background:var(--acento);animation:viaja 1.6s var(--ease-mover) infinite;animation-delay:var(--d,0s)}
+@keyframes viaja{from{transform:translateX(-2px);opacity:0}20%{opacity:1}80%{opacity:1}to{transform:translateX(12px);opacity:0}}
+.pro .mini .nodo.error{border-color:color-mix(in oklch,var(--rojo) 50%,transparent);background:var(--rojo-f);color:var(--rojo)}
+.pro .cuerpo-p{padding:var(--espacio-4) var(--espacio-6) var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-3)}
+.pro .t1{display:flex;align-items:center;gap:var(--espacio-4)}
+.pro .t1 h4{font-size:14px;font-weight:500;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pro .apps{display:flex}
+.pro .apps .tile{width:22px;height:22px;border-radius:7px;border:2px solid var(--superficie);margin-left:-5px;color:#fff}
+.pro .apps .tile .ph-fill,.pro .apps .tile .ph{font-size:11px}
+.pro .conf{font-size:12px;color:var(--texto-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pro .met{display:flex;align-items:flex-end;gap:var(--espacio-5);margin-top:var(--espacio-2);padding-top:var(--espacio-4);border-top:1px solid var(--divisor)}
+.pro .met .txt{flex:1;min-width:0;font-size:12px;color:var(--texto-3);line-height:1.5}
+.pro .met .txt b{color:var(--tinta);font-weight:500}
+.pro .met svg{width:80px;height:24px;flex:none;overflow:visible}
+.pro.pausado .mini>*:not(.est){opacity:.45;filter:grayscale(1)}
+.pro.pausado .met svg{opacity:.4}
+.pro.nuevo{border:1.5px dashed var(--borde-fuerte);background:none;display:grid;place-items:center;text-align:center;min-height:260px;color:var(--texto-2);cursor:pointer;font:inherit}
+.pro.nuevo:hover{background:var(--superficie);border-color:var(--texto-3);color:var(--tinta)}
+.pro.nuevo .tile{margin:0 auto var(--espacio-4)}
+.pro.nuevo b{font-weight:500;font-size:14px;display:block}
+.pro.nuevo small{font-size:12px;color:var(--texto-3)}
+
+/* ───────── 8. plantilla como receta ───────── */
+.rec{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);padding:var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-5);min-width:0;transition:border-color var(--t-2),background var(--t-2)}
+.rec .t1{display:flex;align-items:flex-start;gap:var(--espacio-5)}
+.rec .t1 .tile{color:#fff;background:var(--ent)}
+.rec h4{font-size:14px;font-weight:500}
+.rec p{font-size:12px;color:var(--texto-3);line-height:1.5;margin-top:var(--espacio-1)}
+.cadena{display:flex;align-items:center;flex-wrap:wrap;gap:var(--espacio-2) var(--espacio-2)}
+.cadena .eslabon{display:inline-flex;align-items:center;gap:var(--espacio-2);height:24px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);background:var(--bandeja);border:1px solid var(--borde);font-size:12px;color:var(--texto-2);white-space:nowrap}
+.cadena .eslabon .ph,.cadena .eslabon .ph-fill{font-size:13px;color:var(--ent,var(--texto-3))}
+.cadena .eslabon.disparo{background:var(--ambar-f);border-color:transparent;color:var(--ambar)}
+.cadena .eslabon.disparo .ph-fill{color:inherit}
+.cadena>.ph{font-size:12px;color:var(--texto-3)}
+.rec .pie-r{display:flex;align-items:center;gap:var(--espacio-4);margin-top:auto}
+.rec .pie-r .gris{font-size:12px;margin-right:auto}
+.rec.usada{border-color:color-mix(in oklch,var(--verde) 40%,var(--borde))}
+
+/* ───────── 9. integración ───────── */
+.int{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);padding:var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-5);min-width:0;transition:opacity var(--t-3),border-color var(--t-2)}
+.int .t1{display:flex;align-items:center;gap:var(--espacio-5)}
+.int .t1 .tile{background:var(--ent);color:#fff}
+.int .t1 .tile .ph-fill,.int .t1 .tile .ph{font-size:20px}
+.int .t1 b{font-size:14px;font-weight:500;display:block}
+.int .t1 small{font-size:12px;color:var(--texto-3)}
+.int .t1 .der{margin-left:auto;display:flex;align-items:center;gap:var(--espacio-2)}
+.int .que{font-size:12px;color:var(--texto-2);line-height:1.5}
+.int .estado-i{display:flex;align-items:center;gap:var(--espacio-3);font-size:12px;color:var(--texto-3);min-height:20px;flex-wrap:wrap}
+.int .estado-i .ok{color:var(--verde);font-weight:500;display:inline-flex;align-items:center;gap:var(--espacio-2)}
+.int .estado-i .mal{color:var(--rojo);font-weight:500;display:inline-flex;align-items:center;gap:var(--espacio-2)}
+.int .estado-i .ph,.int .estado-i .ph-fill{font-size:13px}
+.int .causa{display:flex;gap:var(--espacio-4);align-items:flex-start;padding:var(--espacio-4) var(--espacio-5);border-radius:var(--radius-control);background:var(--rojo-f);color:var(--rojo);font-size:12px;line-height:1.45}
+.int .causa .ph{font-size:16px;flex:none;margin-top:1px}
+.int .pasos-i{display:flex;flex-direction:column;gap:var(--espacio-3);font-size:12px;color:var(--texto-3)}
+.int .pasos-i div{display:flex;align-items:center;gap:var(--espacio-4)}
+.int .pasos-i .hecho{color:var(--tinta)}
+.int .pasos-i .hecho .ph{color:var(--verde)}
+.int .pasos-i .ph{font-size:14px}
+.int .pie-i{display:flex;align-items:center;gap:var(--espacio-4);padding-top:var(--espacio-4);border-top:1px solid var(--divisor);font-size:12px;color:var(--texto-3);margin-top:auto}
+.int .pie-i .empuja{display:flex;gap:var(--espacio-2)}
+.int.apagada{opacity:.5}
+.int.apagada .toggle{opacity:1}
+.int.fallo{border-color:color-mix(in oklch,var(--rojo) 30%,var(--borde))}
+.int.disp{background:var(--panel);border-style:dashed}
+
+/* ───────── 10. espacio contenedor ───────── */
+.esp{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--bandeja);padding:var(--espacio-2);display:flex;flex-direction:column;min-width:0;transition:transform var(--t-3) var(--ease),box-shadow var(--t-3) var(--ease)}
+@media (hover:hover){.esp:hover{transform:translateY(calc(-2px*var(--mueve)));box-shadow:var(--s-hover)}}
+.esp .in-e{background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-interno);padding:var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-3);box-shadow:var(--s-min);flex:1}
+.esp .t0{display:flex;align-items:center;justify-content:space-between}
+.esp .t0 .tile{width:28px;height:28px;border-radius:8px}
+.esp .t0 .tile .ph{font-size:15px}
+.esp .t0 small{font-size:12px;color:var(--texto-3)}
+.esp h4{font-family:var(--display);font-size:16px;font-weight:500;letter-spacing:-.01em;margin-top:var(--espacio-3)}
+.esp p{font-size:12px;color:var(--texto-3);line-height:1.5}
+.esp .t2{display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-4);border-top:1px solid var(--divisor);padding-top:var(--espacio-4);margin-top:var(--espacio-3);font-size:12px;color:var(--texto-3)}
+.esp .avs .av{width:22px;height:22px;font-size:11px;border-width:2px;margin-left:-6px}
+.esp .avs .av:first-child{margin-left:0}
+.esp .banda-e{display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-4);padding:var(--espacio-3) var(--espacio-3) var(--espacio-2) var(--espacio-3)}
+.esp .banda-e .btn.chico{background:var(--superficie)}
+.esp .fuente{font-size:12px;color:var(--texto-3);display:inline-flex;align-items:center;gap:var(--espacio-2);border:0;background:none;padding:0 var(--espacio-3);height:28px;border-radius:var(--radius-chip)}
+.esp .fuente:hover{color:var(--tinta);background:var(--hover)}
+.esp .fuente.ok{color:var(--verde)}
+.esp.vacio-e .in-e{background:none;border-style:dashed;box-shadow:none}
+.carpetas{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:var(--espacio-6) var(--espacio-gap)}
+.carp{all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:var(--espacio-3);font-size:12px;color:var(--texto-2);border-radius:var(--radius-control);padding:var(--espacio-2) 0}
+.carp:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:2px}
+.carp svg{width:84px;height:64px;transition:transform var(--t-3) var(--ease)}
+.carp:hover svg{transform:translateY(calc(-2px*var(--mueve)))}
+.carp:hover{color:var(--tinta)}
+.carp .f-a{fill:var(--suave)}.carp .f-b{fill:color-mix(in oklch,var(--suave) 60%,var(--superficie));stroke:var(--borde)}
+.carp .f-c{fill:var(--superficie);stroke:var(--borde)}
+.carp .f-n{fill:var(--texto-2);font:500 11px var(--ui)}
+
+/* ───────── 11. documento y contrato ───────── */
+.arch{border:1px solid var(--borde);border-radius:var(--radius-interno);background:var(--superficie);overflow:hidden;min-width:0;transition:box-shadow var(--t-3) var(--ease),border-color var(--t-2)}
+@media (hover:hover){.arch:hover{box-shadow:var(--s-hover);border-color:var(--borde-fuerte)}}
+.arch .p1{display:flex;align-items:center;gap:var(--espacio-5);padding:var(--espacio-5) var(--espacio-3) var(--espacio-5) var(--espacio-5)}
+.tipo{width:36px;height:44px;flex:none;position:relative;display:block}
+.tipo svg{width:100%;height:100%}
+.tipo .h{fill:var(--superficie);stroke:var(--borde-fuerte)}
+.tipo .d{fill:var(--suave);stroke:var(--borde-fuerte)}
+.tipo span{position:absolute;left:-4px;bottom:6px;height:16px;padding:0 4px;border-radius:4px;font:500 11px/16px var(--mono);color:#fff;background:var(--ent)}
+.arch .p1 .min0{flex:1}
+.arch .p1 b{font-size:13px;font-weight:500;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arch .p1 small{font-size:12px;color:var(--texto-3)}
+.arch .p2{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-3) var(--espacio-5);background:var(--bandeja);border-top:1px solid var(--divisor);font-size:12px;color:var(--texto-3)}
+.arch .p2 b{color:var(--texto-2);font-weight:500}
+.arch .p2 .empuja{white-space:nowrap}
+.ctr{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);padding:var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-5);min-width:0}
+.ctr .t1{display:flex;align-items:flex-start;gap:var(--espacio-5)}
+.ctr .t1 h4{font-size:14px;font-weight:500;line-height:1.35}
+.ctr .t1 .cod{font-size:12px;color:var(--texto-3);font-weight:400;letter-spacing:.02em;margin-left:var(--espacio-3)}
+.ctr .t1 small{font-size:12px;color:var(--texto-3);display:flex;align-items:center;gap:var(--espacio-3);margin-top:var(--espacio-1)}
+.ctr .ver{display:flex;gap:var(--espacio-6);font-size:12px;color:var(--texto-3);flex-wrap:wrap}
+.ctr .ver b{color:var(--tinta);font-weight:500}
+.firmas{display:flex;flex-direction:column;gap:0;border:1px solid var(--borde);border-radius:var(--radius-control);overflow:hidden}
+.firmas .fr{display:flex;align-items:center;gap:var(--espacio-4);height:40px;padding:0 var(--espacio-5);font-size:13px;border-top:1px solid var(--divisor)}
+.firmas .fr:first-child{border-top:0}
+.firmas .fr .min0{flex:1}
+.firmas .fr small{font-size:12px;color:var(--texto-3);white-space:nowrap}
+.firmas .ok-f{color:var(--verde);display:inline-flex;align-items:center;gap:var(--espacio-2);font-size:12px;font-weight:500;white-space:nowrap}
+.firmas .esp-f{color:var(--ambar);display:inline-flex;align-items:center;gap:var(--espacio-2);font-size:12px;font-weight:500;white-space:nowrap}
+.ctr .pie-c{display:flex;align-items:center;gap:var(--espacio-4);flex-wrap:wrap}
+.ctr .pie-c .gris{font-size:12px;margin-right:auto}
+.ctr.vencido{border-color:color-mix(in oklch,var(--rojo) 30%,var(--borde))}
+
+/* ───────── 12. galería ───────── */
+.gal{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);overflow:hidden;min-width:0;position:relative;transition:box-shadow var(--t-3) var(--ease),border-color var(--t-2)}
+@media (hover:hover){.gal:hover{box-shadow:var(--s-hover)}}
+.gal .foto{position:relative;aspect-ratio:4/3;margin:var(--espacio-2);border-radius:var(--radius-interno);overflow:hidden;background:var(--suave)}
+.gal .foto .cinta{display:flex;height:100%;transition:transform var(--t-4) var(--ease)}
+.gal .foto .cinta>*{flex:0 0 100%;height:100%}
+.gal .foto svg{width:100%;height:100%;display:block;transition:transform 600ms var(--ease)}
+@media (hover:hover){.gal:hover .foto svg{transform:scale(calc(1 + .03*var(--mueve)))}}
+.gal .foto .sello{position:absolute;left:var(--espacio-4);bottom:var(--espacio-4);display:inline-flex;align-items:center;gap:var(--espacio-2);height:24px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);background:rgb(10 10 14/.62);backdrop-filter:blur(6px);color:#fff;font:500 12px var(--mono)}
+.gal .foto .sello .ph{font-size:13px}
+.gal .foto .cant{position:absolute;right:var(--espacio-4);top:var(--espacio-4);height:24px;padding:0 var(--espacio-4);border-radius:99px;background:rgb(10 10 14/.62);backdrop-filter:blur(6px);color:#fff;font-size:12px;font-weight:500;display:inline-flex;align-items:center;gap:var(--espacio-2)}
+.gal .foto .nav{position:absolute;top:50%;width:32px;height:32px;margin-top:-16px;border-radius:50%;border:0;background:rgb(255 255 255/.92);color:#17171f;display:grid;place-items:center;box-shadow:0 2px 8px rgb(0 0 0/.18);opacity:0;transition:opacity var(--t-2),transform var(--t-1)}
+.gal .foto .nav.izq{left:var(--espacio-4)}.gal .foto .nav.der{right:var(--espacio-4)}
+.gal .foto .nav:active{transform:scale(.94)}
+.gal:hover .foto .nav,.gal .foto .nav:focus-visible{opacity:1}
+@media (hover:none){.gal .foto .nav{opacity:1}}
+.gal .foto .nav[disabled]{opacity:0!important;pointer-events:none}
+.gal .foto .puntos-g{position:absolute;right:var(--espacio-5);bottom:var(--espacio-5);display:flex;justify-content:flex-end;gap:var(--espacio-2);pointer-events:none}
+.gal .foto .puntos-g i{width:6px;height:6px;border-radius:50%;background:rgb(255 255 255/.5);transition:width var(--t-3) var(--ease),background var(--t-2)}
+.gal .foto .puntos-g i.on{width:16px;border-radius:3px;background:#fff}
+.gal .foto .casilla{position:absolute;top:var(--espacio-3);left:var(--espacio-3);opacity:0;transition:opacity var(--t-1)}
+.gal .foto .casilla::before{background:rgb(255 255 255/.9);border-color:#fff}
+.gal:hover .foto .casilla,.gal .foto .casilla:focus-visible,.gal.marcada .foto .casilla,.sel-activa .gal .foto .casilla{opacity:1}
+@media (hover:none){.gal .foto .casilla{opacity:1}}
+.gal.marcada{border-color:var(--acento);box-shadow:0 0 0 3px color-mix(in oklch,var(--acento) 16%,transparent)}
+.gal.marcada .foto{margin:var(--espacio-4);border-radius:var(--radius-control)}
+.gal .foto{transition:margin var(--t-3) var(--ease),border-radius var(--t-3) var(--ease)}
+.gal .txt-g{padding:var(--espacio-3) var(--espacio-6) var(--espacio-5);display:flex;align-items:flex-start;gap:var(--espacio-4)}
+.gal .txt-g b{font-size:13px;font-weight:500;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gal .txt-g small{font-size:12px;color:var(--texto-3);display:block;margin-top:var(--espacio-1)}
+.gal .foto.borrosa svg{filter:blur(14px) saturate(.8);transform:scale(1.08)}
+.gal .foto.revela svg{transition:filter 500ms var(--ease),transform 600ms var(--ease)}
+.gal.subir{border:1.5px dashed var(--borde-fuerte);background:none;display:grid;place-items:center;text-align:center;aspect-ratio:auto;min-height:100%;cursor:pointer;color:var(--texto-2);font:inherit;padding:var(--espacio-8)}
+.gal.subir:hover{background:var(--superficie);border-color:var(--texto-3)}
+.gal.subir b{font-weight:500;font-size:14px;display:block;margin-top:var(--espacio-4)}
+.gal.subir small{font-size:12px;color:var(--texto-3)}
+.sel-barra{display:flex;align-items:center;gap:var(--espacio-4);height:40px}
+
+/* ───────── 13. detalle con anatomía fija ───────── */
+.det{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.det .z1{padding:var(--espacio-6) var(--espacio-6) var(--espacio-5);display:flex;gap:var(--espacio-4);align-items:flex-start}
+.det .z1 h4{font-family:var(--display);font-size:16px;font-weight:500;line-height:1.3;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
+.det .z1 small{font-size:12px;color:var(--texto-3);display:block;margin-top:var(--espacio-1)}
+.det .z2{padding:var(--espacio-4) var(--espacio-6);border-top:1px solid var(--divisor);display:flex;flex-direction:column}
+.det .rv{display:flex;align-items:baseline;gap:var(--espacio-3);height:28px;font-size:12px;color:var(--texto-3)}
+.det .rv .ph{font-size:13px;align-self:center}
+.det .rv .pts{flex:1;border-bottom:1px dotted var(--borde-fuerte);transform:translateY(-3px)}
+.det .rv b{font-size:13px;font-weight:500;color:var(--tinta);font-variant-numeric:tabular-nums}
+.det .rv sup{font-size:12px;color:var(--texto-3);vertical-align:baseline;margin-left:var(--espacio-1)}
+.det .z3{padding:var(--espacio-5) var(--espacio-6) var(--espacio-6);border-top:1px solid var(--divisor);display:flex;flex-direction:column;gap:var(--espacio-5)}
+.det .br .cab{display:flex;justify-content:space-between;font-size:12px;color:var(--texto-3);margin-bottom:var(--espacio-2)}
+.det .br .cab b{color:var(--tinta);font-weight:500;font-variant-numeric:tabular-nums}
+.det .br .barra-av{height:4px}
+.det .br .barra-av>i{transition:width var(--t-4) var(--ease)}
+.det .mk{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--espacio-2);background:var(--bandeja);border-radius:var(--radius-control);padding:var(--espacio-2)}
+.det .mk>div{background:var(--superficie);border-radius:10px;padding:var(--espacio-3) var(--espacio-4)}
+[data-tema=oscuro] .det .mk{background:var(--lienzo)}
+.det .mk span{font-size:12px;color:var(--texto-3);display:block}
+.det .mk b{font-size:14px;font-weight:500;font-variant-numeric:tabular-nums}
+.det .ver-det{display:flex;align-items:center;justify-content:center;gap:var(--espacio-3);height:40px;font-size:13px;font-weight:500;margin-top:auto;background:color-mix(in oklch,var(--tono) 12%,var(--superficie));color:color-mix(in oklch,var(--tono) 80%,var(--tinta));transition:background var(--t-1)}
+.det .ver-det:hover{background:color-mix(in oklch,var(--tono) 18%,var(--superficie))}
+.det .ver-det .ph{font-size:14px;transition:transform var(--t-2) var(--ease)}
+.det .ver-det:hover .ph{transform:translateX(calc(2px*var(--mueve)))}
+
+/* ───────── 14. monitoreo de equipo (siempre oscura) ───────── */
+.mon-grilla{--min:250px}
+.mon{--m-fondo:#141418;--m-borde:#26262c;--m-t:#f4f4f7;--m-t2:#a9a9b4;--m-t3:#8c8c98;--m-hundido:#0d0d10;
+  background:var(--m-fondo);border:1px solid var(--m-borde);border-radius:var(--radius-tarjeta);padding:var(--espacio-6);color:var(--m-t);display:flex;flex-direction:column;gap:var(--espacio-4);min-width:0;cursor:pointer;text-align:left;font:inherit;transition:border-color var(--t-2),background var(--t-2)}
+.mon:hover{background:#18181d;border-color:#34343b}
+.mon[aria-pressed=true]{border-color:#6b65f0;box-shadow:0 0 0 3px rgb(107 101 240/.25)}
+.mon .m1{display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-4)}
+.mon .m1 b{font-family:var(--mono);font-size:13px;font-weight:500}
+.mon .m1 small{font-size:12px;color:var(--m-t3);display:block;font-family:var(--ui)}
+.mon .est-m{display:inline-flex;align-items:center;gap:var(--espacio-2);height:24px;padding:0 var(--espacio-4);border-radius:99px;background:rgb(255 255 255/.06);font-size:12px;font-weight:500;white-space:nowrap}
+.mon .est-m::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.mon .est-m.en{color:#4ade80}.mon .est-m.par{color:#fbbf24}.mon .est-m.fuera{color:#f87171}
+.mon .est-m.fuera::before{border-radius:1px;transform:rotate(45deg)}
+.mon .est-m.par::before{background:none;border:1.5px solid currentColor;width:5px;height:5px}
+.mon .val{display:flex;align-items:baseline;gap:var(--espacio-3);margin-top:var(--espacio-2)}
+.mon .val b{font-family:var(--mono);font-size:32px;font-weight:500;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
+.mon .val span{font-size:13px;color:var(--m-t3)}
+.mon .val .tend{margin-left:auto;font-size:12px;font-family:var(--mono);color:var(--m-t2)}
+.mon .bar-m{height:3px;border-radius:2px;background:rgb(255 255 255/.1);overflow:hidden}
+.mon .bar-m i{display:block;height:100%;border-radius:inherit;background:#e9e9ef;transition:width 600ms var(--ease)}
+.mon .bar-m.par i{background:#fbbf24}.mon .bar-m.fuera i{background:#f87171}
+.mon .bar-pie{display:flex;justify-content:space-between;font-size:12px;color:var(--m-t3);font-variant-numeric:tabular-nums}
+.mon svg.sp{width:100%;height:36px;display:block;overflow:visible}
+.mon .tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--m-borde);padding-top:var(--espacio-4);margin-top:var(--espacio-2)}
+.mon .tri>div{padding:0 var(--espacio-4)}
+.mon .tri>div:first-child{padding-left:0}
+.mon .tri>div+div{border-left:1px solid var(--m-borde)}
+.mon .tri span{font-size:12px;color:var(--m-t3);display:block}
+.mon .tri b{font-family:var(--mono);font-size:14px;font-weight:500;font-variant-numeric:tabular-nums}
+.mon .tri b.alerta{color:#fbbf24}
+.mon.sin-datos .val b,.mon.sin-datos .tri b{color:var(--m-t3)}
+.mon .viejo{font-size:12px;color:#f87171;display:flex;align-items:center;gap:var(--espacio-2)}
+.mon .tic{animation:tic 600ms var(--ease)}
+@keyframes tic{0%{color:#a5a0ff}100%{color:inherit}}
+.mon-barra{display:flex;align-items:center;gap:var(--espacio-4);flex-wrap:wrap}
+
+/* ───────── 15. plan y uso ───────── */
+.uso{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);padding:var(--espacio-7);display:flex;flex-direction:column;gap:var(--espacio-5);min-width:0}
+.uso .t1{display:flex;align-items:center;gap:var(--espacio-4)}
+.uso .t1 b{font-size:14px;font-weight:500}
+.uso .t1 .chip{margin-left:auto}
+.uso .cif{display:flex;align-items:baseline;gap:var(--espacio-3)}
+.uso .cif b{font-family:var(--display);font-size:32px;font-weight:500;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
+.uso .cif span{font-family:var(--display);font-size:20px;color:var(--texto-3);font-variant-numeric:tabular-nums}
+.uso .cif em{font-style:normal;margin-left:auto;font-size:13px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--texto-2)}
+.pista{position:relative;height:8px;border-radius:99px;background:var(--suave);overflow:hidden}
+.pista .usado{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--tinta);transition:width 600ms var(--ease),background var(--t-3)}
+.pista .pr{position:absolute;top:0;bottom:0;border-radius:0 99px 99px 0;background-image:repeating-linear-gradient(45deg,color-mix(in oklch,var(--tinta) 30%,transparent) 0 2px,transparent 2px 5px);transition:left 600ms var(--ease),width 600ms var(--ease);border:0;overflow:visible}
+.pista .limite{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--rojo);border-radius:1px}
+.uso.aviso .pista .usado{background:var(--ambar)}
+.uso.pasado .pista .usado{background:var(--rojo)}
+.uso .ejes{display:flex;justify-content:space-between;font-size:12px;color:var(--texto-3);font-variant-numeric:tabular-nums;margin-top:calc(var(--espacio-3)*-1)}
+.uso .frase{display:flex;gap:var(--espacio-4);align-items:flex-start;font-size:13px;color:var(--texto-2);line-height:1.5;padding:var(--espacio-4) var(--espacio-5);border-radius:var(--radius-control);background:var(--bandeja)}
+.uso .frase .ph{font-size:16px;flex:none;margin-top:1px;color:var(--texto-3)}
+.uso .frase b{color:var(--tinta);font-weight:500}
+.uso.aviso .frase{background:var(--ambar-f);color:var(--ambar)}.uso.aviso .frase .ph,.uso.aviso .frase b{color:var(--ambar)}
+.uso.pasado .frase{background:var(--rojo-f);color:var(--rojo)}.uso.pasado .frase .ph,.uso.pasado .frase b{color:var(--rojo)}
+.uso .rep{display:flex;gap:4px;height:6px}
+.uso .rep i{border-radius:99px;background:var(--ent);transition:flex-grow 600ms var(--ease)}
+.uso .ley{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--espacio-2) var(--espacio-6);font-size:12px;color:var(--texto-2)}
+.uso .ley span{display:flex;align-items:center;gap:var(--espacio-3)}
+.uso .ley em{font-style:normal;margin-left:auto;color:var(--texto-3);font-variant-numeric:tabular-nums}
+.uso .pie-u{display:flex;align-items:center;gap:var(--espacio-4);margin-top:var(--espacio-2)}
+.uso .pie-u .gris{font-size:12px;margin-right:auto}
+.plan-menu{width:256px;max-width:100%;border:1px solid var(--borde);border-radius:var(--radius-interno);background:var(--superficie);padding:var(--espacio-5);display:flex;flex-direction:column;gap:var(--espacio-4)}
+.plan-menu .f1{display:flex;align-items:center;gap:var(--espacio-5)}
+.plan-menu .f1 b{font-size:13px;font-weight:500;display:block;font-variant-numeric:tabular-nums}
+.plan-menu .f1 small{font-size:12px;color:var(--texto-3)}
+
+/* ───────── 16. reunión con cuenta regresiva ───────── */
+.reu{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:border-color var(--t-3),box-shadow var(--t-3)}
+.reu .r0{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-5) var(--espacio-6);background:var(--bandeja);border-bottom:1px solid var(--divisor);font-size:12px;color:var(--texto-2);font-weight:500}
+.reu .r0 .ph{font-size:15px}
+.reu .r0 .reloj{margin-left:auto;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;color:var(--tinta)}
+.reu .r1{padding:var(--espacio-6) var(--espacio-6) var(--espacio-4);display:flex;flex-direction:column;gap:var(--espacio-3)}
+.reu .r1 h4{font-family:var(--display);font-size:16px;font-weight:500;letter-spacing:-.01em;line-height:1.3}
+.reu .r1 .cuando{font-size:13px;color:var(--texto-2);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:var(--espacio-3);flex-wrap:wrap}
+.reu .r1 .cuando .cli{font-size:13px}
+.reu .agenda{padding:0 var(--espacio-6) var(--espacio-4);display:flex;flex-direction:column}
+.reu .agenda div{display:flex;align-items:center;gap:var(--espacio-4);height:28px;font-size:12px;color:var(--texto-2)}
+.reu .agenda .n{font-family:var(--mono);color:var(--texto-3);width:16px}
+.reu .r2{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-4) var(--espacio-6) var(--espacio-6);margin-top:auto;flex-wrap:wrap}
+.reu .r2 .lugar{font-size:12px;color:var(--texto-3);display:inline-flex;align-items:center;gap:var(--espacio-2);margin-right:auto;min-width:0}
+.reu.pronto{border-color:color-mix(in oklch,var(--ambar) 45%,var(--borde))}
+.reu.pronto .r0{background:var(--ambar-f);color:var(--ambar)}
+.reu.pronto .r0 .reloj{color:var(--ambar)}
+.reu.curso{border-color:color-mix(in oklch,var(--verde) 45%,var(--borde))}
+.reu.curso .r0{background:var(--verde-f);color:var(--verde)}
+.reu.curso .r0 .reloj{color:var(--verde)}
+.reu.fin .r1,.reu.fin .agenda{opacity:.6}
+.reu .progreso-r{height:2px;background:var(--divisor)}
+.reu .progreso-r i{display:block;height:100%;background:var(--verde);transition:width 1s linear}
+.dig{display:inline-flex;overflow:hidden;height:1.2em;line-height:1.2em;vertical-align:bottom}
+.dig span{display:inline-block;transition:transform 400ms var(--ease)}
+.reu .falta{display:flex;align-items:center;gap:var(--espacio-3);margin:0 var(--espacio-6) var(--espacio-4);padding:var(--espacio-3) var(--espacio-4);border-radius:var(--radius-chip);background:var(--bandeja);font-size:12px;color:var(--texto-2)}
+.reu .falta .ph{font-size:14px;color:var(--ambar)}
+
+/* ───────── 17. promo con clima ───────── */
+.promo{position:relative;border:1px solid var(--borde);border-radius:var(--radius-tarjeta);overflow:hidden;background:radial-gradient(90% 70% at 70% 0%,var(--ilus-clima),transparent 70%),var(--superficie);min-width:0}
+.promo .x{position:absolute;top:var(--espacio-4);right:var(--espacio-4);z-index:2}
+.promo .ilu{height:132px;display:grid;place-items:center;color:var(--ilus-trazo)}
+.promo .ilu svg{height:120px;width:auto}
+.promo .cu{padding:0 var(--espacio-6) var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-3)}
+.promo .cu small{font-size:12px;color:var(--texto-3)}
+.promo .cu b{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em}
+.promo .cu p{font-size:13px;color:var(--texto-2);line-height:1.5}
+.promo .cu .btn.enlace{align-self:flex-start;padding:0;height:28px}
+.promo.foto-p{border:0;color:#fff;background:#141a24;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end}
+.promo.foto-p .fondo{position:absolute;inset:0}
+.promo.foto-p .fondo svg{width:100%;height:100%}
+.promo.foto-p .fondo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 20%,rgb(8 10 16/.82) 78%)}
+.promo.foto-p .nueva{position:absolute;top:var(--espacio-5);left:var(--espacio-5);display:inline-flex;align-items:center;gap:var(--espacio-2);height:24px;padding:0 var(--espacio-4);border-radius:99px;background:rgb(255 255 255/.16);backdrop-filter:blur(8px);border:1px solid rgb(255 255 255/.22);font-size:12px;font-weight:500}
+.promo.foto-p .x{color:#fff;background:rgb(255 255 255/.14);border-radius:50%}
+.promo.foto-p .x:hover{background:rgb(255 255 255/.26)}
+.promo.foto-p .cu{position:relative;padding:var(--espacio-6)}
+.promo.foto-p .cu p{color:rgb(255 255 255/.88);font-size:14px}
+.promo.foto-p .btn{background:#fff;color:#17171f;border-color:#fff;margin-top:var(--espacio-4)}
+.promo.banda-p{display:flex;align-items:center;gap:var(--espacio-5);padding:var(--espacio-5) var(--espacio-5) var(--espacio-5) var(--espacio-6);background:radial-gradient(60% 140% at 0% 50%,var(--ilus-clima),transparent 70%),var(--superficie)}
+.promo.banda-p .tile{background:var(--acento-f);color:var(--acento-texto)}
+.promo.banda-p .tx{flex:1;min-width:0}
+.promo.banda-p .tx b{font-size:14px;font-weight:500;display:block}
+.promo.banda-p .tx span{font-size:12px;color:var(--texto-3)}
+.promo.banda-p .x{position:static}
+.devolver{display:flex;align-items:center;gap:var(--espacio-4);font-size:12px;color:var(--texto-3)}
+
+/* ───────── 18. sugerencia descartable ───────── */
+.sugs{display:flex;flex-wrap:wrap;gap:var(--espacio-4)}
+.sug{display:inline-flex;align-items:center;height:34px;border:1px solid var(--borde);border-radius:99px;background:var(--superficie);box-shadow:var(--s-min);font-size:13px;font-weight:500;color:var(--texto-2);overflow:hidden;max-width:100%;transition:opacity var(--t-2),transform var(--t-3) var(--ease),max-width var(--t-3) var(--ease),margin var(--t-3) var(--ease),padding var(--t-3),border-width var(--t-3)}
+.sug .ir{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:var(--espacio-3);height:100%;padding:0 var(--espacio-2) 0 var(--espacio-5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.sug .ir:hover{color:var(--tinta)}
+.sug .ir:focus-visible,.sug .quitar:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:-2px;border-radius:99px}
+.sug .ir .ph{font-size:15px;color:var(--texto-3)}
+.sug .quitar{all:unset;cursor:pointer;width:28px;height:28px;margin-right:var(--espacio-1);border-radius:50%;display:grid;place-items:center;color:var(--texto-3);flex:none}
+.sug .quitar:hover{background:var(--hover);color:var(--tinta)}
+.sug .quitar .ph{font-size:13px}
+.sug.sale{opacity:0;transform:scale(calc(1 - .08*var(--mueve)));max-width:0!important;margin-right:calc(var(--espacio-4)*-1);border-width:0}
+.sug.hecha{border-color:color-mix(in oklch,var(--verde) 40%,var(--borde));color:var(--verde)}
+.sug.hecha .ir .ph{color:var(--verde)}
+.sug-tarjeta{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);overflow:hidden}
+.sug-tarjeta .cab-s{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-6) var(--espacio-7)}
+.sug-tarjeta .cab-s b{font-size:14px;font-weight:500}
+.sug-tarjeta .cab-s .barra4{display:flex;gap:3px;width:72px;margin-left:auto}
+.sug-tarjeta .cab-s .barra4 i{flex:1;height:4px;border-radius:2px;background:var(--suave);transition:background var(--t-3)}
+.sug-tarjeta .cab-s .barra4 i.on{background:var(--verde)}
+.sug-tarjeta .pie-s{padding:var(--espacio-5) var(--espacio-7) var(--espacio-6);border-top:1px solid var(--divisor);display:flex;flex-direction:column;gap:var(--espacio-4)}
+.sug-tarjeta .pie-s .rot-g{display:flex;justify-content:space-between}
+.sug-nada{font-size:13px;color:var(--texto-3);display:flex;align-items:center;gap:var(--espacio-3);height:34px}
+.sug-nada .ph{color:var(--verde);font-size:16px}
+
+/* ajustes finos */
+.kv dd:has(.avs){overflow:visible;display:flex;justify-content:flex-end}
+.reu .avs .av{border-width:2px;margin-left:-5px}.reu .avs .av:first-child{margin-left:0}
+.kt .pie-k .av{font-family:var(--ui);display:inline-grid}
+.col .ch>i{font-size:15px;color:var(--ent)}
+.uso .ley{grid-template-columns:minmax(0,1fr)}
+/* ───────── cortes ───────── */
+@media (max-width:1023px){
+  .tablero{grid-template-columns:repeat(3,minmax(260px,82%))}
+}
+@media (max-width:767px){
+  .clr-tabla .r1{grid-template-columns:minmax(0,1fr) auto;height:auto;padding:var(--espacio-5) var(--espacio-6);row-gap:var(--espacio-2)}
+  .clr-tabla .r1:first-child{display:none}
+  .clr-tabla .r1 .oc{display:none}
+  .ic-btn{width:44px;height:44px}
+  .tablero{grid-template-columns:repeat(3,minmax(264px,88%));margin:0 calc(var(--espacio-6)*-1);padding:0 var(--espacio-6) var(--espacio-2)}
+  .col{min-height:360px}
+  .sug{height:44px}
+  .sug .quitar{width:44px;height:44px;margin-right:0}
+  .gal .foto .nav{width:44px;height:44px;margin-top:-22px}
+  .carp{min-height:44px}
+  .opo .prox{height:auto;min-height:44px;flex-wrap:wrap;padding:var(--espacio-2) var(--espacio-2) var(--espacio-2) var(--espacio-4)}
+  .opo .prox .btn.chico{height:44px}
+  .esp .fuente{height:44px}
+  .uso .ley{grid-template-columns:minmax(0,1fr)}
+  .prox-chips button{height:44px}
+  .reu .r2 .lugar{flex-basis:100%}
+  .clr-gat{min-height:44px}
+}
+</style>
+</head>
+<body class="bib">
+<div class="bib-pag">
+  <aside class="bib-indice" data-volver="index.html" data-titulo="Tarjetas"></aside>
+
+  <main class="bib-main">
+    <header class="bib-cab">
+      <div>
+        <span class="eti"><a href="index.html">Biblioteca</a> / 08</span>
+        <h1>Tarjetas</h1>
+        <p><b>18 piezas</b> para lo que está en curso: entidades, personas, kanban, procesos, integraciones, documentos, equipos y avisos. Cada una con sus estados vivos, en claro y oscuro, y armada para 390 px.</p>
+      </div>
+      <div class="der"></div>
+    </header>
+
+    <!-- ══════════ 1. Tarjeta de entidad ══════════ -->
+    <section class="lamina" id="tarjeta-de-entidad">
+      <header class="lamina-cab">
+        <h2>Tarjeta de entidad</h2>
+        <span class="lamina-sec">§5 Tarjetas · §1b.4</span>
+        <p class="lamina-regla">Lo que está en curso va en tarjeta, no en fila: <b>prioridad, avance en bloques, actividad de 14 días y próximos pasos que se tildan ahí mismo</b>. El color de la entidad se repite en cuadrito, bloques y curva.</p>
+        <p class="lamina-ref">Patrones 1b.4, 9.1 · ref. 06 · tweet 38</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="barra-demo">
+            <button class="btn chico" id="ent-cargar"><i class="ph ph-arrows-clockwise"></i>Simular carga</button>
+            <span class="gris">Tildá un paso: el avance, el conteo y la curva cambian en el lugar.</span>
+          </div>
+          <div class="grilla-t" style="--min:300px">
+            <article class="proy" data-ent="e1" data-hechos="3" data-total="10" data-serie="2,3,2,4,3,3,2,5,4,3,4,6,9,4" data-marca="13">
+              <div class="esq-t" aria-hidden="true"><div class="esq" style="width:40%"></div><div class="esq" style="width:70%;height:18px"></div><div class="esq"></div><div class="esq" style="width:85%"></div><div class="esq" style="height:56px;border-radius:12px"></div><div class="esq" style="width:60%"></div><div class="esq" style="width:75%"></div></div>
+              <div class="tope">
+                <div class="etqs"><span class="chip am">Media</span><span class="tag">Desarrollo</span><span class="tag">Docs</span></div>
+                <h3><span class="cuadro" style="--ent:var(--e1)"><i class="ph-fill ph-storefront"></i></span><a href="#tarjeta-de-entidad" class="trunca">Portal de clientes</a><i class="ph ph-arrow-up-right"></i></h3>
+                <p class="desc">Un solo lugar para que cada cliente vea sus facturas, remitos y contratos, con aviso por correo cuando vence algo.</p>
+                <div class="avance"><div class="segs"></div><b class="pct">30 %</b></div>
+                <div class="meta"><span class="num hechos-t">3 de 10 hechas</span>·<i class="ph ph-calendar-blank"></i><span>vence 9 dic</span></div>
+              </div>
+              <div class="graf"><svg aria-hidden="true"></svg><div class="pie-g"><span class="num">12 movimientos · 14 días</span><span class="num hoy-t">1 hecha hoy</span></div></div>
+              <div class="pasos">
+                <div class="cab"><span>Próximos pasos</span><span class="num abiertos">4 abiertos</span></div>
+                <div class="paso"><button class="check" role="checkbox" aria-checked="false" aria-label="Revisar permisos de la API"></button><span class="t">Revisar permisos de la API</span><span class="f baja">Vencida</span></div>
+                <div class="paso"><button class="check" role="checkbox" aria-checked="false" aria-label="Documentar los endpoints de facturas"></button><span class="t">Documentar los endpoints de facturas</span><span class="f">13 nov</span></div>
+                <div class="paso"><button class="check" role="checkbox" aria-checked="false" aria-label="Límite de pedidos por cliente"></button><span class="t">Límite de pedidos por cliente</span><span class="f">19 nov</span></div>
+                <div class="paso"><button class="check" role="checkbox" aria-checked="false" aria-label="Paginar la lista de remitos"></button><span class="t">Paginar la lista de remitos</span><span class="f">24 nov</span></div>
+                <button class="btn chico texto agregar"><i class="ph ph-plus"></i>Agregar paso</button>
+              </div>
+            </article>
+
+            <article class="proy" data-ent="e2" data-hechos="1" data-total="6" data-serie="1,2,1,3,2,2,4,3,2,3,2,4,3,7" data-marca="6">
+              <div class="esq-t" aria-hidden="true"><div class="esq" style="width:40%"></div><div class="esq" style="width:70%;height:18px"></div><div class="esq"></div><div class="esq" style="width:85%"></div><div class="esq" style="height:56px;border-radius:12px"></div><div class="esq" style="width:60%"></div></div>
+              <div class="tope">
+                <div class="etqs"><span class="chip ro">Alta</span><span class="tag">Diseño</span></div>
+                <h3><span class="cuadro" style="--ent:var(--e2)"><i class="ph-fill ph-paint-brush"></i></span><a href="#tarjeta-de-entidad" class="trunca">Rediseño Casa Lumen</a><i class="ph ph-arrow-up-right"></i></h3>
+                <p class="desc">Marca nueva, catálogo de 140 productos y la tienda rehecha antes de la campaña de verano.</p>
+                <div class="avance"><div class="segs"></div><b class="pct">17 %</b></div>
+                <div class="meta"><span class="num hechos-t">1 de 6 hechas</span>·<i class="ph ph-calendar-blank"></i><span class="vencida">vence mañana</span></div>
+              </div>
+              <div class="graf"><svg aria-hidden="true"></svg><div class="pie-g"><span class="num">9 movimientos · 14 días</span><span class="num hoy-t">sin hechas hoy</span></div></div>
+              <div class="pasos">
+                <div class="cab"><span>Próximos pasos</span><span class="num abiertos">3 abiertos</span></div>
+                <div class="paso"><button class="check" role="checkbox" aria-checked="false" aria-label="Aprobar paleta con el cliente"></button><span class="t">Aprobar paleta con el cliente</span><span class="f baja">Vencida</span></div>
+                <div class="paso"><button class="check" role="checkbox" aria-checked="false" aria-label="Fotos del catálogo, tanda 2"></button><span class="t">Fotos del catálogo, tanda 2</span><span class="f">Mañana</span></div>
+                <div class="paso"><button class="check" role="checkbox" aria-checked="false" aria-label="Plantilla de ficha de producto"></button><span class="t">Plantilla de ficha de producto</span><span class="f">21 nov</span></div>
+                <button class="btn chico texto agregar"><i class="ph ph-plus"></i>Agregar paso</button>
+              </div>
+            </article>
+
+            <article class="proy cerrada" data-ent="e4" data-hechos="6" data-total="6" data-serie="3,4,5,4,6,5,4,3,2,2,1,1,0,0" data-marca="9">
+              <div class="esq-t" aria-hidden="true"><div class="esq" style="width:40%"></div><div class="esq" style="width:70%;height:18px"></div><div class="esq"></div><div class="esq" style="height:56px;border-radius:12px"></div></div>
+              <div class="tope">
+                <div class="etqs"><span class="chip d v">Terminado</span><span class="tag">Soporte</span></div>
+                <h3><span class="cuadro" style="--ent:var(--e4)"><i class="ph-fill ph-buildings"></i></span><a href="#tarjeta-de-entidad" class="trunca">Migración Grupo Atlas</a><i class="ph ph-arrow-up-right"></i></h3>
+                <p class="desc">Pasar 6 años de historial de pedidos al sistema nuevo sin cortar la operación.</p>
+                <div class="avance"><div class="segs"></div><b class="pct">100 %</b></div>
+                <div class="meta"><span class="num hechos-t">6 de 6 hechas</span>·<i class="ph ph-check"></i><span>cerrado el 4 nov</span></div>
+              </div>
+              <div class="graf"><svg aria-hidden="true"></svg><div class="pie-g"><span class="num">31 movimientos · 14 días</span><span class="num">0 hoy</span></div></div>
+              <div class="pasos">
+                <div class="cab"><span>Próximos pasos</span><span class="num abiertos">0 abiertos</span></div>
+                <p class="vacio-pasos">Nada pendiente. Si vuelve a abrirse, sumá el próximo paso.</p>
+                <button class="btn chico texto agregar"><i class="ph ph-plus"></i>Agregar paso</button>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Lo terminado baja al 62 % y deja escrito el vacío; nunca achica la tarjeta.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 2. Persona con su carga ══════════ -->
+    <section class="lamina" id="persona-con-su-carga">
+      <header class="lamina-cab">
+        <h2>Persona con su carga</h2>
+        <span class="lamina-sec">§5 Tarjetas · §9</span>
+        <p class="lamina-regla">Toda tarjeta de responsable muestra <b>abiertas, vencidas y hechas en 7 días</b>; solo el número vencido va en rojo y el vacío se escribe sin achicar la tarjeta.</p>
+        <p class="lamina-ref">Patrón 9.1 · tweet 38</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="grilla-t" style="--min:240px" id="personas">
+            <article class="per" data-id="lucia" data-ent="e1" data-max="12">
+              <div class="top"><span class="chip v">Presencial</span><button class="ic-btn empuja" data-tip="Editar a Lucía" aria-label="Editar a Lucía Benítez"><i class="ph ph-pencil-simple"></i></button></div>
+              <div class="quien"><span class="av grande" style="--ent:var(--e1)" role="img" aria-label="Lucía Benítez">LB</span><div class="min0"><b class="trunca">Lucía Benítez</b><small>Coordinadora de cuentas</small></div></div>
+              <div class="hl"></div>
+              <div class="carga"><div class="segs"></div><b class="num ab-t">2 abiertas</b></div>
+              <p class="semana num"><span class="he-t">1 hecha esta semana</span></p>
+              <div class="trio"><div><span>Abiertas</span><b class="num ab-n">2</b></div><div><span>Vencidas</span><b class="num ve-n">0</b></div><div><span>Hechas 7 d</span><b class="num he-n">1</b></div></div>
+              <div class="prox"><div class="cab"><span>Lo próximo</span><span class="num ab-c">2 abiertas</span></div>
+                <div class="lista-p"><div class="fila-t"><span class="o"></span><span class="t">Enviar resumen mensual a Orbe Retail</span><span class="f">Mañana</span></div><div class="fila-t"><span class="o"></span><span class="t">Armar la reunión trimestral</span><span class="f">24 nov</span></div></div>
+              </div>
+              <div class="hl"></div>
+              <dl class="kv"><dt>Correo</dt><dd>lucia@estudiofaro.com</dd><dt>Equipos</dt><dd>Cuentas, Diseño</dd><dt>Trabaja con</dt><dd><span class="avs"><span class="av" style="--ent:var(--e3)" title="Martín Sosa">MS</span><span class="av" style="--ent:var(--e5)" title="Paula Ferreyra">PF</span></span></dd></dl>
+              <button class="btn chico ancho asignar" data-menu="#menu-asignar" data-menu-lado="izq"><i class="ph ph-plus"></i>Asignar tarea</button>
+            </article>
+
+            <article class="per" data-id="martin" data-ent="e3" data-max="12">
+              <div class="top"><span class="chip az">Remoto</span><button class="ic-btn empuja" data-tip="Editar a Martín" aria-label="Editar a Martín Sosa"><i class="ph ph-pencil-simple"></i></button></div>
+              <div class="quien"><span class="av grande" style="--ent:var(--e3)" role="img" aria-label="Martín Sosa">MS</span><div class="min0"><b class="trunca">Martín Sosa</b><small>Desarrollo</small></div></div>
+              <div class="hl"></div>
+              <div class="carga"><div class="segs"></div><b class="num ab-t">6 abiertas</b></div>
+              <p class="semana num"><span class="he-t">0 hechas esta semana</span> · <span class="vencida ve-t">1 vencida</span></p>
+              <div class="trio"><div><span>Abiertas</span><b class="num ab-n">6</b></div><div><span>Vencidas</span><b class="num vencida ve-n">1</b></div><div><span>Hechas 7 d</span><b class="num he-n">0</b></div></div>
+              <div class="prox"><div class="cab"><span>Lo próximo</span><span class="num ab-c">6 abiertas</span></div>
+                <div class="lista-p"><div class="fila-t"><span class="o"></span><span class="t">Revisar permisos de la API</span><span class="f vencida">Vencida</span></div><div class="fila-t"><span class="o"></span><span class="t">Documentar los endpoints de facturas</span><span class="f">13 nov</span></div><div class="fila-t"><span class="o"></span><span class="t">Paginar la lista de remitos</span><span class="f">24 nov</span></div></div>
+              </div>
+              <div class="hl"></div>
+              <dl class="kv"><dt>Correo</dt><dd>martin@estudiofaro.com</dd><dt>Equipos</dt><dd>Desarrollo</dd><dt>Trabaja con</dt><dd><span class="avs"><span class="av" style="--ent:var(--e1)" title="Lucía Benítez">LB</span></span></dd></dl>
+              <button class="btn chico ancho asignar" data-menu="#menu-asignar" data-menu-lado="izq"><i class="ph ph-plus"></i>Asignar tarea</button>
+            </article>
+
+            <article class="per" data-id="paula" data-ent="e5" data-max="12">
+              <div class="top"><span class="chip am">Media jornada</span><button class="ic-btn empuja" data-tip="Editar a Paula" aria-label="Editar a Paula Ferreyra"><i class="ph ph-pencil-simple"></i></button></div>
+              <div class="quien"><span class="av grande" style="--ent:var(--e5)" role="img" aria-label="Paula Ferreyra">PF</span><div class="min0"><b class="trunca">Paula Ferreyra</b><small>Diseño de producto</small></div></div>
+              <div class="hl"></div>
+              <div class="carga"><div class="segs"></div><b class="num ab-t">9 abiertas</b></div>
+              <p class="semana num"><span class="he-t">2 hechas esta semana</span> · <span class="vencida ve-t">3 vencidas</span></p>
+              <div class="trio"><div><span>Abiertas</span><b class="num ab-n">9</b></div><div><span>Vencidas</span><b class="num vencida ve-n">3</b></div><div><span>Hechas 7 d</span><b class="num he-n">2</b></div></div>
+              <div class="prox"><div class="cab"><span>Lo próximo</span><span class="num ab-c">9 abiertas</span></div>
+                <div class="lista-p"><div class="fila-t"><span class="o"></span><span class="t">Aprobar paleta con Casa Lumen</span><span class="f vencida">Vencida</span></div><div class="fila-t"><span class="o"></span><span class="t">Estados vacíos del portal</span><span class="f vencida">Vencida</span></div><div class="fila-t"><span class="o"></span><span class="t">Plantilla de ficha de producto</span><span class="f">21 nov</span></div></div>
+              </div>
+              <div class="hl"></div>
+              <dl class="kv"><dt>Correo</dt><dd>paula@estudiofaro.com</dd><dt>Equipos</dt><dd>Diseño</dd><dt>Trabaja con</dt><dd><span class="avs"><span class="av" style="--ent:var(--e1)" title="Lucía Benítez">LB</span><span class="av" style="--ent:var(--e2)" title="Ana Ruiz">AR</span><span class="av mas" title="2 más">+2</span></span></dd></dl>
+              <button class="btn chico ancho asignar" data-menu="#menu-asignar" data-menu-lado="izq"><i class="ph ph-plus"></i>Asignar tarea</button>
+            </article>
+
+            <article class="per invitada" data-id="tomas" data-ent="e6" data-max="12">
+              <div class="top"><span class="chip gr">Invitación enviada</span><button class="ic-btn empuja" data-tip="Reenviar invitación" aria-label="Reenviar invitación a Tomás Ibarra"><i class="ph ph-paper-plane-tilt"></i></button></div>
+              <div class="quien"><span class="av grande" role="img" aria-label="Tomás Ibarra">TI</span><div class="min0"><b class="trunca">Tomás Ibarra</b><small>Redacción · invitado hace 2 días</small></div></div>
+              <div class="hl"></div>
+              <div class="carga"><div class="segs"></div><b class="num ab-t">0 abiertas</b></div>
+              <p class="semana num"><span class="he-t">0 hechas esta semana</span></p>
+              <div class="trio"><div><span>Abiertas</span><b class="num ab-n">0</b></div><div><span>Vencidas</span><b class="num ve-n">0</b></div><div><span>Hechas 7 d</span><b class="num he-n">0</b></div></div>
+              <div class="prox"><div class="cab"><span>Lo próximo</span><span class="num ab-c">0 abiertas</span></div>
+                <div class="lista-p"><p class="nada">Nada asignado ahora.</p></div>
+              </div>
+              <div class="hl"></div>
+              <dl class="kv"><dt>Correo</dt><dd>tomas@estudiofaro.com</dd><dt>Equipos</dt><dd>Contenidos</dd><dt>Trabaja con</dt><dd class="gris">Nadie todavía</dd></dl>
+              <button class="btn chico ancho asignar" data-menu="#menu-asignar" data-menu-lado="izq"><i class="ph ph-plus"></i>Asignar tarea</button>
+            </article>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Asignar suma la tarea arriba de "Lo próximo", llena un bloque y ofrece Deshacer.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 3. Cliente en vista rápida ══════════ -->
+    <section class="lamina" id="cliente-en-vista-rapida">
+      <header class="lamina-cab">
+        <h2>Cliente en vista rápida</h2>
+        <span class="lamina-sec">§5 Tarjetas · §6c</span>
+        <p class="lamina-regla">Al pasar 300 ms sobre un cliente (o al enfocarlo con teclado) aparece su tarjeta compacta: <b>saldo, vencido, último contacto y dos acciones</b>. Se queda mientras el puntero cruza hacia ella; en el celular, un toque la abre.</p>
+        <p class="lamina-ref">Patrones 6.1, 12.3 · ref. 03 · tweets 18, 43</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-text-aa"></i>Dentro de un texto</span>
+              <p class="clr-texto">Ayer <b>Ana Ruiz</b> pasó la propuesta de <button class="clr-gat" data-cli="orbe" aria-expanded="false"><span class="cuadro ch" style="--ent:var(--e1)"></span>Orbe Retail</button> a Negociación y quedó esperando la orden de compra de <button class="clr-gat" data-cli="lumen" aria-expanded="false"><span class="cuadro ch" style="--ent:var(--e2)"></span>Casa Lumen</button>, que todavía tiene una factura vencida.</p>
+            </div>
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-table"></i>En una tabla</span>
+              <div class="clr-tabla">
+                <div class="r1"><span>Cliente</span><span class="oc">Dueño</span><span class="r">Saldo</span><span>Estado</span></div>
+                <div class="r1"><span><button class="clr-gat" data-cli="atlas" aria-expanded="false"><span class="cuadro ch" style="--ent:var(--e4)"></span>Grupo Atlas</button></span><span class="oc fila g3"><span class="av ch" style="--ent:var(--e3)">MS</span>Martín Sosa</span><span class="r monto"><span class="u">$</span>0</span><span class="gris-2 t-12"><i class="ph ph-check" style="font-size:13px"></i> Al día</span></div>
+                <div class="r1"><span><button class="clr-gat" data-cli="lumen" aria-expanded="false"><span class="cuadro ch" style="--ent:var(--e2)"></span>Casa Lumen</button></span><span class="oc fila g3"><span class="av ch" style="--ent:var(--e5)">PF</span>Paula Ferreyra</span><span class="r monto"><span class="u">$</span>1.284.500</span><span><span class="chip d ro">Vencida</span></span></div>
+                <div class="r1"><span><button class="clr-gat" data-cli="orbe" aria-expanded="false"><span class="cuadro ch" style="--ent:var(--e1)"></span>Orbe Retail</button></span><span class="oc fila g3"><span class="av ch" style="--ent:var(--e2)">AR</span>Ana Ruiz</span><span class="r monto"><span class="u">$</span>3.920.000</span><span class="gris-2 t-12"><i class="ph ph-clock" style="font-size:13px"></i> Por vencer</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Entra con 300 ms de espera y sale con 150 ms de gracia; Esc la cierra y devuelve el foco.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 4. Oportunidad del pipeline ══════════ -->
+    <section class="lamina" id="oportunidad-del-pipeline">
+      <header class="lamina-cab">
+        <h2>Oportunidad del pipeline</h2>
+        <span class="lamina-sec">§5 Tarjetas · §10.4</span>
+        <p class="lamina-regla">Etapa con su ícono y color fijos, cliente con logo y dueño en una línea, <b>monto, probabilidad y cierre</b>, y la próxima acción abajo: roja si venció, ámbar si falta. No pasa de 120 px sin la acción.</p>
+        <p class="lamina-ref">Patrones 10.4, 10.5 · ref. 03 · tweets 10, 12, 13</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo lienzo">
+          <div class="grilla-t" style="--min:270px" id="opos">
+            <article class="opo" data-id="o1">
+              <div class="l1"><span class="etapa" style="--ent:var(--e1)"><i class="ph-fill ph-chat-circle-dots"></i>Negociación</span><button class="ic-btn empuja" data-menu="#menu-opo" aria-label="Más opciones de Plan anual de soporte"><i class="ph ph-dots-three"></i></button></div>
+              <h4 class="t-14 peso trunca">Plan anual de soporte</h4>
+              <div class="l2"><span class="cli"><span class="cuadro ch" style="--ent:var(--e1)"></span>Orbe Retail</span>·<span class="fila g3"><span class="av ch" style="--ent:var(--e2)" role="img" aria-label="Ana Ruiz">AR</span>Ana</span></div>
+              <div class="l3"><span class="monto"><span class="u">US$</span>48.000</span><span class="prob num">70 %</span><span class="cierra num">cierra 12 dic</span></div>
+              <div class="prox mal"><i class="ph ph-warning-circle"></i><span class="tx">Llamar por la orden de compra · hace 2 días</span><button class="btn chico hecho-p">Hecho</button></div>
+            </article>
+            <article class="opo" data-id="o2">
+              <div class="l1"><span class="etapa" style="--ent:var(--e5)"><i class="ph-fill ph-file-text"></i>Propuesta</span><button class="ic-btn empuja" data-menu="#menu-opo" aria-label="Más opciones de Catálogo verano 2027"><i class="ph ph-dots-three"></i></button></div>
+              <h4 class="t-14 peso trunca">Catálogo verano 2027</h4>
+              <div class="l2"><span class="cli"><span class="cuadro ch" style="--ent:var(--e2)"></span>Casa Lumen</span>·<span class="fila g3"><span class="av ch" style="--ent:var(--e5)" role="img" aria-label="Paula Ferreyra">PF</span>Paula</span></div>
+              <div class="l3"><span class="monto"><span class="u">$</span>12.400.000</span><span class="prob num">40 %</span><span class="cierra num">cierra 20 dic</span></div>
+              <div class="prox falta"><i class="ph ph-warning"></i><span class="tx">Sin próximo paso</span><button class="btn chico agendar-p">Agendar</button></div>
+            </article>
+            <article class="opo" data-id="o3">
+              <div class="l1"><span class="etapa" style="--ent:var(--e6)"><i class="ph-fill ph-magnifying-glass"></i>Calificación</span><button class="ic-btn empuja" data-menu="#menu-opo" aria-label="Más opciones de Tablero de logística"><i class="ph ph-dots-three"></i></button></div>
+              <h4 class="t-14 peso trunca">Tablero de logística</h4>
+              <div class="l2"><span class="cli"><span class="cuadro ch" style="--ent:var(--e4)"></span>Grupo Atlas</span>·<span class="fila g3"><span class="av ch" style="--ent:var(--e3)" role="img" aria-label="Martín Sosa">MS</span>Martín</span></div>
+              <div class="l3"><span class="monto"><span class="u">US$</span>9.600</span><span class="prob num">20 %</span><span class="cierra num">cierra 15 ene</span></div>
+              <div class="prox"><i class="ph ph-calendar-check"></i><span class="tx">Demo con compras · jueves 10:00</span></div>
+            </article>
+            <article class="opo ganada" data-id="o4">
+              <div class="l1"><span class="etapa" style="--ent:var(--e4)"><i class="ph-fill ph-check-circle"></i>Ganada</span><span class="gris t-12 empuja num">hace 3 días</span></div>
+              <h4 class="t-14 peso trunca">Rediseño de la tienda</h4>
+              <div class="l2"><span class="cli"><span class="cuadro ch" style="--ent:var(--e3)"></span>Molinos del Sur</span>·<span class="fila g3"><span class="av ch" style="--ent:var(--e2)" role="img" aria-label="Ana Ruiz">AR</span>Ana</span></div>
+              <div class="l3"><span class="monto"><span class="u">$</span>8.750.000</span><span class="prob num">100 %</span><span class="cierra num">cerró 15 nov</span></div>
+            </article>
+            <article class="opo perdida" data-id="o5">
+              <div class="l1"><span class="etapa" style="--ent:var(--gris)"><i class="ph-fill ph-x-circle"></i>Perdida</span><span class="gris t-12 empuja">precio</span></div>
+              <h4 class="t-14 peso trunca">Mantenimiento web 2027</h4>
+              <div class="l2"><span class="cli"><span class="cuadro ch" style="--ent:var(--e6)"></span>Fundación Norte</span>·<span class="fila g3"><span class="av ch" style="--ent:var(--e1)" role="img" aria-label="Lucía Benítez">LB</span>Lucía</span></div>
+              <div class="l3"><span class="monto"><span class="u">$</span>3.100.000</span><span class="prob num">0 %</span><span class="cierra num">cerró 2 nov</span></div>
+            </article>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Marcar Hecho pide el próximo paso con fechas en chips: una oportunidad nunca queda sin acción.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 5. Tarea en kanban ══════════ -->
+    <section class="lamina" id="tarea-en-kanban">
+      <header class="lamina-cab">
+        <h2>Tarea en kanban</h2>
+        <span class="lamina-sec">§5 Tarjetas · §10.4</span>
+        <p class="lamina-regla">Etiquetas con punto, título 14, avance de la lista en barra de 2 px y <b>un pie mono sin rótulos repetidos</b>: código, prioridad, fecha (ámbar hoy, roja vencida), comentarios y responsable. Lo vacío se escribe.</p>
+        <p class="lamina-ref">Patrón 10.4 · tweets 41, 12, 10 (lo que no copiar: 340 px de rótulos)</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo lienzo">
+          <div class="variantes" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-circle"></i>Normal</span>
+              <article class="kt" tabindex="0" aria-label="Escribir copy de la portada, tarea WEB-112">
+                <div class="etq"><span class="chip d" style="--ent:var(--e1)">Web</span><span class="chip d" style="--ent:var(--e5)">Contenido</span></div>
+                <h4>Escribir copy de la portada</h4>
+                <div class="sub"><i class="ph ph-list-checks"></i><span class="num">1/3</span><div class="barra-av"><i style="width:33%;--ent:var(--texto-3)"></i></div></div>
+                <div class="pie-k"><span>WEB-112</span><span class="prio" data-n="2" role="img" aria-label="Prioridad media"><i></i><i></i><i></i></span><span><i class="ph ph-calendar-blank"></i>22 nov</span><span><i class="ph ph-chat-circle"></i>2</span><span class="av ch" style="--ent:var(--e1)" role="img" aria-label="Lucía Benítez">LB</span></div>
+              </article>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-sun"></i>Vence hoy</span>
+              <article class="kt" tabindex="0" aria-label="Fotos del catálogo, tanda 2, tarea DIS-208">
+                <div class="etq"><span class="chip d" style="--ent:var(--e2)">Diseño</span></div>
+                <h4>Fotos del catálogo, tanda 2</h4>
+                <div class="pie-k"><span>DIS-208</span><span class="prio" data-n="3" role="img" aria-label="Prioridad alta"><i></i><i></i><i></i></span><span class="hoy"><i class="ph ph-calendar-blank"></i>Hoy</span><span class="av ch" style="--ent:var(--e5)" role="img" aria-label="Paula Ferreyra">PF</span></div>
+              </article>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-warning-circle"></i>Vencida</span>
+              <article class="kt" tabindex="0" aria-label="Revisar permisos de la API, tarea API-041, vencida">
+                <div class="etq"><span class="chip d" style="--ent:var(--e6)">API</span><span class="chip d" style="--ent:var(--e3)">Seguridad</span></div>
+                <h4>Revisar permisos de la API</h4>
+                <div class="sub"><i class="ph ph-list-checks"></i><span class="num">2/5</span><div class="barra-av"><i style="width:40%;--ent:var(--texto-3)"></i></div></div>
+                <div class="pie-k"><span>API-041</span><span class="prio" data-n="3" role="img" aria-label="Prioridad alta"><i></i><i></i><i></i></span><span class="venc"><i class="ph ph-calendar-x"></i>14 nov</span><span><i class="ph ph-chat-circle"></i>5</span><span class="av ch" style="--ent:var(--e3)" role="img" aria-label="Martín Sosa">MS</span></div>
+              </article>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-circle-dashed"></i>Sin asignar ni fecha</span>
+              <article class="kt" tabindex="0" aria-label="Estados vacíos del portal, tarea WEB-130, sin asignar">
+                <div class="etq"><span class="chip d" style="--ent:var(--e1)">Web</span></div>
+                <h4>Estados vacíos del portal</h4>
+                <div class="pie-k"><span>WEB-130</span><span class="prio" data-n="1" role="img" aria-label="Prioridad baja"><i></i><i></i><i></i></span><span class="gris">Sin fecha</span><span class="nadie">Sin asignar</span></div>
+              </article>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-check-circle"></i>Hecha</span>
+              <article class="kt hecha" tabindex="0" aria-label="Plantilla de factura, tarea DIS-199, hecha">
+                <div class="etq"><span class="chip d" style="--ent:var(--e2)">Diseño</span></div>
+                <h4>Plantilla de factura</h4>
+                <div class="pie-k"><span>DIS-199</span><span><i class="ph ph-check" style="color:var(--verde)"></i>15 nov</span><span class="av ch" style="--ent:var(--e5)" role="img" aria-label="Paula Ferreyra">PF</span></div>
+              </article>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-hand-grabbing"></i>Arrastrando</span>
+              <article class="kt quieto-r" aria-hidden="true">
+                <div class="etq"><span class="chip d" style="--ent:var(--e1)">Web</span></div>
+                <h4>Menú del celular</h4>
+                <div class="pie-k"><span>WEB-118</span><span class="prio" data-n="2"><i></i><i></i><i></i></span><span><i class="ph ph-calendar-blank"></i>26 nov</span><span class="av ch" style="--ent:var(--e3)">MS</span></div>
+              </article>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Alto máximo 120 px. El arrastre real está en la lámina siguiente.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 6. Columna de kanban ══════════ -->
+    <section class="lamina" id="columna-de-kanban">
+      <header class="lamina-cab">
+        <h2>Columna de kanban</h2>
+        <span class="lamina-sec">§5 Tarjetas · §10.5–10.6</span>
+        <p class="lamina-regla">Cada columna lleva <b>conteo arriba y suma al pie</b>, alto completo aunque esté vacía y "+" para crear con la etapa puesta. Al arrastrar: origen al 35 %, destino con acento al 8 %, hueco del tamaño de la tarjeta y Deshacer.</p>
+        <p class="lamina-ref">Patrones 10.2, 10.5, 10.6 · tweets 12, 13, 41</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="barra-demo"><span class="gris">Arrastrá una tarjeta con el mouse o el dedo. Con teclado: enfocala y usá <kbd>←</kbd> <kbd>→</kbd>.</span></div>
+          <div class="tablero" id="tablero">
+            <section class="col" data-col="por-hacer" aria-label="Por hacer">
+              <header class="ch"><i class="ph ph-circle-dashed" style="--ent:var(--texto-3)"></i><h3>Por hacer</h3><span class="c">3</span><span class="acc"><button class="ic-btn nueva-k" data-tip="Nueva en Por hacer" aria-label="Nueva tarea en Por hacer"><i class="ph ph-plus"></i></button></span></header>
+              <div class="lista-k">
+                <article class="kt" tabindex="0" data-id="k1" data-horas="6"><div class="etq"><span class="chip d" style="--ent:var(--e1)">Web</span></div><h4>Escribir copy de la portada</h4><div class="pie-k"><span>WEB-112</span><span class="prio" data-n="2"><i></i><i></i><i></i></span><span><i class="ph ph-calendar-blank"></i>22 nov</span><span class="av ch" style="--ent:var(--e1)">LB</span></div></article>
+                <article class="kt" tabindex="0" data-id="k2" data-horas="4"><div class="etq"><span class="chip d" style="--ent:var(--e2)">Diseño</span></div><h4>Íconos de categorías</h4><div class="pie-k"><span>DIS-211</span><span class="prio" data-n="1"><i></i><i></i><i></i></span><span class="gris">Sin fecha</span><span class="av ch" style="--ent:var(--e5)">PF</span></div></article>
+                <article class="kt" tabindex="0" data-id="k3" data-horas="8"><div class="etq"><span class="chip d" style="--ent:var(--e6)">API</span></div><h4>Límite de pedidos por cliente</h4><div class="pie-k"><span>API-044</span><span class="prio" data-n="3"><i></i><i></i><i></i></span><span class="hoy"><i class="ph ph-calendar-blank"></i>Hoy</span><span class="av ch" style="--ent:var(--e3)">MS</span></div></article>
+              </div>
+              <button class="btn chico texto mas-k nueva-k"><i class="ph ph-plus"></i>Agregar tarea</button>
+              <div class="tot"><span>Estimado</span><b class="horas">18 h</b></div>
+            </section>
+            <section class="col" data-col="en-curso" aria-label="En curso">
+              <header class="ch"><i class="ph-fill ph-circle-half" style="--ent:var(--azul)"></i><h3>En curso</h3><span class="c">2</span><span class="acc"><button class="ic-btn nueva-k" data-tip="Nueva en En curso" aria-label="Nueva tarea en En curso"><i class="ph ph-plus"></i></button></span></header>
+              <div class="lista-k">
+                <article class="kt" tabindex="0" data-id="k4" data-horas="10"><div class="etq"><span class="chip d" style="--ent:var(--e6)">API</span></div><h4>Revisar permisos de la API</h4><div class="sub"><i class="ph ph-list-checks"></i><span class="num">2/5</span><div class="barra-av"><i style="width:40%;--ent:var(--texto-3)"></i></div></div><div class="pie-k"><span>API-041</span><span class="prio" data-n="3"><i></i><i></i><i></i></span><span class="venc"><i class="ph ph-calendar-x"></i>14 nov</span><span class="av ch" style="--ent:var(--e3)">MS</span></div></article>
+                <article class="kt" tabindex="0" data-id="k5" data-horas="5"><div class="etq"><span class="chip d" style="--ent:var(--e2)">Diseño</span></div><h4>Fotos del catálogo, tanda 2</h4><div class="pie-k"><span>DIS-208</span><span class="prio" data-n="2"><i></i><i></i><i></i></span><span class="hoy"><i class="ph ph-calendar-blank"></i>Hoy</span><span class="av ch" style="--ent:var(--e5)">PF</span></div></article>
+              </div>
+              <button class="btn chico texto mas-k nueva-k"><i class="ph ph-plus"></i>Agregar tarea</button>
+              <div class="tot"><span>Estimado</span><b class="horas">15 h</b></div>
+            </section>
+            <section class="col" data-col="hecho" aria-label="Hecho">
+              <header class="ch"><i class="ph-fill ph-check-circle" style="--ent:var(--verde)"></i><h3>Hecho</h3><span class="c">0</span><span class="acc"><button class="ic-btn nueva-k" data-tip="Nueva en Hecho" aria-label="Nueva tarea en Hecho"><i class="ph ph-plus"></i></button></span></header>
+              <div class="lista-k"></div>
+              <button class="btn chico texto mas-k nueva-k"><i class="ph ph-plus"></i>Agregar tarea</button>
+              <div class="tot"><span>Estimado</span><b class="horas">0 h</b></div>
+            </section>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">La columna vacía conserva el alto y dice qué soltar ahí.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 7. Tarjeta de proceso ══════════ -->
+    <section class="lamina" id="tarjeta-de-proceso">
+      <header class="lamina-cab">
+        <h2>Tarjeta de proceso</h2>
+        <span class="lamina-sec">§5 Tarjetas · §11 IA</span>
+        <p class="lamina-regla">Tres niveles fijos: <b>miniatura del flujo con su estado, título con las apps y métricas</b> con mini barras donde los días sin actividad son punteados. La colección cierra con una ranura punteada del mismo tamaño.</p>
+        <p class="lamina-ref">Patrón 5.15 · tweets 26, 20, 21</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="grilla-t" style="--min:230px" id="procesos">
+            <article class="pro" data-id="p1" data-serie="12,15,0,14,18,16,20,22,19,0,0,21,24,26">
+              <div class="mini"><span class="chip d v est">Activo</span><span class="nodo"><span class="punto" style="--ent:var(--e4)"></span>Firma</span><span class="flecha anda"></span><span class="nodo"><span class="punto" style="--ent:var(--e1)"></span>Factura</span><span class="flecha anda" style="--d:.5s"></span><span class="nodo"><span class="punto" style="--ent:var(--e3)"></span>Aviso</span></div>
+              <div class="cuerpo-p">
+                <div class="t1"><h4>Facturar al firmar</h4><span class="apps"><span class="tile" style="background:var(--e4)"><i class="ph-fill ph-signature"></i></span><span class="tile" style="background:var(--e1)"><i class="ph-fill ph-receipt"></i></span><span class="tile" style="background:var(--e3)"><i class="ph-fill ph-whatsapp-logo"></i></span></span><button class="ic-btn" data-menu="#menu-proceso" aria-label="Opciones de Facturar al firmar"><i class="ph ph-dots-three"></i></button></div>
+                <p class="conf">Cuando se firma un contrato → factura en ARCA → aviso por WhatsApp</p>
+                <div class="met"><p class="txt"><b class="num">608</b> corridas · <span class="num">98,4 %</span> ok<br>Administración · editado hace 17 h</p><svg aria-hidden="true"></svg></div>
+              </div>
+            </article>
+            <article class="pro" data-id="p2" data-serie="4,5,3,6,0,0,5,4,6,7,5,0,0,3">
+              <div class="mini"><span class="chip d am est">Con errores</span><span class="nodo"><span class="punto" style="--ent:var(--e6)"></span>Correo</span><span class="flecha"></span><span class="nodo error"><i class="ph ph-warning" style="font-size:13px"></i>Clasificar</span><span class="flecha"></span><span class="nodo"><span class="punto" style="--ent:var(--e5)"></span>Tarea</span></div>
+              <div class="cuerpo-p">
+                <div class="t1"><h4>Bandeja de soporte</h4><span class="apps"><span class="tile" style="background:var(--e6)"><i class="ph-fill ph-envelope-simple"></i></span><span class="tile" style="background:var(--e5)"><i class="ph-fill ph-sparkle"></i></span></span><button class="ic-btn" data-menu="#menu-proceso" aria-label="Opciones de Bandeja de soporte"><i class="ph ph-dots-three"></i></button></div>
+                <p class="conf">Cada correo a soporte@ → clasificar urgencia → tarea al responsable</p>
+                <div class="met"><p class="txt"><b class="num">148</b> corridas · <span class="vencida num">6 fallaron</span><br>Soporte · hace 2 min</p><svg aria-hidden="true"></svg></div>
+              </div>
+            </article>
+            <article class="pro pausado" data-id="p3" data-serie="3,2,4,3,2,0,0,0,0,0,0,0,0,0">
+              <div class="mini"><span class="chip d gr est">Pausado</span><span class="nodo"><span class="punto" style="--ent:var(--e2)"></span>Cada lunes</span><span class="flecha"></span><span class="nodo"><span class="punto" style="--ent:var(--e1)"></span>Resumen</span></div>
+              <div class="cuerpo-p">
+                <div class="t1"><h4>Resumen semanal a clientes</h4><span class="apps"><span class="tile" style="background:var(--e2)"><i class="ph-fill ph-calendar-blank"></i></span><span class="tile" style="background:var(--e1)"><i class="ph-fill ph-paper-plane-tilt"></i></span></span><button class="ic-btn" data-menu="#menu-proceso" aria-label="Opciones de Resumen semanal a clientes"><i class="ph ph-dots-three"></i></button></div>
+                <p class="conf">Lunes 9:00 → resumen de pedidos y saldos por correo</p>
+                <div class="met"><p class="txt"><b class="num">42</b> corridas · pausado el 7 nov<br>Cuentas · Lucía Benítez</p><svg aria-hidden="true"></svg></div>
+              </div>
+            </article>
+            <button class="pro nuevo" id="pro-nuevo"><span><span class="tile blanco"><i class="ph ph-plus"></i></span><b>Nuevo proceso</b><small>En blanco o desde una plantilla</small></span></button>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Pausar desde ⋯ apaga la miniatura en gris y guarda la serie; reanudar la prende con las flechas que viajan.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 8. Plantilla como receta ══════════ -->
+    <section class="lamina" id="plantilla-como-receta">
+      <header class="lamina-cab">
+        <h2>Plantilla como receta</h2>
+        <span class="lamina-sec">§5 Tarjetas · §11 IA</span>
+        <p class="lamina-regla">Cada plantilla se muestra como <b>su receta encadenada en chips</b>: disparo en ámbar con rayo, pasos con el ícono de su app y flechas. "Usar" con borde, chico; después de usarla dice dónde quedó.</p>
+        <p class="lamina-ref">Patrón 5.14 · tweets 17, 43</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="grilla-t" style="--min:300px">
+            <article class="rec" style="--ent:var(--e4)">
+              <div class="t1"><span class="tile"><i class="ph-fill ph-signature"></i></span><div class="min0"><h4>Contrato firmado, equipo avisado</h4><p>Cuando el cliente firma, se factura el anticipo y el equipo se entera en el grupo.</p></div></div>
+              <div class="cadena"><span class="eslabon disparo"><i class="ph-fill ph-lightning"></i>Se firma el contrato</span><i class="ph ph-arrow-right"></i><span class="eslabon" style="--ent:var(--e1)"><i class="ph-fill ph-receipt"></i>Factura en ARCA</span><i class="ph ph-arrow-right"></i><span class="eslabon" style="--ent:var(--e4)"><i class="ph-fill ph-whatsapp-logo"></i>Avisar al equipo</span></div>
+              <div class="pie-r"><span class="gris num">Usada por 214 estudios</span><button class="btn chico usar"><i class="ph ph-plus"></i>Usar</button></div>
+            </article>
+            <article class="rec" style="--ent:var(--e3)">
+              <div class="t1"><span class="tile"><i class="ph-fill ph-bell-ringing"></i></span><div class="min0"><h4>Cobranza que avisa sola</h4><p>A los 3 días de vencida, recordatorio amable; a los 10, tarea para quien atiende la cuenta.</p></div></div>
+              <div class="cadena"><span class="eslabon disparo"><i class="ph-fill ph-lightning"></i>Factura vence</span><i class="ph ph-arrow-right"></i><span class="eslabon" style="--ent:var(--e6)"><i class="ph-fill ph-envelope-simple"></i>Correo en 3 días</span><i class="ph ph-arrow-right"></i><span class="eslabon" style="--ent:var(--e5)"><i class="ph-fill ph-check-square"></i>Tarea en 10 días</span></div>
+              <div class="pie-r"><span class="gris num">Usada por 1.380 estudios</span><button class="btn chico usar"><i class="ph ph-plus"></i>Usar</button></div>
+            </article>
+            <article class="rec" style="--ent:var(--e5)">
+              <div class="t1"><span class="tile"><i class="ph-fill ph-sparkle"></i></span><div class="min0"><h4>Pedido por WhatsApp a tarea</h4><p>Lee los mensajes del grupo de clientes y arma la tarea con fecha y responsable.</p></div></div>
+              <div class="cadena"><span class="eslabon disparo"><i class="ph-fill ph-lightning"></i>Mensaje nuevo</span><i class="ph ph-arrow-right"></i><span class="eslabon" style="--ent:var(--e5)"><i class="ph-fill ph-sparkle"></i>Entender el pedido</span><i class="ph ph-arrow-right"></i><span class="eslabon" style="--ent:var(--e1)"><i class="ph-fill ph-kanban"></i>Tarea en Por hacer</span></div>
+              <div class="pie-r"><span class="gris num">Nueva · 3 pasos</span><button class="btn chico usar"><i class="ph ph-plus"></i>Usar</button></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 9. Integración ══════════ -->
+    <section class="lamina" id="integracion">
+      <header class="lamina-cab">
+        <h2>Integración</h2>
+        <span class="lamina-sec">§5 Tarjetas · §13</span>
+        <p class="lamina-regla">Tres estados con forma distinta: <b>conectada</b> (punto verde, última sincronización y toggle), <b>falló</b> (el toggle se vuelve "Reconectar" y la causa va escrita) y <b>disponible</b> (borde punteado y "Conectar" con sus pasos a la vista).</p>
+        <p class="lamina-ref">Patrones 13.5, 13.6, 13.7 · tweets 55, 45, 17</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="grilla-t" style="--min:230px">
+            <article class="int" data-id="drive">
+              <div class="t1"><span class="tile grande" style="--ent:var(--e4)"><i class="ph-fill ph-google-drive-logo"></i></span><div class="min0"><b>Google Drive</b><small>Archivos de clientes</small></div><div class="der"><button class="toggle" role="switch" aria-checked="true" aria-label="Google Drive activa"></button></div></div>
+              <p class="que">Guarda cada contrato firmado en la carpeta del cliente y trae los adjuntos a su ficha.</p>
+              <div class="estado-i"><span class="ok"><span class="vivo-punto"></span>Conectada</span><span class="num sinc">· sincronizó hace 8 min</span></div>
+              <div class="pie-i"><span class="num">3 de 4 permisos</span><span class="empuja"><button class="btn chico texto sync"><i class="ph ph-arrows-clockwise"></i>Sincronizar</button></span></div>
+            </article>
+            <article class="int fallo" data-id="arca">
+              <div class="t1"><span class="tile grande" style="--ent:var(--e1)"><i class="ph-fill ph-receipt"></i></span><div class="min0"><b>ARCA</b><small>Factura electrónica con CAE</small></div><div class="der"><button class="btn chico reconectar"><i class="ph ph-arrows-clockwise"></i>Reconectar</button></div></div>
+              <div class="estado-i"><span class="mal"><i class="ph-fill ph-warning-circle"></i>Falló</span><span class="num">· hace 2 h · 3 facturas esperando</span></div>
+              <p class="causa"><i class="ph ph-certificate"></i><span>El certificado venció el 17 nov. Subí el nuevo y las 3 facturas salen solas.</span></p>
+              <div class="pie-i"><span>Último CAE: FAC-01098</span></div>
+            </article>
+            <article class="int disp" data-id="whatsapp">
+              <div class="t1"><span class="tile grande" style="--ent:var(--e4)"><i class="ph-fill ph-whatsapp-logo"></i></span><div class="min0"><b>WhatsApp</b><small>Avisos al equipo y a clientes</small></div><div class="der"><button class="btn chico conectar"><i class="ph ph-plug"></i>Conectar</button></div></div>
+              <p class="que">Manda recordatorios de cobro y avisa al grupo cuando entra un pedido urgente.</p>
+              <div class="pasos-i"><div><i class="ph ph-circle"></i>Escanear el código con el celular</div><div><i class="ph ph-circle"></i>Elegir los grupos que puede leer</div><div><i class="ph ph-circle"></i>Probar con un mensaje</div></div>
+              <div class="pie-i"><span>Unos 2 minutos</span></div>
+            </article>
+            <article class="int apagada" data-id="slack">
+              <div class="t1"><span class="tile grande" style="--ent:var(--e5)"><i class="ph-fill ph-slack-logo"></i></span><div class="min0"><b>Slack</b><small>Canal #ventas</small></div><div class="der"><button class="toggle" role="switch" aria-checked="false" aria-label="Slack activa"></button></div></div>
+              <p class="que">Publica cada oportunidad ganada en #ventas con el monto y el dueño.</p>
+              <div class="estado-i"><span class="num">Apagada por Ana Ruiz · 2 nov</span></div>
+              <div class="pie-i"><span>Guarda la configuración</span></div>
+            </article>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Apagada baja entera al 50 % pero el toggle queda a mano; el error nunca es solo un punto rojo.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 10. Espacio contenedor ══════════ -->
+    <section class="lamina" id="espacio-contenedor">
+      <header class="lamina-cab">
+        <h2>Espacio contenedor</h2>
+        <span class="lamina-sec">§5 Tarjetas · §12</span>
+        <p class="lamina-regla">Con 8 contenedores o menos, la página abre en tarjetas: <b>ícono en cuadro, conteo, título, dos líneas, quién lo toca y cuándo</b>, y una banda con "Abrir" y "Conectar fuente". Los accesos van como carpetas dibujadas con su conteo, también el 0.</p>
+        <p class="lamina-ref">Patrones 12.1, 12.2 · tweet 48</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="grilla-t" style="--min:250px">
+            <article class="esp">
+              <div class="in-e"><div class="t0"><span class="tile blanco"><i class="ph ph-book-open-text"></i></span><small class="num">14 docs</small></div><h4>Manual de marca</h4><p class="clamp-2">Logos, tipografías, tono de voz y piezas aprobadas de cada cliente.</p><div class="t2"><span class="avs"><span class="av" style="--ent:var(--e5)">PF</span><span class="av" style="--ent:var(--e2)">AR</span><span class="av" style="--ent:var(--e1)">LB</span></span><span class="num">Actualizado hace 2 d</span></div></div>
+              <div class="banda-e"><a class="btn chico" href="#espacio-contenedor">Abrir</a><button class="fuente"><i class="ph ph-plugs"></i>Conectar fuente</button></div>
+            </article>
+            <article class="esp">
+              <div class="in-e"><div class="t0"><span class="tile blanco"><i class="ph ph-code"></i></span><small class="num">9 docs</small></div><h4>Guías de desarrollo</h4><p class="clamp-2">Cómo armamos los portales: estándares, revisiones y decisiones de arquitectura.</p><div class="t2"><span class="avs"><span class="av" style="--ent:var(--e3)">MS</span></span><span class="num">Actualizado hace 4 d</span></div></div>
+              <div class="banda-e"><a class="btn chico" href="#espacio-contenedor">Abrir</a><button class="fuente ok" disabled><i class="ph ph-check"></i>GitHub conectado</button></div>
+            </article>
+            <article class="esp">
+              <div class="in-e"><div class="t0"><span class="tile blanco"><i class="ph ph-handshake"></i></span><small class="num">23 docs</small></div><h4>Propuestas y contratos</h4><p class="clamp-2">Cada propuesta enviada con su versión firmada y las condiciones vigentes.</p><div class="t2"><span class="avs"><span class="av" style="--ent:var(--e2)">AR</span><span class="av" style="--ent:var(--e1)">LB</span></span><span class="num">Actualizado hoy 11:20</span></div></div>
+              <div class="banda-e"><a class="btn chico" href="#espacio-contenedor">Abrir</a><button class="fuente"><i class="ph ph-plugs"></i>Conectar fuente</button></div>
+            </article>
+            <article class="esp vacio-e">
+              <div class="in-e"><div class="t0"><span class="tile blanco"><i class="ph ph-archive"></i></span><small class="num">0 docs</small></div><h4>Archivo 2025</h4><p class="clamp-2">Vacío por ahora. Arrastrá carpetas o conectá el Drive del año pasado.</p><div class="t2"><span class="gris">Nadie todavía</span><span class="num">Creado hoy</span></div></div>
+              <div class="banda-e"><a class="btn chico" href="#espacio-contenedor">Abrir</a><button class="fuente"><i class="ph ph-plugs"></i>Conectar fuente</button></div>
+            </article>
+          </div>
+          <div class="pila g4">
+            <span class="rot-g">Accesos</span>
+            <div class="carpetas" id="carpetas"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 11. Documento y contrato ══════════ -->
+    <section class="lamina" id="documento-y-contrato">
+      <header class="lamina-cab">
+        <h2>Documento y contrato</h2>
+        <span class="lamina-sec">§5 Tarjetas · §12</span>
+        <p class="lamina-regla">El archivo va en dos pisos y <b>el tipo vive dentro del ícono</b>, en su color de dato. El contrato muestra versión vigente, quién firmó y quién falta, y lo que vence se cuenta en días.</p>
+        <p class="lamina-ref">Patrones 12.1, 12.5 · tweets 42, 55</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr))">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-files"></i>Archivos</span>
+              <div class="grilla-t" style="--min:230px">
+                <article class="arch"><div class="p1"><span class="tipo" style="--ent:var(--dato-5)"><svg viewBox="0 0 36 44" aria-hidden="true"><path class="h" d="M4.5 .5h19l12 12v27a4 4 0 0 1-4 4h-27a4 4 0 0 1-4-4v-35a4 4 0 0 1 4-4z"/><path class="d" d="M23.5 .5v8a4 4 0 0 0 4 4h8"/></svg><span>PDF</span></span><div class="min0"><b>Propuesta Orbe Retail v3.pdf</b><small class="num">2,4 MB · 12 páginas</small></div><button class="ic-btn" data-menu="#menu-archivo" aria-label="Opciones de Propuesta Orbe Retail v3"><i class="ph ph-dots-three-vertical"></i></button></div><div class="p2"><span class="av ch" style="--ent:var(--e2)">AR</span><b>Ana Ruiz</b><span class="empuja num">hoy 11:20</span></div></article>
+                <article class="arch"><div class="p1"><span class="tipo" style="--ent:var(--dato-3)"><svg viewBox="0 0 36 44" aria-hidden="true"><path class="h" d="M4.5 .5h19l12 12v27a4 4 0 0 1-4 4h-27a4 4 0 0 1-4-4v-35a4 4 0 0 1 4-4z"/><path class="d" d="M23.5 .5v8a4 4 0 0 0 4 4h8"/></svg><span>XLS</span></span><div class="min0"><b>Horas por cliente · octubre.xlsx</b><small class="num">184 KB · 3 hojas</small></div><button class="ic-btn" data-menu="#menu-archivo" aria-label="Opciones de Horas por cliente"><i class="ph ph-dots-three-vertical"></i></button></div><div class="p2"><span class="av ch" style="--ent:var(--e1)">LB</span><b>Lucía Benítez</b><span class="empuja num">2 nov</span></div></article>
+                <article class="arch"><div class="p1"><span class="tipo" style="--ent:var(--dato-1)"><svg viewBox="0 0 36 44" aria-hidden="true"><path class="h" d="M4.5 .5h19l12 12v27a4 4 0 0 1-4 4h-27a4 4 0 0 1-4-4v-35a4 4 0 0 1 4-4z"/><path class="d" d="M23.5 .5v8a4 4 0 0 0 4 4h8"/></svg><span>DOC</span></span><div class="min0"><b>Brief del catálogo de verano.docx</b><small class="num">96 KB · editando ahora</small></div><button class="ic-btn" data-menu="#menu-archivo" aria-label="Opciones de Brief del catálogo"><i class="ph ph-dots-three-vertical"></i></button></div><div class="p2"><span class="av ch" style="--ent:var(--e5)">PF</span><b>Paula Ferreyra</b><span class="empuja"><span class="vivo-punto" style="display:inline-block;margin-right:4px"></span>en vivo</span></div></article>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-signature"></i>Contrato esperando firma</span>
+              <article class="ctr" id="ctr-orbe">
+                <div class="t1"><span class="tile" style="background:var(--acento-f);color:var(--acento-texto)"><i class="ph ph-file-text"></i></span><div class="min0"><h4>Plan anual de soporte<span class="cod">CT-1042</span></h4><small><span class="cuadro ch" style="--ent:var(--e1)"></span>Orbe Retail · US$ 48.000 por año</small></div></div>
+                <div class="ver"><span>Versión <b class="num">4</b></span><span>Vigente desde <b class="num">1 dic</b></span><span>Enviado <b class="num">hace 3 días</b></span></div>
+                <div class="firmas">
+                  <div class="fr"><span class="av ch" style="--ent:var(--e2)">AR</span><span class="min0 trunca">Ana Ruiz · Estudio Faro</span><span class="ok-f"><i class="ph ph-check-circle"></i>Firmó 15 nov</span></div>
+                  <div class="fr"><span class="av ch" style="--ent:var(--e6)">CG</span><span class="min0 trunca">Carla Gómez · Orbe Retail</span><span class="ok-f"><i class="ph ph-check-circle"></i>Firmó 16 nov</span></div>
+                  <div class="fr" id="firma-falta"><span class="av ch" style="--ent:var(--e3)">RP</span><span class="min0 trunca">Rodrigo Paz · Compras</span><span class="esp-f"><i class="ph ph-eye"></i>Lo vio ayer</span></div>
+                </div>
+                <div class="pie-c"><span class="gris num">2 de 3 firmas</span><button class="btn chico" id="recordar"><i class="ph ph-bell"></i>Recordar firma</button><button class="btn chico texto" data-tip="Ver cambios desde la versión 3"><i class="ph ph-git-diff"></i>8 cambios</button></div>
+              </article>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-hourglass-medium"></i>Contrato por vencer</span>
+              <article class="ctr vencido">
+                <div class="t1"><span class="tile" style="background:var(--rojo-f);color:var(--rojo)"><i class="ph ph-file-text"></i></span><div class="min0"><h4>Mantenimiento del sitio<span class="cod">CT-0987</span></h4><small><span class="cuadro ch" style="--ent:var(--e2)"></span>Casa Lumen · $ 640.000 por mes</small></div></div>
+                <div class="ver"><span>Versión <b class="num">2</b></span><span>Vence <b class="num vencida">en 6 días</b></span><span>Renueva <b>a mano</b></span></div>
+                <dl class="kv"><dt>Último aumento</dt><dd class="num">+18 % · 1 sep</dd><dt>Facturado este año</dt><dd class="num">$ 6.912.000</dd><dt>Saldo vencido</dt><dd class="num vencida">$ 1.284.500</dd></dl>
+                <div class="pie-c"><span class="gris">Responsable: Paula</span><button class="btn chico"><i class="ph ph-arrows-clockwise"></i>Renovar</button></div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 12. Galería con imagen ══════════ -->
+    <section class="lamina" id="galeria-con-imagen">
+      <header class="lamina-cab">
+        <h2>Galería con imagen</h2>
+        <span class="lamina-sec">§5 Tarjetas · §8 Imágenes</span>
+        <p class="lamina-regla">La foto entra entera en 4:3 dentro de un marco con radio interno, <b>con el sello de hora y lugar impreso</b>. Varias fotos se pasan con flechas al pasar (siempre visibles en el celular), la selección encoge el marco y la carga entra borrosa y se aclara.</p>
+        <p class="lamina-ref">Patrones 12.1, 15.4 · tweets 42, 48</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="sel-barra"><button class="btn chico" id="gal-sel"><i class="ph ph-check-square"></i>Elegir fotos</button><span class="gris t-12 num" id="gal-cuenta">4 fotos · obra Casa Lumen</span><button class="btn chico texto empuja" id="gal-recargar"><i class="ph ph-arrows-clockwise"></i>Ver la carga</button></div>
+          <div class="grilla-t" style="--min:240px" id="galeria">
+            <article class="gal" data-escenas="0,1,2">
+              <div class="foto"><div class="cinta"></div><span class="cant"><i class="ph ph-images"></i><span class="num">1/3</span></span><span class="sello"><i class="ph ph-map-pin"></i>Av. Alem 1240 · 09:14</span><button class="nav izq" aria-label="Foto anterior" disabled><i class="ph ph-caret-left"></i></button><button class="nav der" aria-label="Foto siguiente"><i class="ph ph-caret-right"></i></button><div class="puntos-g"><i class="on"></i><i></i><i></i></div><button class="casilla" role="checkbox" aria-checked="false" aria-label="Elegir Frente del local"></button></div>
+              <div class="txt-g"><div class="min0"><b>Frente del local</b><small class="num">Paula Ferreyra · hoy 09:14</small></div><button class="ic-btn empuja" data-menu="#menu-foto" aria-label="Opciones de Frente del local"><i class="ph ph-dots-three"></i></button></div>
+            </article>
+            <article class="gal" data-escenas="1">
+              <div class="foto"><div class="cinta"></div><span class="sello"><i class="ph ph-map-pin"></i>Av. Alem 1240 · 10:02</span><button class="casilla" role="checkbox" aria-checked="false" aria-label="Elegir Góndolas nuevas"></button></div>
+              <div class="txt-g"><div class="min0"><b>Góndolas nuevas</b><small class="num">Paula Ferreyra · hoy 10:02</small></div><button class="ic-btn empuja" data-menu="#menu-foto" aria-label="Opciones de Góndolas nuevas"><i class="ph ph-dots-three"></i></button></div>
+            </article>
+            <article class="gal" data-escenas="2">
+              <div class="foto"><div class="cinta"></div><span class="sello"><i class="ph ph-map-pin"></i>Av. Alem 1240 · 18:47</span><button class="casilla" role="checkbox" aria-checked="false" aria-label="Elegir Cartel encendido"></button></div>
+              <div class="txt-g"><div class="min0"><b>Cartel encendido</b><small class="num">Martín Sosa · ayer 18:47</small></div><button class="ic-btn empuja" data-menu="#menu-foto" aria-label="Opciones de Cartel encendido"><i class="ph ph-dots-three"></i></button></div>
+            </article>
+            <button class="gal subir" id="gal-subir"><span><span class="tile blanco" style="margin:0 auto"><i class="ph ph-camera-plus"></i></span><b>Sumar fotos</b><small>Arrastralas o sacalas con el celular; el sello se imprime solo.</small></span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 13. Detalle con anatomía fija ══════════ -->
+    <section class="lamina" id="detalle-con-anatomia-fija" data-codigo-de=".tpl">
+      <header class="lamina-cab">
+        <h2>Detalle con anatomía fija</h2>
+        <span class="lamina-sec">§5 Tarjetas · §7.15</span>
+        <p class="lamina-regla">En tableros densos todas las tarjetas comparten anatomía: <b>título de 2 líneas, 3 filas rótulo ··· valor, barras de 4 px y mini KPIs hundidos</b>, con un pie "Ver detalle" teñido del tono de su estado. La que no encaja va a otra sección.</p>
+        <p class="lamina-ref">Patrón 7.15 · tweet 33</p>
+      </header>
+      <template class="tpl">
+<article class="det" style="--tono:var(--verde)" data-k="0">
+  <div class="z1"><span class="tile ch" style="background:color-mix(in oklch,var(--verde) 12%,var(--superficie));color:var(--verde)"><i class="ph ph-globe"></i></span><div class="min0"><h4>Mantenimiento web</h4><small>14 clientes con abono</small></div></div>
+  <div class="z2"><div class="rv"><i class="ph ph-currency-circle-dollar"></i>Facturado<span class="pts"></span><b><span class="vd" data-c="fac" data-dec="1">4,2</span><sup>M</sup></b></div><div class="rv"><i class="ph ph-clock"></i>Horas<span class="pts"></span><b><span class="vd" data-c="hs">312</span><sup>h</sup></b></div><div class="rv"><i class="ph ph-percent"></i>Margen<span class="pts"></span><b><span class="vd" data-c="mg">38</span><sup>%</sup></b></div></div>
+  <div class="z3"><div class="br"><div class="cab"><span>Entregas a tiempo</span><b class="bv" data-i="0">92 %</b></div><div class="barra-av"><i data-i="0" style="width: 92%; --ent: var(--tinta);"></i></div></div><div class="br"><div class="cab"><span>Horas del presupuesto</span><b class="bv" data-i="1">71 %</b></div><div class="barra-av"><i data-i="1" style="width: 71%; --ent: var(--tinta);"></i></div></div><div class="br"><div class="cab"><span>Cobrado de lo facturado</span><b class="bv" data-i="2">88 %</b></div><div class="barra-av"><i data-i="2" style="width: 88%; --ent: var(--tinta);"></i></div></div>
+    <div class="mk"><div><span>Clientes</span><b class="mkv" data-i="0">14</b></div><div><span>Tickets</span><b class="mkv" data-i="1">9</b></div><div><span>Renovaciones</span><b class="mkv" data-i="2">3</b></div><div><span>NPS</span><b class="mkv" data-i="3">72</b></div></div></div>
+  <a class="ver-det" href="#detalle-con-anatomia-fija">Ver detalle<i class="ph ph-arrow-right"></i></a></article>
+</template>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="barra-demo"><div class="seg chico" id="det-periodo" role="group" aria-label="Período"><button data-v="mes" class="on">Noviembre</button><button data-v="tri">Trimestre</button></div><span class="gris">Cambiá el período: las cifras ruedan y las barras se acomodan sin mover el layout.</span></div>
+          <div class="grilla-t" style="--min:300px" id="detalles"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 14. Monitoreo de equipo ══════════ -->
+    <section class="lamina" id="monitoreo-de-equipo" data-codigo-de=".tpl">
+      <header class="lamina-cab">
+        <h2>Monitoreo de equipo</h2>
+        <span class="lamina-sec">§5 Tarjetas · §2 Oscuro</span>
+        <p class="lamina-regla">Tarjeta oscura en los dos temas para lo que se mira en vivo: <b>código mono, estado con forma y palabra, valor grande con unidad, barra contra lo esperado y tres métricas divididas</b>. Sin datos, el valor pasa a gris y se dice hace cuánto.</p>
+        <p class="lamina-ref">Patrones 7.15, 18.2 · ref. 14</p>
+      </header>
+      <template class="tpl">
+<article class="mon" role="button" tabindex="0" aria-pressed="false" data-k="0" aria-label="WEB-01 Portal de clientes, En línea">
+  <div class="m1"><div class="min0"><b>WEB-01</b><small class="trunca">Portal de clientes</small></div><span class="est-m en">En línea</span></div>
+  <div class="val"><b class="vv">1.284</b><span>req/min</span><span class="tend"></span></div>
+  <div class="bar-m en"><i style="width:71.33333333333334%"></i></div>
+  <div class="bar-pie"><span class="pc">71 % de la capacidad</span><span>1.800</span></div>
+  <svg class="sp" aria-hidden="true"></svg>
+  <div class="tri"><div><span>CPU</span><b class="cpu">38 %</b></div><div><span>Memoria</span><b class="mem">61 %</b></div><div><span>Errores</span><b class="err">0,2 %</b></div></div>
+</article>
+</template>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="mon-barra"><button class="btn chico" id="mon-vivo" aria-pressed="true"><span class="vivo-punto"></span>En vivo</button><span class="gris t-12" id="mon-act">Actualiza cada 2 s · elegí una para ver su diagnóstico</span></div>
+          <div class="grilla-t mon-grilla" id="monitores"></div>
+        </div>
+        <div class="lamina-pie"><span class="nota" id="mon-nota">Ninguna elegida.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 15. Plan y uso ══════════ -->
+    <section class="lamina" id="plan-y-uso">
+      <header class="lamina-cab">
+        <h2>Plan y uso</h2>
+        <span class="lamina-sec">§5 Tarjetas · §14</span>
+        <p class="lamina-regla">Uso con <b>el denominador en gris un paso más chico</b>, barra con la proyección rayada hasta fin de mes y la frase de cuándo se llega al límite. La acción para ampliar va al lado; pasado el límite, se dice qué se frenó.</p>
+        <p class="lamina-ref">Patrones 14.1, 14.5 · tweets 26, 20, 29</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="barra-demo"><div class="seg chico" id="uso-escena" role="group" aria-label="Escenario"><button data-v="hoy" class="on">Hoy, 18 nov</button><button data-v="campana">Con la campaña de verano</button><button data-v="tranqui">Mes tranquilo</button></div></div>
+          <div class="grilla-t" style="--min:300px">
+            <article class="uso" id="uso-correo">
+              <div class="t1"><span class="tile ch" style="background:var(--acento-f);color:var(--acento-texto)"><i class="ph ph-envelope-simple"></i></span><b>Correos enviados</b><span class="chip d gr" id="uso-chip">Plan Estudio</span></div>
+              <div class="cif"><b id="uso-n">18.420</b><span>/ 25.000</span><em id="uso-pct">74 %</em></div>
+              <div class="pista" role="img" aria-label="Uso de correos"><span class="usado" id="uso-barra"></span><span class="pr" id="uso-proy"></span></div>
+              <div class="ejes"><span>1 nov</span><span id="uso-fin">fin de mes: 30.700</span></div>
+              <p class="frase" id="uso-frase"><i class="ph ph-trend-up"></i><span>A este ritmo llegás al límite el <b>26 nov</b>, cuatro días antes de que se renueve.</span></p>
+              <div class="rep" aria-hidden="true"><i style="--ent:var(--dato-1);flex-grow:46"></i><i style="--ent:var(--dato-2);flex-grow:28"></i><i style="--ent:var(--dato-3);flex-grow:18"></i><i style="--ent:var(--dato-6);flex-grow:8"></i></div>
+              <div class="ley"><span><span class="punto" style="--ent:var(--dato-1)"></span>Recordatorios de cobro<em>46 %</em></span><span><span class="punto" style="--ent:var(--dato-2)"></span>Avisos de pedido<em>28 %</em></span><span><span class="punto" style="--ent:var(--dato-3)"></span>Resúmenes semanales<em>18 %</em></span><span><span class="punto" style="--ent:var(--dato-6)"></span>Otros<em>8 %</em></span></div>
+              <div class="pie-u"><span class="gris num">Se renueva el 1 dic</span><button class="btn chico" id="uso-ampliar"><i class="ph ph-arrow-up"></i>Ampliar a 50.000</button></div>
+            </article>
+            <div class="pila g6">
+              <article class="uso">
+                <div class="t1"><span class="tile ch" style="background:var(--gris-f);color:var(--gris)"><i class="ph ph-hard-drives"></i></span><b>Almacenamiento</b></div>
+                <div class="cif"><b>12,4</b><span>/ 50 GB</span><em>25 %</em></div>
+                <div class="pista" role="img" aria-label="25 % del almacenamiento usado"><span class="usado" style="width:25%"></span></div>
+                <div class="ejes"><span>Fotos de obra 8,1 GB</span><span>Sobra para 14 meses</span></div>
+              </article>
+              <article class="uso pasado">
+                <div class="t1"><span class="tile ch" style="background:var(--rojo-f);color:var(--rojo)"><i class="ph ph-whatsapp-logo"></i></span><b>Mensajes de WhatsApp</b><span class="chip d ro">Tope</span></div>
+                <div class="cif"><b>1.000</b><span>/ 1.000</span><em class="vencida">100 %</em></div>
+                <div class="pista" role="img" aria-label="Límite alcanzado"><span class="usado" style="width:100%"></span></div>
+                <p class="frase"><i class="ph ph-pause-circle"></i><span><b>Se pausaron los avisos</b> hasta el 1 dic. Los recordatorios de cobro salen por correo.</span></p>
+                <div class="pie-u"><span class="gris num">Desde hoy 08:12</span><button class="btn chico neg"><i class="ph ph-arrow-up"></i>Sumar 1.000</button></div>
+              </article>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-sidebar-simple"></i>En el pie del menú</span>
+              <div class="plan-menu"><div class="f1"><span id="anillo-plan"></span><div class="min0"><b>891 / 1.000 consultas</b><small>Asistente · se renueva en 12 días</small></div></div><button class="btn chico neg ancho"><i class="ph ph-arrow-up"></i>Ampliar</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 16. Reunión con cuenta regresiva ══════════ -->
+    <section class="lamina" id="reunion-con-cuenta-regresiva" data-codigo-de=".tpl">
+      <header class="lamina-cab">
+        <h2>Reunión con cuenta regresiva</h2>
+        <span class="lamina-sec">§5 Tarjetas · §10 Tiempo</span>
+        <p class="lamina-regla">La próxima reunión cuenta en vivo y <b>cambia de forma con el tiempo</b>: gris si falta, ámbar a 10 minutos con "Entrar" a mano, verde con barra de avance mientras dura y "Cargar notas" al terminar. Los dígitos ruedan, no parpadean.</p>
+        <p class="lamina-ref">Patrones 8.2, 15.5 · ref. 02, 10 · tweet 37</p>
+      </header>
+      <template class="tpl">
+<article class="reu curso" data-k="0">
+  <div class="r0"><i class="ph-fill ph-circle ico-r" style="font-size: 9px;"></i><span class="lbl">En curso</span><span class="reloj" aria-live="off" data-t="quedan 31 min">quedan&nbsp;31&nbsp;min</span></div>
+  <div class="progreso-r"><i style="width: 31.1483%;"></i></div>
+  <div class="r1"><h4>Demo del tablero de logística</h4><div class="cuando"><span class="hs num">12:40 – 13:25</span>·<span class="cli"><span class="cuadro ch" style="--ent:var(--e4)"></span>Grupo Atlas</span></div></div>
+  <div class="agenda"><div><span class="n">01</span>Mapa de depósitos</div><div><span class="n">02</span>Alertas de stock</div></div>
+  
+  <div class="r2"><span class="lugar"><i class="ph ph-map-pin"></i><span class="trunca">Depósito Atlas, Ruta 3 km 694</span></span><span class="avs"><span class="av ch" style="--ent:var(--e3)">MS</span><span class="av ch" style="--ent:var(--e1)">LB</span></span><button class="btn chico acento acc-r"><i class="ph ph-video-camera"></i>Entrar</button></div>
+</article>
+</template>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="barra-demo"><button class="btn chico" id="reu-adelantar"><i class="ph ph-fast-forward"></i>Adelantar 5 min</button><button class="btn chico texto" id="reu-volver"><i class="ph ph-arrow-counter-clockwise"></i>Volver a ahora</button><span class="gris num" id="reu-hora"></span></div>
+          <div class="grilla-t" style="--min:240px" id="reuniones"></div>
+        </div>
+        <div class="lamina-pie"><span class="nota">A 1 minuto anuncia "Empieza en 1 minuto" por aria-live, una sola vez.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 17. Promo con clima ══════════ -->
+    <section class="lamina" id="promo-con-clima">
+      <header class="lamina-cab">
+        <h2>Promo con clima</h2>
+        <span class="lamina-sec">§5 Tarjetas · §8 Ilustraciones</span>
+        <p class="lamina-regla">Las novedades y el plan viven en el pie del menú o al costado, <b>con ilustración de línea sobre un halo del acento y siempre con ×</b>. Cerrar pliega la tarjeta en 240 ms, ofrece Deshacer y no vuelve a aparecer.</p>
+        <p class="lamina-ref">Patrones 14.5, 13.10 · ref. 06, 14 · tweet 48</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="grilla-t" style="--min:300px" id="promos">
+            <div class="plegar" data-promo="plan"><div><article class="promo">
+              <button class="ic-btn x" aria-label="Cerrar Tu plan"><i class="ph ph-x"></i></button>
+              <div class="ilu" id="ilu-faro"></div>
+              <div class="cu"><small>Tu plan</small><b>Gratis</b><p>Lugar para crecer: proyectos sin tope, invitados e historial completo en Estudio.</p><a class="btn enlace" href="#promo-con-clima">Pasar a Estudio<i class="ph ph-arrow-right"></i></a></div>
+            </article></div></div>
+            <div class="plegar" data-promo="remitos"><div><article class="promo foto-p">
+              <div class="fondo" id="promo-foto"></div>
+              <span class="nueva"><i class="ph ph-sparkle"></i>Nuevo: lectura de remitos</span>
+              <button class="ic-btn x" aria-label="Cerrar la novedad de remitos"><i class="ph ph-x"></i></button>
+              <div class="cu"><p>Sacale una foto al remito y el sistema carga cliente, ítems y cantidades. Lo revisás y listo.</p><button class="btn ancho">Probar con un remito</button></div>
+            </article></div></div>
+            <div class="pila g6">
+              <div class="plegar" data-promo="atajos"><div><article class="promo banda-p">
+                <span class="tile"><i class="ph ph-keyboard"></i></span><div class="tx"><b>Atajos nuevos</b><span>Apretá <kbd>G</kbd> <kbd>C</kbd> para ir a Cobranzas.</span></div>
+                <button class="ic-btn x" aria-label="Cerrar Atajos nuevos"><i class="ph ph-x"></i></button>
+              </article></div></div>
+              <div class="devolver" id="promo-devolver" hidden><i class="ph ph-eye-slash"></i><span class="num" id="promo-ocultas">1 oculta</span><button class="btn chico texto" id="promo-mostrar">Mostrar de nuevo</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 18. Sugerencia descartable ══════════ -->
+    <section class="lamina" id="sugerencia-descartable">
+      <header class="lamina-cab">
+        <h2>Sugerencia descartable</h2>
+        <span class="lamina-sec">§5 Tarjetas · §13.10</span>
+        <p class="lamina-regla">Las sugerencias de configuración van como <b>chips de 34 px con ×</b>, nunca como banner a todo el ancho. Hacerla la marca con ✓ y suma al avance; descartarla la encoge en el lugar y queda en "Ver ocultas".</p>
+        <p class="lamina-ref">Patrones 13.10, 13.11 · tweets 31, 34, 56</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-lightbulb"></i>Sueltas, arriba de una lista</span>
+              <div class="sugs" id="sugs-sueltas">
+                <span class="sug"><button class="ir"><i class="ph ph-whatsapp-logo"></i>Conectar WhatsApp</button><button class="quitar" aria-label="Descartar Conectar WhatsApp"><i class="ph ph-x"></i></button></span>
+                <span class="sug"><button class="ir"><i class="ph ph-image"></i>Subir el logo del estudio</button><button class="quitar" aria-label="Descartar Subir el logo"><i class="ph ph-x"></i></button></span>
+                <span class="sug"><button class="ir"><i class="ph ph-user-plus"></i>Invitar a tu contador</button><button class="quitar" aria-label="Descartar Invitar a tu contador"><i class="ph ph-x"></i></button></span>
+                <span class="sug"><button class="ir"><i class="ph ph-receipt"></i>Activar factura electrónica</button><button class="quitar" aria-label="Descartar Activar factura electrónica"><i class="ph ph-x"></i></button></span>
+              </div>
+              <div class="devolver" id="sug-devolver" hidden><span class="num" id="sug-ocultas">0 ocultas</span><button class="btn chico texto" id="sug-ver">Ver ocultas</button></div>
+            </div>
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-flag-checkered"></i>Dentro de una tarjeta de puesta en marcha</span>
+              <div class="sug-tarjeta" style="max-width:560px">
+                <div class="cab-s"><span class="tile ch" style="background:var(--verde-f);color:var(--verde)"><i class="ph ph-rocket-launch"></i></span><div class="min0"><b>Puesta en marcha</b><div class="gris t-12 num" id="pm-cuenta">2 de 4 listos</div></div><span class="barra4" id="pm-barra" role="img" aria-label="2 de 4 listos"><i class="on"></i><i class="on"></i><i></i><i></i></span></div>
+                <div class="pie-s"><span class="rot-g"><span>Lo que falta</span></span>
+                  <div class="sugs" id="sugs-pm">
+                    <span class="sug"><button class="ir"><i class="ph ph-users-three"></i>Cargar el primer cliente</button><button class="quitar" aria-label="Descartar Cargar el primer cliente"><i class="ph ph-x"></i></button></span>
+                    <span class="sug"><button class="ir"><i class="ph ph-calendar-plus"></i>Conectar el calendario</button><button class="quitar" aria-label="Descartar Conectar el calendario"><i class="ph ph-x"></i></button></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- menús -->
+<div class="menu" id="menu-asignar">
+  <div class="rot-m">Tareas sin asignar</div>
+  <div class="gr-m"><button data-t="Estados vacíos del portal" data-f="25 nov"><i class="ph ph-circle-dashed"></i>Estados vacíos del portal</button><button data-t="Íconos de categorías" data-f="Hoy" data-hoy><i class="ph ph-circle-dashed"></i>Íconos de categorías</button><button data-t="Menú del celular" data-f="26 nov"><i class="ph ph-circle-dashed"></i>Menú del celular</button></div>
+  <div class="gr-m"><button><i class="ph ph-plus"></i>Nueva tarea…<span class="atajo">C</span></button></div>
+</div>
+<div class="menu" id="menu-proceso">
+  <div class="gr-m"><button class="pausar"><i class="ph ph-pause"></i>Pausar o reanudar</button><button><i class="ph ph-play"></i>Correr ahora</button><button><i class="ph ph-copy"></i>Duplicar</button></div>
+  <div class="gr-m"><button class="peligro"><i class="ph ph-trash"></i>Borrar proceso</button></div>
+</div>
+<div class="menu" id="menu-archivo">
+  <div class="gr-m"><button><i class="ph ph-eye"></i>Vista previa<span class="atajo">Espacio</span></button><button><i class="ph ph-link"></i>Copiar link</button><button><i class="ph ph-download-simple"></i>Descargar</button></div>
+  <div class="gr-m"><button class="peligro"><i class="ph ph-trash"></i>Mover a la papelera</button></div>
+</div>
+<div class="menu" id="menu-foto">
+  <div class="gr-m"><button><i class="ph ph-arrows-out"></i>Ver grande</button><button><i class="ph ph-star"></i>Usar como portada</button><button><i class="ph ph-download-simple"></i>Descargar</button></div>
+  <div class="gr-m"><button class="peligro"><i class="ph ph-trash"></i>Borrar foto</button></div>
+</div>
+<div class="menu" id="menu-opo">
+  <div class="gr-m"><button data-acc="ganada"><i class="ph ph-check-circle"></i>Marcar ganada</button><button data-acc="perdida"><i class="ph ph-x-circle"></i>Marcar perdida</button></div>
+  <div class="gr-m"><button data-acc="abrir"><i class="ph ph-arrow-up-right"></i>Abrir oportunidad<span class="atajo">↵</span></button></div>
+</div>
+<div class="clr" id="clr" role="dialog" aria-label="Vista rápida del cliente"></div>
+
+<script src="base.js"></script>
+<script>
+const { $, $$, fmt, linea, bloques, anillo, cuenta, toast, anunciar, escapar, destellar, quieto, guardar, leer } = bib;
+const esperar = ms => new Promise(r => setTimeout(r, quieto ? Math.min(ms, 60) : ms));
+const ocupar = async (btn, ms, texto) => {
+  const antes = btn.innerHTML; btn.setAttribute('aria-busy', 'true'); btn.style.width = btn.offsetWidth + 'px';
+  btn.innerHTML = `<i class="ph ph-circle-notch gira"></i>${texto || ''}`; await esperar(ms);
+  btn.removeAttribute('aria-busy'); btn.style.width = ''; return antes;
+};
+
+/* ═════════ 1. Tarjeta de entidad ═════════ */
+$$('.proy[data-ent]').forEach(card => {
+  const ent = `var(--${card.dataset.ent})`, serie = card.dataset.serie.split(',').map(Number), marca = +card.dataset.marca;
+  let hoy = 0;
+  const pintar = () => {
+    const total = +card.dataset.total, hechos = +card.dataset.hechos;
+    bloques($('.segs', card), total, hechos, ent);
+    $('.pct', card).textContent = `${Math.round(hechos / total * 100)} %`;
+    $('.hechos-t', card).textContent = `${hechos} de ${total} hechas`;
+    $('.abiertos', card).textContent = fmt.plural($$('.paso .check[aria-checked=false]', card).length, 'abierto', 'abiertos');
+    const h = $('.hoy-t', card); if (h) h.textContent = hoy > 0 ? fmt.plural(hoy, 'hecha hoy', 'hechas hoy') : 'sin hechas hoy';
+  };
+  pintar();
+  linea($('.graf svg', card), serie, { color: ent, alto: 56, ancho: 300, marca });
+  if (card.dataset.ent === 'e1') hoy = 1, pintar();
+
+  card.addEventListener('cambio', e => {
+    const chk = e.target.closest('.check'); if (!chk) return;
+    const paso = chk.closest('.paso'), on = e.detail === true;
+    card.dataset.hechos = Math.max(0, +card.dataset.hechos + (on ? 1 : -1));
+    hoy += on ? 1 : -1; serie[serie.length - 1] = Math.max(0, serie[serie.length - 1] + (on ? 1 : -1));
+    pintar(); linea($('.graf svg', card), serie, { color: ent, alto: 56, ancho: 300, marca, animar: false });
+    if (on) {
+      // lo hecho baja al fondo de la lista
+      setTimeout(() => { if (chk.getAttribute('aria-checked') === 'true') { paso.style.opacity = 0; setTimeout(() => { $('.agregar', card).before(paso); paso.style.opacity = ''; }, 180); } }, 420);
+      if (!chk._silencio) toast({ titulo: `Hecho: ${$('.t', paso).textContent}`, detalle: $('h3 a', card).textContent, deshacer: () => { chk._silencio = true; chk.click(); chk._silencio = false; } });
+    }
+  });
+
+  // agregar paso en el lugar
+  const agregar = $('.agregar', card);
+  agregar.addEventListener('click', () => {
+    agregar.hidden = true;
+    const fila = document.createElement('div'); fila.className = 'agregar-in';
+    fila.innerHTML = '<i class="ph ph-plus" style="color:var(--texto-3);font-size:16px"></i><input aria-label="Nuevo paso" placeholder="Escribí el paso y Enter · Esc cancela">';
+    agregar.after(fila); const inp = $('input', fila); inp.focus();
+    const cerrar = () => { fila.remove(); agregar.hidden = false; agregar.focus(); };
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Escape') cerrar();
+      if (e.key === 'Enter' && inp.value.trim()) {
+        const t = escapar(inp.value.trim());
+        $('.vacio-pasos', card)?.remove();
+        agregar.insertAdjacentHTML('beforebegin', `<div class="paso entra"><button class="check" role="checkbox" aria-checked="false" aria-label="${t}"></button><span class="t">${t}</span><span class="f">Sin fecha</span></div>`);
+        card.dataset.total = +card.dataset.total + 1; card.classList.remove('cerrada'); pintar(); inp.value = '';
+        anunciar(`Paso agregado: ${t}`);
+      }
+    });
+    inp.addEventListener('blur', () => { if (!inp.value.trim()) setTimeout(cerrar, 120); });
+  });
+});
+$('#ent-cargar').addEventListener('click', async e => {
+  const cs = $$('.proy[data-ent]'); cs.forEach(c => c.classList.add('cargando')); e.currentTarget.setAttribute('aria-busy', 'true');
+  await esperar(1400); cs.forEach((c, i) => setTimeout(() => { c.classList.remove('cargando'); c.classList.add('entra'); c.style.setProperty('--i', i); }, i * 60));
+  e.currentTarget.removeAttribute('aria-busy');
+});
+
+/* ═════════ 2. Persona con su carga ═════════ */
+let personaActual = null;
+const pintarPersona = c => {
+  const ab = +$('.ab-n', c).textContent, ve = +$('.ve-n', c).textContent, he = +$('.he-n', c).textContent;
+  bloques($('.segs', c), 12, Math.min(ab, 12), `var(--${c.dataset.ent})`);
+  $('.ab-t', c).textContent = fmt.plural(ab, 'abierta', 'abiertas');
+  $('.ab-c', c).textContent = fmt.plural(ab, 'abierta', 'abiertas');
+  $('.he-t', c).textContent = `${fmt.plural(he, 'hecha', 'hechas')} esta semana`;
+  $('.ve-n', c).classList.toggle('vencida', ve > 0);
+};
+$$('.per').forEach(pintarPersona);
+$('#personas').addEventListener('click', e => { const b = e.target.closest('.asignar'); if (b) personaActual = b.closest('.per'); }, true);
+$('#personas').addEventListener('click', e => {
+  const ed = e.target.closest('.ic-btn'); if (ed) toast({ tipo: 'info', titulo: ed.getAttribute('aria-label'), detalle: 'Se abre la hoja lateral con sus datos' });
+});
+$$('#menu-asignar [data-t]').forEach(it => it.addEventListener('click', () => {
+  const c = personaActual; if (!c) return;
+  const lista = $('.lista-p', c), nada = $('.nada', lista), ab = $('.ab-n', c);
+  const fila = document.createElement('div'); fila.className = 'fila-t entra-nueva';
+  fila.innerHTML = `<span class="o"></span><span class="t">${escapar(it.dataset.t)}</span><span class="f"${'hoy' in it.dataset ? ' style="color:var(--ambar)"' : ''}>${it.dataset.f}</span>`;
+  nada?.remove(); lista.prepend(fila); ab.textContent = +ab.textContent + 1; pintarPersona(c);
+  const quien = $('.quien b', c).textContent;
+  toast({ titulo: `Asignada a ${quien}`, detalle: it.dataset.t, deshacer: () => { fila.remove(); ab.textContent = +ab.textContent - 1; if (!lista.children.length) lista.innerHTML = '<p class="nada">Nada asignado ahora.</p>'; pintarPersona(c); } });
+}));
+
+/* ═════════ 3. Cliente en vista rápida ═════════ */
+const CLIENTES = {
+  orbe: { n: 'Orbe Retail', ent: 'e1', ico: 'storefront', cuit: '30-71458922-6', rubro: 'Retail · 38 locales', saldo: 3920000, venc: 0, desde: 'mar 2021', ult: 'Llamada con Ana', cuando: 'hace 2 días', av: ['AR', 'e2'] },
+  lumen: { n: 'Casa Lumen', ent: 'e2', ico: 'lamp', cuit: '30-70981234-1', rubro: 'Iluminación · tienda online', saldo: 1284500, venc: 1284500, desde: 'ago 2023', ult: 'Correo de Paula', cuando: 'ayer 16:00', av: ['PF', 'e5'] },
+  atlas: { n: 'Grupo Atlas', ent: 'e4', ico: 'buildings', cuit: '33-70011245-9', rubro: 'Logística · 3 depósitos', saldo: 0, venc: 0, desde: 'ene 2019', ult: 'Reunión con Martín', cuando: 'hace 6 días', av: ['MS', 'e3'] },
+};
+const clr = $('#clr'); let clrDe = null, tEntra, tSale;
+function abrirClr(gat) {
+  const c = CLIENTES[gat.dataset.cli]; clearTimeout(tSale);
+  clr.innerHTML = `<div class="c1"><span class="cuadro" style="--ent:var(--${c.ent})"><i class="ph-fill ph-${c.ico}"></i></span><div class="min0"><b class="trunca">${c.n}</b><small><span class="mono">CUIT ${c.cuit}</span>·<span>${c.rubro}</span></small></div></div>
+    <div class="met"><div><span>Saldo</span><b>${fmt.montoHTML(c.saldo, 'ARS', { corto: true })}</b></div><div><span>Vencido</span><b class="${c.venc ? 'vencida' : ''}">${c.venc ? fmt.monto(c.venc, 'ARS', { corto: true }) : '—'}</b></div><div><span>Cliente desde</span><b>${c.desde}</b></div></div>
+    <div class="ult"><span class="av ch" style="--ent:var(--${c.av[1]})">${c.av[0]}</span><span class="min0 trunca"><b>${c.ult}</b> · ${c.cuando}</span></div>
+    <div class="acc"><a class="btn chico" href="#cliente-en-vista-rapida"><i class="ph ph-identification-card"></i>Ver ficha</a><button class="btn chico texto copiar-cuit"><i class="ph ph-copy"></i>Copiar CUIT</button></div>`;
+  if (clrDe && clrDe !== gat) clrDe.setAttribute('aria-expanded', 'false');
+  clrDe = gat; gat.setAttribute('aria-expanded', 'true');
+  const r = gat.getBoundingClientRect(), w = Math.min(320, innerWidth - 32);
+  let y = r.bottom + 8; clr.style.left = Math.max(16, Math.min(innerWidth - w - 16, r.left)) + 'px';
+  clr.classList.add('ver'); const h = clr.offsetHeight; if (y + h > innerHeight - 8) y = r.top - h - 8;
+  clr.style.top = Math.max(8, y) + 'px';
+  $('.copiar-cuit', clr).onclick = async () => { try { await navigator.clipboard.writeText(c.cuit); } catch {} toast({ titulo: 'CUIT copiado', detalle: `${c.n} · ${c.cuit}` }); };
+}
+function cerrarClr(foco) { clr.classList.remove('ver'); if (clrDe) { clrDe.setAttribute('aria-expanded', 'false'); if (foco) clrDe.focus(); } clrDe = null; }
+$$('.clr-gat').forEach(g => {
+  g.setAttribute('aria-controls', 'clr'); g.setAttribute('aria-haspopup', 'dialog');
+  g.addEventListener('pointerenter', e => { if (e.pointerType !== 'mouse') return; clearTimeout(tSale); clearTimeout(tEntra); tEntra = setTimeout(() => abrirClr(g), 300); });
+  g.addEventListener('pointerleave', e => { if (e.pointerType !== 'mouse') return; clearTimeout(tEntra); tSale = setTimeout(() => cerrarClr(), 150); });
+  g.addEventListener('focus', () => { if (g.matches(':focus-visible')) abrirClr(g); });
+  g.addEventListener('click', () => clrDe === g ? cerrarClr() : abrirClr(g));
+});
+clr.addEventListener('pointerenter', () => clearTimeout(tSale));
+clr.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') tSale = setTimeout(() => cerrarClr(), 150); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && clrDe) cerrarClr(true); });
+document.addEventListener('click', e => { if (clrDe && !clr.contains(e.target) && !e.target.closest('.clr-gat')) cerrarClr(); });
+addEventListener('scroll', () => { if (clrDe && !clr.matches(':hover')) cerrarClr(); }, { passive: true });
+
+/* ═════════ 4. Oportunidad del pipeline ═════════ */
+let opoActual = null;
+function pedirProximo(opo) {
+  const prox = $('.prox', opo), antes = prox.outerHTML;
+  const caja = document.createElement('div'); caja.className = 'pila g2 entra';
+  caja.innerHTML = '<span class="gris t-12">¿Cuándo es el próximo paso?</span><div class="prox-chips"><button data-c="mañana 10:00">Mañana</button><button data-c="viernes 10:00">Viernes</button><button data-c="en una semana">En una semana</button></div>';
+  prox.replaceWith(caja); $('button', caja).focus();
+  caja.addEventListener('click', e => {
+    const b = e.target.closest('[data-c]'); if (!b) return;
+    const nuevo = document.createElement('div'); nuevo.className = 'prox entra';
+    nuevo.innerHTML = `<i class="ph ph-calendar-check"></i><span class="tx">Seguimiento · ${b.dataset.c}</span>`;
+    caja.replaceWith(nuevo);
+    toast({ titulo: 'Próximo paso agendado', detalle: `${$('h4', opo).textContent} · ${b.dataset.c}`, deshacer: () => { nuevo.outerHTML = antes; } });
+  });
+}
+$('#opos').addEventListener('click', e => {
+  const b = e.target.closest('.hecho-p,.agendar-p'); if (b) pedirProximo(b.closest('.opo'));
+});
+$('#opos').addEventListener('click', e => { const m = e.target.closest('[data-menu="#menu-opo"]'); if (m) opoActual = m.closest('.opo'); }, true);
+$$('#menu-opo [data-acc]').forEach(it => it.addEventListener('click', () => {
+  const o = opoActual; if (!o) return; const acc = it.dataset.acc;
+  if (acc === 'abrir') return destellar(o);
+  const etapa = $('.etapa', o), antes = { cls: o.className, et: etapa.outerHTML, prob: $('.prob', o).textContent, prox: $('.prox', o)?.outerHTML || '' };
+  const gano = acc === 'ganada';
+  o.className = `opo ${acc}`;
+  etapa.outerHTML = gano ? '<span class="etapa" style="--ent:var(--e4)"><i class="ph-fill ph-check-circle"></i>Ganada</span>' : '<span class="etapa" style="--ent:var(--gris)"><i class="ph-fill ph-x-circle"></i>Perdida</span>';
+  $('.prob', o).textContent = gano ? '100 %' : '0 %'; $('.prox', o)?.remove();
+  toast({ titulo: gano ? 'Oportunidad ganada' : 'Oportunidad perdida', detalle: $('h4', o).textContent, deshacer: () => { o.className = antes.cls; $('.etapa', o).outerHTML = antes.et; $('.prob', o).textContent = antes.prob; if (antes.prox) o.insertAdjacentHTML('beforeend', antes.prox); } });
+}));
+
+/* ═════════ 5-6. Kanban: arrastre con puntero y con teclado ═════════ */
+const tablero = $('#tablero'), cols = $$('.col', tablero);
+function pintarCols(pulso) {
+  cols.forEach(col => {
+    const lista = $('.lista-k', col), cards = $$('.kt', lista);
+    $('.vacia', lista)?.remove();
+    if (!cards.length) lista.insertAdjacentHTML('beforeend', '<div class="vacia"><span><i class="ph ph-tray"></i><br>Soltá una tarea acá</span></div>');
+    const c = $('.ch .c', col); if (c.textContent !== String(cards.length)) { c.textContent = cards.length; if (pulso) { c.classList.add('pulso'); setTimeout(() => c.classList.remove('pulso'), 200); } }
+    $('.horas', col).textContent = `${cards.reduce((s, k) => s + (+k.dataset.horas || 0), 0)} h`;
+    cards.forEach(k => k.classList.toggle('hecha', col.dataset.col === 'hecho'));
+  });
+}
+pintarCols(false);
+function mover(card, col, antesDe, avisar = true) {
+  const desde = card.parentElement, sig = card.nextElementSibling;
+  if (desde === $('.lista-k', col) && sig === antesDe) return;
+  $('.lista-k', col).insertBefore(card, antesDe || null); pintarCols(true);
+  if (!avisar) return;
+  const nombre = $('h3', col).textContent;
+  toast({ titulo: `Se movió "${$('h4', card).textContent}" a ${nombre}`, deshacer: () => { desde.insertBefore(card, sig && sig.parentElement === desde ? sig : null); pintarCols(true); card.focus({ preventScroll: true }); } });
+  anunciar(`Movida a ${nombre}`);
+}
+let arr = null;
+tablero.addEventListener('pointerdown', e => {
+  const card = e.target.closest('.kt'); if (!card || e.button !== 0 || e.target.closest('[contenteditable]')) return;
+  const tactil = e.pointerType !== 'mouse';
+  arr = { card, x0: e.clientX, y0: e.clientY, id: e.pointerId, activo: false, listo: !tactil };
+  // en el celular, mantener 320 ms para levantar la tarjeta; si antes se mueve, es scroll
+  if (tactil) arr.timer = setTimeout(() => { if (arr && arr.card === card) { arr.listo = true; card.classList.add('quieto-r'); navigator.vibrate?.(8); } }, 320);
+});
+document.addEventListener('touchmove', e => { if (arr && arr.listo) e.preventDefault(); }, { passive: false });
+addEventListener('pointermove', e => {
+  if (!arr || e.pointerId !== arr.id) return;
+  const { card } = arr;
+  if (!arr.listo) { if (Math.hypot(e.clientX - arr.x0, e.clientY - arr.y0) > 8) { clearTimeout(arr.timer); arr = null; } return; }
+  if (!arr.activo) {
+    if (Math.hypot(e.clientX - arr.x0, e.clientY - arr.y0) < 6) return;
+    const r = card.getBoundingClientRect();
+    arr.activo = true; arr.dx = arr.x0 - r.left; arr.dy = arr.y0 - r.top;
+    arr.fantasma = card.cloneNode(true); arr.fantasma.classList.add('volando'); arr.fantasma.removeAttribute('tabindex');
+    arr.fantasma.style.width = r.width + 'px'; document.body.appendChild(arr.fantasma);
+    arr.hueco = document.createElement('div'); arr.hueco.className = 'hueco'; arr.hueco.style.height = r.height + 'px';
+    card.after(arr.hueco); card.classList.add('origen');
+    try { tablero.setPointerCapture?.(e.pointerId); } catch {}
+  }
+  e.preventDefault();
+  arr.fantasma.style.left = (e.clientX - arr.dx) + 'px'; arr.fantasma.style.top = (e.clientY - arr.dy) + 'px';
+  const bajo = document.elementFromPoint(e.clientX, e.clientY)?.closest('.col');
+  cols.forEach(c => c.classList.toggle('destino', c === bajo));
+  if (bajo) {
+    const lista = $('.lista-k', bajo), otras = $$('.kt:not(.origen)', lista);
+    const antes = otras.find(k => { const r = k.getBoundingClientRect(); return e.clientY < r.top + r.height / 2; });
+    $('.vacia', lista)?.setAttribute('hidden', '');
+    if (antes) lista.insertBefore(arr.hueco, antes); else lista.appendChild(arr.hueco);
+    arr.col = bajo; arr.antes = antes || null;
+  }
+}, { passive: false });
+const soltar = e => {
+  if (!arr || e.pointerId !== arr.id) return;
+  const a = arr; arr = null; clearTimeout(a.timer); a.card.classList.remove('quieto-r');
+  if (!a.activo) return;
+  a.fantasma.remove(); a.hueco.remove(); a.card.classList.remove('origen'); cols.forEach(c => c.classList.remove('destino'));
+  $$('.vacia', tablero).forEach(v => v.removeAttribute('hidden'));
+  if (a.col && e.type === 'pointerup') mover(a.card, a.col, a.antes);
+  a.card.focus({ preventScroll: true });
+};
+addEventListener('pointerup', soltar); addEventListener('pointercancel', soltar);
+tablero.addEventListener('keydown', e => {
+  const card = e.target.closest('.kt'); if (!card || e.target.isContentEditable) return;
+  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+  e.preventDefault();
+  const i = cols.indexOf(card.closest('.col')), j = i + (e.key === 'ArrowRight' ? 1 : -1);
+  if (cols[j]) { mover(card, cols[j], null); card.focus({ preventScroll: true }); }
+});
+tablero.addEventListener('click', e => {
+  const n = e.target.closest('.nueva-k'); if (!n) return;
+  const col = n.closest('.col'), lista = $('.lista-k', col);
+  lista.insertAdjacentHTML('afterbegin', `<article class="kt entra" tabindex="0" data-horas="2"><div class="etq"><span class="chip d" style="--ent:var(--e1)">Web</span></div><h4 contenteditable="true" spellcheck="false" aria-label="Título de la tarea nueva"></h4><div class="pie-k"><span>WEB-${131 + $$('.kt', tablero).length}</span><span class="gris">Sin fecha</span><span class="nadie">Sin asignar</span></div></article>`);
+  const h = $('h4', lista); h.focus(); pintarCols(true);
+  const fin = () => { h.removeAttribute('contenteditable'); if (!h.textContent.trim()) h.textContent = 'Tarea sin título'; };
+  h.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === 'Escape') { ev.preventDefault(); fin(); h.closest('.kt').focus(); } });
+  h.addEventListener('blur', fin, { once: true });
+});
+
+/* ═════════ 7. Tarjeta de proceso ═════════ */
+function barras(svg, v) {
+  const w = 80, h = 24, n = v.length, paso = w / n, an = paso * .62, mx = Math.max(...v) || 1;
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  svg.innerHTML = v.map((x, i) => x
+    ? `<rect x="${(i * paso).toFixed(1)}" y="${(h - Math.max(3, x / mx * h)).toFixed(1)}" width="${an.toFixed(1)}" height="${Math.max(3, x / mx * h).toFixed(1)}" rx="1.2" style="fill:${i === n - 1 ? 'var(--tinta)' : 'var(--texto-3)'};opacity:${i === n - 1 ? 1 : .45}"/>`
+    : `<line x1="${(i * paso).toFixed(1)}" x2="${(i * paso + an).toFixed(1)}" y1="${h - 1}" y2="${h - 1}" style="stroke:var(--texto-3)" stroke-width="1.2" stroke-dasharray="1.5 1.5"/>`).join('');
+}
+$$('.pro[data-serie]').forEach(p => barras($('.met svg', p), p.dataset.serie.split(',').map(Number)));
+let procesoActual = null;
+$('#procesos').addEventListener('click', e => { const b = e.target.closest('[data-menu="#menu-proceso"]'); if (b) procesoActual = b.closest('.pro'); }, true);
+const alternarProceso = p => {
+  const pausar = !p.classList.contains('pausado'), est = $('.est', p);
+  const antes = { cls: est.className, txt: est.textContent };
+  p.classList.toggle('pausado', pausar);
+  if (pausar) { est.className = 'chip d gr est'; est.textContent = 'Pausado'; } else { est.className = 'chip d v est'; est.textContent = 'Activo'; }
+  $$('.flecha', p).forEach(f => f.classList.toggle('anda', !pausar));
+  return antes;
+};
+$('#menu-proceso .pausar').addEventListener('click', () => {
+  const p = procesoActual; if (!p) return;
+  const antes = alternarProceso(p), pausado = p.classList.contains('pausado');
+  toast({ titulo: `${$('h4', p).textContent}: ${pausado ? 'pausado' : 'activo de nuevo'}`, detalle: pausado ? 'No corre hasta que lo reanudes' : 'Corre en el próximo disparo', deshacer: () => { alternarProceso(p); $('.est', p).className = antes.cls; $('.est', p).textContent = antes.txt; } });
+});
+$('#pro-nuevo').addEventListener('click', () => { const g = $('#plantilla-como-receta .grilla-t'); destellar(g); toast({ tipo: 'info', titulo: 'Elegí una plantilla o empezá en blanco', detalle: 'Las recetas armadas están abajo' }); });
+
+/* ═════════ 8. Plantilla como receta ═════════ */
+$$('.rec .usar').forEach(b => b.addEventListener('click', async () => {
+  if (b.dataset.usada) return;
+  const rec = b.closest('.rec'), antes = await ocupar(b, 800, 'Creando');
+  b.dataset.usada = 1; rec.classList.add('usada'); b.className = 'btn chico texto usar';
+  b.innerHTML = '<i class="ph ph-arrow-up-right"></i>Abrir';
+  const pie = $('.pie-r .gris', rec), txt = pie.textContent; pie.innerHTML = '<span style="color:var(--verde)"><i class="ph ph-check" style="font-size:13px"></i> En Procesos · borrador</span>';
+  toast({ titulo: `"${$('h4', rec).textContent}" quedó en Procesos`, detalle: 'Como borrador: revisalo y activalo', deshacer: () => { delete b.dataset.usada; rec.classList.remove('usada'); b.className = 'btn chico usar'; b.innerHTML = antes; pie.textContent = txt; } });
+}));
+
+/* ═════════ 9. Integración ═════════ */
+const conectada = (card, extra = 'sincronizó recién') => `<span class="ok"><span class="vivo-punto"></span>Conectada</span><span class="num sinc">· ${extra}</span>`;
+$$('.int').forEach(card => {
+  card.addEventListener('cambio', e => {
+    if (!e.target.matches('.toggle')) return;
+    const on = e.detail === true, nombre = $('.t1 b', card).textContent;
+    card.classList.toggle('apagada', !on);
+    $('.estado-i', card).innerHTML = on ? conectada(card) : '<span class="num">Apagada por vos · recién</span>';
+    toast({ titulo: `${nombre} ${on ? 'activa' : 'apagada'}`, detalle: on ? 'Vuelve a sincronizar en unos segundos' : 'La configuración queda guardada', deshacer: () => e.target.click() });
+  });
+  card.addEventListener('click', async e => {
+    const sync = e.target.closest('.sync');
+    if (sync) { const i = $('.ph', sync); i.classList.add('gira'); sync.setAttribute('aria-busy', 'true'); await esperar(1100); i.classList.remove('gira'); sync.removeAttribute('aria-busy'); $('.sinc', card).textContent = '· sincronizó recién'; anunciar('Google Drive sincronizada'); }
+    const rec = e.target.closest('.reconectar');
+    if (rec) {
+      await ocupar(rec, 1300, 'Probando');
+      card.classList.remove('fallo');
+      const causa = $('.causa', card); causa.style.overflow = 'hidden'; causa.animate([{ opacity: 1, height: causa.offsetHeight + 'px' }, { opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0 }], { duration: 240, easing: 'cubic-bezier(.23,1,.32,1)' }).onfinish = () => causa.remove();
+      rec.outerHTML = '<button class="toggle" role="switch" aria-checked="true" aria-label="ARCA activa"></button>';
+      $('.estado-i', card).innerHTML = conectada(card, 'salieron 3 facturas con CAE');
+      $('.pie-i', card).innerHTML = '<span>Último CAE: FAC-01101</span>';
+      toast({ titulo: 'ARCA reconectada', detalle: 'FAC-01099, 01100 y 01101 ya tienen CAE' });
+    }
+    const con = e.target.closest('.conectar');
+    if (con) {
+      con.setAttribute('aria-busy', 'true'); con.innerHTML = '<i class="ph ph-circle-notch gira"></i>Conectando';
+      const pasos = $$('.pasos-i div', card);
+      for (const p of pasos) { $('.ph', p).className = 'ph ph-circle-notch gira'; await esperar(650); p.classList.add('hecho'); $('.ph', p).className = 'ph ph-check-circle'; }
+      card.classList.remove('disp');
+      con.outerHTML = '<button class="toggle" role="switch" aria-checked="true" aria-label="WhatsApp activa"></button>';
+      $('.estado-i', card).style.display = 'flex';
+      card.querySelector('.pasos-i').insertAdjacentHTML('afterend', `<div class="estado-i">${conectada(card)}</div>`);
+      $('.pie-i', card).innerHTML = '<span>2 grupos · 5 personas la usan</span>';
+      toast({ titulo: 'WhatsApp conectada', detalle: 'Los recordatorios de cobro ya pueden salir por acá' });
+    }
+  });
+});
+
+/* ═════════ 10. Espacio contenedor ═════════ */
+const CARPETAS = [['Propuestas', 12], ['Facturas', 48], ['Remitos', 31], ['Fotos de obra', 172], ['Contratos', 23], ['Briefs', 6], ['Logos', 19], ['Papelera', 0]];
+$('#carpetas').innerHTML = CARPETAS.map(([n, c]) => `<button class="carp" aria-label="${n}, ${c} archivos"><svg viewBox="0 0 84 64" aria-hidden="true"><path class="f-a" d="M6 8a6 6 0 0 1 6-6h18l7 7h35a6 6 0 0 1 6 6v6H6z"/><rect class="f-c" x="12" y="12" width="60" height="22" rx="3"/><path class="f-b" d="M6 20a5 5 0 0 1 5-5h62a5 5 0 0 1 5 5v36a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6z"/><circle cx="66" cy="48" r="9" class="f-c"/><text class="f-n" x="66" y="48" dy=".35em" text-anchor="middle">${c > 99 ? '99+' : c}</text></svg><span>${n}</span></button>`).join('');
+$('#carpetas').addEventListener('click', e => { const b = e.target.closest('.carp'); if (b) toast({ tipo: 'info', titulo: b.getAttribute('aria-label'), detalle: 'Se abre la lista filtrada por esa carpeta' }); });
+$$('.esp .fuente:not([disabled])').forEach(b => b.addEventListener('click', async () => {
+  await ocupar(b, 1000, 'Conectando');
+  b.className = 'fuente ok'; b.disabled = true; b.innerHTML = '<i class="ph ph-check"></i>Drive conectado';
+  const esp = b.closest('.esp'); esp.classList.remove('vacio-e');
+  toast({ titulo: `Drive conectado a ${$('h4', esp).textContent}`, detalle: 'Los archivos nuevos aparecen solos' });
+}));
+
+/* ═════════ 11. Documento y contrato ═════════ */
+$('#recordar').addEventListener('click', async e => {
+  const b = e.currentTarget; if (b.dataset.hecho) return;
+  const antes = await ocupar(b, 800, 'Enviando'); b.dataset.hecho = 1;
+  b.innerHTML = '<i class="ph ph-check"></i>Recordado'; b.classList.add('texto');
+  $('#firma-falta .esp-f').innerHTML = '<i class="ph ph-bell"></i>Recordado recién';
+  toast({ titulo: 'Recordatorio enviado a Rodrigo Paz', detalle: 'CT-1042 · le llega por correo y WhatsApp', deshacer: () => { delete b.dataset.hecho; b.innerHTML = antes; b.classList.remove('texto'); $('#firma-falta .esp-f').innerHTML = '<i class="ph ph-eye"></i>Lo vio ayer'; } });
+});
+
+/* ═════════ 12. Galería con imagen ═════════ */
+const ESCENAS = [
+  ['Frente del local con la vidriera nueva', '<defs><linearGradient id="g0c" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#bcd3ec"/><stop offset="1" stop-color="#e9eef4"/></linearGradient></defs><rect width="400" height="300" fill="url(#g0c)"/><rect y="230" width="400" height="70" fill="#9a9aa3"/><rect y="226" width="400" height="6" fill="#c9c9cf"/><rect x="40" y="60" width="320" height="170" fill="#f3efe8"/><rect x="40" y="60" width="320" height="34" fill="#2b2f45"/><text x="200" y="83" text-anchor="middle" fill="#f5d48a" font-family="Outfit,sans-serif" font-size="20" font-weight="500" letter-spacing="3">CASA LUMEN</text><rect x="62" y="112" width="160" height="118" fill="#3f4a5e"/><rect x="66" y="116" width="152" height="110" fill="#58698a" opacity=".85"/><circle cx="110" cy="150" r="14" fill="#f8d77a" opacity=".9"/><circle cx="170" cy="140" r="10" fill="#f8d77a" opacity=".7"/><rect x="246" y="112" width="92" height="118" fill="#6b4f3a"/><circle cx="326" cy="172" r="3" fill="#e5c07b"/><rect x="0" y="244" width="400" height="2" fill="#b4b4bb"/>'],
+  ['Góndolas nuevas con iluminación', '<defs><linearGradient id="g1c" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f6efe4"/><stop offset="1" stop-color="#e2d6c4"/></linearGradient></defs><rect width="400" height="300" fill="url(#g1c)"/><rect y="230" width="400" height="70" fill="#c9b59a"/><g fill="#fff6dc" opacity=".9"><circle cx="80" cy="30" r="10"/><circle cx="200" cy="30" r="10"/><circle cx="320" cy="30" r="10"/></g><g fill="#fff3c4" opacity=".35"><path d="M70 36 30 230h100z"/><path d="M190 36 150 230h100z"/><path d="M310 36 270 230h100z"/></g><g fill="#5b4636"><rect x="30" y="110" width="110" height="8"/><rect x="30" y="160" width="110" height="8"/><rect x="30" y="210" width="110" height="8"/><rect x="260" y="110" width="110" height="8"/><rect x="260" y="160" width="110" height="8"/><rect x="260" y="210" width="110" height="8"/></g><g fill="#3b6fe0"><rect x="40" y="86" width="18" height="24" rx="3"/><rect x="66" y="92" width="14" height="18" rx="3" fill="#d6336c"/><rect x="88" y="80" width="20" height="30" rx="3" fill="#25a866"/><rect x="270" y="136" width="22" height="24" rx="3" fill="#c8692b"/><rect x="300" y="140" width="16" height="20" rx="3"/><rect x="40" y="188" width="24" height="22" rx="3" fill="#7c5ce0"/><rect x="290" y="186" width="30" height="24" rx="3" fill="#d6336c"/></g>'],
+  ['Cartel encendido al atardecer', '<defs><linearGradient id="g2c" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2a2f5a"/><stop offset=".55" stop-color="#c46a5c"/><stop offset="1" stop-color="#f3b07a"/></linearGradient></defs><rect width="400" height="300" fill="url(#g2c)"/><circle cx="300" cy="200" r="34" fill="#ffd58f" opacity=".85"/><path d="M0 220 60 196l70 18 80-30 90 26 100-20v110H0z" fill="#3a2e3f"/><rect x="70" y="120" width="230" height="120" fill="#1f1b2a"/><rect x="88" y="132" width="194" height="34" rx="4" fill="#2b2f45"/><text x="185" y="156" text-anchor="middle" fill="#ffe2a0" font-family="Outfit,sans-serif" font-size="18" font-weight="500" letter-spacing="3">CASA LUMEN</text><rect x="88" y="132" width="194" height="34" rx="4" fill="none" stroke="#ffd58f" stroke-opacity=".5"/><g fill="#ffcf7a" opacity=".85"><rect x="96" y="184" width="40" height="40"/><rect x="150" y="184" width="40" height="40"/><rect x="236" y="184" width="40" height="40"/></g><rect y="270" width="400" height="30" fill="#151320"/>'],
+];
+const escena = i => `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${ESCENAS[i][0]}">${ESCENAS[i][1].replace(/id="g(\d)c"/g, `id="g$1c${++escena.n}"`).replace(/url\(#g(\d)c\)/g, `url(#g$1c${escena.n})`)}</svg>`;
+escena.n = 0;
+function armarGal(g) {
+  const ids = g.dataset.escenas.split(',').map(Number), cinta = $('.cinta', g);
+  cinta.innerHTML = ids.map(i => `<div>${escena(i)}</div>`).join('');
+  let i = 0;
+  const ir = n => {
+    i = Math.max(0, Math.min(ids.length - 1, n)); cinta.style.transform = `translateX(${-100 * i}%)`;
+    $$('.puntos-g i', g).forEach((p, k) => p.classList.toggle('on', k === i));
+    const c = $('.cant .num', g); if (c) c.textContent = `${i + 1}/${ids.length}`;
+    const iz = $('.nav.izq', g), de = $('.nav.der', g); if (iz) iz.disabled = i === 0; if (de) de.disabled = i === ids.length - 1;
+  };
+  $('.nav.izq', g)?.addEventListener('click', () => ir(i - 1)); $('.nav.der', g)?.addEventListener('click', () => ir(i + 1));
+  let x0 = null; const foto = $('.foto', g);
+  foto.addEventListener('pointerdown', e => { if (!e.target.closest('button')) x0 = e.clientX; });
+  foto.addEventListener('pointerup', e => { if (x0 !== null && Math.abs(e.clientX - x0) > 40) ir(i + (e.clientX < x0 ? 1 : -1)); x0 = null; });
+}
+$$('.gal[data-escenas]').forEach(armarGal);
+const galeria = $('#galeria');
+const contarGal = () => {
+  const m = $$('.gal.marcada', galeria).length, total = $$('.gal[data-escenas]', galeria).length;
+  $('#gal-cuenta').textContent = m ? `${fmt.plural(m, 'elegida', 'elegidas')} de ${total}` : `${fmt.plural($$('.gal[data-escenas]', galeria).reduce((t, g) => t + g.dataset.escenas.split(',').length, 0), 'foto', 'fotos')} · obra Casa Lumen`;
+};
+contarGal();
+galeria.addEventListener('cambio', e => { const g = e.target.closest('.gal'); if (g && e.target.matches('.casilla')) { g.classList.toggle('marcada', e.detail === true); contarGal(); } });
+$('#gal-sel').addEventListener('click', e => {
+  const on = galeria.classList.toggle('sel-activa'); e.currentTarget.setAttribute('aria-pressed', on);
+  e.currentTarget.innerHTML = on ? '<i class="ph ph-x"></i>Terminar' : '<i class="ph ph-check-square"></i>Elegir fotos';
+  if (!on) { $$('.gal.marcada', galeria).forEach(g => { g.classList.remove('marcada'); $('.casilla', g).setAttribute('aria-checked', 'false'); }); contarGal(); }
+});
+const revelar = (fotos) => fotos.forEach((f, k) => { f.classList.add('borrosa'); setTimeout(() => { f.classList.add('revela'); f.classList.remove('borrosa'); }, 500 + k * 220); });
+$('#gal-recargar').addEventListener('click', () => revelar($$('.gal .foto', galeria)));
+$('#gal-subir').addEventListener('click', e => {
+  const n = $$('.gal[data-escenas]', galeria).length;
+  e.currentTarget.insertAdjacentHTML('beforebegin', `<article class="gal entra" data-escenas="${n % 3}"><div class="foto"><div class="cinta"></div><span class="sello"><i class="ph ph-map-pin"></i>Av. Alem 1240 · 15:42</span><button class="casilla" role="checkbox" aria-checked="false" aria-label="Elegir foto nueva"></button></div><div class="txt-g"><div class="min0"><b>Foto nueva</b><small class="num">Vos · recién</small></div></div></article>`);
+  const g = e.currentTarget.previousElementSibling; armarGal(g); revelar([$('.foto', g)]); contarGal();
+  toast({ titulo: 'Foto subida', detalle: 'El sello de hora y lugar salió del celular' });
+});
+
+/* ═════════ 13. Detalle con anatomía fija ═════════ */
+const UNIDADES = [
+  { t: 'Mantenimiento web', s: '14 clientes con abono', tono: 'var(--verde)', pie: 'Ver detalle', ic: 'globe',
+    mes: { fac: 4.2, hs: 312, mg: 38, b: [92, 71, 88], mk: [14, 9, 3, 72] }, tri: { fac: 12.6, hs: 941, mg: 36, b: [90, 74, 85], mk: [14, 27, 5, 70] } },
+  { t: 'Diseño de marca y catálogos', s: '6 proyectos abiertos', tono: 'var(--ambar)', pie: 'Ver lo que se atrasa', ic: 'paint-brush',
+    mes: { fac: 7.8, hs: 486, mg: 24, b: [64, 93, 58], mk: [6, 4, 1, 64] }, tri: { fac: 19.4, hs: 1310, mg: 27, b: [70, 88, 66], mk: [9, 11, 2, 66] } },
+  { t: 'Portales a medida', s: '3 desarrollos en curso', tono: 'var(--rojo)', pie: 'Ver qué falla', ic: 'code',
+    mes: { fac: 2.1, hs: 404, mg: 9, b: [41, 118, 35], mk: [3, 23, 0, 51] }, tri: { fac: 9.3, hs: 1122, mg: 15, b: [55, 104, 48], mk: [4, 58, 1, 58] } },
+];
+const ROT_B = ['Entregas a tiempo', 'Horas del presupuesto', 'Cobrado de lo facturado'], ROT_MK = ['Clientes', 'Tickets', 'Renovaciones', 'NPS'];
+$('#detalles').innerHTML = UNIDADES.map((u, k) => `<article class="det" style="--tono:${u.tono}" data-k="${k}">
+  <div class="z1"><span class="tile ch" style="background:color-mix(in oklch,${u.tono} 12%,var(--superficie));color:${u.tono}"><i class="ph ph-${u.ic}"></i></span><div class="min0"><h4>${u.t}</h4><small>${u.s}</small></div></div>
+  <div class="z2"><div class="rv"><i class="ph ph-currency-circle-dollar"></i>Facturado<span class="pts"></span><b><span class="vd" data-c="fac" data-dec="1"></span><sup>M</sup></b></div><div class="rv"><i class="ph ph-clock"></i>Horas<span class="pts"></span><b><span class="vd" data-c="hs"></span><sup>h</sup></b></div><div class="rv"><i class="ph ph-percent"></i>Margen<span class="pts"></span><b><span class="vd" data-c="mg"></span><sup>%</sup></b></div></div>
+  <div class="z3">${ROT_B.map((r, i) => `<div class="br"><div class="cab"><span>${r}</span><b class="bv" data-i="${i}"></b></div><div class="barra-av"><i data-i="${i}"></i></div></div>`).join('')}
+    <div class="mk">${ROT_MK.map((r, i) => `<div><span>${r}</span><b class="mkv" data-i="${i}"></b></div>`).join('')}</div></div>
+  <a class="ver-det" href="#detalle-con-anatomia-fija">${u.pie}<i class="ph ph-arrow-right"></i></a></article>`).join('');
+let periodo = 'mes';
+function pintarDet(desde) {
+  $$('.det', $('#detalles')).forEach(d => {
+    const u = UNIDADES[d.dataset.k], v = u[periodo], prev = desde ? u[desde] : null;
+    $$('.vd', d).forEach(el => { const c = el.dataset.c, dec = +el.dataset.dec || 0; if (prev) cuenta(el, v[c], { desde: prev[c], dec }); else el.textContent = fmt.numero(v[c], dec); });
+    v.b.forEach((x, i) => {
+      const bar = $(`.barra-av i[data-i="${i}"]`, d), pasado = i === 1 && x > 100;
+      bar.style.width = Math.min(100, x) + '%'; bar.style.setProperty('--ent', pasado ? 'var(--rojo)' : (x < 60 ? 'var(--ambar)' : 'var(--tinta)'));
+      const bv = $(`.bv[data-i="${i}"]`, d); bv.textContent = `${x} %`; bv.classList.toggle('vencida', pasado);
+    });
+    v.mk.forEach((x, i) => { const el = $(`.mkv[data-i="${i}"]`, d); if (prev) cuenta(el, x, { desde: prev.mk[i] }); else el.textContent = x; });
+  });
+}
+pintarDet(null);
+$('#det-periodo').addEventListener('cambio', e => { const antes = periodo; periodo = e.detail; pintarDet(antes); });
+
+/* ═════════ 14. Monitoreo de equipo ═════════ */
+const EQUIPOS = [
+  { id: 'WEB-01', n: 'Portal de clientes', est: 'en', v: 1284, cap: 1800, cpu: 38, mem: 61, err: .2, serie: [980, 1040, 1120, 1090, 1180, 1230, 1205, 1260, 1284] },
+  { id: 'WEB-02', n: 'Tienda Casa Lumen', est: 'par', v: 642, cap: 1200, cpu: 87, mem: 79, err: 2.4, serie: [700, 690, 720, 680, 655, 640, 610, 630, 642], nota: 'p95 de 2,8 s desde las 15:10' },
+  { id: 'API-01', n: 'Facturación ARCA', est: 'en', v: 318, cap: 400, cpu: 22, mem: 44, err: 0, serie: [210, 240, 260, 250, 290, 300, 310, 305, 318] },
+  { id: 'WEB-04', n: 'Sitio Fundación Norte', est: 'fuera', v: 0, cap: 300, cpu: 0, mem: 0, err: 0, serie: [120, 130, 125, 118, 90, 40, 0, 0, 0], nota: 'sin respuesta desde las 15:28' },
+];
+const EST_T = { en: 'En línea', par: 'Lento', fuera: 'Sin respuesta' };
+$('#monitores').innerHTML = EQUIPOS.map((q, k) => `<article class="mon${q.est === 'fuera' ? ' sin-datos' : ''}" role="button" tabindex="0" aria-pressed="false" data-k="${k}" aria-label="${q.id} ${q.n}, ${EST_T[q.est]}">
+  <div class="m1"><div class="min0"><b>${q.id}</b><small class="trunca">${q.n}</small></div><span class="est-m ${q.est}">${EST_T[q.est]}</span></div>
+  <div class="val"><b class="vv">${q.est === 'fuera' ? '—' : fmt.numero(q.v)}</b><span>req/min</span><span class="tend"></span></div>
+  <div class="bar-m ${q.est}"><i style="width:${Math.min(100, q.v / q.cap * 100)}%"></i></div>
+  <div class="bar-pie"><span class="pc">${Math.round(q.v / q.cap * 100)} % de la capacidad</span><span>${fmt.numero(q.cap)}</span></div>
+  ${q.est === 'fuera' ? '<span class="viejo"><i class="ph ph-clock-countdown"></i>Sin datos hace 14 min</span>' : '<svg class="sp" aria-hidden="true"></svg>'}
+  <div class="tri"><div><span>CPU</span><b class="cpu${q.cpu > 80 ? ' alerta' : ''}">${q.est === 'fuera' ? '—' : q.cpu + ' %'}</b></div><div><span>Memoria</span><b class="mem">${q.est === 'fuera' ? '—' : q.mem + ' %'}</b></div><div><span>Errores</span><b class="err${q.err > 1 ? ' alerta' : ''}">${q.est === 'fuera' ? '—' : fmt.numero(q.err, 1) + ' %'}</b></div></div>
+</article>`).join('');
+$('#monitores').addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.mon')) { e.preventDefault(); e.target.click(); } });
+const pintarSp = (b, q, animar) => { const s = $('svg.sp', b); if (s) linea(s, q.serie, { color: q.est === 'par' ? '#fbbf24' : '#e9e9ef', alto: 36, ancho: 260, marca: q.serie.length - 1, animar, area: true }); };
+$$('.mon', $('#monitores')).forEach(b => pintarSp(b, EQUIPOS[b.dataset.k], true));
+$('#monitores').addEventListener('click', e => {
+  const b = e.target.closest('.mon'); if (!b) return;
+  const on = b.getAttribute('aria-pressed') !== 'true';
+  $$('.mon', $('#monitores')).forEach(x => x.setAttribute('aria-pressed', x === b && on));
+  const q = EQUIPOS[b.dataset.k];
+  $('#mon-nota').textContent = on ? `${q.id} · ${q.n}: ${q.nota || 'todo normal en la última hora'}.` : 'Ninguna elegida.';
+});
+let vivo = true;
+setInterval(() => {
+  if (!vivo || document.hidden) return;
+  $$('.mon', $('#monitores')).forEach(b => {
+    const q = EQUIPOS[b.dataset.k]; if (q.est === 'fuera') return;
+    const antes = q.v; q.v = Math.max(50, Math.round(q.v * (1 + (Math.random() - .48) * .06)));
+    q.serie.push(q.v); q.serie.shift();
+    q.cpu = Math.max(5, Math.min(99, q.cpu + Math.round((Math.random() - .5) * 6)));
+    const vv = $('.vv', b); vv.textContent = fmt.numero(q.v); vv.classList.remove('tic'); void vv.offsetWidth; vv.classList.add('tic');
+    $('.tend', b).textContent = (q.v >= antes ? '▲ ' : '▼ ') + fmt.numero(Math.abs(q.v - antes));
+    $('.bar-m i', b).style.width = Math.min(100, q.v / q.cap * 100) + '%';
+    $('.pc', b).textContent = `${Math.round(q.v / q.cap * 100)} % de la capacidad`;
+    const cpu = $('.cpu', b); cpu.textContent = q.cpu + ' %'; cpu.classList.toggle('alerta', q.cpu > 80);
+    pintarSp(b, q, false);
+  });
+}, 2000);
+$('#mon-vivo').addEventListener('click', e => {
+  vivo = !vivo; const b = e.currentTarget; b.setAttribute('aria-pressed', vivo);
+  b.innerHTML = vivo ? '<span class="vivo-punto"></span>En vivo' : '<i class="ph ph-pause"></i>En pausa';
+  $('#mon-act').textContent = vivo ? 'Actualiza cada 2 s · elegí una para ver su diagnóstico' : `Pausado a las ${fmt.hora(new Date())} · los datos siguen llegando`;
+});
+
+/* ═════════ 15. Plan y uso ═════════ */
+const USO = { n: 18420, dia: 18, dias: 30, limite: 25000 };
+const ESC = { hoy: 1, campana: 1.7, tranqui: .4 };
+let escUso = 'hoy';
+function pintarUso(animar) {
+  const card = $('#uso-correo'), ritmo = USO.n / USO.dia, fin = Math.round(USO.n + ritmo * ESC[escUso] * (USO.dias - USO.dia));
+  const escala = Math.max(USO.limite, fin) * 1.04, pct = USO.n / USO.limite * 100;
+  $('#uso-barra').style.width = (USO.n / escala * 100) + '%';
+  const pr = $('#uso-proy'); pr.style.left = (USO.n / escala * 100) + '%'; pr.style.width = ((fin - USO.n) / escala * 100) + '%';
+  let lim = $('.limite', card); if (!lim) { lim = document.createElement('span'); lim.className = 'limite'; $('.pista', card).append(lim); }
+  lim.style.left = `calc(${USO.limite / escala * 100}% - 1px)`;
+  $('#uso-n').textContent = fmt.numero(USO.n);
+  $('.cif span', card).textContent = `/ ${fmt.numero(USO.limite)}`;
+  $('#uso-pct').textContent = `${Math.round(pct)} %`;
+  $('#uso-fin').textContent = `fin de mes: ${fmt.numero(fin)}`;
+  const pasa = fin > USO.limite; card.classList.toggle('aviso', pasa);
+  if (pasa) {
+    const dia = Math.ceil(USO.dia + (USO.limite - USO.n) / (ritmo * ESC[escUso]));
+    $('#uso-frase').innerHTML = `<i class="ph ph-trend-up"></i><span>A este ritmo llegás al límite el <b>${dia} nov</b>, ${fmt.plural(USO.dias - dia + 1, 'día', 'días')} antes de que se renueve.</span>`;
+    $('#uso-chip').className = 'chip d am'; $('#uso-chip').textContent = 'Se acaba antes';
+  } else {
+    $('#uso-frase').innerHTML = `<i class="ph ph-check-circle"></i><span>Llegás a fin de mes con <b>${fmt.numero(USO.limite - fin)}</b> de margen.</span>`;
+    $('#uso-chip').className = 'chip d gr'; $('#uso-chip').textContent = USO.limite > 25000 ? 'Plan Agencia' : 'Plan Estudio';
+  }
+  if (animar === false) return;
+}
+pintarUso();
+$('#uso-escena').addEventListener('cambio', e => { escUso = e.detail; pintarUso(); });
+$('#uso-ampliar').addEventListener('click', async e => {
+  const b = e.currentTarget; if (USO.limite > 25000) return;
+  const antes = await ocupar(b, 700, 'Ampliando'); USO.limite = 50000; pintarUso();
+  b.innerHTML = '<i class="ph ph-check"></i>Ampliado'; b.classList.add('texto');
+  toast({ titulo: 'Plan ampliado a 50.000 correos', detalle: 'Se cobra la diferencia prorrateada: US$ 14', deshacer: () => { USO.limite = 25000; pintarUso(); b.innerHTML = antes; b.classList.remove('texto'); } });
+});
+$('#anillo-plan').innerHTML = anillo(40, .891, { grosor: 5, color: 'var(--ambar)', aria: '89 % de las consultas usadas' });
+
+/* ═════════ 16. Reunión con cuenta regresiva ═════════ */
+const T0 = Date.now(); let corrimiento = 0;
+const REUS = [
+  { t: 'Demo del tablero de logística', cli: ['Grupo Atlas', 'e4'], ini: -14 * 60, dur: 45, lugar: ['map-pin', 'Depósito Atlas, Ruta 3 km 694'], avs: [['MS', 'e3'], ['LB', 'e1']], agenda: ['Mapa de depósitos', 'Alertas de stock'] },
+  { t: 'Revisión del catálogo de verano', cli: ['Casa Lumen', 'e2'], ini: 9 * 60 + 40, dur: 30, lugar: ['video-camera', 'Google Meet · meet.faro/lumen'], avs: [['PF', 'e5'], ['AR', 'e2'], ['RP', 'e3']], agenda: ['Fotos de la tanda 2', 'Precios de la colección', 'Fecha de lanzamiento'], falta: 'Rodrigo Paz todavía no confirmó' },
+  { t: 'Kickoff plan anual de soporte', cli: ['Orbe Retail', 'e1'], ini: 2 * 3600 + 8 * 60, dur: 60, lugar: ['video-camera', 'Google Meet · meet.faro/orbe'], avs: [['AR', 'e2'], ['CG', 'e6'], ['MS', 'e3'], ['LB', 'e1']], agenda: ['Alcance y prioridades', 'Canal de pedidos', 'Primer informe'] },
+  { t: 'Seguimiento de cobranzas', cli: ['Fundación Norte', 'e6'], ini: -70 * 60, dur: 30, lugar: ['phone', 'Llamada · 11 4567-2210'], avs: [['LB', 'e1']], agenda: ['Factura de octubre'] },
+];
+const dosD = n => String(n).padStart(2, '0');
+$('#reuniones').innerHTML = REUS.map((r, k) => `<article class="reu" data-k="${k}">
+  <div class="r0"><i class="ph ph-calendar-blank ico-r"></i><span class="lbl">Próxima reunión</span><span class="reloj" aria-live="off"></span></div>
+  <div class="progreso-r" hidden><i></i></div>
+  <div class="r1"><h4>${r.t}</h4><div class="cuando"><span class="hs num"></span>·<span class="cli"><span class="cuadro ch" style="--ent:var(--${r.cli[1]})"></span>${r.cli[0]}</span></div></div>
+  <div class="agenda">${r.agenda.map((a, i) => `<div><span class="n">${dosD(i + 1)}</span>${a}</div>`).join('')}</div>
+  ${r.falta ? `<div class="falta"><i class="ph ph-warning"></i>${r.falta}</div>` : ''}
+  <div class="r2"><span class="lugar"><i class="ph ph-${r.lugar[0]}"></i><span class="trunca">${r.lugar[1]}</span></span><span class="avs">${r.avs.map(a => `<span class="av ch" style="--ent:var(--${a[1]})">${a[0]}</span>`).join('')}</span><button class="btn chico acc-r"></button></div>
+</article>`).join('');
+const rodar = (el, texto) => {
+  if (el.dataset.t === texto) return; const viejo = el.dataset.t || ''; el.dataset.t = texto;
+  el.innerHTML = [...texto].map((ch, i) => `<span class="dig"><span${!quieto && viejo && viejo[i] !== ch ? ' class="nuevo"' : ''}>${ch === ' ' ? '&nbsp;' : ch}</span></span>`).join('');
+  $$('.nuevo', el).forEach(s => s.animate([{ transform: 'translateY(-100%)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 400, easing: 'cubic-bezier(.23,1,.32,1)' }));
+};
+const avisadas = new Set();
+function tickReu() {
+  const ahora = T0 + (Date.now() - T0) + corrimiento * 1000;
+  $('#reu-hora').textContent = corrimiento ? `Simulando las ${fmt.hora(new Date(ahora))}` : '';
+  $$('.reu', $('#reuniones')).forEach(c => {
+    const r = REUS[c.dataset.k], ini = T0 + r.ini * 1000, fin = ini + r.dur * 60000, falta = (ini - ahora) / 1000;
+    $('.hs', c).textContent = `${fmt.hora(new Date(ini))} – ${fmt.hora(new Date(fin))}`;
+    let estado = falta > 600 ? 'lejos' : falta > 0 ? 'pronto' : ahora < fin ? 'curso' : 'fin';
+    c.classList.toggle('pronto', estado === 'pronto'); c.classList.toggle('curso', estado === 'curso'); c.classList.toggle('fin', estado === 'fin');
+    const ico = $('.ico-r', c), lbl = $('.lbl', c), reloj = $('.reloj', c), btn = $('.acc-r', c), prog = $('.progreso-r', c);
+    prog.hidden = estado !== 'curso';
+    if (estado === 'lejos') {
+      ico.className = 'ph ph-calendar-blank ico-r'; lbl.textContent = 'Próxima reunión';
+      const h = Math.floor(falta / 3600), m = Math.floor(falta % 3600 / 60); rodar(reloj, h ? `en ${h} h ${dosD(m)} min` : `en ${m} min`);
+      btn.className = 'btn chico acc-r'; btn.innerHTML = '<i class="ph ph-list-checks"></i>Preparar';
+    } else if (estado === 'pronto') {
+      ico.className = 'ph ph-bell-ringing ico-r'; lbl.textContent = 'Empieza en';
+      rodar(reloj, `${dosD(Math.floor(falta / 60))}:${dosD(Math.floor(falta % 60))}`);
+      btn.className = 'btn chico acento acc-r'; btn.innerHTML = '<i class="ph ph-video-camera"></i>Entrar';
+      if (falta <= 60 && !avisadas.has(c.dataset.k)) { avisadas.add(c.dataset.k); anunciar(`${r.t} empieza en 1 minuto`); }
+    } else if (estado === 'curso') {
+      ico.className = 'ph-fill ph-circle ico-r'; ico.style.fontSize = '9px'; lbl.textContent = 'En curso';
+      rodar(reloj, `quedan ${Math.ceil((fin - ahora) / 60000)} min`);
+      $('i', prog).style.width = ((ahora - ini) / (fin - ini) * 100) + '%';
+      btn.className = 'btn chico acento acc-r'; btn.innerHTML = '<i class="ph ph-video-camera"></i>Entrar';
+    } else {
+      ico.className = 'ph ph-check-circle ico-r'; ico.style.fontSize = ''; lbl.textContent = 'Terminó';
+      const m = Math.round((ahora - fin) / 60000); rodar(reloj, m < 60 ? `hace ${m} min` : `hace ${Math.floor(m / 60)} h ${dosD(m % 60)}`);
+      btn.className = 'btn chico acc-r'; btn.innerHTML = '<i class="ph ph-note-pencil"></i>Cargar notas';
+    }
+    if (estado !== 'curso') ico.style.fontSize = '';
+  });
+}
+tickReu(); setInterval(tickReu, 1000);
+$('#reu-adelantar').addEventListener('click', () => { corrimiento += 300; tickReu(); });
+$('#reu-volver').addEventListener('click', () => { corrimiento = 0; tickReu(); });
+$('#reuniones').addEventListener('click', e => { const b = e.target.closest('.acc-r'); if (b) toast({ tipo: 'info', titulo: b.textContent.trim(), detalle: $('h4', b.closest('.reu')).textContent }); });
+
+/* ═════════ 17. Promo con clima ═════════ */
+$('#ilu-faro').innerHTML = `<svg viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <circle cx="80" cy="60" r="52" stroke-dasharray="2 4" opacity=".5"/><path d="M14 60h132M80 8v104" opacity=".25"/>
+  <path d="M80 26 l-8 10h16z" /><rect x="70" y="36" width="20" height="10" rx="1.5"/><path d="M72 46 66 104h28l-6-58z"/><path d="M69 66h22M68 80h24M67 94h26" opacity=".7"/>
+  <path d="M90 41 140 28M90 41l50 14" style="stroke:var(--ilus-acento)" opacity=".9"/><path d="M70 41 20 28M70 41 20 55" style="stroke:var(--ilus-acento)" opacity=".5"/>
+  <circle cx="80" cy="41" r="3" style="fill:var(--ilus-acento);stroke:none"/><path d="M40 104h80M30 110h100" opacity=".6"/></svg>`;
+$('#promo-foto').innerHTML = `<svg viewBox="0 0 320 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="pf1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#28345a"/><stop offset=".6" stop-color="#7a6a8a"/><stop offset="1" stop-color="#d79a6e"/></linearGradient></defs><rect width="320" height="300" fill="url(#pf1)"/><path d="M0 170 70 110l50 40 60-70 70 60 70-30v190H0z" fill="#3a3550" opacity=".9"/><path d="M0 210 90 170l80 30 70-24 80 20v104H0z" fill="#22203a"/><g transform="translate(0,-100)"><g fill="#f4e1c1" opacity=".9"><rect x="180" y="150" width="90" height="62" rx="3" transform="rotate(-8 225 181)"/></g><g stroke="#8a7a6a" stroke-width="2" opacity=".7"><path d="M192 166l60-8M194 178l52-7M196 190l40-5" transform="rotate(-8 225 181)"/></g></g></svg>`;
+const PROMO_K = 't8-promos-ocultas';
+let promosOcultas = [];
+const pintarPromos = () => { $('#promo-devolver').hidden = !promosOcultas.length; $('#promo-ocultas').textContent = fmt.plural(promosOcultas.length, 'oculta', 'ocultas'); guardar(PROMO_K, promosOcultas); };
+$('#promos').addEventListener('click', e => {
+  const x = e.target.closest('.promo .x'); if (!x) return;
+  const pl = x.closest('.plegar'), id = pl.dataset.promo;
+  pl.classList.add('fuera'); pl.inert = true; promosOcultas.push(id); pintarPromos();
+  toast({ titulo: 'Listo, no te lo mostramos más', detalle: 'Lo encontrás en Novedades', deshacer: () => { pl.classList.remove('fuera'); pl.inert = false; promosOcultas = promosOcultas.filter(p => p !== id); pintarPromos(); } });
+});
+$('#promo-mostrar').addEventListener('click', () => { $$('#promos .plegar.fuera').forEach(p => { p.classList.remove('fuera'); p.inert = false; }); promosOcultas = []; pintarPromos(); });
+(leer(PROMO_K, []) || []).forEach(id => { const p = $(`#promos [data-promo="${id}"]`); if (p) { p.classList.add('fuera'); p.inert = true; promosOcultas.push(id); } });
+pintarPromos();
+
+/* ═════════ 18. Sugerencia descartable ═════════ */
+const ocultas = [];
+function sacarSug(s, alHacer) {
+  s.style.maxWidth = s.offsetWidth + 'px'; void s.offsetWidth; s.classList.add('sale');
+  setTimeout(() => { const cont = s.parentElement; s.hidden = true; s.classList.remove('sale'); s.style.maxWidth = ''; revisarVacios(cont); alHacer?.(); }, quieto ? 10 : 260);
+}
+function revisarVacios(cont) {
+  const vivas = $$('.sug:not([hidden])', cont).length; let nada = cont.nextElementSibling?.classList.contains('sug-nada') ? cont.nextElementSibling : null;
+  if (!vivas && !nada) cont.insertAdjacentHTML('afterend', `<p class="sug-nada entra"><i class="ph ph-check-circle"></i>${cont.id === 'sugs-pm' ? 'Todo listo. Ya podés trabajar tranquilo.' : 'Nada para sugerir por ahora.'}</p>`);
+  if (vivas && nada) nada.remove();
+}
+let pmHechos = 2;
+const pintarPm = () => { $('#pm-cuenta').textContent = `${pmHechos} de 4 listos`; $$('#pm-barra i').forEach((i, k) => i.classList.toggle('on', k < pmHechos)); $('#pm-barra').setAttribute('aria-label', `${pmHechos} de 4 listos`); };
+const pintarOcultas = () => { $('#sug-devolver').hidden = !ocultas.length; $('#sug-ocultas').textContent = fmt.plural(ocultas.length, 'oculta', 'ocultas'); };
+$$('.sugs').forEach(cont => cont.addEventListener('click', e => {
+  const s = e.target.closest('.sug'); if (!s || s.classList.contains('hecha')) return;
+  if (e.target.closest('.quitar')) {
+    const vecina = s.nextElementSibling?.querySelector('.ir') || s.previousElementSibling?.querySelector('.ir');
+    ocultas.push(s); sacarSug(s, () => vecina?.focus()); pintarOcultas(); return;
+  }
+  if (e.target.closest('.ir')) {
+    s.classList.add('hecha'); $('.ir .ph', s).className = 'ph ph-check-circle';
+    const nombre = $('.ir', s).textContent.trim();
+    if (cont.id === 'sugs-pm') { pmHechos++; pintarPm(); }
+    toast({ titulo: `Hecho: ${nombre}`, detalle: cont.id === 'sugs-pm' ? `${pmHechos} de 4 listos` : 'Sale de las sugerencias' });
+    setTimeout(() => sacarSug(s), 900);
+  }
+}));
+$('#sug-ver').addEventListener('click', () => { ocultas.splice(0).forEach(s => { s.hidden = false; s.classList.add('entra'); revisarVacios(s.parentElement); }); pintarOcultas(); });
+</script>
+</body>
+</html>

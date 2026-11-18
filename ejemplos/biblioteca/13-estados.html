@@ -1,0 +1,2008 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estados · Biblioteca</title>
+<meta name="description" content="Estados y feedback de diseno-sistemas: esqueletos, cargas, vacíos, errores, permisos, conexión, éxito, confirmación, autoguardado, validación y sincronización, vivos y en claro y oscuro.">
+<script>try{var t=JSON.parse(localStorage.getItem('bib-tema'));if(t)document.documentElement.dataset.tema=t}catch(e){}</script>
+<link rel="stylesheet" href="base.css">
+<style>
+/* ───── comunes de la categoría ───── */
+.ilus.g{width:176px}.ilus.m{width:112px}.ilus.ch{width:64px;flex:none}
+.ilus svg{overflow:visible}
+.ilus .ilus-gira{transform-box:view-box;transform-origin:100px 76px;animation:gira 9s linear infinite}
+.ilus .ilus-cae{animation:ilus-cae 1.1s linear infinite}
+.ilus .ilus-haz{animation:ilus-haz 2.8s var(--ease) infinite alternate}
+@keyframes ilus-cae{to{stroke-dashoffset:-8.8}}
+@keyframes ilus-haz{from{opacity:.35}to{opacity:1}}
+.ilus.aparece svg{animation:ilus-pop var(--t-4) var(--ease-resorte) both}
+@keyframes ilus-pop{from{opacity:0;transform:scale(calc(1 - .08*var(--mueve)))}}
+.marco{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);min-width:0;overflow:hidden;position:relative}
+.marco .cab{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-5) var(--espacio-6);border-bottom:1px solid var(--divisor);min-height:52px;flex-wrap:wrap}
+.marco .cab h3{font-family:var(--display);font-size:16px;font-weight:500;letter-spacing:-.01em}
+.marco .cab .der{margin-left:auto;display:flex;align-items:center;gap:var(--espacio-4);flex-wrap:wrap}
+.nota-cod{display:inline-flex;align-items:center;gap:var(--espacio-2);font-family:var(--mono);font-size:12px;color:var(--texto-3);font-variant-numeric:tabular-nums}
+.nota-cod .btn{color:var(--texto-3)}
+.det{font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--texto-2);background:var(--bandeja);border:1px solid var(--borde);border-radius:var(--radius-control);padding:var(--espacio-4) var(--espacio-5);text-align:left;white-space:pre-wrap;word-break:break-word;width:100%;max-width:420px}
+.demo,.demo button{font-variant-numeric:tabular-nums}
+.fila-d .monto .u,.demo td .monto .u{font-size:11px}
+.ctrl{display:flex;align-items:center;gap:var(--espacio-4);flex-wrap:wrap}
+.ctrl .rot-g{margin-right:var(--espacio-2)}
+.cel-sol{display:none}
+.est{display:inline-flex;align-items:center;gap:var(--espacio-3);font-size:12px;font-weight:500;color:var(--texto-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.est .ph,.est .ph-fill{font-size:14px}
+.est.e-ok{color:var(--verde)}.est.e-am{color:var(--ambar)}.est.e-ro{color:var(--rojo)}.est.e-az{color:var(--azul)}
+.fila-d{display:flex;align-items:center;gap:var(--espacio-5);min-height:52px;padding:var(--espacio-4) var(--espacio-6);border-top:1px solid var(--divisor);transition:background var(--t-3) var(--ease)}
+.fila-d:first-child{border-top:0}
+.fila-d .q{flex:1;min-width:0}
+.fila-d .q b{display:block;font-weight:500;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fila-d .q small{display:block;font-size:12px;color:var(--texto-3);margin-top:var(--espacio-1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fila-d.ok{background:color-mix(in oklch,var(--verde-f) 70%,var(--superficie))}
+.fila-d.apag .q b,.fila-d.apag .q small{color:var(--texto-3)}
+.fila-d.apag .q b{font-weight:400}
+.btn.fijo{min-width:var(--ancho,112px)}
+.anuncio{font-size:12px;color:var(--texto-3)}
+.mal-mock{border:1px dashed var(--borde-fuerte);border-radius:var(--radius-tarjeta);padding:var(--espacio-6);background:var(--superficie);min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--espacio-4);color:var(--texto-3);text-align:center}
+
+.variantes.dos{grid-template-columns:repeat(2,minmax(0,1fr))}
+.proceso .ilus{width:200px}
+.kv-t{display:flex;justify-content:space-between;gap:var(--espacio-4);align-items:baseline}
+
+/* ───── 1 esqueleto ───── */
+.esq.c{border-radius:50%}
+.esq.p{height:22px;border-radius:var(--radius-chip)}
+.esq.t{height:8px}
+.esq.n{height:28px;border-radius:var(--radius-chip)}
+[data-modo=dato] .p-esq,[data-modo=esq] .p-dato{display:none}
+.p-dato{animation:desenfoque 300ms var(--ease) both}
+.sk-tabla{padding:var(--espacio-4) var(--espacio-4) var(--espacio-2)}
+.sk-th{display:flex;align-items:center;gap:var(--espacio-8);height:36px;border-radius:10px;background:var(--bandeja);padding:0 var(--espacio-5)}
+.sk-tr{display:flex;align-items:center;gap:var(--espacio-8);height:48px;border-top:1px solid var(--divisor);padding:0 var(--espacio-5)}
+.sk-tr:first-of-type{border-top:0}
+.sk-tr .esq:last-child,.sk-th .esq:last-child{margin-left:auto}
+.sk-ficha{display:grid;grid-template-columns:96px minmax(0,1fr);row-gap:var(--espacio-5);column-gap:var(--espacio-6);align-items:center}
+.ficha-dato{display:grid;grid-template-columns:96px minmax(0,1fr);row-gap:var(--espacio-5);column-gap:var(--espacio-6);align-items:center;font-size:13px}
+.ficha-dato dt{color:var(--texto-3);font-size:12px}
+.ficha-dato dd{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.no-spin{min-height:180px;display:grid;place-items:center;border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);color:var(--texto-3)}
+.no-spin .ph{font-size:32px}
+
+/* ───── 2 carga diferida ───── */
+.cd-cuerpo{transition:opacity var(--t-3) var(--ease);min-height:208px}
+.cd-cuerpo.atenua{opacity:.55;pointer-events:none}
+.barrita{position:absolute;left:0;right:0;top:51px;height:2px;overflow:hidden;opacity:0;transition:opacity var(--t-2)}
+.barrita.ver{opacity:1}
+.barrita::before{content:"";position:absolute;top:0;bottom:0;width:36%;background:var(--acento);border-radius:2px;animation:barrita 1.1s var(--ease-mover) infinite}
+@keyframes barrita{from{left:-36%}to{left:100%}}
+.regla-t{position:relative;height:56px;margin-top:var(--espacio-2)}
+.regla-t .eje{position:absolute;left:0;right:0;top:20px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--suave) 0 18.75%,color-mix(in oklch,var(--acento) 22%,var(--suave)) 18.75%)}
+.regla-t .mk{position:absolute;top:30px;font-family:var(--mono);font-size:11px;color:var(--texto-3);transform:translateX(-50%);white-space:nowrap}
+.regla-t .mk::before{content:"";position:absolute;left:50%;top:-12px;width:1px;height:8px;background:var(--borde-fuerte)}
+.regla-t .cursor{position:absolute;top:14px;width:2px;height:16px;border-radius:2px;background:var(--tinta);left:0;opacity:0}
+.regla-t .fase{position:absolute;top:0;font-size:11px;color:var(--texto-2);white-space:nowrap}
+
+/* ───── 3 proceso largo ───── */
+.proceso{display:grid;grid-template-columns:200px minmax(0,1fr);gap:var(--espacio-8);align-items:center;padding:var(--espacio-7) var(--espacio-8);background:radial-gradient(60% 90% at 16% 40%,var(--ilus-clima),transparent 70%),var(--superficie)}
+.proceso h4{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em;line-height:1.2}
+.pr-barra{height:8px;border-radius:4px;background:var(--suave);overflow:hidden;margin-top:var(--espacio-6)}
+.pr-barra i{display:block;height:100%;width:0;background:var(--acento);border-radius:inherit;transition:width .3s linear}
+.pr-cifras{display:flex;justify-content:space-between;gap:var(--espacio-4);margin-top:var(--espacio-4);font-size:13px;font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.pr-cifras b{font-weight:500}
+.pasos-p{list-style:none;margin-top:var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-1)}
+.pasos-p li{display:flex;align-items:center;gap:var(--espacio-4);height:30px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);font-size:13px;color:var(--texto-3);transition:background var(--t-3),color var(--t-3)}
+.pasos-p li .ic{width:18px;height:18px;display:grid;place-items:center;flex:none}
+.pasos-p li .ic i{font-size:16px}
+.pasos-p li .pt{width:6px;height:6px;border-radius:50%;background:var(--borde-fuerte)}
+.pasos-p li.activo{background:color-mix(in oklch,var(--acento) 5%,transparent);color:var(--tinta)}
+.pasos-p li.hecho{color:var(--texto-2)}
+.pasos-p li.hecho .ic{color:var(--verde)}
+.pasos-p li .c{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--texto-3)}
+.pr-pie{display:flex;align-items:center;gap:var(--espacio-4);margin-top:var(--espacio-6);flex-wrap:wrap}
+.pr-pie .anuncio{margin-right:auto}
+.pildora-p{position:absolute;right:var(--espacio-6);bottom:var(--espacio-6);display:flex;align-items:center;gap:var(--espacio-4);height:44px;padding:0 var(--espacio-5) 0 var(--espacio-3);border-radius:99px;background:var(--neg);color:var(--neg-t);border:0;font-weight:500;font-size:13px;box-shadow:var(--s-flot);font-variant-numeric:tabular-nums;animation:entra var(--t-4) var(--ease) both;z-index:2}
+.pildora-p svg{width:32px;height:32px}
+.efectos{list-style:none;display:flex;flex-direction:column;margin-top:var(--espacio-5)}
+.efectos li{display:flex;align-items:center;gap:var(--espacio-4);min-height:36px;font-size:13px;border-top:1px solid var(--divisor);flex-wrap:wrap}
+.efectos li:first-child{border-top:0}
+.efectos .tile{width:22px;height:22px;border-radius:7px}
+.efectos .tile .ph{font-size:13px}
+.efectos .btn{margin-left:auto}
+.lienzo-p{min-height:340px;position:relative}
+
+/* ───── 4–6 vacíos ───── */
+.vacio.alto{min-height:360px;justify-content:center}
+.guia{display:flex;flex-direction:column;gap:var(--espacio-2);margin-top:var(--espacio-7);width:100%;max-width:400px;text-align:left}
+.guia .gp{display:flex;gap:var(--espacio-5);align-items:center;padding:var(--espacio-4) var(--espacio-5);border-radius:var(--radius-control);border:1px solid var(--borde);background:var(--superficie)}
+.guia .gp .num{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:500;background:var(--suave);color:var(--texto-2);flex:none;font-variant-numeric:tabular-nums}
+.guia .gp.hecho .num{background:var(--verde);color:#fff}
+[data-tema=oscuro] .guia .gp.hecho .num{color:#0a0a0d}
+.guia .gp .q{flex:1;min-width:0}
+.guia .gp b{font-weight:500;font-size:13px;display:block}
+.guia .gp small{font-size:12px;color:var(--texto-3)}
+.guia .gp.hecho b{color:var(--texto-3)}
+.guia .rot-guia{display:flex;justify-content:space-between;font-size:12px;color:var(--texto-3);padding:0 var(--espacio-2) var(--espacio-2)}
+.hoja-mini{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);overflow:hidden}
+.hoja-mini .hh{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-5) var(--espacio-6);border-bottom:1px solid var(--divisor)}
+.hoja-mini .hh b{font-weight:500}
+.hoja-mini .pestanas{padding:0 var(--espacio-6)}
+.tarea{display:flex;align-items:center;gap:var(--espacio-4);min-height:48px;padding:0 var(--espacio-6);border-top:1px solid var(--divisor);font-size:13px;transition:opacity var(--t-3)}
+.tarea:first-child{border-top:0}
+.tarea .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tarea[data-hecha] .t{color:var(--texto-3)}
+.tarea .f{font-size:12px;color:var(--texto-3);font-variant-numeric:tabular-nums}
+.mini-fila{display:flex;align-items:center;gap:var(--espacio-5);padding:var(--espacio-5) var(--espacio-6);border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:radial-gradient(60% 120% at 10% 50%,color-mix(in oklch,var(--verde) 8%,transparent),transparent 70%),var(--superficie)}
+.mini-fila b{font-weight:500;display:block}
+.mini-fila small{font-size:12px;color:var(--texto-3)}
+.busca{display:flex;gap:var(--espacio-4);flex-wrap:wrap;align-items:center;padding:var(--espacio-5) var(--espacio-6);border-bottom:1px solid var(--divisor)}
+.busca .in{flex:1 1 220px;height:36px}
+.filtro{height:28px;padding:0 var(--espacio-4);border-radius:99px;border:1px solid var(--borde);background:var(--superficie);font-size:12px;font-weight:500;color:var(--texto-2);display:inline-flex;align-items:center;gap:var(--espacio-2)}
+.filtro[aria-pressed=true]{background:var(--acento-f);border-color:color-mix(in oklch,var(--acento) 35%,var(--borde));color:var(--acento-texto)}
+.filtro .ph{font-size:13px}
+.res-cab{display:flex;justify-content:space-between;padding:var(--espacio-4) var(--espacio-6) 0;font-size:12px;color:var(--texto-3)}
+.sug{font-size:13px;color:var(--texto-2);margin-top:var(--espacio-5)}
+.sug button{border:0;background:none;color:var(--acento-texto);font-weight:500;padding:0;text-decoration:underline;text-underline-offset:3px}
+
+/* ───── 7–9 errores ───── */
+.kpi-err .adentro{display:flex;flex-direction:column}
+.kpi-err .n{color:var(--texto-3)}
+.modal-mal{width:100%;max-width:300px;border-radius:var(--radius-control);border:1px solid var(--borde);background:var(--superficie);box-shadow:var(--s-flot);padding:var(--espacio-6);text-align:left;font-size:13px}
+.modal-mal b{display:block;margin-bottom:var(--espacio-2)}
+.modal-mal code{font-family:var(--mono);font-size:12px;color:var(--rojo)}
+.banda-x{display:flex;align-items:center;gap:var(--espacio-5);padding:var(--espacio-4) var(--espacio-4) var(--espacio-4) var(--espacio-4);border-radius:var(--radius-control);transition:background var(--t-3),color var(--t-3)}
+.banda-x .tile{width:32px;height:32px;border-radius:10px;background:var(--superficie);box-shadow:var(--s-min)}
+.banda-x .tile .ph{font-size:16px}
+.banda-x .q{flex:1;min-width:0}
+.banda-x .q b{display:block;font-weight:500;font-size:13px;color:var(--tinta)}
+.banda-x .q small{display:block;font-size:12px;color:var(--texto-2);margin-top:var(--espacio-1)}
+.banda-x.ro{background:var(--rojo-f)}.banda-x.ro .tile{color:var(--rojo)}
+.banda-x.am{background:var(--ambar-f)}.banda-x.am .tile{color:var(--ambar)}
+.banda-x.v{background:var(--verde-f)}.banda-x.v .tile{color:var(--verde)}
+.banda-x.sale{animation:banda-sale var(--t-4) var(--ease) forwards}
+@keyframes banda-sale{to{opacity:0;transform:translateY(calc(-4px*var(--mueve)))}}
+.viejo td{color:var(--texto-2)}
+.err-linea{display:flex;align-items:center;flex-wrap:wrap;gap:var(--espacio-2) var(--espacio-4);font-size:12px;padding:0 var(--espacio-6) var(--espacio-5) calc(var(--espacio-6) + 36px + var(--espacio-5));margin-top:calc(var(--espacio-2)*-1)}
+.err-linea .q{color:var(--rojo);font-weight:500;display:inline-flex;align-items:center;gap:var(--espacio-2)}
+.err-linea .q .ph{font-size:14px}
+.err-linea .in{height:32px;flex:1 1 200px}
+.err-linea .in input{font-size:13px}
+.fila-err{border-top:1px solid var(--divisor)}
+.fila-err:first-child{border-top:0}
+.fila-err .fila-d{border-top:0}
+.pie-hoja{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-5) var(--espacio-6);border-top:1px solid var(--divisor);flex-wrap:wrap}
+
+/* ───── 10 sin conexión ───── */
+.app-mini .cab{gap:var(--espacio-5)}
+.pild-con{display:inline-flex;align-items:center;gap:var(--espacio-3);height:28px;padding:0 var(--espacio-4);border-radius:99px;font-size:12px;font-weight:500;white-space:nowrap;transition:background var(--t-3),color var(--t-3)}
+.pild-con .ph{font-size:14px}
+.pild-con.off{background:var(--gris-f);color:var(--texto-2)}
+.pild-con.az{background:var(--azul-f);color:var(--azul)}
+.pild-con.v{background:var(--verde-f);color:var(--verde)}
+.kpis-mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-bottom:1px solid var(--divisor)}
+.kpis-mini>div{padding:var(--espacio-5) var(--espacio-6);border-left:1px solid var(--divisor);min-width:0}
+.kpis-mini>div:first-child{border-left:0}
+.kpis-mini .rk{font-size:12px;color:var(--texto-3)}
+.kpis-mini .n{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:var(--espacio-1)}
+.kpis-mini .viejo-d{display:none;font-size:11px;color:var(--texto-3);margin-top:var(--espacio-1);align-items:center;gap:var(--espacio-2)}
+.offline .kpis-mini .viejo-d{display:flex}
+.offline .kpis-mini .n{color:var(--texto-2)}
+
+/* ───── 11 sin permisos ───── */
+.bloqueado{display:flex;align-items:center;gap:var(--espacio-5);padding:var(--espacio-5) var(--espacio-6);border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);flex-wrap:wrap}
+.bloqueado .q{flex:1;min-width:0}
+.bloqueado .q b{display:block;font-weight:500}
+.bloqueado .q small{font-size:12px;color:var(--texto-3)}
+.causa{display:flex;align-items:center;gap:var(--espacio-2);font-size:12px;color:var(--texto-3);flex-basis:100%}
+.causa .ph{font-size:13px}
+.oculto{font-family:var(--mono);letter-spacing:.06em;color:var(--texto-2)}
+
+/* ───── 12 éxito ───── */
+.exito-caja{min-height:420px;display:flex;align-items:center;justify-content:center}
+.form-mini{width:100%;max-width:380px;border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);padding:var(--espacio-7);display:flex;flex-direction:column;gap:var(--espacio-6)}
+.form-mini .kv{display:flex;justify-content:space-between;gap:var(--espacio-4);font-size:13px;padding-bottom:var(--espacio-5);border-bottom:1px solid var(--divisor)}
+.form-mini .kv span{color:var(--texto-3)}
+.exito-g{width:100%;max-width:520px;border-radius:var(--radius-tarjeta);border:1px solid var(--borde);overflow:hidden}
+.exito-g .vacio{padding:var(--espacio-10) var(--espacio-8) var(--espacio-8)}
+.exito-g h4{font-size:24px}
+.resumen{width:100%;max-width:360px;margin-top:var(--espacio-6);text-align:left;border:1px solid var(--borde);border-radius:var(--radius-control);background:var(--superficie)}
+.resumen div{display:flex;align-items:center;gap:var(--espacio-4);min-height:40px;padding:0 var(--espacio-5);border-top:1px solid var(--divisor);font-size:13px}
+.resumen div:first-child{border-top:0}
+.resumen .ph{color:var(--verde);font-size:16px}
+.resumen span{color:var(--texto-3);margin-left:auto;font-size:12px;font-variant-numeric:tabular-nums}
+.sello{animation:sello var(--t-4) var(--ease-resorte) both}
+@keyframes sello{from{transform:scale(calc(1 - .2*var(--mueve)));opacity:0}}
+.confeti{display:flex;gap:var(--espacio-2);font-size:20px}
+
+/* ───── 13 confirmación ───── */
+.conf-en{display:flex;align-items:center;gap:var(--espacio-4);flex-wrap:wrap;animation:desenfoque var(--t-3) var(--ease) both;position:relative}
+.conf-en .q{font-size:12px;color:var(--texto-2)}
+.conf-en .reloj{position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:var(--rojo);transform-origin:left;animation:reloj 5s linear forwards;opacity:.5}
+@keyframes reloj{to{transform:scaleX(0)}}
+.mantener{position:relative;overflow:hidden;isolation:isolate;min-width:176px;user-select:none;-webkit-user-select:none;touch-action:none}
+.mantener::before{content:"";position:absolute;inset:0;background:var(--rojo-f);transform:scaleX(0);transform-origin:left;transition:transform 200ms var(--ease);z-index:-1}
+.mantener.cargando::before{transform:scaleX(1);transition:transform 1200ms linear}
+.escribir{display:flex;flex-direction:column;gap:var(--espacio-4)}
+.escribir .in{height:36px}
+.anulada .q b{text-decoration:line-through;color:var(--texto-3)}
+
+/* ───── 14 guardado ───── */
+.editor .cab{gap:var(--espacio-4)}
+.miga{display:flex;align-items:center;gap:var(--espacio-3);font-size:13px;color:var(--texto-3);min-width:0}
+.miga b{color:var(--tinta);font-weight:500}
+.ed-cuerpo{padding:var(--espacio-6) var(--espacio-7) var(--espacio-7);display:flex;flex-direction:column;gap:var(--espacio-4)}
+.ed-tit{font-family:var(--display);font-size:24px;font-weight:500;letter-spacing:-.02em;border:0;background:none;outline:0;width:100%;color:var(--tinta);padding:var(--espacio-1) 0;border-radius:var(--radius-chip)}
+.ed-tit:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 35%,transparent);outline-offset:4px}
+.ed-txt{border:0;background:none;outline:0;resize:none;width:100%;min-height:96px;font-size:14px;line-height:1.6;color:var(--texto-2);border-radius:var(--radius-chip)}
+.ed-txt:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 35%,transparent);outline-offset:4px}
+.est-g{min-width:150px;justify-content:flex-end}
+.est-g .pt{width:6px;height:6px;border-radius:50%;background:var(--ambar)}
+.barra-cambios{position:absolute;left:50%;bottom:var(--espacio-6);transform:translate(-50%,calc(16px*var(--mueve)));opacity:0;pointer-events:none;display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-3) var(--espacio-3) var(--espacio-3) var(--espacio-6);border-radius:var(--radius-interno);background:var(--neg);color:var(--neg-t);box-shadow:var(--s-flot);transition:transform var(--t-3) var(--ease),opacity var(--t-2);width:max-content;max-width:calc(100% - 32px);flex-wrap:wrap;font-size:13px}
+.barra-cambios.ver{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+.barra-cambios b{font-weight:500}
+.barra-cambios small{opacity:.78;font-size:12px;display:block}
+.barra-cambios .btn.texto{color:var(--neg-t);opacity:.85}
+.barra-cambios .btn.texto:hover{background:rgb(255 255 255/.1)}
+[data-tema=oscuro] .barra-cambios .btn.texto:hover{background:rgb(0 0 0/.06)}
+.barra-cambios .btn.blanco{background:var(--neg-t);color:var(--neg);border-color:var(--neg-t)}
+.ajustes-mini{padding:var(--espacio-2) var(--espacio-6) 96px}
+.ajustes-mini .op{min-height:60px;border-top:1px solid var(--divisor)}
+.ajustes-mini .op:first-child{border-top:0}
+.ajustes-mini .op .pmod{width:6px;height:6px;border-radius:50%;background:var(--acento);display:inline-block;margin-left:var(--espacio-3);vertical-align:2px;opacity:0;transition:opacity var(--t-2)}
+.ajustes-mini .op.mod .pmod{opacity:1}
+.ref-estados{display:flex;flex-direction:column;gap:var(--espacio-4)}
+.ref-estados>div{display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-4);min-height:40px;padding:0 var(--espacio-5);border:1px solid var(--borde);border-radius:var(--radius-control);background:var(--superficie);font-size:12px;color:var(--texto-3)}
+
+/* ───── 15 validación ───── */
+.form-v{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--espacio-7) var(--espacio-6);padding:var(--espacio-7)}
+.form-v .ancho{grid-column:1/-1}
+.form-v .ok-t{font-size:12px;color:var(--verde);display:flex;gap:var(--espacio-2);align-items:center}
+.form-v .in .ok-i{color:var(--verde);font-size:16px}
+.req{color:var(--texto-3);font-weight:400}
+.resumen-err{margin:var(--espacio-6) var(--espacio-7) 0;padding:var(--espacio-5) var(--espacio-6);border-radius:var(--radius-control);background:var(--rojo-f);display:flex;gap:var(--espacio-5);align-items:flex-start}
+.resumen-err .ph{color:var(--rojo);font-size:18px;margin-top:1px}
+.resumen-err b{font-weight:500;display:block}
+.resumen-err ul{list-style:none;display:flex;flex-wrap:wrap;gap:var(--espacio-2) var(--espacio-4);margin-top:var(--espacio-2)}
+.resumen-err a{color:var(--rojo);font-size:12px;font-weight:500;text-decoration:underline;text-underline-offset:3px}
+.form-pie{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-5) var(--espacio-7);border-top:1px solid var(--divisor);flex-wrap:wrap}
+.form-pie .anuncio{margin-right:auto}
+.err-serv{margin:var(--espacio-6) var(--espacio-7) 0}
+
+/* ───── 16 sincronización ───── */
+.sync-barra{display:flex;align-items:flex-end;gap:var(--espacio-6);padding:0 var(--espacio-6);border-bottom:1px solid var(--divisor);flex-wrap:wrap}
+.sync-barra .pestanas{border-bottom:0;flex:1 1 auto;min-width:0}
+.sync-est{display:flex;align-items:center;gap:var(--espacio-3);height:40px;margin-left:auto;font-size:12px;color:var(--texto-3);white-space:nowrap}
+.sync-est .pt{width:8px;height:8px;border-radius:50%;background:var(--verde);flex:none}
+.sync-est .pt.am{background:var(--ambar)}.sync-est .pt.ro{background:var(--rojo)}.sync-est .pt.gr{background:var(--deshabilitado)}.sync-est .pt.az{background:var(--azul)}
+.sync-est .sep-p{width:1px;height:16px;background:var(--borde);margin:0 var(--espacio-2)}
+.con{display:flex;align-items:center;gap:var(--espacio-5);min-height:60px;padding:var(--espacio-4) var(--espacio-6);border-top:1px solid var(--divisor);transition:opacity var(--t-3)}
+.con:first-child{border-top:0}
+.con .logo{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none;font-weight:600;font-size:13px;background:color-mix(in oklch,var(--ent) 15%,var(--superficie));color:color-mix(in oklch,var(--ent) 62%,var(--tinta))}
+.con .q{flex:1;min-width:0}
+.con .q b{font-weight:500;font-size:14px}
+.con .q small{display:flex;align-items:center;gap:var(--espacio-2);font-size:12px;color:var(--texto-3);margin-top:var(--espacio-1);flex-wrap:wrap}
+.con.apag .logo{filter:grayscale(1)}
+.con.apag .q b{color:var(--texto-2);font-weight:400}
+.con .mini-barra{width:80px;height:4px;border-radius:2px;background:var(--suave);overflow:hidden;display:inline-block}
+.con .mini-barra i{display:block;height:100%;background:var(--azul);transition:width .3s linear}
+.pie-mono{font-family:var(--mono);font-size:12px;color:var(--texto-3);padding:var(--espacio-4) var(--espacio-6);border-top:1px solid var(--divisor);background:var(--bandeja)}
+
+/* ───── 17 microinteracciones ───── */
+.micro{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--espacio-gap)}
+.micro .card{padding:var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-5);min-height:168px}
+.micro .card .rot-g{display:flex;gap:var(--espacio-3);align-items:center}
+.micro .card .esc{flex:1;display:flex;align-items:center;justify-content:center;gap:var(--espacio-4);flex-wrap:wrap}
+.micro .card p{font-size:12px;color:var(--texto-3);line-height:1.45}
+.btn .ok-ic{color:var(--verde)}
+.btn.hecho{color:var(--verde)}
+.btn.hecho .ph{animation:sello var(--t-4) var(--ease-resorte) both}
+.agre{width:28px;height:28px;border-radius:50%;border:1px dashed var(--borde-fuerte);background:none;display:grid;place-items:center;color:var(--texto-3);transition:background var(--t-2),border-color var(--t-2),color var(--t-2)}
+.agre .ph{font-size:14px}
+.agre[aria-pressed=true]{background:var(--verde);border:1px solid var(--verde);color:#fff}
+[data-tema=oscuro] .agre[aria-pressed=true]{color:#0a0a0d}
+.agre[aria-pressed=true] .ph{animation:sello var(--t-4) var(--ease-resorte) both}
+.mini-lista{width:100%;display:flex;flex-direction:column}
+.mini-lista>div{display:flex;align-items:center;gap:var(--espacio-4);min-height:40px;border-top:1px solid var(--divisor);font-size:13px}
+.mini-lista>div:first-child{border-top:0}
+.mini-lista>div span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chev .ph{transition:transform 150ms var(--ease)}
+.chev[aria-expanded=true] .ph{transform:rotate(180deg)}
+.desp{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--t-3) var(--ease);width:100%}
+.desp.abierto{grid-template-rows:1fr}
+.desp>div{overflow:hidden}
+.desp .det{max-width:none;margin-top:var(--espacio-4)}
+.campana[aria-expanded=true]{background:var(--suave)}
+.odo{display:inline-flex;font-family:var(--display);font-size:32px;font-weight:500;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;height:1em;overflow:hidden}
+.odo .u{color:var(--texto-3);font-size:20px;font-weight:400;margin-right:var(--espacio-2);align-self:flex-end}
+.odo .col{display:inline-flex;flex-direction:column;transition:transform 400ms var(--ease)}
+.odo .col span{height:1em;line-height:1}
+.odo .fijo{height:1em;line-height:1}
+.estrella[aria-pressed=true] .ph-fill{color:var(--dato-4);animation:sello var(--t-4) var(--ease-resorte) both}
+
+@media (max-width:1023px){
+  .micro{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:767px){
+  .proceso{grid-template-columns:minmax(0,1fr);padding:var(--espacio-6);gap:var(--espacio-5)}
+  .proceso .ilus{width:132px;margin:0 auto}
+  .form-v{grid-template-columns:minmax(0,1fr);padding:var(--espacio-6)}
+  .micro,.variantes.dos{grid-template-columns:minmax(0,1fr)}
+  .kpis-mini{grid-template-columns:minmax(0,1fr)}
+  .kpis-mini>div{border-left:0;border-top:1px solid var(--divisor)}
+  .kpis-mini>div:first-child{border-top:0}
+  .sk-ficha,.ficha-dato{grid-template-columns:84px minmax(0,1fr)}
+  .err-linea{padding-left:var(--espacio-6)}
+  .sync-est{margin-left:0;height:auto;padding-bottom:var(--espacio-4);white-space:normal;flex-wrap:wrap}
+  .agre{width:44px;height:44px}
+  .filtro{height:44px;padding:0 var(--espacio-5)}
+  .busca .in{height:52px}
+  .ed-tit{min-height:44px}
+  .err-linea .in{height:44px}
+  .escribir .in{height:52px}
+  .cel-sol{display:inline}
+  .fila-d{flex-wrap:wrap;row-gap:var(--espacio-3)}
+  .fila-d .q{flex:1 1 150px}
+  .banda-x{flex-wrap:wrap}
+  .banda-x .q{flex:1 1 200px}
+  .con{flex-wrap:wrap;row-gap:var(--espacio-3)}
+  .con .q{flex:1 1 170px}
+  .con .q small .est{white-space:normal}
+  .ed-tit{font-size:20px}
+  .pildora-p{right:var(--espacio-4);bottom:var(--espacio-4)}
+  .regla-t .fase{display:none}
+  .sug button{min-height:44px}
+  .resumen-err a{display:inline-flex;align-items:center;min-height:44px}
+  .barra-cambios{bottom:var(--espacio-4);padding:var(--espacio-4)}
+  .mantener{width:100%}
+  .exito-g .vacio{padding:var(--espacio-9) var(--espacio-6) var(--espacio-7)}
+}
+</style>
+</head>
+<body class="bib">
+<div class="bib-pag">
+  <aside class="bib-indice" data-volver="index.html" data-titulo="Estados"></aside>
+
+  <main class="bib-main">
+    <header class="bib-cab">
+      <div>
+        <span class="eti"><a href="index.html">Biblioteca</a> / 13</span>
+        <h1>Estados</h1>
+        <p><b>17 piezas</b> · cargando, vacío, error, permisos, conexión, éxito, confirmación, autoguardado, validación y sincronización. Todas vivas: tocá los controles de cada lámina.</p>
+      </div>
+      <div class="der"></div>
+    </header>
+
+    <!-- ══════════ 1 · Esqueleto ══════════ -->
+    <section class="lamina" id="esqueleto">
+      <header class="lamina-cab">
+        <h2>Esqueleto</h2>
+        <span class="lamina-sec">§6b Cargando</span>
+        <p class="lamina-regla">Cargando con <b>la forma final de cada pieza</b> y un brillo que pasa; al llegar, el dato entra con desenfoque en 300 ms. Nunca un spinner en el medio.</p>
+        <p class="lamina-ref">Patrones 15.7 y 15.4 · ref. 59, 60, 65</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo" id="esq-demo" data-modo="esq">
+          <div class="ctrl">
+            <div class="seg chico" id="esq-modo" role="group" aria-label="Qué mostrar"><button data-v="esq" class="on">Cargando</button><button data-v="dato">Con datos</button></div>
+            <button class="btn chico" id="esq-recargar"><i class="ph ph-arrow-clockwise"></i>Recargar</button>
+            <span class="anuncio" id="esq-tiempo" aria-live="polite"></span>
+          </div>
+          <div class="variantes">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-table"></i>Tabla · encabezado y filas con el ancho de cada columna</span>
+              <div class="card">
+                <div class="p-esq sk-tabla" role="status" aria-label="Cargando facturas">
+                  <div class="sk-th"><span class="esq t" style="width:48px"></span><span class="esq t" style="width:64px"></span><span class="esq t" style="width:52px"></span><span class="esq t" style="width:44px"></span><span class="esq t" style="width:56px"></span></div>
+                  <div class="sk-tr"><span class="esq" style="width:72px"></span><span class="esq" style="width:150px"></span><span class="esq" style="width:52px"></span><span class="esq p" style="width:76px"></span><span class="esq" style="width:92px"></span></div>
+                  <div class="sk-tr" style="opacity:.9"><span class="esq" style="width:72px"></span><span class="esq" style="width:118px"></span><span class="esq" style="width:52px"></span><span class="esq p" style="width:64px"></span><span class="esq" style="width:80px"></span></div>
+                  <div class="sk-tr" style="opacity:.8"><span class="esq" style="width:72px"></span><span class="esq" style="width:136px"></span><span class="esq" style="width:52px"></span><span class="esq p" style="width:84px"></span><span class="esq" style="width:96px"></span></div>
+                  <div class="sk-tr" style="opacity:.7"><span class="esq" style="width:72px"></span><span class="esq" style="width:104px"></span><span class="esq" style="width:52px"></span><span class="esq p" style="width:64px"></span><span class="esq" style="width:70px"></span></div>
+                </div>
+                <div class="p-dato tabla tarjetas-cel">
+                  <table>
+                    <thead><tr><th>Factura</th><th>Cliente</th><th>Vence</th><th>Estado</th><th class="r">Monto</th></tr></thead>
+                    <tbody>
+                      <tr><td data-area="meta"><span class="cod">FAC-01118</span></td><td data-area="nombre"><span class="cli"><span class="cuadro ch" style="--ent:var(--e1)"></span>Orbe Retail S.A.</span></td><td class="num gris">26 nov</td><td data-area="estado"><span class="chip d am">Por vencer</span></td><td class="r" data-area="monto"><span class="monto"><span class="u">$</span>1.284.500<span class="cent">,00</span></span></td></tr>
+                      <tr><td data-area="meta"><span class="cod">FAC-01117</span></td><td data-area="nombre"><span class="cli"><span class="cuadro ch" style="--ent:var(--e2)"></span>Casa Lumen SRL</span></td><td class="num gris">22 nov</td><td data-area="estado"><span class="gris-2 t-12"><i class="ph ph-check" style="font-size:13px"></i> Cobrada</span></td><td class="r" data-area="monto"><span class="monto"><span class="u">$</span>642.000<span class="cent">,00</span></span></td></tr>
+                      <tr><td data-area="meta"><span class="cod">FAC-01112</span></td><td data-area="nombre"><span class="cli"><span class="cuadro ch" style="--ent:var(--e4)"></span>Grupo Atlas</span></td><td class="num vencida">12 nov</td><td data-area="estado"><span class="chip d ro">Vencida</span></td><td class="r" data-area="monto"><span class="monto"><span class="u">$</span>2.150.000<span class="cent">,00</span></span></td></tr>
+                      <tr><td data-area="meta"><span class="cod">FAC-01109</span></td><td data-area="nombre"><span class="cli"><span class="cuadro ch" style="--ent:var(--e6)"></span>Puerto Norte Logística</span></td><td class="num gris">30 nov</td><td data-area="estado"><span class="chip d az">En curso</span></td><td class="r" data-area="monto"><span class="monto"><span class="u">$</span>398.700<span class="cent">,00</span></span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-cards"></i>Tarjeta de proyecto</span>
+              <div class="proy">
+                <div class="p-esq tope" role="status" aria-label="Cargando proyecto">
+                  <div class="fila entre"><span class="esq p" style="width:56px"></span><span class="esq p" style="width:88px"></span></div>
+                  <span class="esq n" style="display:block;width:70%;margin-top:var(--espacio-6)"></span>
+                  <span class="esq" style="display:block;width:100%;margin-top:var(--espacio-4)"></span>
+                  <span class="esq" style="display:block;width:64%;margin-top:var(--espacio-3)"></span>
+                  <span class="esq" style="display:block;width:100%;height:8px;margin-top:var(--espacio-7)"></span>
+                  <span class="esq t" style="display:block;width:50%;margin-top:var(--espacio-4)"></span>
+                </div>
+                <div class="p-dato tope">
+                  <div class="etqs"><span class="chip am">Media</span><span class="tag">Marca</span><span class="tag">Web</span></div>
+                  <h3>Rediseño Casa Lumen<i class="ph ph-arrow-up-right"></i></h3>
+                  <p class="desc">Marca nueva, sitio y catálogo de temporada para las 4 tiendas.</p>
+                  <div class="avance"><div class="segs" id="esq-segs"></div><b>40 %</b></div>
+                  <div class="meta"><span>4 de 10 hechas</span>·<i class="ph ph-calendar-blank"></i><span>Entrega 9 dic</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-chart-line-up"></i>KPI en bandeja</span>
+              <div class="bandeja">
+                <div class="p-esq" role="status" aria-label="Cargando KPI">
+                  <div class="fila" style="padding:var(--espacio-4) var(--espacio-4) var(--espacio-4) var(--espacio-4)"><span class="esq" style="width:16px;height:16px;border-radius:5px"></span><span class="esq t" style="width:88px"></span></div>
+                  <div class="adentro"><span class="esq n" style="display:block;width:150px;height:32px"></span><span class="esq t" style="display:block;width:132px;margin-top:var(--espacio-4)"></span><span class="esq" style="display:block;width:100%;height:16px;margin-top:var(--espacio-5)"></span></div>
+                  <div class="fila entre" style="padding:var(--espacio-5) var(--espacio-4) var(--espacio-3) var(--espacio-4)"><span class="esq t" style="width:64px"></span><span class="esq t" style="width:72px"></span></div>
+                </div>
+                <div class="p-dato">
+                  <div class="rot"><i class="ph ph-seal-check"></i>Cobrado en noviembre</div>
+                  <div class="adentro"><div class="n"><span class="u">$</span>31.480.000</div><div class="ctx num">72 % de la meta de $ 43,7 M</div><div class="ticks" id="esq-ticks"></div></div>
+                  <div class="pie"><span class="sube num"><i class="ph ph-trend-up"></i>+8,1 %</span><span>vs. octubre</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-list"></i>Lista de dos líneas</span>
+              <div class="card">
+                <div class="p-esq" role="status" aria-label="Cargando actividad">
+                  <div class="item"><span class="esq c" style="width:28px;height:28px;flex:none"></span><div class="cuerpo"><span class="esq" style="display:block;width:80%"></span><span class="esq t" style="display:block;width:40%;margin-top:var(--espacio-3)"></span></div></div>
+                  <div class="item" style="opacity:.85"><span class="esq c" style="width:28px;height:28px;flex:none"></span><div class="cuerpo"><span class="esq" style="display:block;width:66%"></span><span class="esq t" style="display:block;width:46%;margin-top:var(--espacio-3)"></span></div></div>
+                  <div class="item" style="opacity:.7"><span class="esq c" style="width:28px;height:28px;flex:none"></span><div class="cuerpo"><span class="esq" style="display:block;width:74%"></span><span class="esq t" style="display:block;width:34%;margin-top:var(--espacio-3)"></span></div></div>
+                </div>
+                <div class="p-dato">
+                  <div class="item" id="esq-l1"><div class="cuerpo"><div class="t">Lucía Benítez <span>cobró</span> FAC-01117</div><div class="m">Casa Lumen · hace 8 min</div></div></div>
+                  <div class="item" id="esq-l2"><div class="cuerpo"><div class="t">Tomás Ferraro <span>movió</span> Orbe Retail</div><div class="m">Propuesta → Negociación · hace 40 min</div></div></div>
+                  <div class="item" id="esq-l3"><div class="cuerpo"><div class="t">Ana Quiroga <span>subió</span> el remito R-0441</div><div class="m">Grupo Atlas · ayer 16:00</div></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-identification-card"></i>Ficha de cliente</span>
+              <div class="card pad">
+                <div class="p-esq pila g6" role="status" aria-label="Cargando ficha">
+                  <div class="fila g5"><span class="esq c" style="width:40px;height:40px"></span><div class="pila g2" style="flex:1"><span class="esq" style="width:60%;height:14px"></span><span class="esq t" style="width:40%"></span></div></div>
+                  <div class="sk-ficha"><span class="esq t" style="width:60px"></span><span class="esq" style="width:70%"></span><span class="esq t" style="width:44px"></span><span class="esq" style="width:52%"></span><span class="esq t" style="width:68px"></span><span class="esq p" style="width:96px"></span><span class="esq t" style="width:52px"></span><span class="esq" style="width:40%"></span></div>
+                </div>
+                <div class="p-dato pila g6">
+                  <div class="fila g5" id="esq-ficha-cab"><div class="pila g2"><b class="t-16 peso">Orbe Retail S.A.</b><span class="gris t-12">Cliente desde mar 2024 · Bahía Blanca</span></div></div>
+                  <dl class="ficha-dato"><dt>CUIT</dt><dd class="num">30-71583092-9</dd><dt>Dueño</dt><dd>Tomás Ferraro</dd><dt>Saldo</dt><dd><span class="chip d am">$ 1,28 M por vencer</span></dd><dt>Correo</dt><dd>pagos@orberetail.com.ar</dd></dl>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: spinner en un panel en blanco</span>
+              <div class="no-spin" aria-label="Ejemplo de lo que no va"><i class="ph ph-circle-notch"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Las filas bajan de opacidad hacia abajo; el brillo se apaga con reduced-motion.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 2 · Carga diferida ══════════ -->
+    <section class="lamina" id="carga-diferida">
+      <header class="lamina-cab">
+        <h2>Carga diferida</h2>
+        <span class="lamina-sec">§6b · §1c.6</span>
+        <p class="lamina-regla">Si responde en menos de <b>300 ms no se muestra nada</b>; si tarda, lo anterior queda atenuado con una barrita arriba hasta que llega lo nuevo. Nunca el panel en blanco.</p>
+        <p class="lamina-ref">Patrones 15.2, 15.7 y 2.10 · ref. 22, 60, 65</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="ctrl">
+            <span class="rot-g">Red</span>
+            <div class="seg chico" id="cd-red" role="group" aria-label="Velocidad de la red"><button data-v="180" class="on">Rápida · 180 ms</button><button data-v="1600">Lenta · 1,6 s</button><button data-v="falla">Falla</button></div>
+          </div>
+          <div class="variantes dos">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-funnel"></i>Cambiá el filtro: con red lenta, lo anterior queda a la vista</span>
+              <div class="marco" id="cd-marco">
+                <div class="cab"><h3>Cobranzas</h3><div class="der"><span class="anuncio" id="cd-estado" aria-live="polite"></span><div class="seg chico" id="cd-filtro" role="group" aria-label="Filtro"><button data-v="todas" class="on">Todas <span class="c">6</span></button><button data-v="vencidas">Vencidas <span class="c">2</span></button><button data-v="cobradas">Cobradas <span class="c">3</span></button></div></div></div>
+                <div class="barrita" id="cd-barrita" aria-hidden="true"></div>
+                <div class="cd-cuerpo" id="cd-cuerpo"></div>
+              </div>
+              <div class="regla-t" aria-hidden="true">
+                <div class="eje"></div>
+                <span class="fase" style="left:0">0–300 ms: no cambia nada</span>
+                <span class="fase" style="left:20%">desde 300 ms: lo anterior al 55 % + barrita</span>
+                <span class="mk" style="left:0;transform:none">0</span>
+                <span class="mk" style="left:18.75%">300 ms</span>
+                <span class="mk" style="left:100%;transform:translateX(-100%)">1,6 s</span>
+                <span class="cursor" id="cd-cursor"></span>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: el panel se vacía en cada clic</span>
+              <div class="mal-mock" aria-label="Ejemplo de lo que no va"><i class="ph ph-circle-notch" style="font-size:24px"></i><span class="t-12">Cargando…</span></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-check-circle"></i>Tiempos</span>
+              <div class="card pad pila g4 t-13">
+                <div class="kv-t"><span>Mostrar la carga</span><span class="cod gris">≥ 300 ms</span></div>
+                <div class="kv-t"><span>Lo anterior</span><span class="cod gris">opacidad 0,55</span></div>
+                <div class="kv-t"><span>Llega lo nuevo</span><span class="cod gris">desenfoque 300 ms</span></div>
+                <div class="kv-t"><span>Si falla</span><span class="cod gris">queda lo anterior + línea</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 3 · Proceso largo ══════════ -->
+    <section class="lamina" id="proceso-largo">
+      <header class="lamina-cab">
+        <h2>Proceso largo</h2>
+        <span class="lamina-sec">§6b · §6 Ilustraciones</span>
+        <p class="lamina-regla">Ilustración animada, <b>barra con cantidad y tiempo restante</b>, pasos que pasan de ◌ a ✓ y "Podés seguir usando el sistema". Al minimizar queda una píldora; al terminar, el resultado en verbos y cifras.</p>
+        <p class="lamina-ref">Patrones 5.6, 5.7 y 13.6 · ref. 14, 15, 16, 55</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo lienzo lienzo-p" id="pr-demo">
+          <div class="ctrl">
+            <button class="btn chico neg" id="pr-empezar"><i class="ph ph-upload-simple"></i>Importar contactos</button>
+            <span class="anuncio">clientes-2026.csv · 1.284 filas · 412 KB</span>
+          </div>
+          <div class="marco" id="pr-marco">
+            <div class="proceso">
+              <span class="ilus" data-ilus="cargando-algo-grande"></span>
+              <div class="min0" id="pr-cuerpo">
+                <span class="rot-g" id="pr-rot">Listo para importar</span>
+                <h4 id="pr-tit" style="margin-top:var(--espacio-2)">Importar contactos de clientes-2026.csv</h4>
+                <div class="pr-barra" role="progressbar" aria-label="Avance de la importación" aria-valuemin="0" aria-valuemax="1284" aria-valuenow="0" id="pr-barra"><i></i></div>
+                <div class="pr-cifras"><span><b id="pr-hechos">0</b> <span class="gris">de 1.284 filas</span></span><span class="gris" id="pr-resta">—</span></div>
+                <ol class="pasos-p" id="pr-pasos">
+                  <li><span class="ic"><span class="pt"></span></span>Leer el archivo<span class="c"></span></li>
+                  <li><span class="ic"><span class="pt"></span></span>Validar CUIT y correos<span class="c"></span></li>
+                  <li><span class="ic"><span class="pt"></span></span>Crear y actualizar contactos<span class="c"></span></li>
+                  <li><span class="ic"><span class="pt"></span></span>Asignar dueño por zona<span class="c"></span></li>
+                </ol>
+                <div class="pr-pie" id="pr-pie">
+                  <span class="anuncio">Podés seguir usando el sistema. Te avisamos al terminar.</span>
+                  <button class="btn chico" id="pr-fondo" disabled><i class="ph ph-arrows-in-simple"></i>Seguir en segundo plano</button>
+                  <button class="btn chico texto peligro" id="pr-cancelar" disabled>Cancelar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">El tiempo restante sale del ritmo real de los últimos 2 s, redondeado ("unos 40 s"), y nunca sube de golpe.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 4 · Vacío de primera vez ══════════ -->
+    <section class="lamina" id="vacio-de-primera-vez">
+      <header class="lamina-cab">
+        <h2>Vacío de primera vez</h2>
+        <span class="lamina-sec">§6b · §6 Textos</span>
+        <p class="lamina-regla">Ilustración, título que dice <b>qué va a aparecer acá</b>, una frase con un dato real y como máximo dos botones, uno relleno. Si el módulo es nuevo, abajo la guía de pasos.</p>
+        <p class="lamina-ref">Patrones 13.5, 13.7 y 5.13 · ref. 09, 14, 17, 45</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes dos">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-browser"></i>Página entera · ilustración de 176 px y guía de 3 pasos</span>
+              <div class="marco" id="pv-marco">
+                <div class="vacio alto" id="pv-vacio">
+                  <span class="ilus g" data-ilus="sin-clientes"></span>
+                  <h4>Todavía no hay clientes</h4>
+                  <p>Cargá el primero o importá tu planilla: acá aparecen con su saldo y su próxima factura.</p>
+                  <div class="fila"><button class="btn neg" id="pv-nuevo"><i class="ph ph-plus"></i>Nuevo cliente</button><button class="btn"><i class="ph ph-file-csv"></i>Importar CSV</button></div>
+                  <div class="guia" id="pv-guia">
+                    <div class="rot-guia"><span>Para empezar</span><span id="pv-cuenta">0 de 3 · unos 2 min</span></div>
+                    <div class="gp" data-paso="1"><span class="num">1</span><div class="q"><b>Cargá un cliente</b><small>Con su CUIT traemos razón social y condición de IVA.</small></div></div>
+                    <div class="gp" data-paso="2"><span class="num">2</span><div class="q"><b>Emití su primera factura</b><small>Sale con CAE y queda en Cobranzas.</small></div></div>
+                    <div class="gp" data-paso="3"><span class="num">3</span><div class="q"><b>Invitá al equipo</b><small>Ana, Tomás y Lucía ya tienen cuenta.</small></div><button class="btn chico">Invitar</button></div>
+                  </div>
+                </div>
+                <div id="pv-lista" hidden></div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-sidebar-simple"></i>En una hoja · 112 px, un solo botón</span>
+              <div class="hoja-mini">
+                <div class="hh"><span class="cuadro" style="--ent:var(--e1)"><i class="ph-fill ph-storefront"></i></span><b>Orbe Retail S.A.</b></div>
+                <div class="pestanas" data-manual><button class="on" type="button">Reuniones <span class="c">0</span></button><button type="button">Notas <span class="c">4</span></button></div>
+                <div class="vacio" style="padding:var(--espacio-8) var(--espacio-6)">
+                  <span class="ilus m" data-ilus="sin-reuniones"></span>
+                  <h4 class="t-16">Sin reuniones con Orbe</h4>
+                  <p>La última llamada fue el 2 oct. Agendá la próxima y queda en su ficha.</p>
+                  <div class="fila"><button class="btn"><i class="ph ph-calendar-plus"></i>Agendar reunión</button></div>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: sin dato, sin acción, sin dibujo</span>
+              <div class="mal-mock" aria-label="Ejemplo de lo que no va"><span class="t-13">No hay datos.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 5 · Vacío al día ══════════ -->
+    <section class="lamina" id="vacio-al-dia">
+      <header class="lamina-cab">
+        <h2>Vacío al día</h2>
+        <span class="lamina-sec">§6 Textos · vacíos</span>
+        <p class="lamina-regla">Cuando no queda nada es <b>una buena noticia, sin botón de crear</b>: qué se resolvió y qué viene después, sobre clima verde.</p>
+        <p class="lamina-ref">Patrones 9.1 y 17.6 · ref. 06, 38</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-check-square"></i>Tildá las tres: la tarjeta pasa a "al día"</span>
+              <div class="card" id="ad-card">
+                <div class="tit"><h3>Para hacer hoy</h3><span class="c" id="ad-c">3</span><div class="der"><button class="btn chico texto" id="ad-reset" hidden><i class="ph ph-arrow-counter-clockwise"></i>Volver a empezar</button></div></div>
+                <div id="ad-lista" style="padding-bottom:var(--espacio-4)">
+                  <div class="tarea"><button class="check" role="checkbox" aria-checked="false" aria-label="Hecha: Llamar a Grupo Atlas por la FAC-01112"></button><span class="t">Llamar a Grupo Atlas por la FAC-01112</span><span class="f vencida">Vencida</span></div>
+                  <div class="tarea"><button class="check" role="checkbox" aria-checked="false" aria-label="Hecha: Mandar cotización a Puerto Norte"></button><span class="t">Mandar cotización a Puerto Norte</span><span class="f">15:00</span></div>
+                  <div class="tarea"><button class="check" role="checkbox" aria-checked="false" aria-label="Hecha: Revisar remito R-0441"></button><span class="t">Revisar remito R-0441</span><span class="f">17:30</span></div>
+                </div>
+                <div class="vacio bueno" id="ad-vacio" hidden style="border-radius:0 0 var(--radius-tarjeta) var(--radius-tarjeta)">
+                  <span class="ilus m aparece" data-ilus="sin-tareas"></span>
+                  <h4>Estás al día</h4>
+                  <p>Resolviste las 3 de hoy. Lo próximo: cobrar a Casa Lumen, mañana 09:00.</p>
+                  <div class="fila"><button class="btn chico texto"><i class="ph ph-calendar-blank"></i>Ver lo de mañana</button></div>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-rows"></i>En una fila · ilustración de 64 px</span>
+              <div class="mini-fila">
+                <span class="ilus ch" data-ilus="sin-tareas"></span>
+                <div class="min0"><b>Bandeja al día</b><small>Último aviso hace 2 h · Lucía cobró FAC-01117</small></div>
+              </div>
+              <div class="mini-fila" style="background:var(--superficie)">
+                <span class="ilus ch" data-ilus="sin-facturas"></span>
+                <div class="min0"><b>Nada vencido</b><small>Las 32 de noviembre están cobradas o por vencer</small></div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: festejo y botón de crear</span>
+              <div class="mal-mock" aria-label="Ejemplo de lo que no va"><span class="confeti" aria-hidden="true"><i class="ph ph-confetti"></i><i class="ph ph-star"></i></span><b class="t-14">¡Felicitaciones! No tenés tareas</b><button class="btn chico" tabindex="-1">Crear tarea</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 6 · Sin resultados ══════════ -->
+    <section class="lamina" id="sin-resultados">
+      <header class="lamina-cab">
+        <h2>Sin resultados</h2>
+        <span class="lamina-sec">§6b · §2 Filtros</span>
+        <p class="lamina-regla">No es "no hay datos", es <b>"no hay con este filtro"</b>: nombrá lo que buscó, contá lo que sí existe y ofrecé limpiar el filtro que más destraba.</p>
+        <p class="lamina-ref">Patrones 2.10 y 11.1 · ref. 23, 38, 62</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="marco">
+            <div class="busca">
+              <label class="in" for="sr-q"><i class="ph ph-magnifying-glass"></i><input id="sr-q" type="search" placeholder="Buscar cliente o factura" autocomplete="off"><kbd class="kbd">/</kbd></label>
+              <button class="filtro" aria-pressed="false" data-f="vencidas"><i class="ph ph-warning-circle"></i>Vencidas</button>
+              <button class="filtro" aria-pressed="false" data-f="lumen"><i class="ph ph-storefront"></i>Casa Lumen</button>
+              <button class="filtro" aria-pressed="false" data-f="mes"><i class="ph ph-calendar-blank"></i>Noviembre</button>
+            </div>
+            <div class="res-cab"><span id="sr-cuenta" aria-live="polite">8 facturas</span><button class="btn chico texto" id="sr-limpiar-todo" hidden>Limpiar todo</button></div>
+            <div id="sr-lista" style="padding-bottom:var(--espacio-4)"></div>
+            <div class="vacio" id="sr-vacio" hidden>
+              <span class="ilus m" data-ilus="sin-resultados"></span>
+              <h4 id="sr-tit">Nada con este filtro</h4>
+              <p id="sr-txt"></p>
+              <div class="fila" id="sr-acc"></div>
+              <p class="sug" id="sr-sug" hidden></p>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Probá "Vencidas" + "Casa Lumen", o buscá "orve".</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 7 · Error en bloque ══════════ -->
+    <section class="lamina" id="error-en-bloque">
+      <header class="lamina-cab">
+        <h2>Error en bloque</h2>
+        <span class="lamina-sec">§6b Error · bloque</span>
+        <p class="lamina-regla">Ocupa el lugar de lo que no llegó: <b>qué pasó, qué quedó a salvo y Reintentar</b>; abajo, nota mono con código y hora y el detalle técnico detrás de "Ver detalle".</p>
+        <p class="lamina-ref">Patrones 5.3 y 1.12 · ref. 14, 29</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes dos">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-arrow-clockwise"></i>Reintentá: el primero vuelve a fallar (intento 2 de 3), el segundo trae los datos</span>
+              <div class="marco">
+                <div class="cab"><h3>Cobranzas de noviembre</h3><div class="der"><button class="btn chico texto" id="eb-otra" hidden><i class="ph ph-arrow-counter-clockwise"></i>Simular de nuevo</button></div></div>
+                <div class="vacio malo" id="eb-error" role="alert">
+                  <span class="ilus m" data-ilus="error"></span>
+                  <h4>No pudimos traer las cobranzas</h4>
+                  <p id="eb-txt">El servidor de cobros tardó demasiado. Lo que cargaste hoy está a salvo.</p>
+                  <div class="fila"><button class="btn fijo" id="eb-reintentar" style="--ancho:140px"><i class="ph ph-arrow-clockwise"></i><span>Reintentar</span></button></div>
+                  <div class="fila g3" style="margin-top:var(--espacio-5)">
+                    <span class="nota-cod" id="eb-cod">ERR-504 · 18 nov 15:42 · ref 7F3A-21C</span>
+                    <button class="btn ic chico texto" id="eb-copiar" aria-label="Copiar código del error" data-tip="Copiar para soporte"><i class="ph ph-copy"></i></button>
+                    <button class="btn chico texto" id="eb-ver" aria-expanded="false" aria-controls="eb-det">Ver detalle</button>
+                  </div>
+                  <pre class="det" id="eb-det" hidden style="margin-top:var(--espacio-4)"></pre>
+                </div>
+                <div id="eb-datos" hidden></div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-chart-line-up"></i>En un KPI · "—" y Reintentar en la línea</span>
+              <div class="bandeja kpi-err">
+                <div class="rot"><i class="ph ph-clock-countdown"></i>Días de cobro</div>
+                <div class="adentro">
+                  <div class="n" id="ek-n">—</div>
+                  <div class="ctx" id="ek-ctx" style="display:flex;align-items:center;gap:var(--espacio-2);flex-wrap:wrap"><i class="ph ph-warning-circle" style="color:var(--rojo);font-size:14px"></i><span>No se pudo calcular</span><button class="btn chico enlace" id="ek-re">Reintentar</button></div>
+                  <span class="nota-cod" id="ek-cod" style="margin-top:var(--espacio-4)">ERR-CALC · 15:42</span>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: modal técnico que tapa todo</span>
+              <div class="mal-mock" aria-label="Ejemplo de lo que no va">
+                <div class="modal-mal"><b>Error</b><code>500 Internal Server Error: TypeError at /api/cobranzas</code><div class="fila" style="justify-content:flex-end;margin-top:var(--espacio-5)"><button class="btn chico" tabindex="-1">OK</button></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 8 · Error en banda ══════════ -->
+    <section class="lamina" id="error-en-banda">
+      <header class="lamina-cab">
+        <h2>Error en banda</h2>
+        <span class="lamina-sec">§6b Error · banda</span>
+        <p class="lamina-regla">Arriba de datos que <b>sí están pero pueden estar viejos</b>: dice de cuándo son y deja reintentar. Al resolverse pasa a verde 3 s y lo que cambió destella.</p>
+        <p class="lamina-ref">Patrones 7.18 y 1.12 · ref. 43, 29</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="ctrl">
+            <div class="seg chico" id="ba-tipo" role="group" aria-label="Tipo de banda"><button data-v="ro" class="on">Falló</button><button data-v="am">Degradado</button></div>
+          </div>
+          <div class="marco">
+            <div style="padding:var(--espacio-4) var(--espacio-4) 0"><div class="banda-x ro" id="ba-banda" role="alert"></div></div>
+            <div class="tabla tarjetas-cel" id="ba-tabla">
+              <table>
+                <thead><tr><th>Cliente</th><th>Último cobro</th><th class="r">Saldo</th></tr></thead>
+                <tbody>
+                  <tr data-id="orbe"><td data-area="nombre"><span class="cli"><span class="cuadro ch" style="--ent:var(--e1)"></span>Orbe Retail S.A.</span></td><td class="gris num" data-area="meta">12 nov</td><td class="r" data-area="monto"><span class="monto"><span class="u">$</span><span class="val">1.284.500</span></span></td></tr>
+                  <tr data-id="lumen"><td data-area="nombre"><span class="cli"><span class="cuadro ch" style="--ent:var(--e2)"></span>Casa Lumen SRL</span></td><td class="gris num" data-area="meta">9 nov</td><td class="r" data-area="monto"><span class="monto"><span class="u">$</span><span class="val">642.000</span></span></td></tr>
+                  <tr data-id="atlas"><td data-area="nombre"><span class="cli"><span class="cuadro ch" style="--ent:var(--e4)"></span>Grupo Atlas</span></td><td class="gris num" data-area="meta">28 oct</td><td class="r" data-area="monto"><span class="monto"><span class="u">$</span><span class="val">2.150.000</span></span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tpie"><span>3 clientes</span><span id="ba-pie">Datos de las 14:32</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 9 · Error en línea ══════════ -->
+    <section class="lamina" id="error-en-linea">
+      <header class="lamina-cab">
+        <h2>Error en línea</h2>
+        <span class="lamina-sec">§6b Error · línea</span>
+        <p class="lamina-regla">Cuando falla <b>una acción de una fila</b>, el error vive debajo de esa fila con la causa y la salida; las demás siguen. Lo escrito nunca se pierde.</p>
+        <p class="lamina-ref">Patrones 5.7 y 1.12 · ref. 15, 16</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-paper-plane-tilt"></i>Mandá los recordatorios: el de Casa Lumen rebota</span>
+              <div class="marco">
+                <div class="cab"><h3>Recordatorios de cobro</h3><div class="der"><button class="btn chico" id="el-todos"><i class="ph ph-paper-plane-tilt"></i>Enviar los 3</button></div></div>
+                <div id="el-lista"></div>
+              </div>
+            </div>
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-sidebar-simple"></i>En el pie de una hoja · la nota queda escrita</span>
+              <div class="hoja-mini">
+                <div class="hh"><b>Nota para Grupo Atlas</b></div>
+                <div style="padding:var(--espacio-5) var(--espacio-6)"><label class="in area"><span class="sr">Nota</span><textarea id="el-nota" rows="3">Prometieron transferir el viernes; pedir comprobante.</textarea></label></div>
+                <div class="pie-hoja" id="el-pie">
+                  <span class="est e-ro" id="el-pie-err" hidden><i class="ph ph-warning-circle"></i>No se guardó · sin respuesta del servidor</span>
+                  <button class="btn chico texto empuja" id="el-pie-re" hidden>Reintentar</button>
+                  <button class="btn chico fijo empuja" id="el-guardar" style="--ancho:120px"><span>Guardar nota</span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 10 · Sin conexión ══════════ -->
+    <section class="lamina" id="sin-conexion">
+      <header class="lamina-cab">
+        <h2>Sin conexión</h2>
+        <span class="lamina-sec">§6b Sin conexión</span>
+        <p class="lamina-regla">En la barra y en el dato, <b>nunca un cartel que tape</b>: "Sin conexión · se guarda al volver", los cambios quedan en cola y al volver se mandan solos.</p>
+        <p class="lamina-ref">Patrones 7.18 y 14.12 · ref. 43, 11</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="ctrl">
+            <span class="rot-g">Red</span>
+            <div class="seg chico" id="sc-red" role="group" aria-label="Estado de la red"><button data-v="on" class="on">En línea</button><button data-v="off">Sin conexión</button></div>
+            <span class="anuncio">También responde a la red real del navegador.</span>
+          </div>
+          <div class="variantes dos">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-wifi-slash"></i>Sin señal, registrá cobros: quedan en cola</span>
+              <div class="marco app-mini" id="sc-app">
+                <div class="cab"><h3>Cobranzas</h3><div class="der"><span class="pild-con v" id="sc-pild"><i class="ph ph-check-circle"></i>Al día · 15:42</span></div></div>
+                <div class="kpis-mini">
+                  <div><div class="rk">Por cobrar</div><div class="n num">$ 48,2 M</div><div class="viejo-d"><i class="ph ph-clock-counter-clockwise"></i>de las 15:40</div></div>
+                  <div><div class="rk">Cobrado hoy</div><div class="n num" id="sc-hoy">$ 2,1 M</div><div class="viejo-d"><i class="ph ph-clock-counter-clockwise"></i>de las 15:40</div></div>
+                  <div><div class="rk">Vencidas</div><div class="n num">4</div><div class="viejo-d"><i class="ph ph-clock-counter-clockwise"></i>de las 15:40</div></div>
+                </div>
+                <div id="sc-lista"></div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-browser"></i>Sin copia local de la vista</span>
+              <div class="card">
+                <div class="vacio">
+                  <span class="ilus m" data-ilus="sin-conexion"></span>
+                  <h4 class="t-16">Sin conexión y sin copia de Reportes</h4>
+                  <p>Es la primera vez que abrís esta vista. Volvé a probar cuando tengas señal.</p>
+                  <div class="fila"><button class="btn chico fijo" id="sc-re" style="--ancho:120px"><i class="ph ph-arrow-clockwise"></i><span>Reintentar</span></button></div>
+                  <p class="nota" id="sc-cuenta" aria-live="off">Probamos solos cada 10 s · próximo en 10 s</p>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: cartel que bloquea la pantalla</span>
+              <div class="mal-mock" style="background:rgb(23 23 33/.86);color:#fff;border-color:transparent" aria-label="Ejemplo de lo que no va"><i class="ph ph-wifi-slash" style="font-size:24px"></i><b class="t-14">Sin conexión a internet</b><span class="t-12">Recargá la página para continuar</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 11 · Sin permisos ══════════ -->
+    <section class="lamina" id="sin-permisos">
+      <header class="lamina-cab">
+        <h2>Sin permisos</h2>
+        <span class="lamina-sec">§6b · §5 Ajustes</span>
+        <p class="lamina-regla">Decí <b>de quién es, qué sí podés ver y a quién pedírselo</b>, con el permiso descripto por sus datos. Una acción bloqueada escribe la causa al lado; un dato oculto muestra solo el final.</p>
+        <p class="lamina-ref">Patrones 13.4 y 13.8 · ref. 17, 19, 45</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes dos">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-lock-key"></i>Vista entera · pedí acceso y cancelalo</span>
+              <div class="marco">
+                <div class="vacio alto">
+                  <span class="ilus g" data-ilus="sin-permisos"></span>
+                  <h4>Esta vista es de Administración</h4>
+                  <p>Con tu rol (Comercial) ves los saldos de tus 14 clientes. Para ver los de todos, pedile acceso a Lucía Benítez.</p>
+                  <div class="fila" id="sp-acc"><button class="btn neg fijo" id="sp-pedir" style="--ancho:150px"><i class="ph ph-hand"></i><span>Pedir acceso</span></button><button class="btn"><i class="ph ph-users"></i>Ver mis clientes</button></div>
+                  <div class="fila" id="sp-pedido" hidden><span class="chip d az">Pedido a Lucía Benítez · <span id="sp-hora">15:42</span></span><button class="btn chico texto" id="sp-cancelar">Cancelar pedido</button></div>
+                  <p class="nota">Necesitás: ver saldos y cobros de todos los clientes</p>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-prohibit"></i>Acción bloqueada con la causa escrita</span>
+              <div class="bloqueado">
+                <div class="q"><b>FAC-01098 · Grupo Atlas</b><small>$ 2.150.000 · emitida 28 oct</small></div>
+                <button class="btn chico" aria-disabled="true" data-tip="Solo Administración anula facturas"><i class="ph ph-x-circle"></i>Anular</button>
+                <span class="causa"><i class="ph ph-lock-simple"></i>Solo Administración anula facturas con CAE</span>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-eye-slash"></i>Dato oculto: solo el final</span>
+              <div class="bloqueado">
+                <div class="q"><small>CBU de cobro</small><b class="oculto">•••• •••• •••• 4821</b></div>
+                <span class="tile ch blanco"><i class="ph ph-lock-simple"></i></span>
+                <span class="causa"><i class="ph ph-info"></i>El CBU completo lo ve Administración</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 12 · Éxito ══════════ -->
+    <section class="lamina" id="exito">
+      <header class="lamina-cab">
+        <h2>Éxito</h2>
+        <span class="lamina-sec">§6b · §1c Éxito</span>
+        <p class="lamina-regla">Al terminar un flujo largo, <b>participio + código + monto + consecuencia</b>, la ilustración entra con resorte sobre clima verde y dos salidas: ver lo creado o hacer otro.</p>
+        <p class="lamina-ref">Patrones 5.6 y 13.5 · ref. 08, 14, 17</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes dos">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-receipt"></i>Emití la factura</span>
+              <div class="exito-caja" id="ex-caja">
+                <div class="form-mini" id="ex-form">
+                  <div class="fila entre"><b class="t-16 peso display">Emitir factura</b><span class="chip gr">Borrador</span></div>
+                  <div class="kv"><span>Cliente</span><b class="peso">Orbe Retail S.A.</b></div>
+                  <div class="kv"><span>Concepto</span><b class="peso">Mantenimiento noviembre</b></div>
+                  <div class="kv"><span>Vence</span><b class="peso num">18 dic</b></div>
+                  <div class="fila entre"><span class="gris">Total</span><span class="monto t-20"><span class="u" style="font-size:16px">$</span>1.284.500<span class="cent">,00</span></span></div>
+                  <button class="btn neg ancho fijo" id="ex-emitir"><i class="ph ph-paper-plane-tilt"></i><span>Emitir factura</span></button>
+                </div>
+                <div class="exito-g" id="ex-ok" hidden>
+                  <div class="vacio bueno">
+                    <span class="ilus g" data-ilus="exito"></span>
+                    <h4 id="ex-tit" tabindex="-1">Factura FAC-01122 emitida</h4>
+                    <p>$ 1.284.500 a Orbe Retail · vence 18 dic. El PDF ya le llegó a pagos@orberetail.com.ar.</p>
+                    <div class="resumen">
+                      <div><i class="ph ph-seal-check"></i>CAE 76124890331275<span>18 nov 15:42</span></div>
+                      <div><i class="ph ph-check-circle"></i>Quedó en Cobranzas<span>por vencer</span></div>
+                      <div><i class="ph ph-bell-ringing"></i>Recordatorio automático<span>15 dic 09:00</span></div>
+                    </div>
+                    <div class="fila"><button class="btn"><i class="ph ph-file-pdf"></i>Ver factura</button><button class="btn neg" id="ex-otra"><i class="ph ph-plus"></i>Emitir otra</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-rows"></i>Éxito en la fila · nada desaparece</span>
+              <div class="card">
+                <div class="fila-d" id="ex-fila"><span class="cuadro" style="--ent:var(--e3)"><i class="ph-fill ph-truck"></i></span><div class="q"><b>Gasto · Transporte Sur</b><small>$ 186.400 · pedido por Ana Quiroga</small></div><button class="btn chico neg fijo" id="ex-aprobar" style="--ancho:96px"><span>Aprobar</span></button></div>
+                <div class="fila-d"><span class="cuadro" style="--ent:var(--e5)"><i class="ph-fill ph-desktop"></i></span><div class="q"><b>Gasto · Monitor 27"</b><small>$ 412.000 · pedido por Tomás Ferraro</small></div><button class="btn chico">Revisar</button></div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: "exitosamente" y confeti</span>
+              <div class="mal-mock" aria-label="Ejemplo de lo que no va"><span class="confeti" aria-hidden="true"><i class="ph ph-confetti"></i><i class="ph ph-sparkle"></i><i class="ph ph-confetti"></i></span><b class="t-14">¡La factura se emitió exitosamente!</b><button class="btn chico" tabindex="-1">Aceptar</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 13 · Confirmación en el lugar ══════════ -->
+    <section class="lamina" id="confirmacion-en-el-lugar">
+      <header class="lamina-cab">
+        <h2>Confirmación en el lugar</h2>
+        <span class="lamina-sec">§1c Deshacer · §6 Textos</span>
+        <p class="lamina-regla">Lo reversible va <b>sin preguntar y con Deshacer</b>; lo irreversible confirma en el mismo botón, con el botón que repite la acción y 5 s para arrepentirse. Lo muy grave, manteniendo o escribiendo el nombre.</p>
+        <p class="lamina-ref">Patrones 4.4 y 13.9 · ref. 52, 27</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes dos">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-cursor-click"></i>Dos pasos en la fila · se cancela solo a los 5 s</span>
+              <div class="card" id="cf-lista">
+                <div class="fila-d" data-cod="FAC-01098"><div class="q"><b>FAC-01098 · Grupo Atlas</b><small>$ 2.150.000 · emitida 28 oct</small></div><div class="cf-z"><button class="btn chico peligro" data-anular><i class="ph ph-x-circle"></i>Anular</button></div></div>
+                <div class="fila-d" data-cod="FAC-01101"><div class="q"><b>FAC-01101 · Puerto Norte Logística</b><small>$ 398.700 · emitida 2 nov</small></div><div class="cf-z"><button class="btn chico peligro" data-anular><i class="ph ph-x-circle"></i>Anular</button></div></div>
+                <div class="fila-d" id="cf-arch"><div class="q"><b>Cotización COT-00311 · Casa Lumen</b><small>Vencida hace 12 días</small></div><button class="btn chico" id="cf-archivar"><i class="ph ph-archive"></i>Archivar</button></div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-hand-pointing"></i>Mantener apretado 1,2 s</span>
+              <div class="card pad pila g5">
+                <div><b class="peso">Plantilla "Recordatorio 15 días"</b><div class="gris t-12">La usan 3 automatizaciones</div></div>
+                <button class="btn peligro mantener" id="cf-mantener"><i class="ph ph-trash"></i><span>Mantené para borrar</span></button>
+                <span class="anuncio" id="cf-man-est" aria-live="polite">Soltá antes y no pasa nada.</span>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-keyboard"></i>Escribir el nombre (lo más grave)</span>
+              <div class="card pad escribir">
+                <div><b class="peso">Borrar el espacio Estudio Faro</b><div class="gris t-12">Se borran 214 clientes, 1.032 facturas y sus archivos. No se puede deshacer.</div></div>
+                <div class="campo"><label for="cf-nombre">Escribí <b class="tinta">Estudio Faro</b> para confirmar</label><div class="in"><input id="cf-nombre" autocomplete="off" spellcheck="false"></div></div>
+                <button class="btn peligro neg" id="cf-borrar" aria-disabled="true"><i class="ph ph-trash"></i>Borrar espacio</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 14 · Guardado automático ══════════ -->
+    <section class="lamina" id="guardado-automatico">
+      <header class="lamina-cab">
+        <h2>Guardado automático</h2>
+        <span class="lamina-sec">§4 Formularios · §6b</span>
+        <p class="lamina-regla">En editores, el estado vive <b>al lado del título y sin botón Guardar</b>: "Cambios sin guardar" → "Guardando…" a los 900 ms → "Guardado hace 5 s". En ajustes, la barra flotante con los cambios contados.</p>
+        <p class="lamina-ref">Patrones 3.13 y 13.1 · ref. 26, 41</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes dos">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-pencil-simple-line"></i>Escribí en la cotización</span>
+              <div class="marco editor">
+                <div class="cab">
+                  <nav class="miga" aria-label="Ubicación"><span>Cotizaciones</span><i class="ph ph-caret-right" style="font-size:12px"></i><b class="cod">COT-00318</b></nav>
+                  <div class="der"><span class="est est-g" id="ag-est" aria-live="polite"><i class="ph ph-check"></i>Guardado hace 2 min</span><span class="btn-sep"></span><span class="fila g3 t-12 gris"><button class="casilla" role="checkbox" aria-checked="false" id="ag-falla" aria-label="Simular falla al guardar"></button>Simular falla</span></div>
+                </div>
+                <div class="ed-cuerpo">
+                  <input class="ed-tit" id="ag-tit" value="Mantenimiento anual Grupo Atlas" aria-label="Título de la cotización">
+                  <textarea class="ed-txt" id="ag-txt" aria-label="Notas de la cotización">Incluye 4 visitas al año, repuestos de desgaste y guardia de 48 h. Precio en pesos con ajuste trimestral por IPC.</textarea>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-sliders-horizontal"></i>Ajustes · barra con los cambios contados</span>
+              <div class="marco" style="min-height:280px">
+                <div class="ajustes-mini" id="aj">
+                  <div class="op" data-k="a"><div><b>Recordatorio antes del vencimiento<span class="pmod" aria-hidden="true"></span></b><small>Le escribimos al cliente 3 días antes</small></div><button class="toggle" role="switch" aria-checked="true" aria-label="Recordatorio antes del vencimiento"></button></div>
+                  <div class="op" data-k="b"><div><b>Copia al dueño de la cuenta<span class="pmod" aria-hidden="true"></span></b><small>Recibe cada recordatorio enviado</small></div><button class="toggle" role="switch" aria-checked="false" aria-label="Copia al dueño de la cuenta"></button></div>
+                  <div class="op" data-k="c"><div><b>Resumen semanal<span class="pmod" aria-hidden="true"></span></b><small>Lunes 09:00 a Administración</small></div><button class="toggle" role="switch" aria-checked="true" aria-label="Resumen semanal"></button></div>
+                </div>
+                <div class="barra-cambios" id="aj-barra" role="region" aria-label="Cambios sin guardar">
+                  <div><b>Tenés cambios sin guardar</b><small id="aj-cuenta">1 cambio en Cobranzas</small></div>
+                  <button class="btn chico texto" id="aj-desc">Descartar</button>
+                  <button class="btn chico blanco fijo" id="aj-guardar" style="--ancho:132px" data-tip="Guardar cambios" data-atajo="⌘S"><span>Guardar cambios</span></button>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-list-checks"></i>Los cuatro estados, mismo ancho</span>
+              <div class="ref-estados">
+                <div><span>Al editar</span><span class="est e-am"><span class="pt" style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>Cambios sin guardar</span></div>
+                <div><span>A los 900 ms</span><span class="est"><i class="ph ph-circle-notch gira"></i>Guardando…</span></div>
+                <div><span>Listo</span><span class="est"><i class="ph ph-check"></i>Guardado hace 5 s</span></div>
+                <div><span>Si falla</span><span class="est e-ro"><i class="ph ph-warning-circle"></i>No se guardó · Reintentar</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 15 · Validación de formulario ══════════ -->
+    <section class="lamina" id="validacion-de-formulario">
+      <header class="lamina-cab">
+        <h2>Validación de formulario</h2>
+        <span class="lamina-sec">§4 Formularios</span>
+        <p class="lamina-regla">Primer chequeo <b>al salir del campo o al intentar crear</b>; desde ahí en vivo y el error se va apenas es válido. Al crear con errores: resumen arriba con links a cada campo y foco en el primero.</p>
+        <p class="lamina-ref">Patrones 3.5, 3.11 y 3.14 · ref. 39, 41, 62</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo lienzo">
+          <form class="marco" id="fv" novalidate>
+            <div class="cab"><h3>Nuevo cliente</h3><div class="der"><button type="button" class="btn chico texto" id="fv-ejemplo"><i class="ph ph-magic-wand"></i>Completar con ejemplo</button></div></div>
+            <div class="resumen-err" id="fv-resumen" role="alert" tabindex="-1" hidden><i class="ph ph-warning-circle"></i><div><b id="fv-res-t">Revisá 2 campos</b><ul id="fv-res-l"></ul></div></div>
+            <div class="err-serv" id="fv-serv" hidden></div>
+            <div class="form-v">
+              <div class="campo ancho" data-campo="razon"><label for="fv-razon">Razón social</label><div class="in"><input id="fv-razon" name="razon" autocomplete="organization" placeholder="Orbe Retail S.A."></div><small class="ayuda">Como figura en ARCA</small></div>
+              <div class="campo" data-campo="cuit"><label for="fv-cuit">CUIT</label><div class="in"><input id="fv-cuit" name="cuit" inputmode="numeric" placeholder="30-12345678-9" maxlength="13"></div><small class="ayuda">Con el CUIT completamos la condición de IVA</small></div>
+              <div class="campo" data-campo="iva"><label for="fv-iva">Condición frente al IVA</label><div class="in"><select id="fv-iva" name="iva"><option value="">Elegí una</option><option>Responsable inscripto</option><option>Monotributo</option><option>Exento</option><option>Consumidor final</option></select></div><small class="ayuda">Define si emitimos A o B</small></div>
+              <div class="campo" data-campo="correo"><label for="fv-correo">Correo de facturación</label><div class="in"><input id="fv-correo" name="correo" type="email" autocomplete="email" placeholder="pagos@empresa.com.ar"></div><small class="ayuda">Ahí llegan las facturas y los recordatorios</small></div>
+              <div class="campo" data-campo="limite"><label for="fv-limite">Límite de crédito <span class="op-t">· opcional</span></label><div class="in"><span class="mon">ARS</span><input id="fv-limite" name="limite" inputmode="decimal" placeholder="0" class="num" style="text-align:right"></div><small class="ayuda">Avisamos cuando el saldo lo pasa</small></div>
+            </div>
+            <div class="form-pie">
+              <span class="anuncio" id="fv-faltan" aria-live="polite">Faltan 4 obligatorios</span>
+              <button type="button" class="btn texto" id="fv-limpiar">Vaciar</button>
+              <button type="submit" class="btn neg fijo" id="fv-crear" style="--ancho:128px"><i class="ph ph-plus"></i><span>Crear cliente</span></button>
+            </div>
+          </form>
+        </div>
+        <div class="lamina-pie"><span class="nota" id="fv-nota">Probá crear vacío, o el CUIT 30-71583092-9 para ver el error del servidor.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 16 · Estado de sincronización ══════════ -->
+    <section class="lamina" id="estado-de-sincronizacion">
+      <header class="lamina-cab">
+        <h2>Estado de sincronización</h2>
+        <span class="lamina-sec">§5 · frescura del dato</span>
+        <p class="lamina-regla">Toda vista que trae datos de otro sistema dice <b>cuándo se sincronizó y deja recargar</b>; cada estado con ícono y palabra. Una conexión que pide intervención cambia su toggle por el botón que la arregla.</p>
+        <p class="lamina-ref">Patrones 7.18 y 13.6 · ref. 43, 55</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="ctrl">
+            <span class="rot-g">Forzar</span>
+            <div class="seg chico" id="sy-forzar" role="group" aria-label="Estado de la sincronización"><button data-v="ok" class="on">Al día</button><button data-v="aviso">Con avisos</button><button data-v="falla">Falló</button><button data-v="pausa">Pausada</button></div>
+          </div>
+          <div class="variantes">
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-arrows-clockwise"></i>A la derecha de las pestañas · tocá ⟳</span>
+              <div class="marco">
+                <div class="sync-barra">
+                  <div class="pestanas"><button class="on">Todas <span class="c" id="sy-c">32</span></button><button>Vencidas <span class="c">4</span></button><button>Cobradas <span class="c">18</span></button></div>
+                  <div class="sync-est" id="sy-est" aria-live="polite"></div>
+                </div>
+                <div id="sy-lista"></div>
+              </div>
+            </div>
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-plugs-connected"></i>Lista de conexiones</span>
+              <div class="marco">
+                <div class="cab"><h3>Conexiones</h3><span class="gris t-12">4 sistemas · 3 activos</span></div>
+                <div id="sy-con">
+                  <div class="con"><span class="logo" style="--ent:var(--e1)">J</span><div class="q"><b>Jaque</b><small><span class="est e-ok"><i class="ph ph-check-circle"></i>Al día</span>· cobros del contador · hace 12 min</small></div><button class="toggle" role="switch" aria-checked="true" aria-label="Jaque activa"></button></div>
+                  <div class="con" id="sy-arca"><span class="logo" style="--ent:var(--e4)">A</span><div class="q"><b>ARCA</b><small id="sy-arca-est"><span class="est e-am"><i class="ph ph-warning"></i>Certificado vencido</span>· no emite facturas desde ayer</small></div><button class="btn chico fijo" id="sy-reconectar" style="--ancho:124px"><i class="ph ph-arrow-clockwise"></i><span>Reconectar</span></button></div>
+                  <div class="con"><span class="logo" style="--ent:var(--e2)">G</span><div class="q"><b>Gmail</b><small><span class="est e-az"><i class="ph ph-circle-notch gira"></i>Trayendo correos</span><span class="mini-barra" aria-hidden="true"><i id="sy-gm-b" style="width:28%"></i></span><span class="num" id="sy-gm">340 de 1.200</span></small></div><button class="toggle" role="switch" aria-checked="true" aria-label="Gmail activa"></button></div>
+                  <div class="con apag"><span class="logo" style="--ent:var(--e6)">D</span><div class="q"><b>Google Drive</b><small><span class="est"><i class="ph ph-pause-circle"></i>Apagada</span>· remitos escaneados</small></div><button class="toggle" role="switch" aria-checked="false" aria-label="Google Drive activa" id="sy-drive"></button></div>
+                </div>
+                <div class="pie-mono">3 activas · 1 pide intervención · revisamos cada 5 min</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 17 · Microinteracciones de estado ══════════ -->
+    <section class="lamina" id="microinteracciones-de-estado">
+      <header class="lamina-cab">
+        <h2>Microinteracciones de estado</h2>
+        <span class="lamina-sec">§6f Movimiento</span>
+        <p class="lamina-regla">Cada movimiento <b>confirma un estado</b>: el botón cambia de palabra sin cambiar de ancho, ⊕ pasa a ✓, la cifra rueda por dígito, el chevron gira 180° en 150 ms. Si no confirma nada, sacalo.</p>
+        <p class="lamina-ref">Patrones 15.3 y 15.8 · ref. 26, 52, 53, 65</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="micro">
+            <div class="card">
+              <span class="rot-g"><i class="ph ph-floppy-disk"></i>Botón con ancho fijo</span>
+              <div class="esc"><button class="btn fijo" id="mi-guardar" style="--ancho:136px"><i class="ph ph-floppy-disk"></i><span>Guardar</span></button></div>
+              <p>Gerundio mientras trabaja, ✓ con resorte 2 s y vuelve.</p>
+            </div>
+            <div class="card">
+              <span class="rot-g"><i class="ph ph-plus-circle"></i>Agregar a la selección</span>
+              <div class="esc"><div class="mini-lista" id="mi-lista"></div></div>
+              <p><span class="num" id="mi-sel">0 elegidos</span> · el ⊕ se vuelve ✓ verde.</p>
+            </div>
+            <div class="card">
+              <span class="rot-g"><i class="ph ph-copy"></i>Copiar</span>
+              <div class="esc"><span class="cod">30-71583092-9</span><button class="btn ic chico" id="mi-copiar" aria-label="Copiar CUIT" data-tip="Copiar"><i class="ph ph-copy"></i></button></div>
+              <p>El ícono pasa a ✓ y se anuncia "Copiado" 1,5 s.</p>
+            </div>
+            <div class="card">
+              <span class="rot-g"><i class="ph ph-caret-down"></i>Desplegar</span>
+              <div class="esc" style="flex-direction:column;align-items:stretch">
+                <button class="btn chico texto chev" id="mi-chev" aria-expanded="false" aria-controls="mi-desp" style="justify-content:space-between">3 pagos parciales<i class="ph ph-caret-down"></i></button>
+                <div class="desp" id="mi-desp"><div><div class="det">12 nov · $ 400.000\n15 nov · $ 400.000\n18 nov · $ 484.500</div></div></div>
+              </div>
+              <p>Chevron 180° en 150 ms; el alto se anima con grid.</p>
+            </div>
+            <div class="card">
+              <span class="rot-g"><i class="ph ph-bell"></i>Campana con panel abierto</span>
+              <div class="esc"><button class="btn ic campana" id="mi-campana" aria-label="Avisos, 3 sin leer" aria-expanded="false"><i class="ph ph-bell"></i><span class="insignia" id="mi-ins">3</span></button><span class="t-12 gris" id="mi-camp-t">3 sin leer</span></div>
+              <p>Relleno mientras el panel está abierto; al abrir, se leen.</p>
+            </div>
+            <div class="card">
+              <span class="rot-g"><i class="ph ph-hash"></i>Cifra que rueda</span>
+              <div class="esc"><span class="odo" id="mi-odo" aria-live="polite"></span></div>
+              <div class="fila" style="justify-content:center"><button class="btn chico" id="mi-mas">+ $ 12.500</button><button class="btn chico estrella" id="mi-estrella" aria-pressed="false" aria-label="Destacar"><i class="ph ph-star"></i></button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script type="application/json" id="ilus-svg">/*ILUS*/{"cargando-algo-grande":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"cargando-algo-grande\"> <defs> <pattern id=\"ray-cargando-algo-grande\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"> <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/> <\/pattern> <\/defs> <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\"> <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/> <path d=\"M100 6v8M28 76h6M166 76h6\" /> <path d=\"M36 128h128\"/> <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/> <\/g> <path d=\"M80 41v74M120 41v74\" stroke-opacity=\".5\"/> <path d=\"M84 41c0 22 16 26 16 37s-16 15-16 37h32c0-22-16-26-16-37s16-15 16-37z\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M89 52h22c-2 9-9 14-11 19-2-5-9-10-11-19z\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.22\" stroke=\"var(--ilus-acento, #6d63ff)\"/> <path d=\"M100 80v24\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-dasharray=\"1 3.4\" class=\"ilus-cae\"/> <path d=\"M87.5 115c2-8 7-12.5 12.5-13.5 5.5 1 10.5 5.5 12.5 13.5z\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.22\" stroke=\"var(--ilus-acento, #6d63ff)\"/> <path d=\"M84 41c0 22 16 26 16 37s-16 15-16 37h32c0-22-16-26-16-37s16-15 16-37z\"/> <path d=\"M88.5 46c.6 5 2 8 4 10.5\" stroke-opacity=\".5\"/> <rect x=\"72\" y=\"34\" width=\"56\" height=\"8\" rx=\"4\" fill=\"var(--ilus-papel, #fff)\"/> <rect x=\"72\" y=\"34\" width=\"56\" height=\"8\" rx=\"4\" fill=\"url(#ray-cargando-algo-grande)\"/> <rect x=\"72\" y=\"114\" width=\"56\" height=\"8\" rx=\"4\" fill=\"var(--ilus-papel, #fff)\"/> <rect x=\"72\" y=\"114\" width=\"56\" height=\"8\" rx=\"4\" fill=\"url(#ray-cargando-algo-grande)\"/> <g class=\"ilus-gira\"> <circle cx=\"100\" cy=\"18\" r=\"3.4\" fill=\"var(--ilus-papel, #fff)\" stroke=\"var(--ilus-acento, #6d63ff)\"/> <circle cx=\"158\" cy=\"76\" r=\"2\" fill=\"currentColor\" stroke=\"none\" opacity=\".45\"/> <\/g> <path d=\"M46 40.5v7M42.5 44h7\"/><path d=\"M156 109v6M153 112h6\" stroke-opacity=\".7\"/> <circle cx=\"48\" cy=\"108\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/> <\/svg>","sin-clientes":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-clientes\"> <defs> <pattern id=\"ray-sin-clientes\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"> <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/> <\/pattern> <\/defs> <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\"> <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/> <path d=\"M100 6v8M28 76h6M166 76h6\" /> <path d=\"M36 128h128\"/> <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/> <\/g> <rect x=\"122\" y=\"70\" width=\"38\" height=\"58\" rx=\"4\" stroke-dasharray=\"3 3.5\" stroke-opacity=\".6\"/> <rect x=\"56\" y=\"52\" width=\"58\" height=\"76\" rx=\"4\" fill=\"var(--ilus-papel, #fff)\"/> <rect x=\"64\" y=\"38\" width=\"42\" height=\"14\" rx=\"4\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M72 45h26\" stroke-opacity=\".55\"/> <path d=\"M52 62h66l-3 10H55z\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M52 62h66l-3 10H55z\" fill=\"url(#ray-sin-clientes)\"/> <path d=\"M55 72c0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0\" fill=\"var(--ilus-papel, #fff)\"/> <rect x=\"64\" y=\"86\" width=\"16\" height=\"14\" rx=\"2.5\"/><path d=\"M72 86v14\" stroke-opacity=\".5\"/> <rect x=\"90\" y=\"86\" width=\"16\" height=\"14\" rx=\"2.5\"/><path d=\"M98 86v14\" stroke-opacity=\".5\"/> <rect x=\"78\" y=\"106\" width=\"14\" height=\"22\" rx=\"2\" fill=\"url(#ray-sin-clientes)\"/> <rect x=\"78\" y=\"106\" width=\"14\" height=\"22\" rx=\"2\"/> <circle cx=\"141\" cy=\"99\" r=\"10\" fill=\"var(--ilus-papel, #fff)\"/> <circle cx=\"141\" cy=\"99\" r=\"10\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.16\" stroke=\"var(--ilus-acento, #6d63ff)\"/> <path d=\"M141 94.5v9M136.5 99h9\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.6\"/> <path d=\"M44 36.5v7M40.5 40h7\"/><path d=\"M160 45v6M157 48h6\" stroke-opacity=\".7\"/> <circle cx=\"134\" cy=\"58\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"48\" cy=\"104\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/> <\/svg>","sin-reuniones":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-reuniones\"> <defs> <pattern id=\"ray-sin-reuniones\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"> <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/> <\/pattern> <\/defs> <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\"> <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/> <path d=\"M100 6v8M28 76h6M166 76h6\" /> <path d=\"M36 128h128\"/> <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/> <\/g> <rect x=\"54\" y=\"38\" width=\"82\" height=\"86\" rx=\"11\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M54 56v-7a11 11 0 0 1 11-11h60a11 11 0 0 1 11 11v7z\" fill=\"url(#ray-sin-reuniones)\"/> <path d=\"M54 56h82\"/> <rect x=\"72\" y=\"30\" width=\"6\" height=\"14\" rx=\"3\" fill=\"var(--ilus-papel, #fff)\"/> <rect x=\"112\" y=\"30\" width=\"6\" height=\"14\" rx=\"3\" fill=\"var(--ilus-papel, #fff)\"/> <g stroke-opacity=\".5\" stroke-dasharray=\"2 2.6\"> <rect x=\"64\" y=\"66\" width=\"10\" height=\"10\" rx=\"3\"/><rect x=\"82\" y=\"66\" width=\"10\" height=\"10\" rx=\"3\"/><rect x=\"100\" y=\"66\" width=\"10\" height=\"10\" rx=\"3\"/><rect x=\"118\" y=\"66\" width=\"10\" height=\"10\" rx=\"3\"/> <rect x=\"64\" y=\"84\" width=\"10\" height=\"10\" rx=\"3\"/><rect x=\"82\" y=\"84\" width=\"10\" height=\"10\" rx=\"3\"/><rect x=\"118\" y=\"84\" width=\"10\" height=\"10\" rx=\"3\"/> <rect x=\"64\" y=\"102\" width=\"10\" height=\"10\" rx=\"3\"/><rect x=\"82\" y=\"102\" width=\"10\" height=\"10\" rx=\"3\"/> <\/g> <rect x=\"100\" y=\"84\" width=\"10\" height=\"10\" rx=\"3\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.2\" stroke=\"var(--ilus-acento, #6d63ff)\"/> <circle cx=\"142\" cy=\"106\" r=\"17\" fill=\"var(--ilus-papel, #fff)\"/> <circle cx=\"142\" cy=\"106\" r=\"17\"/> <circle cx=\"142\" cy=\"106\" r=\"13\" stroke-opacity=\".4\" stroke-dasharray=\"1 3.2\"/> <path d=\"M142 97v9l6 3.5\"/> <circle cx=\"142\" cy=\"106\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/> <path d=\"M44 48.5v7M40.5 52h7\"/><path d=\"M158 37v6M155 40h6\" stroke-opacity=\".7\"/> <circle cx=\"42\" cy=\"90\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"160\" cy=\"70\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/> <\/svg>","sin-tareas":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-tareas\"> <defs> <pattern id=\"ray-sin-tareas\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"> <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/> <\/pattern> <\/defs> <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\"> <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/> <path d=\"M100 6v8M28 76h6M166 76h6\" /> <path d=\"M36 128h128\"/> <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/> <\/g> <rect x=\"62\" y=\"34\" width=\"66\" height=\"90\" rx=\"11\" fill=\"var(--ilus-papel, #fff)\"/> <rect x=\"80\" y=\"27\" width=\"30\" height=\"13\" rx=\"4.5\" fill=\"var(--ilus-papel, #fff)\"/> <rect x=\"80\" y=\"27\" width=\"30\" height=\"13\" rx=\"4.5\" fill=\"url(#ray-sin-tareas)\"/> <circle cx=\"95\" cy=\"27\" r=\"2\" fill=\"var(--ilus-papel, #fff)\"/> <g> <circle cx=\"77\" cy=\"60\" r=\"5.5\"/><path d=\"M74.6 60.2l1.7 1.7 3.3-3.4\"/><path d=\"M89 60h26\" stroke-opacity=\".55\"/> <circle cx=\"77\" cy=\"80\" r=\"5.5\"/><path d=\"M74.6 80.2l1.7 1.7 3.3-3.4\"/><path d=\"M89 80h20\" stroke-opacity=\".55\"/> <circle cx=\"77\" cy=\"100\" r=\"5.5\"/><path d=\"M74.6 100.2l1.7 1.7 3.3-3.4\"/><path d=\"M89 100h14\" stroke-opacity=\".55\"/> <\/g> <circle cx=\"131\" cy=\"110\" r=\"17\" fill=\"var(--ilus-papel, #fff)\"/> <circle cx=\"131\" cy=\"110\" r=\"17\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.16\" stroke=\"var(--ilus-acento, #6d63ff)\"/> <circle cx=\"131\" cy=\"110\" r=\"22\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-opacity=\".45\" stroke-dasharray=\"1.5 3.5\"/> <path d=\"M123.5 110.5l5 5 10-10.5\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.7\"/> <g stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.2\"> <path d=\"M153 90l4-4\"/><path d=\"M158 106h6\"/><path d=\"M150 132l3 3\"/> <\/g> <path d=\"M48 46.5v7M44.5 50h7\"/><path d=\"M150 37v6M147 40h6\" stroke-opacity=\".7\"/> <circle cx=\"52\" cy=\"96\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"44\" cy=\"72\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/> <\/svg>","sin-facturas":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-facturas\"> <defs> <pattern id=\"ray-sin-facturas\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"> <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/> <\/pattern> <\/defs> <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\"> <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/> <path d=\"M100 6v8M28 76h6M166 76h6\" /> <path d=\"M36 128h128\"/> <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/> <\/g> <g transform=\"rotate(9 118 72)\" stroke-opacity=\".55\"> <rect x=\"84\" y=\"30\" width=\"52\" height=\"82\" rx=\"6\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M94 44h22M94 56h30M94 66h24\" stroke-dasharray=\"2 3\"/> <\/g> <path d=\"M62 34a6 6 0 0 1 6-6h48a6 6 0 0 1 6 6v84l-6 5-6-5-6 5-6-5-6 5-6-5-6 5-6-5-6 5-6-5z\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M72 42h22\" stroke-width=\"1.6\"/> <path d=\"M72 50h12\" stroke-opacity=\".5\"/> <g stroke-opacity=\".6\"> <path d=\"M72 64h22M104 64h8\"/><path d=\"M72 74h18M104 74h8\"/><path d=\"M72 84h26M104 84h8\"/> <\/g> <path d=\"M72 96h40\" stroke-dasharray=\"2 3\" stroke-opacity=\".6\"/> <path d=\"M72 106h12M98 106h14\" stroke-width=\"1.6\"/> <g transform=\"rotate(-12 132 96)\"> <circle cx=\"132\" cy=\"96\" r=\"17\" fill=\"var(--ilus-papel, #fff)\"/> <circle cx=\"132\" cy=\"96\" r=\"17\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.14\" stroke=\"var(--ilus-acento, #6d63ff)\"/> <circle cx=\"132\" cy=\"96\" r=\"12.5\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-dasharray=\"1.5 2.8\" stroke-opacity=\".7\"/> <path d=\"M135.4 91.3c-.8-1.2-2-1.8-3.4-1.8-2 0-3.4 1-3.4 2.6 0 3.6 7 2 7 5.6 0 1.6-1.5 2.6-3.6 2.6-1.6 0-3-.6-3.7-1.8M132 87.3v2.2M132 100.4v2.2\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.4\"/> <\/g> <path d=\"M48 42.5v7M44.5 46h7\"/><path d=\"M156 55v6M153 58h6\" stroke-opacity=\".7\"/> <circle cx=\"46\" cy=\"100\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"150\" cy=\"124\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/> <\/svg>","sin-resultados":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-resultados\"> <defs> <pattern id=\"ray-sin-resultados\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"> <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/> <\/pattern> <\/defs> <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\"> <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/> <path d=\"M100 6v8M28 76h6M166 76h6\" /> <path d=\"M36 128h128\"/> <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/> <\/g> <rect x=\"50\" y=\"38\" width=\"74\" height=\"86\" rx=\"10\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M50 54h74\" stroke-opacity=\".5\"/> <path d=\"M60 46h20\" /> <g stroke-opacity=\".55\" stroke-dasharray=\"2 3.5\"> <rect x=\"60\" y=\"64\" width=\"9\" height=\"9\" rx=\"2.5\"/><path d=\"M76 68.5h32\"/> <rect x=\"60\" y=\"82\" width=\"9\" height=\"9\" rx=\"2.5\"/><path d=\"M76 86.5h24\"/> <rect x=\"60\" y=\"100\" width=\"9\" height=\"9\" rx=\"2.5\"/><path d=\"M76 104.5h28\"/> <\/g> <rect x=\"139\" y=\"98.5\" width=\"24\" height=\"9\" rx=\"4.5\" transform=\"rotate(45 151 103)\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.16\" stroke=\"var(--ilus-acento, #6d63ff)\"/> <circle cx=\"124\" cy=\"76\" r=\"24\" fill=\"var(--ilus-papel, #fff)\"/> <circle cx=\"124\" cy=\"76\" r=\"24\" fill=\"url(#ray-sin-resultados)\" fill-opacity=\".35\"/> <circle cx=\"124\" cy=\"76\" r=\"18\" fill=\"var(--ilus-papel, #fff)\"/> <circle cx=\"124\" cy=\"76\" r=\"24\"/> <path d=\"M110.5 69a15 15 0 0 1 7-7.5\" stroke-opacity=\".6\"/> <path d=\"M119.5 71.5a4.6 4.6 0 1 1 6.6 4.1c-1.3.6-2.1 1.5-2.1 2.9v1.2\"/> <circle cx=\"124\" cy=\"85\" r=\"1.2\" fill=\"currentColor\" stroke=\"none\"/> <path d=\"M58 22.5v7M54.5 26h7\"/><path d=\"M166 41v6M163 44h6\" stroke-opacity=\".7\"/> <circle cx=\"40\" cy=\"96\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"160\" cy=\"30\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/> <\/svg>","error":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"error\"> <defs> <pattern id=\"ray-error\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"> <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/> <\/pattern> <\/defs> <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\"> <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/> <path d=\"M100 6v8M28 76h6M166 76h6\" /> <path d=\"M36 128h128\"/> <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/> <\/g> <rect x=\"46\" y=\"36\" width=\"98\" height=\"78\" rx=\"11\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M46 52h98\" stroke-opacity=\".6\"/> <circle cx=\"57\" cy=\"44\" r=\"1.7\" fill=\"currentColor\" stroke=\"none\" opacity=\".55\"/><circle cx=\"64\" cy=\"44\" r=\"1.7\" fill=\"currentColor\" stroke=\"none\" opacity=\".55\"/><circle cx=\"71\" cy=\"44\" r=\"1.7\" fill=\"currentColor\" stroke=\"none\" opacity=\".55\"/> <g stroke-opacity=\".6\"> <path d=\"M58 64h24M58 74h16M58 84h22M58 94h12\"/> <path d=\"M106 68h26M108 78h18M107 88h22\"/> <\/g> <path d=\"M96 52l-7 13 8 7-8 12 7 9-4 11\" stroke-width=\"1.4\"/> <path d=\"M60 128l7-9 9 9z\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M60 128l7-9 9 9z\" fill=\"url(#ray-error)\"/> <path d=\"M82 128l3-4 3 4\" stroke-opacity=\".6\"/> <path d=\"M137.4 83.5a3 3 0 0 1 5.2 0l15.6 27.5a3 3 0 0 1-2.6 4.5h-30.8a3 3 0 0 1-2.6-4.5z\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M137.4 83.5a3 3 0 0 1 5.2 0l15.6 27.5a3 3 0 0 1-2.6 4.5h-30.8a3 3 0 0 1-2.6-4.5z\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.16\" stroke=\"var(--ilus-acento, #6d63ff)\"/> <path d=\"M140 94v9\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.7\"/> <circle cx=\"140\" cy=\"108.5\" r=\"1.5\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/> <path d=\"M40 48.5v7M36.5 52h7\"/><path d=\"M160 41v6M157 44h6\" stroke-opacity=\".7\"/> <circle cx=\"36\" cy=\"100\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/> <\/svg>","sin-conexion":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-conexion\"> <defs> <pattern id=\"ray-sin-conexion\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"> <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/> <\/pattern> <\/defs> <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\"> <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/> <path d=\"M100 6v8M28 76h6M166 76h6\" /> <path d=\"M36 128h128\"/> <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/> <\/g> <g stroke-opacity=\".55\"> <path d=\"M84 50a22 22 0 0 1 32 0\"/><path d=\"M90 56a13 13 0 0 1 20 0\"/> <circle cx=\"100\" cy=\"61\" r=\"1.5\" fill=\"currentColor\" stroke=\"none\"/> <\/g> <path d=\"M86 36l28 30\" stroke-opacity=\".7\"/> <path d=\"M30 112c20 0 22-26 42-26\"/> <rect x=\"72\" y=\"77\" width=\"22\" height=\"18\" rx=\"5\" fill=\"var(--ilus-papel, #fff)\"/> <rect x=\"72\" y=\"77\" width=\"22\" height=\"18\" rx=\"5\" fill=\"url(#ray-sin-conexion)\"/> <path d=\"M94 81.5h8M94 90.5h8\"/> <path d=\"M170 112c-20 0-20-26-38-26\"/> <rect x=\"116\" y=\"75\" width=\"18\" height=\"22\" rx=\"5\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M122 83v6M128 83v6\" /> <g stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.3\"> <path d=\"M109 69v-6\"/><path d=\"M103 73l-3-4\"/><path d=\"M115 73l3-4\"/> <path d=\"M109 103v6\"/><path d=\"M103 99l-3 4\"/><path d=\"M115 99l3 4\"/> <\/g> <circle cx=\"109\" cy=\"86\" r=\"1.7\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/> <path d=\"M46 46.5v7M42.5 50h7\"/><path d=\"M158 43v6M155 46h6\" stroke-opacity=\".7\"/> <circle cx=\"150\" cy=\"128\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/> <\/svg>","sin-permisos":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-permisos\"> <defs> <pattern id=\"ray-sin-permisos\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"> <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/> <\/pattern> <\/defs> <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\"> <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/> <path d=\"M100 6v8M28 76h6M166 76h6\" /> <path d=\"M36 128h128\"/> <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/> <\/g> <path d=\"M84 76V60a16 16 0 0 1 32 0v16\"/> <path d=\"M90 76V60a10 10 0 0 1 20 0v16\" stroke-opacity=\".6\"/> <rect x=\"72\" y=\"74\" width=\"56\" height=\"50\" rx=\"11\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M112 74h5a11 11 0 0 1 11 11v28a11 11 0 0 1-11 11h-5z\" fill=\"url(#ray-sin-permisos)\"/> <path d=\"M112 74v50\" stroke-opacity=\".45\"/> <rect x=\"72\" y=\"74\" width=\"56\" height=\"50\" rx=\"11\"/> <circle cx=\"94\" cy=\"94\" r=\"5.5\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.2\" stroke=\"var(--ilus-acento, #6d63ff)\"/> <path d=\"M94 99.5v8\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.6\"/> <g stroke-opacity=\".6\" stroke-dasharray=\"2 2.4\"> <circle cx=\"146\" cy=\"120\" r=\"6\"/><path d=\"M152 120h14M161 120v4M165 120v3\"/> <\/g> <path d=\"M54 40.5v7M50.5 44h7\"/><path d=\"M150 41v6M147 44h6\" stroke-opacity=\".7\"/> <circle cx=\"50\" cy=\"100\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"146\" cy=\"70\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/> <\/svg>","exito":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"exito\"> <defs> <pattern id=\"ray-exito\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"> <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/> <\/pattern> <\/defs> <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\"> <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/> <path d=\"M100 6v8M28 76h6M166 76h6\" /> <path d=\"M36 128h128\"/> <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/> <\/g> <path d=\"M88 92l-9 32 9-4.5 5.5 8.5 6.5-29\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M88 92l-9 32 9-4.5 5.5 8.5 6.5-29\" fill=\"url(#ray-exito)\"/> <path d=\"M112 92l9 32-9-4.5-5.5 8.5-6.5-29\" fill=\"var(--ilus-papel, #fff)\"/> <path d=\"M100 34Q103.02 33.52 105.21 38.46Q108.1 37.75 111.63 36.05Q114.63 36.63 115 42.02Q117.96 42.35 121.85 41.95Q124.47 43.53 122.98 48.72Q125.65 50.04 129.44 51Q131.37 53.37 128.19 57.74Q130.25 59.9 133.48 62.1Q134.48 64.98 130 68Q131.19 70.73 133.48 73.9Q133.43 76.96 128.19 78.26Q128.38 81.23 129.44 85Q128.35 87.85 122.98 87.28Q122.14 90.14 121.85 94.05Q119.85 96.35 115 93.98Q113.23 96.38 111.63 99.95Q108.96 101.43 105.21 97.54Q102.73 99.19 100 102Q96.98 102.48 94.79 97.54Q91.9 98.25 88.37 99.95Q85.37 99.37 85 93.98Q82.04 93.65 78.15 94.05Q75.53 92.47 77.02 87.28Q74.35 85.96 70.56 85Q68.63 82.63 71.81 78.26Q69.75 76.1 66.52 73.9Q65.52 71.02 70 68Q68.81 65.27 66.52 62.1Q66.57 59.04 71.81 57.74Q71.62 54.77 70.56 51Q71.65 48.15 77.02 48.72Q77.86 45.86 78.15 41.95Q80.15 39.65 85 42.02Q86.77 39.62 88.37 36.05Q91.04 34.57 94.79 38.46Q97.27 36.81 100 34Z\" fill=\"var(--ilus-papel, #fff)\"/> <circle cx=\"100\" cy=\"68\" r=\"27\" stroke-opacity=\".4\" stroke-dasharray=\"1.5 3.4\"/> <circle cx=\"100\" cy=\"68\" r=\"21\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.16\" stroke=\"var(--ilus-acento, #6d63ff)\"/> <path d=\"M90.5 68.5l6.5 6.5 13-13.5\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.8\"/> <g stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.2\"> <path d=\"M146 40l5-3\"/><path d=\"M152 60h6\"/><path d=\"M48 54l-5-2\"/><path d=\"M56 30l-3-4\"/> <\/g> <path d=\"M150 88.5v7M146.5 92h7\"/><path d=\"M46 83v6M43 86h6\" stroke-opacity=\".7\"/> <circle cx=\"140\" cy=\"22\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"62\" cy=\"116\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/><circle cx=\"140\" cy=\"120\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/> <\/svg>"}</script>
+<script src="base.js"></script>
+<script>
+const { $, $$, fmt, toast, anunciar, destellar, escapar, sinAcentos, cuenta, ticks, bloques, anillo, quieto } = bib;
+const espera = ms => new Promise(r => setTimeout(r, ms));
+/* reloj de la demo: arranca en bib.HOY (18 nov 15:42) y avanza con el tiempo real */
+const T0 = Date.now();
+const ahora = () => new Date(bib.HOY.getTime() + (Date.now() - T0));
+const hhmm = d => fmt.hora(d || ahora());
+
+/* ───── ilustraciones en línea (heredan color y --ilus-*), ids únicos por instancia ───── */
+const ILUS = JSON.parse($('#ilus-svg').textContent.replace('/*ILUS*/', ''));
+let nIlus = 0;
+$$('[data-ilus]').forEach(el => {
+  const svg = ILUS[el.dataset.ilus]; if (!svg) return;
+  const n = ++nIlus;
+  el.innerHTML = svg.replace(/(id="|url\(#)(ray-[\w-]+)/g, (_, a, id) => `${a}${id}-${n}`);
+  el.setAttribute('aria-hidden', 'true');
+});
+
+const SPIN = '<i class="ph ph-circle-notch gira"></i>';
+
+/* ═════════ 1 · Esqueleto ═════════ */
+(() => {
+  const demo = $('#esq-demo'), seg = $('#esq-modo');
+  bloques($('#esq-segs'), 10, 4, 'var(--e2)');
+  ticks($('#esq-ticks'), 30, 22, 'var(--e4)');
+  [['#esq-l1', 'Lucía Benítez'], ['#esq-l2', 'Tomás Ferraro'], ['#esq-l3', 'Ana Quiroga']].forEach(([s, n]) => $(s).insertAdjacentHTML('afterbegin', bib.avatar(n)));
+  $('#esq-ficha-cab').insertAdjacentHTML('afterbegin', bib.avatar('Orbe Retail', { clase: 'grande', color: 'var(--e1)' }));
+  const poner = m => { demo.dataset.modo = m; $$('button', seg).forEach(b => { const on = b.dataset.v === m; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); }); };
+  seg.addEventListener('cambio', e => poner(e.detail));
+  let t;
+  $('#esq-recargar').addEventListener('click', () => {
+    clearTimeout(t); poner('esq');
+    const ms = 900 + Math.round(Math.random() * 500);
+    $('#esq-tiempo').textContent = `Respuesta simulada: ${fmt.numero(ms / 1000, 1)} s`;
+    t = setTimeout(() => { poner('dato'); anunciar('Datos cargados'); }, ms);
+  });
+})();
+
+/* ═════════ 2 · Carga diferida ═════════ */
+(() => {
+  const FACT = [
+    { c: 'FAC-01118', cli: 'Orbe Retail S.A.', e: 'e1', m: 1284500, est: 'am', t: 'Por vencer', f: '26 nov' },
+    { c: 'FAC-01117', cli: 'Casa Lumen SRL', e: 'e2', m: 642000, est: 'ok', t: 'Cobrada', f: '9 nov' },
+    { c: 'FAC-01112', cli: 'Grupo Atlas', e: 'e4', m: 2150000, est: 'ro', t: 'Vencida', f: '12 nov' },
+    { c: 'FAC-01110', cli: 'Puerto Norte Logística', e: 'e6', m: 398700, est: 'ok', t: 'Cobrada', f: '5 nov' },
+    { c: 'FAC-01104', cli: 'Ferretería Del Sur', e: 'e3', m: 87300, est: 'ro', t: 'Vencida', f: '3 nov' },
+    { c: 'FAC-01099', cli: 'Orbe Retail S.A.', e: 'e1', m: 1120000, est: 'ok', t: 'Cobrada', f: '28 oct' },
+  ];
+  const filtros = { todas: () => true, vencidas: f => f.est === 'ro', cobradas: f => f.est === 'ok' };
+  const chip = f => f.est === 'ok' ? `<span class="gris-2 t-12"><i class="ph ph-check" style="font-size:13px"></i> ${f.t}</span>` : `<span class="chip d ${f.est}">${f.t}</span>`;
+  const cuerpo = $('#cd-cuerpo'), barra = $('#cd-barrita'), est = $('#cd-estado'), cursor = $('#cd-cursor');
+  const pintar = (k, entrar) => {
+    cuerpo.innerHTML = FACT.filter(filtros[k]).map(f => `<div class="fila-d${entrar ? ' desenfoque' : ''}"><span class="cuadro ch" style="--ent:var(--${f.e})"></span><div class="q"><b>${f.cli}</b><small><span class="cod gris">${f.c}</span> · ${f.f}</small></div>${chip(f)}<span style="min-width:96px;text-align:right">${fmt.montoHTML(f.m)}</span></div>`).join('');
+  };
+  pintar('todas');
+  let red = '180', pedido = 0, ultimo = 'todas';
+  $('#cd-red').addEventListener('cambio', e => { red = e.detail; });
+  const filtro = $('#cd-filtro');
+  filtro.addEventListener('cambio', async e => {
+    const k = e.detail, id = ++pedido, falla = red === 'falla', ms = falla ? 1200 : +red;
+    const t0 = performance.now();
+    cursor.style.transition = 'none'; cursor.style.left = '0'; cursor.style.opacity = '1';
+    requestAnimationFrame(() => { cursor.style.transition = `left ${Math.min(ms, 1600)}ms linear`; cursor.style.left = `${Math.min(ms, 1600) / 1600 * 100}%`; });
+    const diferida = setTimeout(() => { if (id !== pedido) return; cuerpo.classList.add('atenua'); barra.classList.add('ver'); est.textContent = 'Actualizando…'; }, 300);
+    await espera(ms);
+    clearTimeout(diferida);
+    if (id !== pedido) return;
+    cuerpo.classList.remove('atenua'); barra.classList.remove('ver');
+    setTimeout(() => { cursor.style.opacity = '0'; }, 600);
+    if (falla) {
+      est.innerHTML = '';
+      $$('button', filtro).forEach(b => { const on = b.dataset.v === ultimo; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+      cuerpo.insertAdjacentHTML('afterbegin', `<div class="fila-d" role="alert" style="background:var(--rojo-f)"><i class="ph ph-warning-circle" style="color:var(--rojo)"></i><div class="q"><b>No se pudo filtrar</b><small>Seguís viendo «${ultimo === 'todas' ? 'Todas' : ultimo}» · <span class="mono">ERR-503 · ${hhmm()}</span></small></div><button class="btn chico" data-re="${k}">Reintentar</button></div>`);
+      $('[data-re]', cuerpo).onclick = ev => { $('#cd-red button[data-v="1600"]').click(); $(`#cd-filtro button[data-v="${ev.currentTarget.dataset.re}"]`).click(); };
+      return;
+    }
+    ultimo = k; pintar(k, ms >= 300);
+    const real = Math.round(performance.now() - t0);
+    est.textContent = ms < 300 ? `${real} ms · sin mostrar carga` : '';
+  });
+})();
+
+/* ═════════ 3 · Proceso largo ═════════ */
+(() => {
+  const TOTAL = 1284, demo = $('#pr-demo'), marco = $('#pr-marco');
+  const barra = $('#pr-barra'), relleno = $('i', barra), hechosEl = $('#pr-hechos'), resta = $('#pr-resta');
+  const pasos = $$('#pr-pasos li'), bEmp = $('#pr-empezar'), bFondo = $('#pr-fondo'), bCanc = $('#pr-cancelar');
+  let hechos = 0, timer = null, muestras = [], restaMostrada = Infinity, pildora = null, corriendo = false;
+  const PASO_DE = n => n < 40 ? 0 : n < 260 ? 1 : n < 1220 ? 2 : 3;
+  function marcarPasos(i, fin) {
+    pasos.forEach((li, j) => {
+      const hecho = j < i || fin, activo = j === i && !fin;
+      li.className = hecho ? 'hecho' : activo ? 'activo' : '';
+      $('.ic', li).innerHTML = hecho ? '<i class="ph-fill ph-check-circle"></i>' : activo ? '<i class="ph ph-circle-notch gira" style="color:var(--acento)"></i>' : '<span class="pt"></span>';
+    });
+    pasos[1].querySelector('.c').textContent = i > 1 || fin ? '23 con error' : '';
+  }
+  function textoResta(s) {
+    if (s <= 5) return 'casi listo';
+    if (s < 60) return `quedan unos ${Math.ceil(s / 5) * 5} s`;
+    return `quedan unos ${Math.ceil(s / 60)} min`;
+  }
+  function pintar() {
+    const pct = hechos / TOTAL;
+    relleno.style.width = `${pct * 100}%`;
+    barra.setAttribute('aria-valuenow', hechos);
+    hechosEl.textContent = fmt.numero(hechos);
+    const t = performance.now();
+    muestras.push([t, hechos]); muestras = muestras.filter(([x]) => t - x <= 2000);
+    if (muestras.length > 3) {
+      const [t0, h0] = muestras[0], ritmo = (hechos - h0) / ((t - t0) / 1000);
+      const s = ritmo > 0 ? (TOTAL - hechos) / ritmo * 4.4 : Infinity; /* ×4,4: la demo corre más rápido que una importación real */
+      restaMostrada = Math.min(restaMostrada, s);
+      resta.textContent = textoResta(restaMostrada);
+    }
+    marcarPasos(PASO_DE(hechos));
+    if (pildora) pintarPildora();
+  }
+  const ANILLO = { grosor: 3, color: 'var(--neg-t)', fondo: 'color-mix(in oklch,var(--neg-t) 25%,transparent)' };
+  function pintarPildora() {
+    const pct = hechos / TOTAL;
+    pildora.innerHTML = `${anillo(32, pct, ANILLO)}<span class="tx">Importando · ${Math.round(pct * 100)} %</span>`;
+  }
+  function reiniciarUI() {
+    $('#pr-rot').textContent = 'Listo para importar';
+    $('#pr-tit').textContent = 'Importar contactos de clientes-2026.csv';
+    hechos = 0; muestras = []; restaMostrada = Infinity; relleno.style.width = '0'; hechosEl.textContent = '0'; resta.textContent = '—';
+    marcarPasos(-1); pasos.forEach(li => { $('.ic', li).innerHTML = '<span class="pt"></span>'; li.className = ''; });
+    $('#pr-pie').innerHTML = '<span class="anuncio">Podés seguir usando el sistema. Te avisamos al terminar.</span><button class="btn chico" id="pr-fondo" disabled><i class="ph ph-arrows-in-simple"></i>Seguir en segundo plano</button><button class="btn chico texto peligro" id="pr-cancelar" disabled>Cancelar</button>';
+    enlazar();
+  }
+  function enlazar() {
+    $('#pr-fondo').onclick = minimizar;
+    $('#pr-cancelar').onclick = cancelar;
+  }
+  function empezar() {
+    if (corriendo) return;
+    reiniciarUI(); corriendo = true;
+    bEmp.setAttribute('aria-disabled', 'true');
+    $('#pr-rot').innerHTML = '<span class="est e-az"><i class="ph ph-circle-notch gira"></i>Importando</span>';
+    $('#pr-fondo').disabled = false; $('#pr-cancelar').disabled = false;
+    anunciar('Importación empezada');
+    timer = setInterval(() => {
+      hechos = Math.min(TOTAL, hechos + 9 + Math.round(Math.random() * 22));
+      pintar();
+      if (hechos >= TOTAL) terminar();
+    }, 130);
+  }
+  function minimizar() {
+    marco.hidden = true;
+    pildora = document.createElement('button');
+    pildora.className = 'pildora-p'; pildora.title = 'Ver la importación';
+    pintarPildora();
+    pildora.onclick = () => { pildora.remove(); pildora = null; marco.hidden = false; $('#pr-fondo')?.focus(); };
+    demo.appendChild(pildora); pildora.focus();
+    anunciar('La importación sigue en segundo plano');
+  }
+  function cancelar() {
+    clearInterval(timer); corriendo = false; bEmp.removeAttribute('aria-disabled');
+    const creados = Math.max(0, hechos - 260);
+    $('#pr-rot').innerHTML = '<span class="est"><i class="ph ph-stop-circle"></i>Cancelada</span>';
+    resta.textContent = `cancelada a las ${hhmm()}`;
+    $('#pr-pie').innerHTML = `<span class="anuncio">${fmt.plural(creados, 'contacto ya creado queda cargado.', 'contactos ya creados quedan cargados.')}</span><button class="btn chico" id="pr-otra"><i class="ph ph-arrow-clockwise"></i>Importar de nuevo</button>`;
+    $('#pr-otra').onclick = empezar;
+    toast({ titulo: 'Importación cancelada', detalle: `${fmt.numero(creados)} contactos ya creados quedan cargados`, tipo: 'info', deshacer: { texto: 'Borrarlos', fn: () => toast({ titulo: `${fmt.numero(creados)} contactos borrados`, detalle: 'Quedan en la papelera 30 días' }) } });
+  }
+  function terminar() {
+    clearInterval(timer); corriendo = false; bEmp.removeAttribute('aria-disabled');
+    marcarPasos(4, true);
+    if (pildora) { pildora.remove(); pildora = null; marco.hidden = false; }
+    $('#pr-rot').innerHTML = '<span class="est e-am"><i class="ph ph-warning"></i>Terminó con avisos</span>';
+    $('#pr-tit').textContent = '1.261 contactos importados';
+    resta.textContent = `terminó ${hhmm()}`;
+    $('#pr-pie').innerHTML = `<ul class="efectos" style="width:100%">
+      <li><span class="tile v"><i class="ph ph-check"></i></span>Creó 1.213 contactos nuevos</li>
+      <li><span class="tile v"><i class="ph ph-check"></i></span>Actualizó 48 que ya existían</li>
+      <li><span class="tile am"><i class="ph ph-warning"></i></span>23 filas sin CUIT válido · no se cargaron<button class="btn chico"><i class="ph ph-download-simple"></i>Bajar las 23</button></li>
+    </ul><button class="btn chico" id="pr-ver"><i class="ph ph-users"></i>Ver contactos</button>`;
+    toast({ titulo: 'Importación terminada · 1.261 contactos', detalle: '23 filas con error para revisar', accion: { texto: 'Ver', fn: () => destellar($('#pr-marco')) } });
+  }
+  bEmp.addEventListener('click', () => { if (bEmp.getAttribute('aria-disabled') !== 'true') empezar(); });
+  enlazar(); marcarPasos(-1);
+})();
+
+/* ═════════ 4 · Vacío de primera vez ═════════ */
+(() => {
+  const vacio = $('#pv-vacio'), lista = $('#pv-lista'), guia = $('#pv-guia');
+  function contar() { const n = $$('.gp.hecho', guia).length; $('#pv-cuenta').textContent = `${n} de 3 · ${n ? 'falta poco' : 'unos 2 min'}`; }
+  $('#pv-nuevo').addEventListener('click', () => {
+    vacio.hidden = true; lista.hidden = false;
+    lista.innerHTML = `<div class="cab" style="border-bottom:1px solid var(--divisor)"><h3>Clientes</h3><span class="c gris t-13 num">1</span><div class="der"><button class="btn chico"><i class="ph ph-plus"></i>Nuevo cliente</button></div></div>
+      <div class="fila-d ok desenfoque" id="pv-fila"><span class="cuadro" style="--ent:var(--e1)"><i class="ph-fill ph-storefront"></i></span><div class="q"><b>Orbe Retail S.A.</b><small><span class="num">30-71583092-9</span> · Responsable inscripto</small></div><span class="gris t-12">Sin facturas</span></div>
+      <div style="padding:var(--espacio-6)"><div class="guia" style="margin:0;max-width:none">${guia.innerHTML}</div></div>`;
+    const g = $('.guia', lista); $('[data-paso="1"]', g).classList.add('hecho'); $('[data-paso="1"] .num', g).innerHTML = '<i class="ph ph-check" style="font-size:13px"></i>';
+    $('[data-paso="2"]', g).insertAdjacentHTML('beforeend', '<button class="btn chico">Emitir</button>');
+    $('.rot-guia span:last-child', g).textContent = '1 de 3 · falta poco';
+    setTimeout(() => $('#pv-fila')?.classList.remove('ok'), 2000);
+    toast({ titulo: 'Cliente creado · Orbe Retail S.A.', detalle: 'Ya podés emitirle la primera factura', deshacer: () => { lista.hidden = true; lista.innerHTML = ''; vacio.hidden = false; contar(); $('#pv-nuevo').focus(); } });
+  });
+  contar();
+})();
+
+/* ═════════ 5 · Vacío al día ═════════ */
+(() => {
+  const lista = $('#ad-lista'), vacio = $('#ad-vacio'), c = $('#ad-c'), reset = $('#ad-reset');
+  lista.addEventListener('cambio', e => {
+    const fila = e.target.closest('.tarea'); fila.toggleAttribute('data-hecha', e.detail);
+    const abiertas = $$('.check[aria-checked=false]', lista).length;
+    c.textContent = abiertas;
+    if (!abiertas) setTimeout(() => {
+      if ($$('.check[aria-checked=false]', lista).length) return;
+      lista.hidden = true; vacio.hidden = false; reset.hidden = false;
+      const il = $('.ilus', vacio); il.classList.remove('aparece'); void il.offsetWidth; il.classList.add('aparece');
+      anunciar('Estás al día');
+    }, 450);
+  });
+  reset.addEventListener('click', () => {
+    $$('.check', lista).forEach(b => b.setAttribute('aria-checked', 'false')); $$('.tarea', lista).forEach(t => t.removeAttribute('data-hecha'));
+    c.textContent = 3; lista.hidden = false; vacio.hidden = true; reset.hidden = true; $('.check', lista).focus();
+  });
+})();
+
+/* ═════════ 6 · Sin resultados ═════════ */
+(() => {
+  const F = [
+    { c: 'FAC-01118', cli: 'Orbe Retail S.A.', e: 'e1', est: 'am', t: 'Por vencer', mes: true, m: 1284500 },
+    { c: 'FAC-01117', cli: 'Casa Lumen SRL', e: 'e2', est: 'ok', t: 'Cobrada', mes: true, m: 642000 },
+    { c: 'FAC-01112', cli: 'Grupo Atlas', e: 'e4', est: 'ro', t: 'Vencida', mes: true, m: 2150000 },
+    { c: 'FAC-01110', cli: 'Puerto Norte Logística', e: 'e6', est: 'ok', t: 'Cobrada', mes: true, m: 398700 },
+    { c: 'FAC-01104', cli: 'Ferretería Del Sur', e: 'e3', est: 'ro', t: 'Vencida', mes: true, m: 87300 },
+    { c: 'FAC-01093', cli: 'Casa Lumen SRL', e: 'e2', est: 'ok', t: 'Cobrada', mes: false, m: 512000 },
+    { c: 'FAC-01088', cli: 'Casa Lumen SRL', e: 'e2', est: 'ok', t: 'Cobrada', mes: false, m: 498000 },
+    { c: 'FAC-01082', cli: 'Orbe Retail S.A.', e: 'e1', est: 'ok', t: 'Cobrada', mes: false, m: 1120000 },
+  ];
+  const NOM = { vencidas: 'Vencidas', lumen: 'Casa Lumen', mes: 'Noviembre' };
+  const PRUEBA = { vencidas: f => f.est === 'ro', lumen: f => f.cli.startsWith('Casa Lumen'), mes: f => f.mes };
+  const q = $('#sr-q'), lista = $('#sr-lista'), vacio = $('#sr-vacio');
+  const activos = () => $$('.filtro[aria-pressed=true]').map(b => b.dataset.f);
+  const pasa = (f, fs, texto) => fs.every(k => PRUEBA[k](f)) && (!texto || sinAcentos(`${f.cli} ${f.c}`).includes(texto));
+  function lev(a, b) { const d = Array.from({ length: a.length + 1 }, (_, i) => [i]); for (let j = 1; j <= b.length; j++) d[0][j] = j; for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); return d[a.length][b.length]; }
+  function pintar() {
+    const fs = activos(), texto = sinAcentos(q.value.trim()), r = F.filter(f => pasa(f, fs, texto));
+    const hay = fs.length || texto;
+    $('#sr-cuenta').textContent = hay ? `${r.length} de ${F.length} facturas` : `${F.length} facturas`;
+    $('#sr-limpiar-todo').hidden = !hay || !r.length;
+    lista.hidden = !r.length; vacio.hidden = !!r.length;
+    lista.innerHTML = r.map(f => `<div class="fila-d"><span class="cuadro ch" style="--ent:var(--${f.e})"></span><div class="q"><b>${f.cli}</b><small><span class="cod gris">${f.c}</span></small></div>${f.est === 'ok' ? `<span class="gris-2 t-12"><i class="ph ph-check" style="font-size:13px"></i> ${f.t}</span>` : `<span class="chip d ${f.est}">${f.t}</span>`}</div>`).join('');
+    if (r.length) return;
+    /* qué filtro destraba más: el que, sacándolo, deja más resultados */
+    const opciones = fs.map(k => ({ k, n: F.filter(f => pasa(f, fs.filter(x => x !== k), texto)).length })).sort((a, b) => b.n - a.n);
+    const nombres = [texto && `«${q.value.trim()}»`, ...fs.map(k => NOM[k])].filter(Boolean);
+    $('#sr-tit').textContent = `Nada con ${nombres.join(' + ')}`;
+    const mejor = opciones[0];
+    $('#sr-txt').textContent = mejor && mejor.n ? `Sin «${NOM[mejor.k]}» hay ${fmt.plural(mejor.n, 'factura', 'facturas')}.` : texto ? 'Ningún cliente ni código tiene ese texto.' : 'Probá con otro filtro.';
+    $('#sr-acc').innerHTML = (mejor && mejor.n ? `<button class="btn" data-quita="${mejor.k}">Limpiar «${NOM[mejor.k]}»<i class="ph ph-x" style="font-size:13px"></i></button>` : '') + (texto ? `<button class="btn" data-quita="texto">Borrar búsqueda</button>` : '') + (nombres.length > 1 ? '<button class="btn texto" data-quita="todo">Limpiar todo</button>' : '');
+    /* ¿quiso decir? */
+    const sug = $('#sr-sug'); sug.hidden = true;
+    if (texto.length >= 3) {
+      const clientes = [...new Set(F.map(f => f.cli))];
+      const cerca = clientes.map(c => ({ c, d: Math.min(...sinAcentos(c).split(/\s+/).map(w => lev(texto, w.slice(0, texto.length + 1)))) })).sort((a, b) => a.d - b.d)[0];
+      if (cerca && cerca.d <= 2) { sug.hidden = false; sug.innerHTML = `¿Quisiste decir <button type="button" data-sug="${escapar(cerca.c)}">${escapar(cerca.c)}</button>?`; }
+    }
+  }
+  vacio.addEventListener('click', e => {
+    const b = e.target.closest('[data-quita],[data-sug]'); if (!b) return;
+    if (b.dataset.sug) { q.value = b.dataset.sug.split(' ')[0]; }
+    else if (b.dataset.quita === 'texto') q.value = '';
+    else if (b.dataset.quita === 'todo') { q.value = ''; $$('.filtro').forEach(f => f.setAttribute('aria-pressed', 'false')); }
+    else $(`.filtro[data-f="${b.dataset.quita}"]`).setAttribute('aria-pressed', 'false');
+    pintar(); q.focus();
+  });
+  $('#sr-limpiar-todo').addEventListener('click', () => { q.value = ''; $$('.filtro').forEach(f => f.setAttribute('aria-pressed', 'false')); pintar(); });
+  $$('.filtro').forEach(b => b.addEventListener('click', () => { b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true'); pintar(); }));
+  q.addEventListener('input', pintar);
+  q.addEventListener('keydown', e => { if (e.key === 'Escape' && q.value) { q.value = ''; pintar(); } });
+  pintar();
+})();
+
+/* ═════════ 7 · Error en bloque ═════════ */
+(() => {
+  const err = $('#eb-error'), datos = $('#eb-datos'), b = $('#eb-reintentar'), det = $('#eb-det'), ver = $('#eb-ver');
+  let intento = 1;
+  const DET = n => `GET /api/cobranzas?mes=2026-11\n504 Gateway Timeout · 30.000 ms\nservidor cobros-2 · intento ${n} de 3\nref 7F3A-21C${n > 1 ? 'B' : ''}`;
+  det.textContent = DET(1);
+  ver.addEventListener('click', () => { const v = det.hidden; det.hidden = !v; ver.setAttribute('aria-expanded', v); ver.textContent = v ? 'Ocultar detalle' : 'Ver detalle'; });
+  $('#eb-copiar').addEventListener('click', async e => {
+    try { await navigator.clipboard.writeText(`${$('#eb-cod').textContent}\n${det.textContent}`); } catch {}
+    const btn = e.currentTarget; btn.innerHTML = '<i class="ph ph-check ok-ic"></i>'; anunciar('Código copiado');
+    setTimeout(() => { btn.innerHTML = '<i class="ph ph-copy"></i>'; }, 1500);
+  });
+  b.addEventListener('click', async () => {
+    if (b.getAttribute('aria-busy') === 'true') return;
+    b.setAttribute('aria-busy', 'true'); b.innerHTML = `${SPIN}<span>Reintentando…</span>`;
+    await espera(1100);
+    b.removeAttribute('aria-busy'); b.innerHTML = '<i class="ph ph-arrow-clockwise"></i><span>Reintentar</span>';
+    if (intento === 1) {
+      intento = 2;
+      $('#eb-txt').textContent = 'Volvió a tardar. Probá de nuevo; si sigue, pasale el código a soporte.';
+      $('#eb-cod').textContent = `ERR-504 · 18 nov ${hhmm()} · intento 2 de 3`;
+      det.textContent = DET(2);
+      err.classList.remove('sacude'); void err.offsetWidth; err.classList.add('sacude');
+      anunciar('Volvió a fallar, intento 2 de 3');
+      return;
+    }
+    err.hidden = true; datos.hidden = false; $('#eb-otra').hidden = false;
+    datos.innerHTML = `<div class="tabla tarjetas-cel desenfoque"><table><thead><tr><th>Cliente</th><th>Factura</th><th>Estado</th><th class="r">Monto</th></tr></thead><tbody>
+      <tr><td data-area="nombre"><span class="cli"><span class="cuadro ch" style="--ent:var(--e1)"></span>Orbe Retail S.A.</span></td><td data-area="meta"><span class="cod">FAC-01118</span></td><td data-area="estado"><span class="chip d am">Por vencer</span></td><td class="r" data-area="monto">${fmt.montoHTML(1284500)}</td></tr>
+      <tr><td data-area="nombre"><span class="cli"><span class="cuadro ch" style="--ent:var(--e4)"></span>Grupo Atlas</span></td><td data-area="meta"><span class="cod">FAC-01112</span></td><td data-area="estado"><span class="chip d ro">Vencida</span></td><td class="r" data-area="monto">${fmt.montoHTML(2150000)}</td></tr>
+      <tr><td data-area="nombre"><span class="cli"><span class="cuadro ch" style="--ent:var(--e2)"></span>Casa Lumen SRL</span></td><td data-area="meta"><span class="cod">FAC-01117</span></td><td data-area="estado"><span class="gris-2 t-12"><i class="ph ph-check" style="font-size:13px"></i> Cobrada</span></td><td class="r" data-area="monto">${fmt.montoHTML(642000)}</td></tr>
+    </tbody></table></div>`;
+    anunciar('Cobranzas cargadas');
+  });
+  $('#eb-otra').addEventListener('click', () => {
+    intento = 1; err.hidden = false; datos.hidden = true; $('#eb-otra').hidden = true;
+    $('#eb-txt').textContent = 'El servidor de cobros tardó demasiado. Lo que cargaste hoy está a salvo.';
+    $('#eb-cod').textContent = 'ERR-504 · 18 nov 15:42 · ref 7F3A-21C'; det.textContent = DET(1); b.focus();
+  });
+  /* KPI */
+  $('#ek-re').addEventListener('click', async e => {
+    const btn = e.currentTarget; btn.innerHTML = `${SPIN} Calculando…`; btn.setAttribute('aria-busy', 'true');
+    await espera(900);
+    const ctx = $('#ek-ctx'), n = $('#ek-n');
+    n.style.color = 'var(--tinta)'; n.innerHTML = '<span id="ek-v">38</span><span class="u" style="margin:0 0 0 var(--espacio-2)">días</span>'; n.classList.add('desenfoque');
+    cuenta($('#ek-v'), 38, { desde: 0 });
+    ctx.innerHTML = '<span class="sube num"><i class="ph ph-trend-down"></i>−3 días</span><span>vs. octubre</span>';
+    $('#ek-cod').textContent = `actualizado ${hhmm()}`;
+  });
+})();
+
+/* ═════════ 8 · Error en banda ═════════ */
+(() => {
+  const banda = $('#ba-banda'), tabla = $('#ba-tabla');
+  let tipo = 'ro';
+  const NUEVOS = { orbe: 0, lumen: 0, atlas: 1650000 };
+  function pintar() {
+    banda.className = `banda-x ${tipo}`; banda.hidden = false;
+    banda.setAttribute('role', tipo === 'v' ? 'status' : 'alert');
+    tabla.classList.toggle('viejo', tipo !== 'v');
+    if (tipo === 'ro') banda.innerHTML = `<span class="tile"><i class="ph ph-warning-circle"></i></span><div class="q"><b>No pudimos actualizar los saldos</b><small>Mostrando lo de las 14:32 · <span class="mono">ERR-503 · ${hhmm()}</span></small></div><button class="btn chico fijo" style="--ancho:124px" id="ba-re"><i class="ph ph-arrow-clockwise"></i><span>Reintentar</span></button>`;
+    if (tipo === 'am') banda.innerHTML = `<span class="tile"><i class="ph ph-warning"></i></span><div class="q"><b>Jaque responde lento desde las 13:10</b><small>Los cobros nuevos pueden tardar hasta 30 min en verse</small></div><button class="btn chico texto">Ver estado</button>`;
+    if (tipo === 'v') banda.innerHTML = `<span class="tile"><i class="ph ph-check-circle"></i></span><div class="q"><b>Saldos al día</b><small>Actualizado ${hhmm()} · 1 cobro nuevo de Grupo Atlas</small></div>`;
+    $('#ba-pie').textContent = tipo === 'v' ? `Datos de las ${hhmm()}` : 'Datos de las 14:32';
+    const re = $('#ba-re');
+    if (re) re.onclick = async () => {
+      re.setAttribute('aria-busy', 'true'); re.innerHTML = `${SPIN}<span>Reintentando…</span>`;
+      await espera(1000);
+      tipo = 'v'; pintar();
+      const fila = $('tr[data-id="atlas"]', tabla), v = $('.val', fila);
+      fila.classList.remove('destello'); void fila.offsetWidth; fila.classList.add('destello');
+      cuenta(v, NUEVOS.atlas, { desde: 2150000 });
+      setTimeout(() => { banda.classList.add('sale'); setTimeout(() => { banda.hidden = true; banda.classList.remove('sale'); }, 330); }, 3000);
+    };
+  }
+  $('#ba-tipo').addEventListener('cambio', e => { tipo = e.detail; $('tr[data-id="atlas"] .val', tabla).textContent = '2.150.000'; pintar(); });
+  pintar();
+})();
+
+/* ═════════ 9 · Error en línea ═════════ */
+(() => {
+  const R = [
+    { id: 'orbe', cli: 'Orbe Retail S.A.', f: 'FAC-01118 · vence 26 nov', mail: 'pagos@orberetail.com.ar', e: 'e1', falla: false },
+    { id: 'lumen', cli: 'Casa Lumen SRL', f: 'FAC-01093 · venció 4 nov', mail: 'pagos@casalumen.com', e: 'e2', falla: true },
+    { id: 'atlas', cli: 'Grupo Atlas', f: 'FAC-01112 · venció 12 nov', mail: 'tesoreria@grupoatlas.com.ar', e: 'e4', falla: false },
+  ];
+  const lista = $('#el-lista');
+  lista.innerHTML = R.map(r => `<div class="fila-err" data-id="${r.id}"><div class="fila-d"><span class="cuadro" style="--ent:var(--${r.e})"><i class="ph-fill ph-storefront"></i></span><div class="q"><b>${r.cli}</b><small>${r.f} · <span class="mail">${r.mail}</span></small></div><span class="z"><button class="btn chico fijo" style="--ancho:96px" data-env><span>Enviar</span></button></span></div></div>`).join('');
+  async function enviar(cont) {
+    const r = R.find(x => x.id === cont.dataset.id), z = $('.z', cont), fila = $('.fila-d', cont);
+    const b = $('[data-env]', z); if (!b || b.getAttribute('aria-busy') === 'true') return;
+    $('.err-linea', cont)?.remove();
+    b.setAttribute('aria-busy', 'true'); b.innerHTML = `${SPIN}<span>Enviando…</span>`;
+    await espera(700 + Math.random() * 500);
+    if (r.falla) {
+      b.removeAttribute('aria-busy'); b.innerHTML = '<span>Enviar</span>';
+      cont.insertAdjacentHTML('beforeend', `<div class="err-linea desenfoque" role="alert"><span class="q"><i class="ph ph-warning-circle"></i>No se envió: ${escapar(r.mail)} rebotó</span><button class="btn chico texto" data-re>Reintentar</button><button class="btn chico texto" data-edit>Corregir correo</button><span class="nota-cod">SMTP 550 · ${hhmm()}</span></div>`);
+      return;
+    }
+    z.innerHTML = `<span class="chip v sello"><i class="ph ph-check"></i>Enviado ${hhmm()}</span>`;
+    fila.classList.add('ok'); setTimeout(() => fila.classList.remove('ok'), 2400);
+  }
+  lista.addEventListener('click', e => {
+    const cont = e.target.closest('.fila-err'); if (!cont) return;
+    const r = R.find(x => x.id === cont.dataset.id);
+    if (e.target.closest('[data-env],[data-re]')) enviar(cont);
+    if (e.target.closest('[data-edit]')) {
+      const el = $('.err-linea', cont);
+      el.innerHTML = `<label class="in"><span class="sr">Correo de ${escapar(r.cli)}</span><input value="${escapar(r.mail)}" type="email"></label><button class="btn chico" data-guardar>Guardar y enviar</button><button class="btn chico texto" data-cancel>Cancelar</button>`;
+      const inp = $('input', el); inp.focus(); inp.select();
+    }
+    if (e.target.closest('[data-guardar]')) { r.mail = $('.err-linea input', cont).value.trim() || r.mail; r.falla = !/\.com\.ar$/.test(r.mail) && r.mail === 'pagos@casalumen.com'; $('.mail', cont).textContent = r.mail; enviar(cont); }
+    if (e.target.closest('[data-cancel]')) { $('.err-linea', cont).remove(); $('[data-env]', cont).focus(); }
+  });
+  lista.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('.err-linea input')) { e.preventDefault(); $('[data-guardar]', e.target.closest('.err-linea')).click(); } });
+  $('#el-todos').addEventListener('click', () => $$('.fila-err', lista).forEach((c, i) => setTimeout(() => enviar(c), i * 120)));
+  /* pie de hoja */
+  let veces = 0;
+  async function guardarNota() {
+    const b = $('#el-guardar'); if (b.getAttribute('aria-busy') === 'true') return;
+    $('#el-pie-err').hidden = true; $('#el-pie-re').hidden = true;
+    b.setAttribute('aria-busy', 'true'); b.innerHTML = `${SPIN}<span>Guardando…</span>`;
+    await espera(900);
+    b.removeAttribute('aria-busy');
+    if (veces++ % 2 === 0) { b.innerHTML = '<span>Guardar nota</span>'; $('#el-pie-err').hidden = false; $('#el-pie-re').hidden = false; b.hidden = true; $('#el-pie-re').focus(); return; }
+    b.hidden = false; b.innerHTML = '<i class="ph ph-check ok-ic"></i><span>Guardada</span>';
+    setTimeout(() => { b.innerHTML = '<span>Guardar nota</span>'; }, 2000);
+  }
+  $('#el-guardar').addEventListener('click', guardarNota);
+  $('#el-pie-re').addEventListener('click', () => { $('#el-guardar').hidden = false; guardarNota(); });
+})();
+
+/* ═════════ 10 · Sin conexión ═════════ */
+(() => {
+  const app = $('#sc-app'), pild = $('#sc-pild'), lista = $('#sc-lista'), seg = $('#sc-red');
+  const C = [
+    { id: 1, cli: 'Orbe Retail S.A.', f: 'FAC-01118', m: 1284500, e: 'e1' },
+    { id: 2, cli: 'Ferretería Del Sur', f: 'FAC-01104', m: 87300, e: 'e3' },
+    { id: 3, cli: 'Puerto Norte Logística', f: 'FAC-01109', m: 398700, e: 'e6' },
+  ];
+  let enLinea = true, cola = [], hoy = 2100000;
+  lista.innerHTML = C.map(c => `<div class="fila-d" data-id="${c.id}"><span class="cuadro ch" style="--ent:var(--${c.e})"></span><div class="q"><b>${c.cli}</b><small><span class="cod gris">${c.f}</span></small></div>${fmt.montoHTML(c.m, 'ARS', { corto: true })}<span class="z"><button class="btn chico fijo" style="--ancho:128px" data-cobrar><i class="ph ph-hand-coins"></i>Registrar cobro</button></span></div>`).join('');
+  function pildora() {
+    if (!enLinea) { pild.className = 'pild-con off'; pild.innerHTML = `<i class="ph ph-wifi-slash"></i>Sin conexión · ${cola.length ? `${fmt.plural(cola.length, 'cambio', 'cambios')} esperando` : 'se guarda al volver'}`; return; }
+    pild.className = 'pild-con v'; pild.innerHTML = `<i class="ph ph-check-circle"></i>Al día · ${hhmm()}`;
+  }
+  async function volver() {
+    if (!cola.length) { pildora(); return; }
+    pild.className = 'pild-con az'; pild.innerHTML = `<i class="ph ph-circle-notch gira"></i>Enviando ${fmt.plural(cola.length, 'cambio', 'cambios')}…`;
+    for (const id of [...cola]) {
+      await espera(600);
+      if (!enLinea) return;
+      const z = $(`[data-id="${id}"] .z`, lista); z.innerHTML = `<span class="chip v sello"><i class="ph ph-check"></i>Cobrado ${hhmm()}</span>`;
+      cola = cola.filter(x => x !== id);
+    }
+    pildora(); anunciar('Cambios enviados');
+  }
+  function poner(on, desdeRed) {
+    enLinea = on; app.classList.toggle('offline', !on);
+    $$('button', seg).forEach(b => { const s = (b.dataset.v === 'on') === on; b.classList.toggle('on', s); b.setAttribute('aria-pressed', s); });
+    if (!on) { pildora(); anunciar('Sin conexión. Lo que hagas se guarda al volver'); } else volver();
+    if (desdeRed) toast({ titulo: on ? 'Volvió la conexión' : 'Sin conexión', detalle: on ? 'Mandamos lo que quedó en cola' : 'Lo que hagas se guarda al volver', tipo: on ? 'ok' : 'info', icono: on ? 'ph-wifi-high' : 'ph-wifi-slash' });
+  }
+  seg.addEventListener('cambio', e => poner(e.detail === 'on'));
+  addEventListener('online', () => poner(true, true)); addEventListener('offline', () => poner(false, true));
+  lista.addEventListener('click', async e => {
+    const b = e.target.closest('[data-cobrar]'); if (!b) return;
+    const fila = b.closest('.fila-d'), id = +fila.dataset.id, c = C.find(x => x.id === id), z = $('.z', fila);
+    hoy += c.m; $('#sc-hoy').textContent = fmt.monto(hoy, 'ARS', { corto: true });
+    if (!enLinea) {
+      cola.push(id); z.innerHTML = '<span class="chip gr"><i class="ph ph-clock"></i>En cola</span>'; pildora(); return;
+    }
+    b.setAttribute('aria-busy', 'true'); b.innerHTML = `${SPIN}Registrando…`;
+    await espera(600);
+    z.innerHTML = `<span class="chip v sello"><i class="ph ph-check"></i>Cobrado ${hhmm()}</span>`;
+  });
+  pildora();
+  /* reintento automático con cuenta regresiva */
+  let s = 10;
+  setInterval(() => { s = s <= 1 ? 10 : s - 1; $('#sc-cuenta').textContent = `Probamos solos cada 10 s · próximo en ${s} s`; }, 1000);
+  $('#sc-re').addEventListener('click', async e => {
+    const b = e.currentTarget; b.setAttribute('aria-busy', 'true'); b.innerHTML = `${SPIN}<span>Probando…</span>`;
+    await espera(900); b.removeAttribute('aria-busy'); b.innerHTML = '<i class="ph ph-arrow-clockwise"></i><span>Reintentar</span>'; s = 10;
+    anunciar('Todavía sin conexión');
+  });
+})();
+
+/* ═════════ 11 · Sin permisos ═════════ */
+(() => {
+  const b = $('#sp-pedir');
+  b.addEventListener('click', async () => {
+    if (b.getAttribute('aria-busy') === 'true') return;
+    b.setAttribute('aria-busy', 'true'); b.innerHTML = `${SPIN}<span>Pidiendo…</span>`;
+    await espera(800);
+    b.removeAttribute('aria-busy'); b.innerHTML = '<i class="ph ph-hand"></i><span>Pedir acceso</span>';
+    $('#sp-acc').hidden = true; $('#sp-pedido').hidden = false; $('#sp-hora').textContent = hhmm();
+    $('#sp-cancelar').focus();
+    toast({ titulo: 'Acceso pedido a Lucía Benítez', detalle: 'Te avisamos cuando lo apruebe', icono: 'ph-hand' });
+  });
+  $('#sp-cancelar').addEventListener('click', () => { $('#sp-acc').hidden = false; $('#sp-pedido').hidden = true; b.focus(); anunciar('Pedido cancelado'); });
+})();
+
+/* ═════════ 12 · Éxito ═════════ */
+(() => {
+  const form = $('#ex-form'), ok = $('#ex-ok'), b = $('#ex-emitir');
+  b.addEventListener('click', async () => {
+    if (b.getAttribute('aria-busy') === 'true') return;
+    b.setAttribute('aria-busy', 'true'); b.innerHTML = `${SPIN}<span>Emitiendo…</span>`;
+    await espera(1100);
+    form.hidden = true; ok.hidden = false;
+    const il = $('.ilus', ok); il.classList.remove('aparece'); void il.offsetWidth; il.classList.add('aparece');
+    $$('.resumen div', ok).forEach((d, i) => { d.classList.remove('entra'); void d.offsetWidth; d.style.setProperty('--i', i + 4); d.classList.add('entra'); });
+    $('#ex-tit').focus({ preventScroll: true });
+  });
+  $('#ex-otra').addEventListener('click', () => {
+    ok.hidden = true; form.hidden = false; b.removeAttribute('aria-busy'); b.innerHTML = '<i class="ph ph-paper-plane-tilt"></i><span>Emitir factura</span>'; b.focus();
+  });
+  /* éxito en la fila: la fila se tiñe, el botón pasa a pastilla y el toast trae Deshacer */
+  const fila = $('#ex-fila'), ap = $('#ex-aprobar');
+  ap.addEventListener('click', async () => {
+    if (ap.getAttribute('aria-busy') === 'true') return;
+    ap.setAttribute('aria-busy', 'true'); ap.innerHTML = `${SPIN}<span>Aprobando…</span>`;
+    await espera(700);
+    fila.classList.add('ok');
+    const sello = document.createElement('span'); sello.className = 'chip v sello'; sello.innerHTML = '<i class="ph ph-check"></i>Aprobado';
+    ap.replaceWith(sello);
+    toast({ titulo: 'Gasto aprobado · $ 186.400', detalle: 'Quedó para pagar el viernes', deshacer: () => {
+      fila.classList.remove('ok'); ap.removeAttribute('aria-busy'); ap.innerHTML = '<span>Aprobar</span>'; sello.replaceWith(ap); ap.focus();
+    } });
+  });
+})();
+
+/* ═════════ 13 · Confirmación en el lugar ═════════ */
+(() => {
+  const lista = $('#cf-lista');
+  const ORIG = '<button class="btn chico peligro" data-anular><i class="ph ph-x-circle"></i>Anular</button>';
+  lista.addEventListener('click', async e => {
+    const fila = e.target.closest('.fila-d'); if (!fila) return;
+    const z = $('.cf-z', fila), cod = fila.dataset.cod;
+    if (e.target.closest('[data-anular]')) {
+      z.innerHTML = `<div class="conf-en"><span class="q">¿Anular ${cod}? Genera la nota de crédito.</span><button class="btn chico peligro neg" data-si>Anular factura</button><button class="btn chico texto" data-no>Cancelar</button><i class="reloj" aria-hidden="true"></i></div>`;
+      $('[data-no]', z).focus();
+      z._t = setTimeout(() => { if (z.querySelector('[data-si]')) { z.innerHTML = ORIG; } }, 5000);
+    }
+    if (e.target.closest('[data-no]')) { clearTimeout(z._t); z.innerHTML = ORIG; $('[data-anular]', z).focus(); }
+    if (e.target.closest('[data-si]')) {
+      clearTimeout(z._t);
+      z.innerHTML = `<button class="btn chico fijo" aria-busy="true" style="--ancho:120px">${SPIN}Anulando…</button>`;
+      await espera(900);
+      fila.classList.add('anulada');
+      z.innerHTML = '<span class="chip gr sello"><i class="ph ph-prohibit"></i>Anulada</span>';
+      toast({ titulo: `${cod} anulada · NC-00041`, detalle: 'La nota de crédito salió con CAE', tipo: 'ok' });
+    }
+  });
+  /* reversible: sin preguntar, con Deshacer */
+  const arch = $('#cf-archivar'), filaArch = $('#cf-arch');
+  const marcaArch = document.createElement('span'); marcaArch.className = 'est'; marcaArch.innerHTML = '<i class="ph ph-archive"></i>Archivada';
+  arch.addEventListener('click', () => {
+    filaArch.classList.add('apag'); arch.replaceWith(marcaArch);
+    toast({ titulo: 'Cotización archivada · COT-00311', detalle: 'La encontrás en Archivo', deshacer: () => { filaArch.classList.remove('apag'); marcaArch.replaceWith(arch); arch.focus(); } });
+  });
+  /* mantener apretado */
+  const m = $('#cf-mantener'), mEst = $('#cf-man-est');
+  let tm = null, hecho = false;
+  const empezar = () => { if (hecho) return; m.classList.add('cargando'); mEst.textContent = 'Seguí apretando…'; tm = setTimeout(() => { hecho = true; m.classList.remove('cargando'); m.innerHTML = '<i class="ph ph-check"></i><span>Plantilla borrada</span>'; m.setAttribute('aria-disabled', 'true'); mEst.textContent = 'Las 3 automatizaciones usan ahora "Recordatorio estándar".'; anunciar('Plantilla borrada'); }, 1200); };
+  const soltar = () => { if (hecho) return; clearTimeout(tm); if (m.classList.contains('cargando')) { m.classList.remove('cargando'); mEst.textContent = 'Soltaste antes: no pasó nada.'; } };
+  m.addEventListener('pointerdown', e => { e.preventDefault(); empezar(); });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(t => m.addEventListener(t, soltar));
+  m.addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); empezar(); } });
+  m.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') soltar(); });
+  m.addEventListener('contextmenu', e => e.preventDefault());
+  /* escribir el nombre */
+  const inp = $('#cf-nombre'), bb = $('#cf-borrar');
+  inp.addEventListener('input', () => { const ok = inp.value.trim() === 'Estudio Faro'; ok ? bb.removeAttribute('aria-disabled') : bb.setAttribute('aria-disabled', 'true'); });
+  bb.addEventListener('click', () => {
+    if (bb.getAttribute('aria-disabled') === 'true') { inp.focus(); anunciar('Escribí Estudio Faro para habilitar el botón'); return; }
+    toast({ titulo: 'Esto es una demo', detalle: 'En un sistema real, acá se borraría el espacio', tipo: 'info' });
+    inp.value = ''; bb.setAttribute('aria-disabled', 'true');
+  });
+})();
+
+/* ═════════ 14 · Guardado automático ═════════ */
+(() => {
+  const est = $('#ag-est'), falla = $('#ag-falla');
+  let t = null, guardadoEn = Date.now() - 120000, estado = 'ok', reloj = null, reintento = null;
+  function rel() {
+    const s = Math.round((Date.now() - guardadoEn) / 1000);
+    return s < 5 ? 'recién' : s < 60 ? `hace ${s} s` : `hace ${Math.floor(s / 60)} min`;
+  }
+  function pintar() {
+    if (estado === 'sucio') est.className = 'est est-g e-am', est.innerHTML = '<span class="pt"></span>Cambios sin guardar';
+    if (estado === 'guardando') est.className = 'est est-g', est.innerHTML = `${SPIN}Guardando…`;
+    if (estado === 'ok') est.className = 'est est-g', est.innerHTML = `<i class="ph ph-check"></i>Guardado ${rel()}`;
+  }
+  async function guardar() {
+    estado = 'guardando'; pintar();
+    await espera(650);
+    if (falla.getAttribute('aria-checked') === 'true') {
+      estado = 'error'; let s = 5;
+      const p = () => { est.className = 'est est-g e-ro'; est.innerHTML = `<i class="ph ph-warning-circle"></i>No se guardó · reintento en ${s} s <button class="btn chico enlace" id="ag-re">Reintentar</button>`; $('#ag-re').onclick = () => { clearInterval(reintento); guardar(); }; };
+      p(); clearInterval(reintento);
+      reintento = setInterval(() => { s--; if (s <= 0) { clearInterval(reintento); guardar(); } else p(); }, 1000);
+      return;
+    }
+    clearInterval(reintento); estado = 'ok'; guardadoEn = Date.now(); pintar();
+  }
+  const editar = () => { if (estado === 'error') return; estado = 'sucio'; pintar(); clearTimeout(t); t = setTimeout(guardar, 900); };
+  $('#ag-tit').addEventListener('input', editar); $('#ag-txt').addEventListener('input', editar);
+  falla.addEventListener('cambio', e => { if (!e.detail && estado === 'error') { clearInterval(reintento); guardar(); } });
+  reloj = setInterval(() => { if (estado === 'ok') pintar(); }, 1000);
+  pintar();
+  /* ajustes con barra */
+  const aj = $('#aj'), barra = $('#aj-barra');
+  const inicial = {}; $$('.op', aj).forEach(o => inicial[o.dataset.k] = $('.toggle', o).getAttribute('aria-checked'));
+  const cambios = () => $$('.op', aj).filter(o => $('.toggle', o).getAttribute('aria-checked') !== inicial[o.dataset.k]);
+  function actualizar() {
+    const c = cambios(); $$('.op', aj).forEach(o => o.classList.toggle('mod', c.includes(o)));
+    barra.classList.toggle('ver', c.length > 0);
+    $('#aj-cuenta').textContent = `${fmt.plural(c.length, 'cambio', 'cambios')} en Cobranzas`;
+  }
+  aj.addEventListener('cambio', actualizar);
+  $('#aj-desc').addEventListener('click', () => {
+    const antes = {}; $$('.op', aj).forEach(o => antes[o.dataset.k] = $('.toggle', o).getAttribute('aria-checked'));
+    $$('.op', aj).forEach(o => $('.toggle', o).setAttribute('aria-checked', inicial[o.dataset.k])); actualizar();
+    toast({ titulo: 'Cambios descartados', tipo: 'info', deshacer: () => { $$('.op', aj).forEach(o => $('.toggle', o).setAttribute('aria-checked', antes[o.dataset.k])); actualizar(); } });
+  });
+  async function guardarAj() {
+    const b = $('#aj-guardar'); if (!cambios().length || b.getAttribute('aria-busy') === 'true') return;
+    b.setAttribute('aria-busy', 'true'); b.innerHTML = `${SPIN}<span>Guardando…</span>`;
+    await espera(800);
+    const n = cambios().length;
+    $$('.op', aj).forEach(o => inicial[o.dataset.k] = $('.toggle', o).getAttribute('aria-checked'));
+    b.removeAttribute('aria-busy'); b.innerHTML = '<span>Guardar cambios</span>'; actualizar();
+    toast({ titulo: `${fmt.plural(n, 'cambio guardado', 'cambios guardados')}`, detalle: 'Rige para los próximos recordatorios' });
+  }
+  $('#aj-guardar').addEventListener('click', guardarAj);
+  document.addEventListener('keydown', e => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's' && barra.classList.contains('ver')) { e.preventDefault(); guardarAj(); } });
+})();
+
+/* ═════════ 15 · Validación de formulario ═════════ */
+(() => {
+  const form = $('#fv');
+  const dv = base => { const p = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2]; const s = [...base].reduce((a, c, i) => a + c * p[i], 0); const r = 11 - (s % 11); return r === 11 ? 0 : r === 10 ? null : r; };
+  const cuitDigitos = v => v.replace(/\D/g, '');
+  const formatoCuit = d => d.length > 10 ? `${d.slice(0, 2)}-${d.slice(2, 10)}-${d.slice(10, 11)}` : d.length > 2 ? `${d.slice(0, 2)}-${d.slice(2)}` : d;
+  const EXISTE = (() => { const b = '3071583092'; return formatoCuit(b + dv(b)); })();
+  $('#fv-nota').textContent = `Probá crear vacío, escribí un CUIT con un dígito mal, o usá ${EXISTE} para ver el error del servidor.`;
+  const nombres = { razon: 'Razón social', cuit: 'CUIT', iva: 'Condición de IVA', correo: 'Correo', limite: 'Límite de crédito' };
+  const reglas = {
+    razon: v => !v.trim() ? 'Falta la razón social' : v.trim().length < 3 ? 'Escribila completa, como en ARCA' : null,
+    cuit: v => { const d = cuitDigitos(v); if (!d) return 'Falta el CUIT'; if (d.length !== 11) return `Tiene ${d.length} de 11 números`; if (!/^(20|23|24|27|30|33|34)/.test(d)) return 'Tiene que empezar con 20, 23, 24, 27, 30, 33 o 34'; return dv(d.slice(0, 10)) === +d[10] ? null : 'El último número no coincide: revisá que esté bien copiado'; },
+    iva: v => v ? null : 'Elegí la condición de IVA',
+    correo: v => !v.trim() ? 'Falta el correo' : /^[^\s@]+@[^\s@]+\.[a-z]{2,}(\.[a-z]{2})?$/i.test(v.trim()) ? null : 'Al correo le falta algo: revisá la @ y el dominio',
+    limite: v => { if (!v.trim()) return null; const n = +v.replace(/\./g, '').replace(',', '.'); return isNaN(n) ? 'Solo números' : n > 50e6 ? 'El tope es $ 50 M; más alto lo aprueba Administración' : null; },
+  };
+  const ayudas = {}; $$('.campo', form).forEach(c => ayudas[c.dataset.campo] = $('small', c).textContent);
+  const tocados = new Set(); let intento = false;
+  function mostrar(k) {
+    const c = $(`[data-campo="${k}"]`, form), inp = $('input,select', c), caja = $('.in', c), err = reglas[k](inp.value);
+    const ver = tocados.has(k) || intento;
+    const pie = $('small', c), id = `fv-${k}-msg`; pie.id = id; inp.setAttribute('aria-describedby', id);
+    $('.ok-i', caja)?.remove();
+    if (ver && err) {
+      caja.classList.add('error'); inp.setAttribute('aria-invalid', 'true');
+      pie.className = 'err'; pie.innerHTML = `<i class="ph ph-warning-circle" style="font-size:14px"></i>${err}`;
+    } else {
+      caja.classList.remove('error'); inp.removeAttribute('aria-invalid');
+      if (k === 'cuit' && !err) { pie.className = 'ok-t'; pie.innerHTML = '<i class="ph ph-check-circle" style="font-size:14px"></i>CUIT válido · dígito verificador correcto'; caja.insertAdjacentHTML('beforeend', '<i class="ph ph-check-circle ok-i" aria-hidden="true"></i>'); }
+      else { pie.className = 'ayuda'; pie.textContent = ayudas[k]; }
+    }
+    return err;
+  }
+  function faltan() {
+    const n = ['razon', 'cuit', 'iva', 'correo'].filter(k => reglas[k]($(`[name="${k}"]`, form).value)).length;
+    $('#fv-faltan').textContent = n ? `Faltan ${fmt.plural(n, 'obligatorio', 'obligatorios')}` : 'Todo listo para crear';
+  }
+  function resumen() {
+    const errores = Object.keys(reglas).filter(k => reglas[k]($(`[name="${k}"]`, form).value));
+    const r = $('#fv-resumen');
+    if (!intento || !errores.length) { r.hidden = true; return errores; }
+    r.hidden = false; $('#fv-res-t').textContent = `Revisá ${fmt.plural(errores.length, 'campo', 'campos')}`;
+    $('#fv-res-l').innerHTML = errores.map(k => `<li><a href="#fv-${k}" data-ir="${k}">${nombres[k]}</a></li>`).join('');
+    return errores;
+  }
+  form.addEventListener('input', e => {
+    const k = e.target.name; if (!k) return;
+    if (k === 'cuit') { const d = cuitDigitos(e.target.value).slice(0, 11), pos = e.target.selectionStart, antes = e.target.value.length; e.target.value = formatoCuit(d); const delta = e.target.value.length - antes; e.target.setSelectionRange(pos + delta, pos + delta); }
+    if (k === 'limite') { const d = e.target.value.replace(/[^\d]/g, ''); e.target.value = d ? fmt.numero(+d) : ''; }
+    $('#fv-serv').hidden = true;
+    if (tocados.has(k) || intento) mostrar(k);
+    else if (k === 'cuit' && cuitDigitos(e.target.value).length === 11) { tocados.add(k); mostrar(k); }
+    else if (k === 'iva') { tocados.add(k); mostrar(k); }
+    faltan(); if (intento) resumen();
+  });
+  form.addEventListener('focusout', e => { const k = e.target.name; if (!k || !e.target.value) return; tocados.add(k); mostrar(k); });
+  $('#fv-resumen').addEventListener('click', e => { const a = e.target.closest('[data-ir]'); if (!a) return; e.preventDefault(); $(`#fv-${a.dataset.ir}`).focus(); });
+  form.addEventListener('submit', async e => {
+    e.preventDefault(); intento = true;
+    Object.keys(reglas).forEach(mostrar);
+    const errores = resumen();
+    const b = $('#fv-crear');
+    if (errores.length) {
+      b.classList.remove('sacude'); void b.offsetWidth; b.classList.add('sacude');
+      $(`#fv-${errores[0]}`).focus();
+      anunciar(`Revisá ${fmt.plural(errores.length, 'campo', 'campos')}: ${errores.map(k => nombres[k]).join(', ')}`);
+      return;
+    }
+    b.setAttribute('aria-busy', 'true'); b.innerHTML = `${SPIN}<span>Creando…</span>`;
+    await espera(900);
+    b.removeAttribute('aria-busy'); b.innerHTML = '<i class="ph ph-plus"></i><span>Crear cliente</span>';
+    const cuit = $('[name=cuit]', form).value;
+    if (cuit === EXISTE) {
+      const s = $('#fv-serv'); s.hidden = false;
+      s.innerHTML = `<div class="banda-x ro" role="alert"><span class="tile"><i class="ph ph-users"></i></span><div class="q"><b>Ese CUIT ya es de Orbe Retail S.A.</b><small>Lo cargó Tomás Ferraro el 12 mar 2024 · <span class="mono">ERR-409 · ${hhmm()}</span></small></div><button type="button" class="btn chico">Abrir ficha</button></div>`;
+      const c = $('[data-campo="cuit"] .in', form); c.classList.add('error'); $('[name=cuit]', form).setAttribute('aria-invalid', 'true'); $('[name=cuit]', form).focus();
+      return;
+    }
+    const nombre = $('[name=razon]', form).value.trim();
+    const datos = Object.fromEntries(new FormData(form));
+    toast({ titulo: `Cliente creado · ${escapar(nombre)}`, detalle: 'Ya aparece en Clientes con su condición de IVA', deshacer: () => { Object.entries(datos).forEach(([k, v]) => $(`[name=${k}]`, form).value = v); faltan(); } });
+    vaciar();
+  });
+  function vaciar() {
+    form.reset(); tocados.clear(); intento = false; $('#fv-resumen').hidden = true; $('#fv-serv').hidden = true;
+    Object.keys(reglas).forEach(mostrar); faltan();
+  }
+  $('#fv-limpiar').addEventListener('click', vaciar);
+  $('#fv-ejemplo').addEventListener('click', () => {
+    const b = '3071649201', d = dv(b) ?? 0;
+    $('[name=razon]', form).value = 'Mareas del Sur S.R.L.';
+    $('[name=cuit]', form).value = formatoCuit(b + (dv(b) === null ? 0 : d));
+    $('[name=iva]', form).value = 'Responsable inscripto';
+    $('[name=correo]', form).value = 'pagos@mareasdelsur.com.ar';
+    $('[name=limite]', form).value = '2.500.000';
+    Object.keys(reglas).forEach(k => tocados.add(k)); Object.keys(reglas).forEach(mostrar); faltan(); resumen();
+  });
+  faltan();
+})();
+
+/* ═════════ 16 · Estado de sincronización ═════════ */
+(() => {
+  const est = $('#sy-est'), lista = $('#sy-lista');
+  let sincronizadoEn = Date.now() - 12 * 60000, estado = 'ok', cobros = 32;
+  const COB = [
+    { cli: 'Casa Lumen SRL', f: 'FAC-01117', m: 642000, e: 'e2', cuando: 'hoy 11:20' },
+    { cli: 'Orbe Retail S.A.', f: 'FAC-01099', m: 1120000, e: 'e1', cuando: 'ayer 16:00' },
+  ];
+  const fila = (c, nuevo) => `<div class="fila-d${nuevo ? ' desenfoque ok' : ''}"><span class="cuadro ch" style="--ent:var(--${c.e})"></span><div class="q"><b>${c.cli}</b><small><span class="cod gris">${c.f}</span> · ${c.cuando}</small></div>${nuevo ? '<span class="chip ac">Nuevo</span>' : ''}${fmt.montoHTML(c.m, 'ARS', { corto: true })}</div>`;
+  lista.innerHTML = COB.map(c => fila(c)).join('');
+  const rel = () => { const m = Math.round((Date.now() - sincronizadoEn) / 60000); return m < 1 ? 'recién' : `hace ${m} min`; };
+  function pintar() {
+    const re = '<button class="btn ic chico texto" id="sy-re" aria-label="Sincronizar ahora" data-tip="Sincronizar ahora"><i class="ph ph-arrows-clockwise"></i></button><span class="sep-p"></span><button class="btn chico texto"><i class="ph ph-export"></i>Exportar</button>';
+    const T = {
+      ok: `<span class="pt" aria-hidden="true"></span><span>Sincronizado con Jaque ${rel()}</span>`,
+      sync: `<i class="ph ph-arrows-clockwise gira" style="color:var(--azul);font-size:14px"></i><span>Sincronizando con Jaque…</span>`,
+      aviso: `<span class="pt am" aria-hidden="true"></span><span class="est e-am" style="font-weight:500">2 cobros sin factura</span><span>· ${rel()}</span>`,
+      falla: `<span class="pt ro" aria-hidden="true"></span><span class="est e-ro" style="font-weight:500">Jaque no responde</span><span>· último ${rel()}</span>`,
+      pausa: `<span class="pt gr" aria-hidden="true"></span><span>Sincronización pausada por Lucía</span>`,
+    };
+    est.innerHTML = T[estado] + (estado === 'sync' ? '' : estado === 'pausa' ? '<span class="sep-p"></span><button class="btn chico texto" id="sy-reanudar">Reanudar</button>' : re);
+    $('#sy-re') && ($('#sy-re').onclick = sincronizar);
+    $('#sy-reanudar') && ($('#sy-reanudar').onclick = () => { estado = 'ok'; marcarSeg('ok'); sincronizar(); });
+  }
+  function marcarSeg(v) { $$('#sy-forzar button').forEach(b => { const on = b.dataset.v === v; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); }); }
+  async function sincronizar() {
+    const previo = estado; estado = 'sync'; pintar();
+    await espera(1300);
+    if (previo === 'falla') { estado = 'falla'; pintar(); toast({ titulo: 'Jaque sigue sin responder', detalle: 'Probamos de nuevo en 5 min', tipo: 'error', accion: { texto: 'Reintentar', fn: sincronizar } }); return; }
+    sincronizadoEn = Date.now(); estado = previo === 'aviso' ? 'aviso' : 'ok'; pintar();
+    const nuevo = { cli: 'Grupo Atlas', f: 'FAC-01112', m: 500000, e: 'e4', cuando: `hoy ${hhmm()}` };
+    lista.insertAdjacentHTML('afterbegin', fila(nuevo, true));
+    const f = lista.firstElementChild; setTimeout(() => f.classList.remove('ok'), 2000);
+    cobros++; $('#sy-c').textContent = cobros;
+    anunciar('Sincronizado. 1 cobro nuevo');
+  }
+  $('#sy-forzar').addEventListener('cambio', e => { estado = e.detail; pintar(); });
+  setInterval(() => { if (estado !== 'sync') pintar(); }, 30000);
+  pintar();
+  /* conexiones */
+  const rb = $('#sy-reconectar');
+  rb.addEventListener('click', async () => {
+    rb.setAttribute('aria-busy', 'true'); rb.innerHTML = `${SPIN}<span>Conectando…</span>`;
+    await espera(1200);
+    $('#sy-arca-est').innerHTML = '<span class="est e-ok sello"><i class="ph ph-check-circle"></i>Conectada</span>· certificado vence 18 nov 2027';
+    rb.outerHTML = '<button class="toggle" role="switch" aria-checked="true" aria-label="ARCA activa"></button>';
+    $('.pie-mono').textContent = '4 activas · ninguna pide intervención · revisamos cada 5 min';
+    toast({ titulo: 'ARCA conectada', detalle: 'Ya emite facturas con CAE' });
+  });
+  let gm = 340; const gmI = setInterval(() => { gm = Math.min(1200, gm + 37); $('#sy-gm').textContent = `${fmt.numero(gm)} de 1.200`; $('#sy-gm-b').style.width = `${gm / 12}%`; if (gm >= 1200) { clearInterval(gmI); $('#sy-gm').closest('small').innerHTML = '<span class="est e-ok"><i class="ph ph-check-circle"></i>Al día</span>· 1.200 correos · recién'; } }, 700);
+  $('#sy-drive').addEventListener('cambio', e => { e.target.closest('.con').classList.toggle('apag', !e.detail); $('.q small', e.target.closest('.con')).innerHTML = e.detail ? '<span class="est e-az"><i class="ph ph-circle-notch gira"></i>Conectando</span>· remitos escaneados' : '<span class="est"><i class="ph ph-pause-circle"></i>Apagada</span>· remitos escaneados'; });
+})();
+
+/* ═════════ 17 · Microinteracciones ═════════ */
+(() => {
+  const g = $('#mi-guardar');
+  g.addEventListener('click', async () => {
+    if (g.getAttribute('aria-busy') === 'true' || g.classList.contains('hecho')) return;
+    g.setAttribute('aria-busy', 'true'); g.innerHTML = `${SPIN}<span>Guardando…</span>`;
+    await espera(900); g.removeAttribute('aria-busy'); g.classList.add('hecho'); g.innerHTML = '<i class="ph ph-check"></i><span>Guardado</span>';
+    await espera(2000); g.classList.remove('hecho'); g.innerHTML = '<i class="ph ph-floppy-disk"></i><span>Guardar</span>';
+  });
+  const L = ['Orbe Retail S.A.', 'Casa Lumen SRL', 'Grupo Atlas'];
+  $('#mi-lista').innerHTML = L.map(n => `<div><span>${n}</span><button class="agre" aria-pressed="false" aria-label="Elegir ${n}"><i class="ph ph-plus"></i></button></div>`).join('');
+  $('#mi-lista').addEventListener('click', e => {
+    const b = e.target.closest('.agre'); if (!b) return;
+    const on = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', on); b.innerHTML = `<i class="ph ph-${on ? 'check' : 'plus'}"></i>`;
+    const n = $$('.agre[aria-pressed=true]').length; $('#mi-sel').textContent = `${n} ${n === 1 ? 'elegido' : 'elegidos'}`;
+  });
+  $('#mi-copiar').addEventListener('click', async e => {
+    const b = e.currentTarget; try { await navigator.clipboard.writeText('30-71583092-9'); } catch {}
+    b.innerHTML = '<i class="ph ph-check ok-ic"></i>'; b.setAttribute('aria-label', 'Copiado'); anunciar('Copiado');
+    setTimeout(() => { b.innerHTML = '<i class="ph ph-copy"></i>'; b.setAttribute('aria-label', 'Copiar CUIT'); }, 1500);
+  });
+  $('#mi-chev').addEventListener('click', e => { const b = e.currentTarget, v = b.getAttribute('aria-expanded') !== 'true'; b.setAttribute('aria-expanded', v); $('#mi-desp').classList.toggle('abierto', v); });
+  $('#mi-campana').addEventListener('click', e => {
+    const b = e.currentTarget, v = b.getAttribute('aria-expanded') !== 'true'; b.setAttribute('aria-expanded', v);
+    b.querySelector('.ph, .ph-fill').className = v ? 'ph-fill ph-bell' : 'ph ph-bell';
+    if (v) { const i = $('#mi-ins'); i?.remove(); b.setAttribute('aria-label', 'Avisos, todo leído'); $('#mi-camp-t').textContent = 'Panel abierto · todo leído'; }
+    else $('#mi-camp-t').textContent = 'Todo leído';
+  });
+  /* odómetro */
+  const odo = $('#mi-odo'); let valor = 1284500;
+  function odometro(n) {
+    const txt = fmt.numero(n), viejo = odo.dataset.v || '';
+    if (odo.children.length - 1 !== txt.length) {
+      odo.innerHTML = '<span class="u">$</span>' + [...txt].map(ch => /\d/.test(ch) ? `<span class="col">${'0123456789'.split('').map(d => `<span>${d}</span>`).join('')}</span>` : `<span class="fijo">${ch}</span>`).join('');
+    }
+    [...txt].forEach((ch, i) => { const el = odo.children[i + 1]; if (el.classList.contains('col')) el.style.transform = `translateY(-${+ch}em)`; });
+    odo.dataset.v = txt; odo.setAttribute('aria-label', `$ ${txt}`);
+  }
+  odometro(valor);
+  $('#mi-mas').addEventListener('click', () => { valor += 12500; odometro(valor); });
+  $('#mi-estrella').addEventListener('click', e => { const b = e.currentTarget, v = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', v); b.innerHTML = `<i class="${v ? 'ph-fill' : 'ph'} ph-star"></i>`; b.setAttribute('aria-label', v ? 'Quitar destacado' : 'Destacar'); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Plantilla · Biblioteca</title>
+<meta name="description" content="Página de categoría de ejemplo de la biblioteca de diseno-sistemas: copiala para armar una categoría nueva.">
+<!-- tema antes de pintar (evita el destello de claro a oscuro) -->
+<script>try{var t=JSON.parse(localStorage.getItem('bib-tema'));if(t)document.documentElement.dataset.tema=t}catch(e){}</script>
+<link rel="stylesheet" href="base.css">
+<style>
+/* Estilos propios de esta categoría: solo lo que no está en base.css, con tokens y --espacio-* */
+.estado-fila{display:flex;align-items:center;gap:var(--espacio-4);min-height:36px;border-bottom:1px solid var(--divisor);font-size:13px}
+.estado-fila:last-child{border-bottom:0}
+.estado-fila .nom{font-weight:500;min-width:0;flex:1}
+.estado-fila .cuando{font-size:12px;color:var(--texto-3);width:84px;text-align:right}
+@media (max-width:767px){.estado-fila{flex-wrap:wrap;row-gap:var(--espacio-2);padding:var(--espacio-4) 0}.estado-fila .nom{flex-basis:100%}.estado-fila .cuando{margin-left:auto;width:auto}}
+.mal .chip.lleno{color:#fff}
+.mal .chip.lleno.v{background:#15803d}.mal .chip.lleno.ro{background:#b91c1c}.mal .chip.lleno.am{background:#b45309}
+</style>
+</head>
+<body class="bib">
+<div class="bib-pag">
+  <!-- el índice lo arma base.js con las láminas de la página; data-volver cambia el link de vuelta -->
+  <aside class="bib-indice" data-volver="index.html" data-titulo="Plantilla"></aside>
+
+  <main class="bib-main">
+    <header class="bib-cab">
+      <div>
+        <span class="eti"><a href="index.html">Biblioteca</a> / 00</span>
+        <h1>Plantilla de categoría</h1>
+        <p><b>2 piezas</b> de muestra · copiá este archivo como <span class="cod">NN-categoria.html</span> y reemplazá las láminas.</p>
+      </div>
+      <div class="der"><!-- base.js agrega acá el selector claro/oscuro --></div>
+    </header>
+
+    <!-- ══════════ Lámina 1 ══════════
+         id = ancla del índice y del buscador de la portada. h2 = nombre. .lamina-sec = sección de SKILL.md.
+         .lamina-regla = la regla en una línea. .demo = lo vivo (base.js copia su HTML para "Ver código"). -->
+    <section class="lamina" id="pastilla-estado">
+      <header class="lamina-cab">
+        <h2>Pastilla de estado</h2>
+        <span class="lamina-sec">§3 Color · §1c.2</span>
+        <p class="lamina-regla">Punto + palabra sobre fondo al 10 %; <b>lo normal o resuelto va en gris sin pastilla</b> y solo lo que exige actuar lleva color, con el motivo después de una raya.</p>
+        <p class="lamina-ref">Patrones 1.17 y 6.7 · ref. 25, 49</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-check-circle"></i>Los cinco estados</span>
+              <div class="fila g3"><span class="chip d v">Cobrada</span><span class="chip d am">Por facturar</span><span class="chip d ro">Vencida</span><span class="chip d az">En curso</span><span class="chip d gr">Borrador</span></div>
+            </div>
+            <div class="variante mal" aria-label="Ejemplo de lo que no va">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: rellenas, saturadas y sin motivo</span>
+              <div class="fila g3"><span class="chip lleno v">Cobrada</span><span class="chip lleno am">Pendiente</span><span class="chip lleno ro">Error</span></div>
+            </div>
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-list-checks"></i>En una lista, lo resuelto en gris</span>
+              <div class="card" style="padding:var(--espacio-2) var(--espacio-6)">
+                <div class="estado-fila"><span class="nom trunca">Plan anual Orbe Retail</span><span class="gris-2 t-12"><i class="ph ph-check" style="font-size:13px"></i> Cobrada</span><span class="cuando num">12 nov</span></div>
+                <div class="estado-fila"><span class="nom trunca">Rediseño Casa Lumen</span><span class="gris-2 t-12"><i class="ph ph-check" style="font-size:13px"></i> Cobrada</span><span class="cuando num">9 nov</span></div>
+                <div class="estado-fila"><span class="nom trunca">Soporte Grupo Atlas</span><span class="chip d ro">Bloqueada — falta remito</span><span class="cuando num vencida">hace 6 días</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">En oscuro van sin fondo: ícono o punto + palabra.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ Lámina 2 ══════════ -->
+    <section class="lamina" id="kpi-bandeja">
+      <header class="lamina-cab">
+        <h2>KPI en bandeja</h2>
+        <span class="lamina-sec">§5 KPI · §1b.9</span>
+        <p class="lamina-regla">Rótulo con ícono arriba, <b>cifra display con su dibujo</b> en la tarjeta interna y pie con la variación, su período y el link a la lista filtrada.</p>
+        <p class="lamina-ref">Patrones 7.1 y 7.13 · ref. 06, 07, 33</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="fila entre">
+            <div class="seg" id="periodo" role="group" aria-label="Período"><button data-v="sem">Semana</button><button data-v="mes" class="on">Mes</button><button data-v="anio">Año</button></div>
+            <button class="btn chico" id="cobrar"><i class="ph ph-hand-coins"></i>Registrar cobro</button>
+          </div>
+          <div class="kpis tres">
+            <div class="heroe">
+              <span class="ico"><i class="ph ph-wallet"></i></span>
+              <span class="pill" id="h-delta"><i class="ph ph-trend-up" style="font-size:13px"></i>+12,4 %</span>
+              <span class="rot">Por cobrar</span>
+              <div class="n"><span class="u">$</span><span id="h-monto">48.215.300</span></div>
+              <div class="ctx num" id="h-ctx">32 facturas · 4 vencidas</div>
+              <svg class="curva" id="h-curva" aria-hidden="true"></svg>
+            </div>
+            <div class="bandeja">
+              <div class="rot"><i class="ph ph-seal-check"></i>Cobrado<button class="btn ic chico texto" data-tip="Más opciones" aria-label="Más opciones de Cobrado" data-menu="#menu-cobrado"><i class="ph ph-dots-three"></i></button></div>
+              <div class="adentro">
+                <div class="n"><span class="u">$</span><span id="c-monto">31.480.000</span></div>
+                <div class="ctx num" id="c-ctx">72 % de la meta de $ 43,7 M</div>
+                <div class="ticks" id="c-ticks"></div>
+              </div>
+              <a class="pie" href="#kpi-bandeja"><span class="sube num" id="c-delta"><i class="ph ph-trend-up"></i>+8,1 %</span><span>vs. octubre <i class="ph ph-arrow-up-right"></i></span></a>
+            </div>
+            <div class="bandeja">
+              <div class="rot"><i class="ph ph-clock-countdown"></i>Días de cobro</div>
+              <div class="adentro">
+                <div class="n"><span id="d-dias">38</span><span class="u" style="margin:0 0 0 var(--espacio-2)">días</span></div>
+                <div class="ctx">promedio desde que se emite</div>
+                <div class="segs" id="d-segs"></div>
+              </div>
+              <div class="pie"><span class="sube num"><i class="ph ph-trend-down"></i>−3 días</span><span>bajar es bueno</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="menu" id="menu-cobrado">
+  <div class="gr-m"><button><i class="ph ph-list-magnifying-glass"></i>Ver cobros<span class="atajo">G C</span></button><button><i class="ph ph-export"></i>Exportar</button></div>
+  <div class="gr-m"><button class="peligro"><i class="ph ph-eye-slash"></i>Ocultar del tablero</button></div>
+</div>
+
+<script src="base.js"></script>
+<script>
+/* Script de la página: después de base.js, usando bib.* */
+const { $, fmt, linea, ticks, bloques, cuenta, toast } = bib;
+
+const DATOS = {
+  sem: { porCobrar: 9840500, ctx: '7 facturas · 1 vencida', delta: 3.2, cobrado: 6120000, meta: 10900000, dCob: 2.4, serie: [12, 14, 13, 17, 16, 19, 22] },
+  mes: { porCobrar: 48215300, ctx: '32 facturas · 4 vencidas', delta: 12.4, cobrado: 31480000, meta: 43700000, dCob: 8.1, serie: [120, 128, 122, 140, 135, 150, 146, 162, 158, 171, 184] },
+  anio: { porCobrar: 412900000, ctx: '286 facturas · 11 vencidas', delta: -2.6, cobrado: 388250000, meta: 520000000, dCob: -1.3, serie: [30, 34, 33, 38, 41, 39, 44, 47, 45, 52, 50, 56] },
+};
+let actual = 'mes';
+
+/* desde = valores anteriores para que las cifras rueden desde ahí (null = sin animar) */
+function pintar(clave, desde) {
+  const d = DATOS[clave];
+  actual = clave;
+  const ciento = d.cobrado / d.meta * 100;
+  $('#h-ctx').textContent = d.ctx;
+  $('#h-delta').innerHTML = `<i class="ph ph-trend-${d.delta >= 0 ? 'up' : 'down'}" style="font-size:13px"></i>${fmt.pct(d.delta)}`;
+  $('#c-ctx').textContent = `${fmt.numero(ciento)} % de la meta de ${fmt.monto(d.meta, 'ARS', { corto: true })}`;
+  $('#c-delta').className = (d.dCob >= 0 ? 'sube' : 'baja') + ' num';
+  $('#c-delta').innerHTML = `<i class="ph ph-trend-${d.dCob >= 0 ? 'up' : 'down'}"></i>${fmt.pct(d.dCob)}`;
+  if (desde) {
+    cuenta($('#h-monto'), d.porCobrar, { desde: desde.porCobrar });
+    cuenta($('#c-monto'), d.cobrado, { desde: desde.cobrado });
+  } else {
+    $('#h-monto').textContent = fmt.numero(d.porCobrar); $('#c-monto').textContent = fmt.numero(d.cobrado);
+  }
+  linea($('#h-curva'), d.serie, { color: '#fff', blanco: true, ancho: 300, alto: 80 });
+  ticks($('#c-ticks'), 34, Math.round(34 * Math.min(1, ciento / 100)), 'var(--e4)');
+}
+bloques($('#d-segs'), 12, 5, 'var(--e1)');
+pintar('mes', null);
+$('#periodo').addEventListener('cambio', e => pintar(e.detail, DATOS[actual]));
+
+/* éxito en el lugar + toast con Deshacer: el cobro se suma y se puede revertir */
+$('#cobrar').addEventListener('click', () => {
+  const clave = actual, d = DATOS[clave], antes = { ...d }, monto = 1250000;
+  d.cobrado += monto; d.porCobrar -= monto;
+  pintar(clave, antes);
+  toast({
+    titulo: `Cobro registrado · FAC-01102 · ${fmt.monto(monto)}`,
+    detalle: 'Quedó en Cobranzas como cobrada',
+    deshacer: () => { const ahora = { ...d }; Object.assign(d, antes); pintar(clave, ahora); },
+  });
+});
+</script>
+</body>
+</html>

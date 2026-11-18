@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Biblioteca de piezas</title>
+<meta name="description" content="Portada de la biblioteca de diseno-sistemas: 14 categorías de piezas vivas con su regla, su sección de SKILL.md y su código.">
+<script>try{var t=JSON.parse(localStorage.getItem('bib-tema'));if(t)document.documentElement.dataset.tema=t}catch(e){}</script>
+<link rel="stylesheet" href="base.css">
+<style>
+.portada{max-width:1312px;margin:0 auto;padding:var(--espacio-10) var(--espacio-9) 96px}
+.portada .bib-cab h1{font-size:40px}
+.cifras{display:flex;gap:var(--espacio-8);margin-top:var(--espacio-6);flex-wrap:wrap}
+.cifras div{display:flex;flex-direction:column;gap:var(--espacio-1)}
+.cifras b{font-family:var(--display);font-size:24px;font-weight:500;line-height:1.1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.cifras span{font-size:12px;color:var(--texto-3)}
+
+/* buscador */
+.busca{margin-top:var(--espacio-9);position:relative}
+.busca .in{height:48px;border-radius:16px;padding:0 var(--espacio-4) 0 var(--espacio-6);box-shadow:var(--s-min)}
+.busca .in input{font-size:14px}
+.busca .in>.ph{font-size:18px}
+.resultados{margin-top:var(--espacio-5);display:none}
+.resultados.ver{display:block}
+.resultados .card{overflow:hidden}
+.resultados .tit{padding-bottom:var(--espacio-4)}
+.res{display:flex;align-items:center;gap:var(--espacio-5);min-height:52px;padding:var(--espacio-3) var(--espacio-7);border-top:1px solid var(--divisor);color:var(--tinta);outline-offset:-2px}
+.res:hover,.res[data-activo]{background:var(--hover)}
+.res .tile{width:32px;height:32px;border-radius:10px}
+.res .tile .ph{font-size:16px}
+.res b{font-weight:500;font-size:14px;display:block}
+.res small{font-size:12px;color:var(--texto-3)}
+.res mark{background:color-mix(in oklch,var(--dato-4) 30%,transparent);color:inherit;border-radius:3px}
+.res .ir{margin-left:auto;color:var(--texto-3)}
+.res-vacio{padding:var(--espacio-8) var(--espacio-7);text-align:center;color:var(--texto-2)}
+.res-vacio b{display:block;font-family:var(--display);font-size:16px;font-weight:500;color:var(--tinta);margin-bottom:var(--espacio-2)}
+
+/* categorías */
+.seccion{margin-top:var(--espacio-10)}
+.seccion>h2{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em;display:flex;align-items:baseline;gap:var(--espacio-4);margin-bottom:var(--espacio-5)}
+.seccion>h2 .c{font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:0;color:var(--texto-3)}
+.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--espacio-gap)}
+.cat{display:flex;flex-direction:column;background:var(--bandeja);border:1px solid var(--borde);border-radius:var(--radius-tarjeta);padding:var(--espacio-2);color:var(--tinta);transition:transform var(--t-3) var(--ease),box-shadow var(--t-3) var(--ease),opacity var(--t-2)}
+@media (hover:hover){.cat:hover{transform:translateY(calc(-2px*var(--mueve)));box-shadow:var(--s-hover)}.cat:hover .vista svg{transform:scale(1.03)}}
+.cat.apagada{opacity:.4}
+.cat .vista{height:124px;border-radius:var(--radius-interno);background:var(--superficie);border:1px solid var(--borde);overflow:hidden;position:relative;display:grid;place-items:center;
+  background-image:radial-gradient(color-mix(in oklch,var(--texto-3) 16%,transparent) 1px,transparent 1.2px);background-size:12px 12px}
+.cat .vista svg{width:100%;height:100%;transition:transform var(--t-4) var(--ease)}
+.cat .info{display:flex;gap:var(--espacio-5);align-items:flex-start;padding:var(--espacio-5) var(--espacio-4) var(--espacio-4)}
+.cat .info>div{min-width:0;flex:1}
+.cat .num-cat{font-family:var(--mono);font-size:12px;color:var(--texto-3)}
+.cat h3{font-family:var(--display);font-size:16px;font-weight:500;letter-spacing:-.01em;line-height:1.25;display:flex;align-items:baseline;justify-content:space-between;gap:var(--espacio-4)}
+.cat h3 .cnt{font-family:var(--ui);font-size:12px;font-weight:500;color:var(--texto-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.cat .muestra{font-size:12px;color:var(--texto-3);margin-top:var(--espacio-2);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cat .tile{background:var(--superficie);border:1px solid var(--borde);box-shadow:var(--s-min);color:var(--fam)}
+
+/* familias de color de los íconos de categoría (al 12 %, 18 % en oscuro) */
+.f1{--fam:var(--e1)}.f2{--fam:var(--e2)}.f3{--fam:var(--e3)}.f4{--fam:var(--e4)}.f5{--fam:var(--e5)}.f6{--fam:var(--e6)}
+
+/* otros recursos */
+.recursos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--espacio-gap)}
+.recurso{display:flex;flex-direction:column;background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-tarjeta);overflow:hidden}
+.recurso .cab-r{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-6) var(--espacio-7) var(--espacio-4)}
+.recurso .cab-r h3{font-family:var(--display);font-size:16px;font-weight:500}
+.recurso .cab-r .c{font-size:13px;font-weight:500;color:var(--texto-3);font-variant-numeric:tabular-nums}
+.recurso a.ln{display:flex;align-items:center;gap:var(--espacio-4);min-height:40px;padding:0 var(--espacio-7);border-top:1px solid var(--divisor);font-size:13px;font-weight:500;color:var(--tinta)}
+.recurso a.ln .ph{color:var(--texto-3);font-size:16px}
+.recurso a.ln .ruta{margin-left:auto;font-family:var(--mono);font-size:12px;font-weight:400;color:var(--texto-3)}
+.recurso a.ln:hover{background:var(--hover)}
+
+@media (max-width:1279px){.cats{grid-template-columns:repeat(3,minmax(0,1fr))}.recursos{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1023px){.cats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:767px){
+  .portada{padding:var(--espacio-6) var(--espacio-6) 64px}
+  .portada .bib-cab h1{font-size:32px}
+  .cats,.recursos{grid-template-columns:minmax(0,1fr);gap:var(--espacio-5)}
+  .seccion{margin-top:var(--espacio-9)}
+  .busca .in{height:52px}
+  .recurso a.ln{min-height:48px}
+  .recurso a.ln .ruta{display:none}
+}
+</style>
+</head>
+<body class="bib">
+<div class="portada">
+  <header class="bib-cab">
+    <div>
+      <span class="eti">diseno-sistemas · biblioteca</span>
+      <h1>Biblioteca de piezas</h1>
+      <p>Cada pieza viva con su regla, su sección de <span class="cod">SKILL.md</span> y su código. Marca de ejemplo: Estudio Faro.</p>
+      <div class="cifras" id="cifras"></div>
+    </div>
+    <div class="der"></div>
+  </header>
+
+  <div class="busca" role="search">
+    <label class="sr" for="q">Buscar piezas</label>
+    <div class="in"><i class="ph ph-magnifying-glass"></i><input id="q" type="search" autocomplete="off" placeholder="Tabla con pie, hoja lateral, anillo, ⌘K…" aria-controls="res-lista" aria-describedby="q-ayuda"><kbd id="q-ayuda" aria-label="Atajo: barra">/</kbd></div>
+    <div class="resultados" id="resultados" aria-live="polite">
+      <section class="card">
+        <div class="tit"><h3>Piezas</h3><span class="c" id="res-cuenta">0</span><div class="der"><button class="btn chico texto" id="limpiar"><i class="ph ph-x"></i>Limpiar</button></div></div>
+        <div id="res-lista" role="listbox" aria-label="Resultados"></div>
+      </section>
+    </div>
+  </div>
+
+  <section class="seccion" aria-labelledby="t-cats">
+    <h2 id="t-cats">Categorías <span class="c" id="c-cats">14</span></h2>
+    <div class="cats" id="cats"></div>
+  </section>
+
+  <section class="seccion" aria-labelledby="t-rec">
+    <h2 id="t-rec">Pantallas, guías y documentos</h2>
+    <div class="recursos">
+      <div class="recurso">
+        <div class="cab-r"><span class="tile ch f1" style="--fam:var(--e1);background:color-mix(in oklch,var(--e1) 12%,var(--superficie));color:var(--e1)"><i class="ph ph-browser"></i></span><h3>Pantallas completas</h3><span class="c">11</span></div>
+        <a class="ln" href="../tablero-crm.html"><i class="ph ph-squares-four"></i>Tablero<span class="ruta">tablero-crm</span></a>
+        <a class="ln" href="../pantallas/lista-cobranzas.html"><i class="ph ph-hand-coins"></i>Cobranzas<span class="ruta">lista-cobranzas</span></a>
+        <a class="ln" href="../pantallas/vistas-de-datos.html"><i class="ph ph-table"></i>Vistas de datos<span class="ruta">vistas-de-datos</span></a>
+        <a class="ln" href="../pantallas/pipeline.html"><i class="ph ph-kanban"></i>Pipeline<span class="ruta">pipeline</span></a>
+        <a class="ln" href="../pantallas/ficha-cliente.html"><i class="ph ph-identification-card"></i>Ficha de cliente<span class="ruta">ficha-cliente</span></a>
+        <a class="ln" href="../pantallas/formulario-alta.html"><i class="ph ph-note-pencil"></i>Alta larga<span class="ruta">formulario-alta</span></a>
+        <a class="ln" href="../pantallas/calendario.html"><i class="ph ph-calendar-blank"></i>Calendario<span class="ruta">calendario</span></a>
+        <a class="ln" href="../pantallas/ajustes.html"><i class="ph ph-gear-six"></i>Ajustes<span class="ruta">ajustes</span></a>
+        <a class="ln" href="../pantallas/login.html"><i class="ph ph-sign-in"></i>Acceso<span class="ruta">login</span></a>
+        <a class="ln" href="../pantallas/celular.html"><i class="ph ph-device-mobile"></i>Celular<span class="ruta">celular</span></a>
+        <a class="ln" href="../antes-despues.html"><i class="ph ph-arrows-left-right"></i>Antes y después<span class="ruta">antes-despues</span></a>
+      </div>
+      <div class="recurso">
+        <div class="cab-r"><span class="tile ch" style="background:color-mix(in oklch,var(--e5) 12%,var(--superficie));color:var(--e5)"><i class="ph ph-book-open"></i></span><h3>Guías vivas</h3><span class="c">5</span></div>
+        <a class="ln" href="../componentes.html"><i class="ph ph-puzzle-piece"></i>Componentes base<span class="ruta">componentes</span></a>
+        <a class="ln" href="../graficos.html"><i class="ph ph-chart-line-up"></i>Gráficos<span class="ruta">graficos</span></a>
+        <a class="ln" href="../iconos.html"><i class="ph ph-shapes"></i>Íconos<span class="ruta">iconos</span></a>
+        <a class="ln" href="../ilustraciones.html"><i class="ph ph-image"></i>Ilustraciones<span class="ruta">ilustraciones</span></a>
+        <a class="ln" href="../movimiento.html"><i class="ph ph-wave-sine"></i>Movimiento<span class="ruta">movimiento</span></a>
+      </div>
+      <div class="recurso">
+        <div class="cab-r"><span class="tile ch" style="background:color-mix(in oklch,var(--e3) 12%,var(--superficie));color:var(--e3)"><i class="ph ph-file-text"></i></span><h3>Documentos</h3><span class="c">4</span></div>
+        <a class="ln" href="../documentos/factura.html"><i class="ph ph-receipt"></i>Factura<span class="ruta">factura</span></a>
+        <a class="ln" href="../documentos/presupuesto.html"><i class="ph ph-file-text"></i>Presupuesto<span class="ruta">presupuesto</span></a>
+        <a class="ln" href="../documentos/informe-mensual.html"><i class="ph ph-chart-bar"></i>Informe mensual<span class="ruta">informe-mensual</span></a>
+        <a class="ln" href="../documentos/correo.html"><i class="ph ph-envelope-simple"></i>Correo<span class="ruta">correo</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="base.js"></script>
+<script>
+/*
+ * Catálogo de la biblioteca. Cada pieza enlaza a archivo#slug(nombre): el id de la lámina en su página
+ * tiene que ser bib.slug(nombre) (por ejemplo "Pie con total y Calcular" → #pie-con-total-y-calcular).
+ * Si una categoría suma o cambia piezas, se actualiza esta lista y la portada cuenta sola.
+ */
+const CATEGORIAS = [
+  { n: '01', archivo: '01-navegacion.html', nombre: 'Navegación', icono: 'sidebar-simple', fam: 1, piezas: [
+    'Barra lateral', 'Barra colapsada a riel', 'Selector de empresa', 'Favoritos en el menú', 'Entidades en el menú con sus vistas', 'Conteo con verbo en el menú',
+    'Ítem Pronto', 'Plan en el menú', 'Onboarding en el pie del menú', 'Barra superior del panel', 'Migas con estado de guardado', 'Avisos en hoja con tipos',
+    'Pestañas con conteo', 'Segmentado con ícono y conteo', 'Vistas guardadas', 'Pestañas de trabajo abiertas', 'Navegación superior para pocas secciones',
+    'Paginación', 'Cargar más', 'Barra inferior de celular', 'Atrás y adelante'] },
+  { n: '02', archivo: '02-botones.html', nombre: 'Botones y acciones', icono: 'cursor-click', fam: 5, piezas: [
+    'Botón principal', 'Botón con borde', 'Botón chico', 'Botón de solo ícono', 'Botón de texto y enlace', 'Botón destructivo',
+    'Atajo de teclado a la vista', 'Botón con contador', 'Botón dividido', 'Grupo de botones', 'Botón conmutable', 'Estados del botón',
+    'Guardando con ancho fijo', 'Éxito en el lugar', 'Control con la causa escrita', 'Menú de más acciones', 'Acciones rápidas de la fila',
+    'Ejecutar en la fila', 'Agregar al final de la lista', 'Acciones de comunicación', 'Selector segmentado', 'Pestañas con conteo',
+    'Botón flotante', 'Píldora de celular'] },
+  { n: '03', archivo: '03-campos.html', nombre: 'Campos y formularios', icono: 'textbox', fam: 2, piezas: [
+    'Campo con rótulo', 'Moneda dentro del campo', 'Número con pasos', 'Contraseña con mostrar', 'Buscador', 'Texto largo con contador',
+    'Validación al salir', 'Corrección como botón', 'Combobox con búsqueda', 'Selección múltiple con chips', 'Etiquetas dentro del campo',
+    'Select con ícono', 'Fecha que se escribe', 'Rango de fechas', 'Hora', 'Chips en lugar de desplegable', 'Tarjetas de opción',
+    'Miniaturas para elegir forma', 'Renglón de parámetros', 'Color de entidad', 'Interruptor con explicación', 'Casillas con estado intermedio',
+    'Deslizador', 'Carga de archivos', 'Código de un solo uso'] },
+  { n: '04', archivo: '04-datos-chicos.html', nombre: 'Datos chicos', icono: 'tag', fam: 3, piezas: [
+    'Pastilla de estado', 'Lo resuelto en gris', 'Estado por forma', 'Etiqueta con borde', 'Prioridad', 'Avatar y monograma', 'Pila de avatares',
+    'Punto de presencia', 'Insignias y contadores', 'Insignia de filtros activos', 'Tooltip', 'Tooltip con datos', 'Delta con período', 'Monto con moneda y centavos',
+    'Cifra con unidad', 'Código en mono', 'Fecha relativa', 'Fecha que apura', 'Frescura del dato', 'Barra de progreso fina', 'Rayitas', 'Bloques segmentados',
+    'Anillo chico', 'Barra apilada con leyenda', 'Contra meta con marca', 'Sparkline', 'Celda de resultado', 'Banderas y logos en celda', 'Atajos de teclado'] },
+  { n: '05', archivo: '05-kpis.html', nombre: 'KPIs y cifras', icono: 'chart-line-up', fam: 1, piezas: [
+    'KPI en bandeja', 'Protagonista', 'Rayitas hasta la meta', 'Bloques de avance', 'Anillo', 'Anillo de puntos', 'KPI en una línea', 'Total con su composición',
+    'Avance contra meta en dos bloques', 'KPIs como selector del gráfico', 'Cifra con equivalente', 'Resumen de cabecera', 'Mapa de calor de actividad', 'Comparar entidades'] },
+  { n: '06', archivo: '06-tablas.html', nombre: 'Tablas', icono: 'table', fam: 6, piezas: [
+    'Tabla base', 'Densidad en tres niveles', 'Encabezado con ícono de tipo', 'Columna fija', 'Redimensionar columnas', 'Mover columnas', 'Menú del encabezado',
+    'Orden en reposo y activo', 'Pie con total y Calcular', 'Selección múltiple', 'Agrupada por cliente', 'Modo planilla', 'Panel Vista', 'Filtro por facetas',
+    'Fila sombreada por gravedad', 'Columna Modificó'] },
+  { n: '07', archivo: '07-listas.html', nombre: 'Listas', icono: 'list-bullets', fam: 4, piezas: [
+    'Lista de avisos', 'Agrupar por urgencia', 'Lista mínima en curso', 'Tareas en bloque', 'Pasos con checks', 'Historial que dice qué pasó', 'Registro de corridas',
+    'Desvanecido al pie', 'Carpetas y archivos', 'Lista de conexiones', 'Filtrar sin parpadeo', 'Pestañas de estado como leyenda'] },
+  { n: '08', archivo: '08-tarjetas.html', nombre: 'Tarjetas', icono: 'cards', fam: 5, piezas: [
+    'Tarjeta de entidad', 'Persona con su carga', 'Cliente en vista rápida', 'Oportunidad del pipeline', 'Tarea en kanban', 'Columna de kanban',
+    'Tarjeta de proceso', 'Plantilla como receta', 'Integración', 'Espacio contenedor', 'Documento y contrato', 'Galería con imagen',
+    'Detalle con anatomía fija', 'Monitoreo de equipo', 'Plan y uso', 'Reunión con cuenta regresiva', 'Promo con clima', 'Sugerencia descartable'] },
+  { n: '09', archivo: '09-capas.html', nombre: 'Capas', icono: 'stack', fam: 2, piezas: [
+    'Hoja lateral que empuja', 'Panel en tres modos', 'Alta con contexto', 'Edición sin navegar', 'Confirmación irreversible', 'Menú contextual', 'Submenú con tolerancia',
+    'Paleta de comandos', 'Tooltip', 'Del conteo al ejemplo', 'Toast con Deshacer', 'Cambios sin guardar', 'Compartir'] },
+  { n: '10', archivo: '10-tiempo.html', nombre: 'Tiempo', icono: 'calendar-blank', fam: 3, piezas: [
+    'Semana con la línea de ahora', 'Evento con tinte y borde', 'Crear en la celda', 'Mes con píldoras', 'Mini mes y lo próximo', 'Próxima reunión',
+    'Gantt liviano', 'Línea de tiempo de un documento', 'Zoom semántico', 'Reprogramar con huecos libres', 'Fecha con atajos'] },
+  { n: '11', archivo: '11-ia-automatizaciones.html', nombre: 'IA y automatizaciones', icono: 'sparkle', fam: 5, piezas: [
+    'Respuesta con objetos', 'Razonamiento plegable', 'Lo que entendió', 'Conversación', 'Cuadro de escritura', 'Esperando tu OK', 'Agentes por estado',
+    'Hilos del registro', 'Editor en tres zonas', 'Lienzo en columnas', 'Nodo en bandeja', 'Reglas como oración', 'Corrida que viaja', 'Traza en cascada', 'Creador con una frase'] },
+  { n: '12', archivo: '12-flujos.html', nombre: 'Flujos', icono: 'flow-arrow', fam: 6, piezas: [
+    'Vista previa antes del lote', 'Proceso paso a paso', 'Resultado en verbos y cifras', 'Recálculo en el lugar', 'Problema en cada nivel', 'Lista de control',
+    'Resolver ambigüedad', 'Asistente en modal partido', 'Alta larga con índice', 'Documento sobre su vista previa', 'Uso contra límite', 'Comparar planes',
+    'Invitar al equipo', 'Permisos con explicación'] },
+  { n: '13', archivo: '13-estados.html', nombre: 'Estados', icono: 'circle-dashed', fam: 4, piezas: [
+    'Esqueleto', 'Carga diferida', 'Proceso largo', 'Vacío de primera vez', 'Vacío al día', 'Sin resultados', 'Error en bloque', 'Error en banda', 'Error en línea',
+    'Sin conexión', 'Sin permisos', 'Éxito', 'Confirmación en el lugar', 'Guardado automático', 'Validación de formulario', 'Estado de sincronización', 'Microinteracciones de estado'] },
+  { n: '14', archivo: '14-celular.html', nombre: 'Celular', icono: 'device-mobile', fam: 1, piezas: [
+    'Inicio de celular', 'Barra inferior', 'Cabecera con saludo', 'Tarjeta con anillo', 'Accesos rápidos', 'Carrusel de KPIs', 'Lista por día',
+    'Fila deslizable', 'Hoja inferior', 'Más acciones como hoja', 'Píldora fija', 'Botón flotante', 'Selector de días', 'Filtros que se deslizan',
+    'Buscador a pantalla completa', 'Monto grande', 'Foto con sello', 'Firma', 'Tabla en tarjetas', 'Ficha con segmentado', 'Sin señal en el dato'] },
+];
+
+/* mini vistas previas: dibujos SVG con tokens (cambian con el tema) */
+const S = 'style', sup = 'fill:var(--superficie)', brd = 'stroke:var(--borde)', sv = 'fill:var(--suave)';
+const r = (x, y, w, h, rx, st) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" ${S}="${st}"/>`;
+const VISTAS = {
+  '01': () => r(14, 12, 64, 100, 10, sv) + [0,1,2,3,4].map(i => r(22, 30 + i * 15, i === 1 ? 48 : 36, 8, 4, i === 1 ? 'fill:var(--superficie);stroke:var(--borde)' : 'fill:color-mix(in oklch,var(--texto-3) 30%,transparent)')).join('') + r(22, 18, 30, 6, 3, 'fill:var(--tinta)') + r(86, 12, 140, 100, 12, sup + ';' + brd) + r(96, 22, 50, 6, 3, 'fill:color-mix(in oklch,var(--texto-3) 40%,transparent)') + r(96, 36, 82, 10, 4, 'fill:var(--tinta)') + [0,1,2].map(i => r(96 + i * 42, 56, 36, 44, 7, sv)).join(''),
+  '02': () => r(30, 28, 82, 26, 9, 'fill:var(--neg)') + r(42, 38, 50, 6, 3, 'fill:var(--neg-t)') + r(120, 28, 60, 26, 9, sup + ';' + brd) + r(130, 38, 38, 6, 3, 'fill:color-mix(in oklch,var(--texto-3) 50%,transparent)') + r(188, 28, 26, 26, 9, sup + ';' + brd) + r(30, 66, 130, 28, 10, sv) + r(34, 70, 42, 20, 7, sup + ';' + brd) + [0,1,2].map(i => r(42 + i * 42, 77, 26, 6, 3, `fill:color-mix(in oklch,var(--texto-3) ${i ? 35 : 70}%,transparent)`)).join('') + r(168, 70, 46, 20, 6, 'fill:var(--acento)'),
+  '03': () => r(30, 18, 50, 6, 3, 'fill:color-mix(in oklch,var(--texto-3) 50%,transparent)') + r(30, 30, 180, 26, 9, 'fill:var(--superficie);stroke:var(--acento);stroke-width:1.5') + r(26, 26, 188, 34, 12, 'fill:none;stroke:color-mix(in oklch,var(--acento) 22%,transparent);stroke-width:3') + r(40, 40, 80, 6, 3, 'fill:var(--tinta)') + r(30, 70, 40, 6, 3, 'fill:color-mix(in oklch,var(--texto-3) 50%,transparent)') + r(30, 82, 120, 26, 9, sup + ';' + brd) + r(158, 82, 52, 26, 9, sup + ';' + brd) + r(166, 90, 22, 10, 4, sv),
+  '04': () => [['--verde-f','--verde'],['--ambar-f','--ambar'],['--rojo-f','--rojo'],['--azul-f','--azul']].map(([f, t], i) => r(24 + i * 50, 26, 44, 16, 5, `fill:var(${f})`) + `<circle cx="${32 + i * 50}" cy="34" r="2.5" style="fill:var(${t})"/>` + r(38 + i * 50, 32, 24, 4, 2, `fill:var(${t})`)).join('') + [1,2,3,5].map((e, i) => `<circle cx="${40 + i * 18}" cy="80" r="12" style="fill:color-mix(in oklch,var(--e${e}) 18%,var(--superficie));stroke:var(--superficie);stroke-width:2.5"/>`).join('') + `<path d="M140 88l14-14 8 8 18-18" style="fill:none;stroke:var(--verde);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"/>` + r(188, 72, 30, 8, 4, 'fill:var(--tinta)'),
+  '05': () => `<defs><linearGradient id="vg5" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#3a31c2"/><stop offset="1" stop-color="#6a61f5"/></linearGradient></defs>` + r(14, 16, 104, 92, 12, 'fill:url(#vg5)') + r(26, 28, 18, 18, 5, 'fill:rgb(255 255 255/.18)') + r(26, 58, 60, 10, 4, 'fill:#fff') + `<path d="M14 98c20-6 26-16 44-12s26-18 44-20 12-6 16-8" style="fill:none;stroke:#fff;stroke-width:2"/>` + [0,1].map(i => r(126, 16 + i * 48, 100, 44, 10, sv) + r(130, 26 + i * 48, 92, 30, 8, sup + ';' + brd) + r(138, 32 + i * 48, 40, 7, 3, 'fill:var(--tinta)') + Array.from({ length: 14 }, (_, k) => r(138 + k * 5.6, 44 + i * 48, 3.4, 7, 1, `fill:${k < (i ? 5 : 10) ? (i ? 'var(--rojo)' : 'var(--e4)') : 'var(--suave)'}`)).join('')).join(''),
+  '06': () => r(14, 14, 212, 96, 10, sup + ';' + brd) + r(20, 20, 200, 14, 6, sv) + [0,1,2,3,4].map(i => r(20, 42 + i * 13, 3, 9, 1.5, `fill:var(--e${[1,2,4,3,5][i]})`) + r(28, 45 + i * 13, 60, 4, 2, 'fill:var(--tinta)') + r(100, 45 + i * 13, 34, 4, 2, 'fill:color-mix(in oklch,var(--texto-3) 45%,transparent)') + r(146, 43 + i * 13, 26, 8, 3, `fill:var(${['--verde-f','--ambar-f','--rojo-f','--verde-f','--gris-f'][i]})`) + r(186, 45 + i * 13, 32, 4, 2, 'fill:var(--tinta)')).join(''),
+  '07': () => [0,1,2].map(i => r(14, 14 + i * 33, 212, 29, 8, i === 0 ? 'fill:var(--superficie);stroke:var(--borde)' : 'fill:none') + r(20, 18 + i * 33, 21, 21, 6, `fill:var(${['--ambar-f','--rojo-f','--verde-f'][i]})`) + r(48, 21 + i * 33, 90 - i * 14, 5, 2.5, 'fill:var(--tinta)') + r(48, 31 + i * 33, 60, 4, 2, 'fill:color-mix(in oklch,var(--texto-3) 40%,transparent)') + (i < 2 ? `<circle cx="17" cy="${28 + i * 33}" r="2" style="fill:var(--acento)"/>` : '') + r(186, 23 + i * 33, 32, 10, 4, sup + ';' + brd)).join(''),
+  '08': () => [0,1].map(i => r(16 + i * 108, 14, 100, 96, 12, sup + ';' + brd) + r(26 + i * 108, 24, 14, 14, 4, `fill:var(--e${i ? 2 : 1})`) + r(26 + i * 108, 46, 66, 7, 3, 'fill:var(--tinta)') + r(26 + i * 108, 58, 74, 4, 2, 'fill:color-mix(in oklch,var(--texto-3) 40%,transparent)') + Array.from({ length: 6 }, (_, k) => r(26 + i * 108 + k * 12.4, 70, 10, 5, 2, `fill:${k < (i ? 2 : 4) ? `var(--e${i ? 2 : 1})` : 'var(--suave)'}`)).join('') + `<path d="M${26 + i * 108} 100c14-4 18-12 30-9s16-8 34-10" style="fill:none;stroke:var(--e${i ? 2 : 1});stroke-width:1.8"/>`).join(''),
+  '09': () => r(14, 14, 120, 96, 10, 'fill:var(--suave);opacity:.7') + [0,1,2,3].map(i => r(24, 26 + i * 16, 90 - i * 10, 6, 3, 'fill:color-mix(in oklch,var(--texto-3) 25%,transparent)')).join('') + r(122, 10, 104, 104, 12, sup + ';' + brd + ';filter:drop-shadow(0 6px 10px rgb(23 23 33/.16))') + r(132, 22, 22, 22, 6, 'fill:var(--azul-f)') + r(160, 26, 50, 7, 3, 'fill:var(--tinta)') + [0,1].map(i => r(132, 56 + i * 14, 60, 5, 2.5, 'fill:color-mix(in oklch,var(--texto-3) 40%,transparent)') + r(200, 54 + i * 14, 16, 9, 4.5, 'fill:var(--acento)')).join('') + r(176, 92, 40, 14, 5, 'fill:var(--neg)'),
+  '10': () => r(14, 14, 212, 96, 10, sup + ';' + brd) + [0,1,2,3,4].map(i => `<line x1="${54 + i * 34}" y1="14" x2="${54 + i * 34}" y2="110" style="stroke:var(--divisor)"/>`).join('') + r(56, 14, 32, 96, 0, 'fill:color-mix(in oklch,var(--acento) 5%,transparent)') + r(26, 24, 24, 6, 3, 'fill:var(--neg)') + [[22, 34, 36, 1], [57, 50, 22, 2], [91, 28, 30, 4], [125, 60, 40, 3], [159, 38, 26, 5], [193, 70, 22, 1]].map(([x, y, h, e]) => r(x + 2, y, 28, h, 5, `fill:color-mix(in oklch,var(--e${e}) 16%,var(--superficie))`) + r(x + 2, y, 3, h, 1.5, `fill:var(--e${e})`)).join('') + `<line x1="56" y1="66" x2="88" y2="66" style="stroke:var(--rojo);stroke-width:1.5"/><circle cx="56" cy="66" r="3" style="fill:var(--rojo)"/>`,
+  '11': () => r(120, 14, 96, 22, 10, sv) + r(128, 22, 70, 6, 3, 'fill:color-mix(in oklch,var(--texto-3) 55%,transparent)') + r(24, 44, 150, 5, 2.5, 'fill:var(--tinta)') + r(24, 54, 120, 5, 2.5, 'fill:var(--tinta)') + r(24, 68, 140, 34, 10, sup + ';' + brd) + `<circle cx="40" cy="85" r="8" style="fill:color-mix(in oklch,var(--e5) 25%,var(--superficie))"/>` + r(54, 79, 60, 5, 2.5, 'fill:var(--tinta)') + r(54, 89, 40, 4, 2, 'fill:color-mix(in oklch,var(--texto-3) 40%,transparent)') + r(128, 79, 28, 12, 4, 'fill:var(--neg)') + `<path d="M190 52l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" style="fill:var(--acento)"/>`,
+  '12': () => [0,1,2,3].map(i => `<circle cx="34" cy="${24 + i * 24}" r="8" style="${i < 2 ? 'fill:var(--verde)' : i === 2 ? 'fill:none;stroke:var(--acento);stroke-width:2;stroke-dasharray:10 40' : 'fill:none;stroke:var(--borde-fuerte);stroke-width:1.5;stroke-dasharray:2 3'}"/>` + (i < 2 ? `<path d="M30 ${24 + i * 24}l3 3 5-6" style="fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round"/>` : '') + r(50, 21 + i * 24, 96 - i * 12, 6, 3, i < 3 ? 'fill:var(--tinta)' : 'fill:color-mix(in oklch,var(--texto-3) 40%,transparent)') + r(186, 21 + i * 24, 28, 6, 3, 'fill:color-mix(in oklch,var(--texto-3) 40%,transparent)')).join('') + `<line x1="34" y1="32" x2="34" y2="40" style="stroke:var(--verde)"/><line x1="34" y1="56" x2="34" y2="64" style="stroke:var(--verde)"/>`,
+  '13': () => `<circle cx="66" cy="62" r="40" style="fill:none;stroke:var(--ilus-trazo);stroke-dasharray:1.5 4.5;opacity:.6"/>` + r(46, 44, 40, 40, 6, 'fill:var(--superficie);stroke:var(--ilus-trazo)') + `<circle cx="80" cy="78" r="9" style="fill:color-mix(in oklch,var(--acento) 16%,var(--superficie));stroke:var(--acento)"/><path d="M80 74v8M76 78h8" style="stroke:var(--acento);stroke-width:1.6"/>` + r(126, 26, 90, 8, 4, 'fill:var(--suave)') + r(126, 44, 64, 16, 5, 'fill:var(--suave)') + r(126, 68, 80, 6, 3, 'fill:var(--suave)') + r(126, 82, 52, 6, 3, 'fill:var(--suave)'),
+  '14': () => r(84, 6, 72, 120, 16, 'fill:var(--lienzo);stroke:var(--tinta);stroke-width:3') + r(94, 22, 52, 22, 7, 'fill:var(--acento)') + [0,1].map(i => r(94, 50 + i * 14, 52, 11, 4, sup)).join('') + r(94, 84, 52, 10, 5, 'fill:var(--neg)') + r(94, 98, 52, 12, 6, sup + ';' + brd) + r(98, 101, 14, 6, 3, 'fill:color-mix(in oklch,var(--acento) 25%,transparent)'),
+};
+
+const { $, $$, slug, sinAcentos, escapar, fmt } = bib;
+const total = CATEGORIAS.reduce((a, c) => a + c.piezas.length, 0);
+$('#cifras').innerHTML = `<div><b class="num">${total}</b><span>piezas vivas</span></div><div><b class="num">${CATEGORIAS.length}</b><span>categorías</span></div><div><b class="num">11</b><span>pantallas completas</span></div><div><b class="num">65</b><span>referencias analizadas</span></div>`;
+
+$('#cats').innerHTML = CATEGORIAS.map((c, i) => `
+  <a class="cat entra f${c.fam}" href="${c.archivo}" data-n="${c.n}" style="--i:${Math.min(i, 8)}">
+    <div class="vista"><svg viewBox="0 0 240 124" aria-hidden="true">${VISTAS[c.n]()}</svg></div>
+    <div class="info">
+      <span class="tile ch"><i class="ph ph-${c.icono}"></i></span>
+      <div>
+        <h3><span>${c.nombre}</span><span class="cnt">${fmt.plural(c.piezas.length, 'pieza', 'piezas')}</span></h3>
+        <div class="muestra">${c.piezas.slice(0, 3).join(' · ')}</div>
+      </div>
+    </div>
+  </a>`).join('');
+
+/* buscador sin acentos, con teclado */
+const INDICE = CATEGORIAS.flatMap(c => c.piezas.map(p => ({ p, c, clave: sinAcentos(p + ' ' + c.nombre) })));
+const q = $('#q'), lista = $('#res-lista'), caja = $('#resultados');
+let activo = 0, hallados = [];
+function resaltar(texto, termino) {
+  const t = sinAcentos(texto), i = t.indexOf(termino);
+  if (!termino || i < 0) return escapar(texto);
+  return escapar(texto.slice(0, i)) + '<mark>' + escapar(texto.slice(i, i + termino.length)) + '</mark>' + escapar(texto.slice(i + termino.length));
+}
+function buscar() {
+  const termino = sinAcentos(q.value.trim());
+  caja.classList.toggle('ver', !!termino);
+  const cuenta = {};
+  hallados = termino ? INDICE.filter(x => termino.split(/\s+/).every(w => x.clave.includes(w))) : [];
+  hallados.forEach(x => cuenta[x.c.n] = (cuenta[x.c.n] || 0) + 1);
+  $$('.cat').forEach(a => a.classList.toggle('apagada', !!termino && !cuenta[a.dataset.n]));
+  $('#res-cuenta').textContent = hallados.length;
+  activo = 0;
+  if (!termino) { lista.innerHTML = ''; return; }
+  if (!hallados.length) {
+    lista.innerHTML = `<div class="res-vacio"><b>Ninguna pieza con «${escapar(q.value.trim())}»</b>Probá con otra palabra o mirá las categorías de abajo.</div>`;
+    return;
+  }
+  const primer = termino.split(/\s+/)[0];
+  lista.innerHTML = hallados.slice(0, 12).map((x, i) => `<a class="res" role="option" id="res-${i}" href="${x.c.archivo}#${slug(x.p)}" ${i === 0 ? 'data-activo' : ''}>
+    <span class="tile f${x.c.fam}" style="background:color-mix(in oklch,var(--e${x.c.fam}) 12%,var(--superficie));color:var(--e${x.c.fam})"><i class="ph ph-${x.c.icono}"></i></span>
+    <span class="min0"><b class="trunca">${resaltar(x.p, primer)}</b><small>${x.c.n} · ${x.c.nombre}</small></span><i class="ph ph-arrow-right ir"></i></a>`).join('') +
+    (hallados.length > 12 ? `<div class="res-vacio t-12">+${hallados.length - 12} más · seguí escribiendo para acotar</div>` : '');
+  q.setAttribute('aria-activedescendant', 'res-0');
+}
+function mover(d) {
+  const it = $$('.res', lista); if (!it.length) return;
+  activo = (activo + d + it.length) % it.length;
+  it.forEach((a, i) => a.toggleAttribute('data-activo', i === activo));
+  q.setAttribute('aria-activedescendant', it[activo].id);
+  it[activo].scrollIntoView({ block: 'nearest' });
+}
+q.addEventListener('input', buscar);
+q.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown') { e.preventDefault(); mover(1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); mover(-1); }
+  else if (e.key === 'Enter') { const a = $$('.res', lista)[activo]; if (a) location.href = a.href; }
+  else if (e.key === 'Escape') { q.value = ''; buscar(); }
+});
+lista.addEventListener('pointermove', e => { const a = e.target.closest('.res'); if (!a) return; const it = $$('.res', lista); activo = it.indexOf(a); it.forEach(x => x.toggleAttribute('data-activo', x === a)); });
+$('#limpiar').addEventListener('click', () => { q.value = ''; buscar(); q.focus(); });
+addEventListener('keydown', e => {
+  const escribiendo = /input|textarea|select/i.test(document.activeElement?.tagName);
+  if ((e.key === '/' && !escribiendo) || (e.key.toLowerCase() === 'k' && (e.metaKey || e.ctrlKey))) { e.preventDefault(); q.focus(); q.select(); }
+});
+</script>
+</body>
+</html>

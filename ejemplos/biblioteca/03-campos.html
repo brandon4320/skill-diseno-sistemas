@@ -1,0 +1,2404 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Campos · Biblioteca</title>
+<meta name="description" content="Campos y formularios de diseno-sistemas: 25 piezas vivas, de texto con rótulo a carga de archivos y código de un solo uso, con su validación, teclado y estados.">
+<script>try{var t=JSON.parse(localStorage.getItem('bib-tema'));if(t)document.documentElement.dataset.tema=t}catch(e){}</script>
+<link rel="stylesheet" href="base.css">
+<style>
+/* ── 03 Campos: solo lo que no está en base.css ── */
+:root{--e7:#b8941a;--e8:#d4452f}
+[data-tema=oscuro]{--e7:#d9b53c;--e8:#ef6b55}
+
+/* rótulo con algo a la derecha (contador, enlace, opcional) */
+.campo .rl-fila{display:flex;align-items:baseline;justify-content:space-between;gap:var(--espacio-4);min-height:18px}
+.campo .rl-fila .btn.enlace{height:auto;font-size:12px;padding:0}
+.in .ph,.in .ph-fill{font-size:16px;flex:none}
+.in .ph.ic-t{color:var(--texto-3)}
+.in.ro{background:var(--bandeja);box-shadow:none;border-color:var(--borde)}
+.in.ro input{color:var(--texto-2)}
+.in.dis{background:var(--suave);box-shadow:none;border-color:var(--borde);opacity:.75}
+.in.dis input{cursor:not-allowed}
+.in.aviso{border-color:var(--ambar);box-shadow:0 0 0 3px color-mix(in oklch,var(--ambar) 14%,transparent)}
+.in.ok{border-color:color-mix(in oklch,var(--verde) 60%,var(--borde-fuerte))}
+.in.ok .ph-fill.okv{color:var(--verde)}
+.in input.num,.in input.der{text-align:right;font-variant-numeric:tabular-nums}
+.in .suf{font-size:13px;color:var(--texto-3);flex:none}
+.in:hover:not(:focus-within):not(.error):not(.aviso):not(.ro):not(.dis){border-color:color-mix(in oklch,var(--texto-3) 55%,var(--borde-fuerte))}
+.campo .err i,.campo .avi i,.campo .okm i{font-size:14px;flex:none}
+.campo .err,.campo .avi,.campo .okm{min-height:18px;line-height:1.35}
+.campo .avi{font-size:12px;color:var(--ambar);display:flex;gap:var(--espacio-2);align-items:center;flex-wrap:wrap}
+.campo .okm{font-size:12px;color:var(--verde);display:flex;gap:var(--espacio-2);align-items:center}
+.campo .avi .btn,.campo .err .btn{height:24px;font-size:12px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);gap:var(--espacio-2)}
+.ancho-s{max-width:180px}.ancho-m{max-width:280px}.ancho-l{max-width:420px}
+.marca-op{font-size:12px;color:var(--texto-3);font-weight:400}
+
+/* ── moneda ── */
+.mon-btn{display:inline-flex;align-items:center;gap:var(--espacio-2);height:28px;padding:0 var(--espacio-3) 0 var(--espacio-4);border-radius:var(--radius-chip);border:0;background:var(--bandeja);color:var(--texto-2);font-size:12px;font-weight:500;flex:none;margin-left:-4px;transition:background var(--t-1)}
+.mon-btn:hover{background:var(--suave);color:var(--tinta)}
+.mon-btn .ph{font-size:12px!important}
+.in.grande{height:72px;border-radius:var(--radius-interno);padding:0 var(--espacio-6)}
+.in.grande input{font-family:var(--display);font-size:40px;font-weight:400;letter-spacing:-.02em;color:var(--tinta)}
+.in.grande .mon-btn{height:32px;font-size:13px}
+.equiv{font-size:12px;color:var(--texto-3);display:flex;gap:var(--espacio-3);align-items:center;flex-wrap:wrap}
+.equiv b{color:var(--texto-2);font-weight:500;font-variant-numeric:tabular-nums}
+.menu .marca{width:16px;display:inline-grid;place-items:center;color:var(--acento-texto)}
+.menu .marca .ph{color:inherit!important;font-size:14px!important}
+.menu .sec{margin-left:auto;font-size:12px;color:var(--texto-3)}
+
+/* ── número con pasos ── */
+.stp{padding:0 var(--espacio-1);gap:0}
+.stp input{text-align:center;font-variant-numeric:tabular-nums;font-weight:500}
+.stp .bp{width:32px;height:32px;border:0;border-radius:9px;background:none;color:var(--texto-2);display:grid;place-items:center;flex:none;transition:background var(--t-1),color var(--t-1),transform var(--t-1) var(--ease)}
+.stp .bp:hover{background:var(--hover);color:var(--tinta)}
+.stp .bp:active{transform:scale(.92)}
+.stp .bp[aria-disabled=true]{opacity:.35;cursor:not-allowed;transform:none}
+.stp .suf{padding-right:var(--espacio-3)}
+.cuenta-linea{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--espacio-2) var(--espacio-6);font-size:13px;color:var(--texto-2);padding:var(--espacio-5) var(--espacio-6);border-radius:var(--radius-control);background:var(--bandeja)}
+.cuenta-linea b{color:var(--tinta);font-weight:500;text-align:right}
+.cuenta-linea .tot{font-family:var(--display);font-size:20px;font-weight:500}
+
+/* ── contraseña ── */
+.ojo{width:32px;height:32px;border:0;border-radius:9px;background:none;color:var(--texto-3);display:grid;place-items:center;flex:none;margin-right:-6px}
+.ojo:hover{background:var(--hover);color:var(--tinta)}
+.fuerza{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--espacio-2);height:4px}
+.fuerza i{border-radius:4px;background:var(--suave);transition:background var(--t-3) var(--ease)}
+.fuerza-t{display:flex;justify-content:space-between;font-size:12px;color:var(--texto-3)}
+.fuerza-t b{font-weight:500}
+.reqs{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--espacio-2) var(--espacio-5);font-size:12px;color:var(--texto-3)}
+.reqs li{display:flex;align-items:center;gap:var(--espacio-3);transition:color var(--t-2)}
+.reqs li i{font-size:14px;color:var(--texto-3);opacity:.6;transition:color var(--t-2),transform var(--t-2) var(--ease-resorte)}
+.reqs li.ok{color:var(--texto-2)}
+.reqs li.ok i{opacity:1;color:var(--verde);transform:scale(1.1)}
+
+/* ── buscador ── */
+.in.busca .kbd{flex:none}
+.in.busca .limpia{width:24px;height:24px;border-radius:50%;border:0;background:var(--suave);color:var(--texto-2);display:grid;place-items:center;flex:none}
+.in.busca .limpia .ph{font-size:12px}
+.in.chico{height:32px;border-radius:10px;padding:0 var(--espacio-4);gap:var(--espacio-3)}
+.in.chico input{font-size:13px}
+.in .alcance{display:inline-flex;align-items:center;gap:var(--espacio-2);height:24px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);border:1px solid var(--borde);background:var(--superficie);font-size:12px;font-weight:500;color:var(--texto-2);flex:none}
+.resultados{border:1px solid var(--borde);border-radius:var(--radius-interno);background:var(--superficie);overflow:hidden}
+.res-cab{display:flex;justify-content:space-between;align-items:center;padding:var(--espacio-4) var(--espacio-6);font-size:12px;color:var(--texto-3);border-bottom:1px solid var(--divisor);font-variant-numeric:tabular-nums}
+.res-it{display:flex;align-items:center;gap:var(--espacio-5);min-height:48px;padding:var(--espacio-3) var(--espacio-6);border-bottom:1px solid var(--divisor)}
+.res-it:last-child{border-bottom:0}
+.res-it .t{font-weight:500;font-size:13px}
+.res-it .m{font-size:12px;color:var(--texto-3)}
+mark{background:color-mix(in oklch,var(--dato-4) 34%,transparent);color:inherit;padding:0 1px}
+.res-vacio{padding:var(--espacio-8) var(--espacio-6);text-align:center;color:var(--texto-3);font-size:13px;display:flex;flex-direction:column;align-items:center;gap:var(--espacio-4)}
+
+/* ── textarea ── */
+.in.area{position:relative;padding-bottom:var(--espacio-7)}
+.in.area textarea{resize:none;overflow:hidden;min-height:60px;font-size:14px}
+.in.area .cont{position:absolute;right:var(--espacio-5);bottom:var(--espacio-3);font-size:11px;font-weight:500;color:var(--texto-3);font-variant-numeric:tabular-nums;transition:color var(--t-2)}
+.in.area .cont.am{color:var(--ambar);background:none}.in.area .cont.ro{color:var(--rojo);background:none}
+.lineas{display:flex;flex-wrap:wrap;gap:var(--espacio-3)}
+
+/* ── validación ── */
+.flujo-val{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--espacio-4)}
+.flujo-val div{border:1px solid var(--borde);background:var(--superficie);border-radius:var(--radius-control);padding:var(--espacio-5) var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-2);transition:border-color var(--t-2),background var(--t-2)}
+.flujo-val div.on{border-color:var(--acento);background:var(--sel)}
+.flujo-val b{font-weight:500;font-size:13px;display:flex;align-items:center;gap:var(--espacio-3)}
+.flujo-val span{font-size:12px;color:var(--texto-3)}
+.flujo-val .n{font-family:var(--mono);font-size:11px;color:var(--texto-3)}
+.form-c{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--espacio-7) var(--espacio-8)}
+.form-c .todo{grid-column:1/-1}
+.form-pie{display:flex;align-items:center;gap:var(--espacio-4);flex-wrap:wrap}
+.form-pie .falta{font-size:13px;color:var(--texto-2);margin-right:auto;display:flex;gap:var(--espacio-3);align-items:center}
+.form-pie .falta b{color:var(--rojo);font-weight:500}
+.form-pie .falta .btn{height:auto;padding:0}
+
+/* ── combobox / multiselección / etiquetas ── */
+.cb{position:relative}
+.lista-cb{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-control);box-shadow:var(--s-flot);padding:var(--espacio-2);max-height:300px;overflow:auto;scrollbar-width:thin}
+.lista-cb .grp{font-size:11px;font-weight:500;color:var(--texto-3);text-transform:uppercase;letter-spacing:.06em;padding:var(--espacio-4) var(--espacio-4) var(--espacio-2)}
+.opc{display:flex;align-items:center;gap:var(--espacio-4);min-height:40px;padding:var(--espacio-2) var(--espacio-4);border-radius:8px;cursor:pointer;font-size:13px}
+.opc .tx{flex:1;min-width:0;display:flex;flex-direction:column}
+.opc .tx b{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opc .tx small{font-size:12px;color:var(--texto-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opc[aria-selected=true]{background:var(--hover)}
+.opc .chk{color:var(--acento-texto);font-size:16px;visibility:hidden}
+.opc.elegida .chk{visibility:visible}
+.opc.crear{color:var(--acento-texto);font-weight:500;border-top:1px solid var(--divisor);border-radius:0 0 8px 8px;margin-top:var(--espacio-2)}
+.opc.crear .tile{width:28px;height:28px;border-radius:8px;background:var(--acento-f);color:var(--acento-texto)}
+.opc.crear .tile .ph{font-size:14px}
+.opc .ataj{font-size:11px;color:var(--texto-3);font-family:var(--mono)}
+.cb-vacio{padding:var(--espacio-6) var(--espacio-4);font-size:13px;color:var(--texto-3);text-align:center}
+.in .elegido{display:inline-flex;align-items:center;gap:var(--espacio-3);flex:none}
+.in.multi{height:auto;min-height:40px;flex-wrap:wrap;padding:var(--espacio-2) var(--espacio-4);gap:var(--espacio-2) var(--espacio-3)}
+.in.multi input{min-width:120px;height:30px;align-self:center}
+.ficha{display:inline-flex;align-items:center;gap:var(--espacio-3);height:28px;padding:0 var(--espacio-1) 0 var(--espacio-2);border-radius:var(--radius-chip);background:var(--bandeja);border:1px solid var(--borde);font-size:12px;font-weight:500;color:var(--tinta);white-space:nowrap;max-width:100%}
+.ficha.sin-av{padding-left:var(--espacio-4)}
+.ficha .av{width:20px;height:20px;font-size:11px}
+.ficha .quitar{width:22px;height:22px;border:0;border-radius:7px;background:none;color:var(--texto-3);display:grid;place-items:center}
+.ficha .quitar:hover{background:var(--suave);color:var(--tinta)}
+.ficha .quitar .ph{font-size:12px}
+.ficha.marcada{border-color:var(--acento);background:var(--acento-f)}
+.ficha .punto{width:8px;height:8px}
+.casilla-m,.tarj .casm{width:16px;height:16px;flex:none;display:grid;place-items:center;color:var(--superficie);position:relative}
+.casilla-m::before,.tarj .casm::before{content:"";position:absolute;inset:0;border-radius:5px;border:1.5px solid var(--borde-fuerte);background:var(--superficie);transition:background var(--t-1),border-color var(--t-1)}
+.casilla-m .ph,.tarj .casm .ph{position:relative}
+.opc.elegida .casilla-m::before{background:var(--tinta);border-color:var(--tinta)}
+.casilla-m .ph{font-size:11px;opacity:0}
+.opc.elegida .casilla-m .ph{opacity:1}
+.sugeridas{display:flex;flex-wrap:wrap;gap:var(--espacio-3);align-items:center}
+.sugeridas .rot-g{margin-right:var(--espacio-2)}
+.sug{height:28px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);border:1px dashed var(--borde-fuerte);background:none;font-size:12px;font-weight:500;color:var(--texto-2);display:inline-flex;align-items:center;gap:var(--espacio-2)}
+.sug:hover{border-style:solid;color:var(--tinta);background:var(--superficie)}
+.sug .ph{font-size:12px}
+
+/* ── select con ícono ── */
+.sel-btn{width:100%;cursor:pointer;text-align:left;font-size:14px;color:var(--tinta)}
+.sel-btn .val{flex:1;min-width:0;display:flex;align-items:center;gap:var(--espacio-4)}
+.sel-btn .car{color:var(--texto-3);font-size:14px!important}
+.sel-btn[aria-expanded=true]{border-color:var(--acento);box-shadow:0 0 0 3px color-mix(in oklch,var(--acento) 18%,transparent)}
+.prio{display:inline-flex;align-items:flex-end;gap:2px;height:12px;flex:none}
+.prio i{width:3px;border-radius:1px;background:var(--suave)}
+.prio i:nth-child(1){height:5px}.prio i:nth-child(2){height:8px}.prio i:nth-child(3){height:12px}
+.prio.p1 i:nth-child(1),.prio.p2 i:nth-child(-n+2),.prio.p3 i{background:var(--tinta)}
+.prio.p3 i{background:var(--rojo)}
+.in.nativo{position:relative}
+.in.nativo select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:var(--espacio-7)}
+.in.nativo .car{position:absolute;right:12px;pointer-events:none;color:var(--texto-3)}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--ent)}
+
+/* ── calendario ── */
+.cal{width:300px;max-width:100%;user-select:none}
+.cal-cab{display:flex;align-items:center;gap:var(--espacio-2);margin-bottom:var(--espacio-4)}
+.cal-cab b{font-family:var(--display);font-size:16px;font-weight:500;flex:1;letter-spacing:-.01em}
+.cal-g{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));row-gap:var(--espacio-1)}
+.cal-g .dsem{font-size:11px;font-weight:500;color:var(--texto-3);text-align:center;height:28px;line-height:28px}
+.cal-g button{height:36px;border:0;background:none;border-radius:10px;font-size:13px;font-variant-numeric:tabular-nums;color:var(--tinta);position:relative;transition:background var(--t-1)}
+.cal-g button:hover{background:var(--hover)}
+.cal-g .fuera{visibility:hidden}
+.cal-g button.finde{color:var(--texto-3)}
+.cal-g button.hoy::after{content:"";position:absolute;left:50%;bottom:5px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--acento)}
+.cal-g button.feriado{color:var(--texto-3)}
+.cal-g button.feriado::before{content:"";position:absolute;left:50%;bottom:5px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--ambar)}
+.cal-g button.sel,.cal-g button.ext{background:var(--neg);color:var(--neg-t);font-weight:500}
+.cal-g button.sel.hoy::after,.cal-g button.ext.hoy::after{background:var(--neg-t)}
+.cal-g button.en{background:var(--acento-f);border-radius:0;color:var(--tinta)}
+.cal-g button.ext.ini{border-radius:10px 0 0 10px}.cal-g button.ext.fin{border-radius:0 10px 10px 0}.cal-g button.ext.ini.fin{border-radius:10px}
+.cal-g button.prev{background:color-mix(in oklch,var(--acento) 5%,transparent);border-radius:0}
+.cal-g button:disabled{color:var(--texto-3);cursor:not-allowed;text-decoration:line-through;text-decoration-color:color-mix(in oklch,var(--texto-3) 60%,transparent)}
+.cal-pie{display:flex;justify-content:space-between;align-items:center;margin-top:var(--espacio-4);padding-top:var(--espacio-4);border-top:1px solid var(--divisor);font-size:12px;color:var(--texto-3)}
+.pop{position:absolute;z-index:30;top:calc(100% + 6px);left:0;background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-interno);box-shadow:var(--s-flot);padding:var(--espacio-5)}
+.interp{font-size:12px;color:var(--texto-3);display:flex;gap:var(--espacio-3);align-items:center;min-height:18px}
+.interp b{color:var(--tinta);font-weight:500}
+.atajos{display:flex;flex-wrap:wrap;gap:var(--espacio-3)}
+.atajos button{height:28px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);border:1px solid var(--borde);background:var(--superficie);font-size:12px;font-weight:500;color:var(--texto-2)}
+.atajos button:hover{color:var(--tinta);background:var(--hover)}
+.atajos button[aria-pressed=true]{background:var(--neg);color:var(--neg-t);border-color:var(--neg)}
+.rango{display:grid;grid-template-columns:168px minmax(0,1fr);border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);overflow:hidden;box-shadow:var(--s-min)}
+.rango-pre{border-right:1px solid var(--divisor);padding:var(--espacio-4);display:flex;flex-direction:column;gap:var(--espacio-1);background:var(--bandeja)}
+.rango-pre button{height:34px;border:0;background:none;text-align:left;padding:0 var(--espacio-4);border-radius:9px;font-size:13px;color:var(--texto-2);font-weight:500;display:flex;align-items:center;justify-content:space-between}
+.rango-pre button:hover{background:var(--hover);color:var(--tinta)}
+.rango-pre button.on{background:var(--superficie);color:var(--tinta);box-shadow:var(--s-min),0 0 0 1px var(--borde)}
+[data-tema=oscuro] .rango-pre button.on{background:var(--suave)}
+.rango-der{padding:var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-6);min-width:0}
+.rango-campos{display:flex;align-items:center;gap:var(--espacio-4);flex-wrap:wrap}
+.rango-campos .in{width:150px}
+.rango-meses{display:flex;gap:var(--espacio-9);flex-wrap:wrap}
+.rango-pie{display:flex;align-items:center;gap:var(--espacio-4);flex-wrap:wrap;border-top:1px solid var(--divisor);padding-top:var(--espacio-5)}
+.rango-pie .res{margin-right:auto;font-size:13px;color:var(--texto-2)}
+.rango-pie .res b{color:var(--tinta);font-weight:500}
+
+/* ── hora ── */
+.franjas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--espacio-3)}
+.franjas button{height:36px;border:1px solid var(--borde);border-radius:10px;background:var(--superficie);font-size:13px;font-variant-numeric:tabular-nums;color:var(--tinta);font-weight:500}
+.franjas button:hover{background:var(--hover)}
+.franjas button.on{background:var(--neg);color:var(--neg-t);border-color:var(--neg)}
+.franjas button.ocup{background:var(--bandeja);color:var(--texto-3);font-weight:400;cursor:not-allowed;border-style:dashed}
+.franjas button.ocup s{text-decoration-color:var(--texto-3)}
+.resumen-h{display:flex;align-items:center;gap:var(--espacio-5);padding:var(--espacio-5) var(--espacio-6);border-radius:var(--radius-control);background:var(--bandeja);font-size:13px;color:var(--texto-2);flex-wrap:wrap}
+.resumen-h b{font-family:var(--display);font-size:20px;font-weight:500;color:var(--tinta);font-variant-numeric:tabular-nums}
+
+/* ── chips de opción ── */
+.chips-op{display:flex;flex-wrap:wrap;gap:var(--espacio-4)}
+.chips-op button{height:32px;padding:0 var(--espacio-5);border-radius:var(--radius-chip);border:1px solid var(--borde);background:var(--bandeja);font-size:13px;font-weight:500;color:var(--texto-2);display:inline-flex;align-items:center;gap:var(--espacio-3);transition:background var(--t-1),color var(--t-1),box-shadow var(--t-1)}
+.chips-op button:hover{color:var(--tinta)}
+.chips-op button[aria-checked=true]{background:var(--superficie);color:var(--tinta);box-shadow:var(--s-min),0 0 0 1px var(--borde-fuerte);border-color:var(--borde-fuerte)}
+[data-tema=oscuro] .chips-op button[aria-checked=true]{background:var(--tinta);color:var(--superficie);border-color:var(--tinta)}
+.chips-op .cm{width:6px;height:6px;border-radius:2px;background:var(--deshabilitado);flex:none;transition:background var(--t-1)}
+.chips-op button[aria-checked=true] .cm{background:currentColor}
+.vence-l{font-size:13px;color:var(--texto-2)}
+.vence-l b{color:var(--tinta);font-weight:500}
+
+/* ── tarjetas de opción ── */
+.tarjs{display:flex;flex-direction:column;gap:var(--espacio-4)}
+.tarj{display:flex;align-items:center;gap:var(--espacio-5);min-height:56px;padding:var(--espacio-4) var(--espacio-5);border:1px solid var(--borde);border-radius:var(--radius-control);background:var(--superficie);cursor:pointer;text-align:left;width:100%;transition:border-color var(--t-1),background var(--t-1),box-shadow var(--t-1)}
+.tarj:hover{border-color:var(--borde-fuerte)}
+.tarj .tile{width:28px;height:28px;border-radius:8px;background:var(--bandeja);color:var(--texto-2)}
+.tarj .tile .ph{font-size:14px}
+.tarj .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--espacio-1)}
+.tarj .tx b{font-weight:500;font-size:13px;display:flex;align-items:center;gap:var(--espacio-3);flex-wrap:wrap}
+.tarj .tx small{font-size:12px;color:var(--texto-3);line-height:1.35}
+.tarj .rad{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--borde-fuerte);flex:none;position:relative;transition:border-color var(--t-1)}
+.tarj .rad::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--acento);transform:scale(0);transition:transform var(--t-2) var(--ease-resorte)}
+.tarj[aria-checked=true]{border-color:var(--acento);background:var(--sel);box-shadow:0 0 0 .5px var(--acento)}
+.tarj[aria-checked=true] .rad{border-color:var(--acento)}
+.tarj[aria-checked=true] .rad::after{transform:scale(1)}
+.tarj[aria-checked=true] .tile{background:var(--superficie);color:var(--acento-texto)}
+[data-tema=oscuro] .tarj[aria-checked=true]{border-color:var(--tinta);background:var(--superficie);box-shadow:none}
+[data-tema=oscuro] .tarj[aria-checked=true] .rad{border-color:var(--tinta)}
+[data-tema=oscuro] .tarj[aria-checked=true] .rad::after{background:var(--tinta)}
+.tarj .casm .ph{font-size:11px;opacity:0}
+.tarj[aria-checked=true] .casm::before{background:var(--acento);border-color:var(--acento)}
+.tarj[aria-checked=true] .casm .ph{opacity:1}
+[data-tema=oscuro] .tarj[aria-checked=true] .casm::before{background:var(--tinta);border-color:var(--tinta)}
+.tarjs.tres{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.tarjs.tres .tarj{flex-direction:column;align-items:flex-start;min-height:72px;gap:var(--espacio-2);position:relative;padding:var(--espacio-5)}
+.tarjs.tres .tarj .rad{position:absolute;top:var(--espacio-5);right:var(--espacio-5)}
+.tarjs.tres .tarj b{font-size:13px;font-weight:500}
+.tarjs.tres .tarj small{font-size:12px;color:var(--texto-3)}
+
+/* ── miniaturas ── */
+.minis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--espacio-5)}
+.mini{border:1px solid var(--borde);border-radius:var(--radius-interno);background:var(--superficie);overflow:hidden;cursor:pointer;text-align:left;padding:0;display:flex;flex-direction:column;transition:border-color var(--t-1),box-shadow var(--t-1)}
+.mini:hover{border-color:var(--borde-fuerte)}
+.mini .dib{height:112px;background:var(--bandeja);display:grid;place-items:end center;padding:var(--espacio-5) var(--espacio-6) 0}
+.mini .hoja-m{width:100%;max-width:150px;height:100%;background:var(--superficie);border-radius:8px 8px 0 0;box-shadow:0 0 0 1px var(--borde);padding:var(--espacio-4) var(--espacio-4) 0;display:flex;flex-direction:column;gap:5px;transition:transform var(--t-3) var(--ease)}
+.mini:hover .hoja-m{transform:translateY(calc(-3px*var(--mueve)))}
+.hoja-m i{display:block;height:4px;border-radius:2px;background:var(--suave)}
+.hoja-m i.os{background:var(--texto-3);opacity:.5}
+.hoja-m i.ac{background:var(--acento);opacity:.8}
+.hoja-m .fl{display:flex;gap:4px}.hoja-m .fl i{flex:1}
+.hoja-m .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--suave)}
+.hoja-m .grid i{height:8px;border-radius:0;background:none;border-right:1px solid var(--suave);border-bottom:1px solid var(--suave)}
+.mini .band{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-5) var(--espacio-5);border-top:1px solid var(--divisor);min-height:48px}
+.mini .band b{font-weight:500;font-size:13px;flex:1}
+.mini .band .ph{font-size:16px;color:var(--texto-3)}
+.mini .rad{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--borde-fuerte);flex:none;display:grid;place-items:center;transition:background var(--t-1),border-color var(--t-1)}
+.mini .rad::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--superficie);transform:scale(0);transition:transform var(--t-2) var(--ease-resorte)}
+.mini[aria-checked=true]{border-color:var(--tinta);box-shadow:0 0 0 1px var(--tinta)}
+.mini[aria-checked=true] .rad{background:var(--tinta);border-color:var(--tinta)}
+.mini[aria-checked=true] .rad::after{transform:scale(1)}
+.mini.tema-o .dib{background:#24242b}.mini.tema-o .hoja-m{background:#17171c;box-shadow:0 0 0 1px #33333b}.mini.tema-o .hoja-m i{background:#33333b}
+.mini.tema-s .hoja-m{background:linear-gradient(90deg,var(--superficie) 50%,#17171c 50%)}
+
+/* ── renglón de parámetros ── */
+.params-esc{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:var(--espacio-gap);align-items:start}
+.params{background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-tarjeta);padding:var(--espacio-5);display:flex;flex-direction:column;gap:var(--espacio-4)}
+.params .gp{font-size:13px;font-weight:500;color:var(--tinta);padding:var(--espacio-3) var(--espacio-3) 0;display:flex;justify-content:space-between;align-items:center}
+.params .gp+.ren{margin-top:var(--espacio-1)}
+.ren{position:relative;display:flex;align-items:center;gap:var(--espacio-4);height:38px;padding:0 var(--espacio-2) 0 var(--espacio-5);border-radius:10px;background:var(--bandeja);font-size:13px;overflow:hidden;transition:background var(--t-2)}
+.ren .rr{color:var(--texto-2);flex:1;position:relative}
+.ren .v{color:var(--tinta);font-weight:500;font-variant-numeric:tabular-nums;position:relative}
+.ren>button.v{border:0;background:none;display:inline-flex;align-items:center;gap:var(--espacio-2);height:30px;padding:0 var(--espacio-3);border-radius:8px;font-size:13px}
+.ren>button.v:hover{background:var(--suave)}
+.ren>button.v .ph{font-size:12px;color:var(--texto-3)}
+.ren .seg{padding:2px;background:var(--suave);border:0}
+.ren .seg button{height:26px;padding:0 var(--espacio-4);font-size:12px;border-radius:7px}
+.ren.scrub{cursor:ew-resize;touch-action:none;padding-right:var(--espacio-5)}
+.ren.scrub .fill{position:absolute;left:0;top:0;bottom:0;background:var(--suave);transition:width var(--t-1)}
+.ren.scrub:focus-visible{outline-offset:0}
+.ren .muestra{width:20px;height:20px;border-radius:7px;box-shadow:inset 0 0 0 1px rgb(0 0 0/.1);flex:none;position:relative}
+.ren input.hex{align-self:stretch;width:72px;border:0;background:none;font-family:var(--mono);font-size:12px;text-align:right;color:var(--tinta);outline:0;position:relative}
+.ren .vuelve{width:24px;height:24px;border:0;border-radius:7px;background:none;color:var(--azul);display:none;place-items:center;flex:none;position:relative}
+.ren .vuelve .ph{font-size:14px}
+.ren.cambiado{background:var(--azul-f)}
+.ren.cambiado .vuelve{display:grid}
+.ren.cambiado.scrub .fill{background:color-mix(in oklch,var(--azul) 14%,transparent)}
+.vista-g{background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-tarjeta);padding:var(--espacio-7);display:flex;flex-direction:column;gap:var(--espacio-5);min-height:100%}
+.vista-g .cifra-g{font-family:var(--display);font-size:32px;font-weight:400;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.barras-g{display:flex;align-items:flex-end;gap:4px;height:160px}
+.barras-g i{flex:1;position:relative;background:var(--suave);transition:height var(--t-3) var(--ease),border-radius var(--t-1),background var(--t-1)}
+.barras-g i.ult{background:var(--hl,var(--tinta))}
+.barras-g i b{position:absolute;left:0;right:0;bottom:0;background:color-mix(in oklch,var(--texto-3) 22%,transparent);border-radius:inherit;transition:height var(--t-3) var(--ease)}
+
+/* ── color de entidad ── */
+.colores{display:flex;flex-wrap:wrap;gap:var(--espacio-1)}
+.colores button{width:38px;height:38px;border:0;background:none;border-radius:50%;display:grid;place-items:center;position:relative}
+.colores button i{width:28px;height:28px;border-radius:50%;background:var(--c);display:grid;place-items:center;color:#fff;transition:transform var(--t-2) var(--ease-resorte)}
+.colores button i .ph{font-size:14px;opacity:0;transform:scale(.5);transition:opacity var(--t-1),transform var(--t-2) var(--ease-resorte)}
+.colores button:hover i{transform:scale(1.08)}
+.colores button[aria-checked=true] i{box-shadow:0 0 0 2px var(--superficie),0 0 0 4px var(--c)}
+.colores button[aria-checked=true] i .ph{opacity:1;transform:none}
+.colores.chico button{width:32px;height:32px}.colores.chico button i{width:20px;height:20px}
+.prev-ent{display:flex;align-items:center;gap:var(--espacio-5);padding:var(--espacio-5) var(--espacio-6);border:1px solid var(--borde);border-radius:var(--radius-control);background:var(--superficie)}
+.prev-ent .rayita{height:32px}
+.prev-ent b{font-weight:500;font-size:14px;display:block}
+.prev-ent small{font-size:12px;color:var(--texto-3)}
+.etq-col{display:inline-flex;align-items:center;gap:var(--espacio-3);height:24px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);font-size:12px;font-weight:500;background:color-mix(in oklch,var(--c) 13%,var(--superficie));color:color-mix(in oklch,var(--c) 70%,var(--tinta))}
+.etq-col::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c)}
+.boton-color{width:28px;height:28px;border:0;border-radius:8px;background:none;display:grid;place-items:center;flex:none;margin-left:-6px}
+.boton-color i.m{width:14px;height:14px;border-radius:50%;background:var(--c);box-shadow:0 0 0 2px var(--superficie),0 0 0 3px var(--borde-fuerte)}
+.boton-color:hover{background:var(--hover)}
+
+/* ── interruptores ── */
+.ajustes{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);overflow:hidden}
+.aj{display:flex;align-items:flex-start;gap:var(--espacio-6);padding:var(--espacio-6) var(--espacio-7);border-top:1px solid var(--divisor);transition:opacity var(--t-3) var(--ease)}
+.aj:first-child{border-top:0}
+.aj .tile{width:32px;height:32px;border-radius:10px;background:var(--bandeja);color:var(--texto-2)}
+.aj .tile .ph{font-size:16px}
+.aj .tx{flex:1;min-width:0}
+.aj .tx b{font-weight:500;font-size:14px;display:flex;align-items:center;gap:var(--espacio-3);flex-wrap:wrap}
+.aj .tx small{display:block;font-size:12px;color:var(--texto-3);margin-top:var(--espacio-1);line-height:1.45;max-width:58ch}
+.aj .tx .vig{display:inline-flex;align-items:center;gap:var(--espacio-2);margin-top:var(--espacio-3);font-size:12px;color:var(--texto-2)}
+.aj .tx .vig .ph{font-size:13px;color:var(--texto-3)}
+.aj .guard{font-size:12px;font-weight:400;color:var(--verde);display:none;align-items:center;gap:var(--espacio-1)}
+.aj .guard.ver{display:inline-flex;animation:desenfoque 300ms var(--ease) both}
+.aj.apagada{opacity:.3}
+.aj.hijo{padding-left:68px;background:var(--bandeja)}
+.aj .toggle{margin-top:var(--espacio-1)}
+.aj .toggle[aria-disabled=true]{opacity:.5;cursor:not-allowed}
+.candado{font-size:12px;color:var(--texto-3);display:inline-flex;align-items:center;gap:var(--espacio-2);font-weight:400}
+
+/* ── casillas ── */
+.arbol{border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie);overflow:hidden}
+.arbol-cab{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-3) var(--espacio-6) var(--espacio-3) var(--espacio-4);background:var(--bandeja);border-bottom:1px solid var(--divisor);font-size:13px;font-weight:500}
+.arbol-cab .cnt{margin-left:auto;font-size:12px;color:var(--texto-3);font-weight:400;font-variant-numeric:tabular-nums}
+.nodo{display:flex;align-items:center;gap:var(--espacio-4);min-height:44px;padding:0 var(--espacio-6) 0 var(--espacio-4);border-top:1px solid var(--divisor)}
+.nodo.h{padding-left:var(--espacio-10)}
+.nodo .tx{flex:1;min-width:0;font-size:13px}
+.nodo .tx small{color:var(--texto-3);font-size:12px;margin-left:var(--espacio-3)}
+.nodo.padre .tx{font-weight:500}
+.nodo .cnt{font-size:12px;color:var(--texto-3);font-variant-numeric:tabular-nums}
+.nodo .chev{width:28px;height:28px;border:0;border-radius:8px;background:none;color:var(--texto-3);display:grid;place-items:center;transition:transform var(--t-2) var(--ease)}
+.nodo .chev[aria-expanded=false]{transform:rotate(-90deg)}
+.nodo .chev .ph{font-size:14px}
+.casilla[aria-disabled=true]{opacity:.45;cursor:not-allowed}
+.op-cas{display:flex;align-items:flex-start;gap:var(--espacio-4)}
+.op-cas .casilla{margin:-3px 0 0 -4px}
+.op-cas b{font-weight:500;font-size:14px;display:block}
+.op-cas small{display:block;font-size:12px;color:var(--texto-3);line-height:1.45;margin-top:var(--espacio-1)}
+
+/* ── deslizador ── */
+.desl{position:relative;height:28px;display:flex;align-items:center}
+.desl input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:none;margin:0;position:relative;z-index:2;cursor:pointer}
+.desl input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:6px;background:linear-gradient(90deg,var(--acento) 0 var(--p,0%),var(--suave) var(--p,0%) 100%)}
+.desl input[type=range]::-moz-range-track{height:6px;border-radius:6px;background:linear-gradient(90deg,var(--acento) 0 var(--p,0%),var(--suave) var(--p,0%) 100%)}
+.desl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;margin-top:-7px;border-radius:50%;background:#fff;border:0;box-shadow:0 0 0 1px rgb(23 23 33/.12),0 2px 6px rgb(23 23 33/.22);transition:transform var(--t-1) var(--ease)}
+.desl input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:0;box-shadow:0 0 0 1px rgb(23 23 33/.12),0 2px 6px rgb(23 23 33/.22)}
+.desl input[type=range]:active::-webkit-slider-thumb{transform:scale(1.12)}
+.desl .burb{position:absolute;bottom:calc(100% + 4px);left:var(--x,0);transform:translateX(-50%) translateY(calc(4px*var(--mueve)));background:var(--neg);color:var(--neg-t);font-size:12px;font-weight:500;padding:var(--espacio-1) var(--espacio-4);border-radius:8px;opacity:0;transition:opacity var(--t-1),transform var(--t-2) var(--ease);pointer-events:none;white-space:nowrap;font-variant-numeric:tabular-nums}
+.desl.activo .burb{opacity:1;transform:translateX(-50%)}
+.marcas{display:flex;justify-content:space-between;font-size:11px;color:var(--texto-3);font-variant-numeric:tabular-nums;padding:0 var(--espacio-2)}
+.marcas.pasos span{width:0;display:flex;justify-content:center;white-space:nowrap}
+.marcas span.on{color:var(--tinta);font-weight:500}
+.marcas.pasos span:first-child{justify-content:flex-start}.marcas.pasos span:last-child{justify-content:flex-end}
+.desl.doble input[type=range]{position:absolute;inset:0;pointer-events:none}
+.desl.doble input[type=range]::-webkit-slider-thumb{pointer-events:auto}
+.desl.doble input[type=range]::-moz-range-thumb{pointer-events:auto}
+.desl.doble input[type=range]::-webkit-slider-runnable-track{background:none}
+.desl.doble input[type=range]::-moz-range-track{background:none}
+.desl.doble .riel{position:absolute;left:0;right:0;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--suave) 0 var(--a),var(--acento) var(--a) var(--b),var(--suave) var(--b))}
+.histo{display:flex;align-items:flex-end;gap:2px;height:48px;padding:0 10px}
+.histo i{flex:1;background:var(--suave);transition:background var(--t-2)}
+.histo i.en{background:color-mix(in oklch,var(--acento) 45%,var(--superficie))}
+.desl-cab{display:flex;align-items:baseline;justify-content:space-between;gap:var(--espacio-4)}
+.desl-cab .val{font-family:var(--display);font-size:20px;font-weight:500;font-variant-numeric:tabular-nums}
+.desl-cab .val small{font-family:var(--ui);font-size:12px;color:var(--texto-3);font-weight:400}
+
+/* ── carga de archivos ── */
+.soltar{border:1.5px dashed var(--borde-fuerte);border-radius:var(--radius-interno);background:var(--superficie);padding:var(--espacio-8) var(--espacio-6);display:flex;flex-direction:column;align-items:center;gap:var(--espacio-4);text-align:center;transition:border-color var(--t-1),background var(--t-1)}
+.soltar .tile{width:44px;height:44px;border-radius:var(--radius-control);background:var(--bandeja);color:var(--texto-2);transition:transform var(--t-3) var(--ease-resorte)}
+.soltar .tile .ph{font-size:20px}
+.soltar b{font-weight:500;font-size:14px}
+.soltar small{font-size:12px;color:var(--texto-3)}
+.soltar.encima{border-color:var(--acento);background:var(--sel)}
+.soltar.encima .tile{transform:translateY(calc(-4px*var(--mueve))) scale(1.06);background:var(--acento-f);color:var(--acento-texto)}
+.archivos{display:flex;flex-direction:column;border:1px solid var(--borde);border-radius:var(--radius-interno);background:var(--superficie);overflow:hidden}
+.arch{display:flex;align-items:center;gap:var(--espacio-5);padding:var(--espacio-5) var(--espacio-5) var(--espacio-5) var(--espacio-6);border-top:1px solid var(--divisor)}
+.arch:first-child{border-top:0}
+.tipo{width:32px;height:36px;border-radius:7px;display:grid;place-items:end center;padding-bottom:4px;font-family:var(--mono);font-size:11px;font-weight:500;flex:none;background:color-mix(in oklch,var(--ent) 14%,var(--superficie));color:color-mix(in oklch,var(--ent) 68%,var(--tinta));box-shadow:inset 0 0 0 1px color-mix(in oklch,var(--ent) 22%,transparent)}
+.arch .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--espacio-2)}
+.arch .tx b{font-weight:500;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.arch .tx small{font-size:12px;color:var(--texto-3);font-variant-numeric:tabular-nums;display:flex;gap:var(--espacio-3);align-items:center;flex-wrap:wrap}
+.arch .barra{height:4px;border-radius:4px;background:var(--suave);overflow:hidden}
+.arch .barra i{display:block;height:100%;width:var(--p,0%);background:var(--acento);border-radius:4px;transition:width var(--t-2) linear}
+.arch.listo .tx small{color:var(--verde)}
+.arch.mal{background:color-mix(in oklch,var(--rojo-f) 55%,var(--superficie))}
+.arch.mal .tx small{color:var(--rojo)}
+.arch .acc{display:flex;gap:var(--espacio-1)}
+.adj{display:flex;align-items:center;gap:var(--espacio-4);height:44px;padding:0 var(--espacio-2) 0 var(--espacio-4);border:1px solid var(--borde);border-radius:var(--radius-control);background:var(--superficie);max-width:420px}
+.adj .tipo{width:28px;height:32px;font-size:11px;padding-bottom:3px;border-radius:7px}
+.adj b{font-weight:500;font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ── OTP ── */
+.otp{display:flex;align-items:center;gap:var(--espacio-3)}
+.otp input{width:48px;height:56px;border:1px solid var(--borde-fuerte);border-radius:var(--radius-control);background:var(--superficie);box-shadow:var(--s-min);text-align:center;font-family:var(--display);font-size:24px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--tinta);caret-color:var(--acento);outline:0;transition:border-color var(--t-1),box-shadow var(--t-1),background var(--t-2),transform var(--t-2) var(--ease-resorte)}
+.otp input:focus{border-color:var(--acento);box-shadow:0 0 0 3px color-mix(in oklch,var(--acento) 18%,transparent)}
+.otp input.lleno{transform:scale(1.04)}
+.otp .guion{width:8px;height:2px;border-radius:2px;background:var(--borde-fuerte);flex:none}
+.otp.error input{border-color:var(--rojo);box-shadow:0 0 0 3px color-mix(in oklch,var(--rojo) 12%,transparent)}
+.otp.bien input{border-color:var(--verde);background:var(--verde-f);color:var(--verde)}
+.otp-caja{max-width:420px;display:flex;flex-direction:column;gap:var(--espacio-6);padding:var(--espacio-8);border:1px solid var(--borde);border-radius:var(--radius-tarjeta);background:var(--superficie)}
+.otp-caja h3{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em}
+.otp-caja p{font-size:13px;color:var(--texto-2);line-height:1.5}
+.otp-msj{font-size:12px;min-height:18px;display:flex;align-items:center;gap:var(--espacio-2)}
+
+.variantes.dos{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
+/* "No:" de ejemplo */
+.mal-in{border-color:var(--rojo)!important}
+.asterisco{color:var(--rojo)}
+.tachar{opacity:.85}
+
+/* ── cortes ── */
+@media (max-width:1279px){.params-esc{grid-template-columns:minmax(0,1fr)}.rango-meses .cal:nth-child(2){display:none}}
+@media (max-width:1023px){.minis,.tarjs.tres{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:767px){
+  .form-c{grid-template-columns:minmax(0,1fr)}
+  .flujo-val{grid-template-columns:minmax(0,1fr)}
+  .ancho-s,.ancho-m,.ancho-l{max-width:none}
+  .reqs{grid-template-columns:minmax(0,1fr)}
+  .minis,.tarjs.tres{grid-template-columns:minmax(0,1fr)}
+  .mini .dib{height:88px}
+  .rango{grid-template-columns:minmax(0,1fr)}
+  .rango-pre{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--divisor);scrollbar-width:none}
+  .rango-pre button{flex:none;height:44px;white-space:nowrap}
+  .rango-der{padding:var(--espacio-4) var(--espacio-2)}
+  .rango-campos .in{width:auto;flex:1;min-width:0}
+  .rango-campos>.ph{display:none}
+  .cal{width:100%}
+  .cal-g button{height:44px;min-width:44px;border-radius:12px}
+  .cal-g{column-gap:0}
+  .cal-cab .btn.ic{width:44px}
+  .pop{left:calc(var(--espacio-4)*-1);right:calc(var(--espacio-4)*-1);padding:var(--espacio-2)}
+  .franjas{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .franjas button,.atajos button,.chips-op button,.sug{height:44px;min-width:44px}
+  .stp .bp,.ojo,.in.busca .limpia,.vuelve,.boton-color,.nodo .chev{width:44px!important;height:44px!important}
+  .stp{padding:0}
+  .ojo{margin-right:-12px}
+  .in.busca .limpia{background:none}
+  .ficha{height:36px}
+  .ficha .quitar{width:44px;height:44px;margin:-4px -8px -4px -10px}
+  .in.multi input{height:44px}
+  .opc{min-height:48px}
+  .mon-btn{height:44px;min-width:52px;justify-content:center}
+  .in.grande{height:72px}.in.grande input{font-size:32px}.in.grande .mon-btn{height:44px}
+  .ren{height:48px}
+  .ren>button.v{height:44px}
+  .ren .seg button{height:44px;min-width:44px}
+  .colores button{width:44px;height:44px}
+  .colores.chico button{width:44px;height:44px}
+  .tarj{min-height:64px}
+  .aj{padding:var(--espacio-5) var(--espacio-6);gap:var(--espacio-5)}
+  .aj .tile{display:none}
+  .aj.hijo{padding-left:var(--espacio-9)}
+  .aj .toggle{margin:-10px -4px 0 0}
+  .nodo{min-height:52px;padding-right:var(--espacio-4)}
+  .nodo.h{padding-left:var(--espacio-8)}
+  .desl,.desl input[type=range]{height:44px}
+  .arch{flex-wrap:wrap;padding:var(--espacio-5)}
+  .arch .acc{margin-left:auto}
+  .otp{gap:var(--espacio-2)}
+  .otp input{width:44px;height:52px;font-size:20px}
+  .otp-caja{padding:var(--espacio-6)}
+  .vista-g{padding:var(--espacio-6)}
+  .barras-g{height:120px}
+  .params{padding:var(--espacio-4)}
+  .lista-cb{max-height:260px}
+  .res-it{min-height:52px}
+  .form-pie .falta .btn{min-height:44px}
+}
+/* listas y calendarios que se despliegan: la lámina no los recorta */
+.lamina-cuerpo:has(.cb){overflow:visible}
+.lamina-cuerpo:has(.cb)>:last-child{border-radius:0 0 24px 24px}
+.lamina-cuerpo:has(.cb)>.codigo>div{border-radius:inherit}
+.lamina:not(.con-codigo) .lamina-cuerpo:has(.cb)>.lamina-pie{border-radius:0 0 24px 24px}
+.cal-card{padding:var(--espacio-5);width:fit-content;max-width:100%}
+.enl-c{height:auto!important;font-size:12px!important;padding:0!important}
+@media (max-width:767px){
+  .in.chico{height:52px}
+  .campo .rl-fila .btn.enlace,.enl-c{min-height:44px;min-width:44px}
+  .campo .avi .btn,.campo .err .btn{height:44px}
+  .cal-card{padding:var(--espacio-1);width:100%}
+  .otp{gap:var(--espacio-1)}
+}
+</style>
+</head>
+<body class="bib">
+<div class="bib-pag">
+  <aside class="bib-indice" data-volver="index.html" data-titulo="Campos"></aside>
+
+  <main class="bib-main">
+    <header class="bib-cab">
+      <div>
+        <span class="eti"><a href="index.html">Biblioteca</a> / 03</span>
+        <h1>Campos y formularios</h1>
+        <p><b>25 piezas</b> vivas, de un texto con rótulo a la carga de archivos: rótulo arriba, ayuda que dice qué pasa con el dato, error recién al salir y la corrección como botón. Todas con teclado completo y a 44 px en el celular.</p>
+      </div>
+      <div class="der"></div>
+    </header>
+
+    <!-- ══════════ 01 Campo con rótulo ══════════ -->
+    <section class="lamina" id="campo-con-rotulo">
+      <header class="lamina-cab">
+        <h2>Campo con rótulo</h2>
+        <span class="lamina-sec">§5 Formularios</span>
+        <p class="lamina-regla">Rótulo siempre arriba a 6 px, <b>el placeholder es un ejemplo, nunca el rótulo</b>; se marca lo opcional, no lo obligatorio, y el ancho sigue al dato.</p>
+        <p class="lamina-ref">Patrones 3.11 y 3.14 · ref. 01, 04 · tweets 40, 47</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-text-aa"></i>Reposo con ayuda</span>
+              <div class="campo">
+                <label for="c1-razon">Razón social</label>
+                <div class="in"><input id="c1-razon" placeholder="Ej.: Orbe Retail S.A." aria-describedby="c1-razon-a" autocomplete="organization"></div>
+                <small id="c1-razon-a">Sale así en las facturas y los remitos.</small>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-envelope-simple"></i>Ícono del tipo adentro</span>
+              <div class="campo">
+                <label for="c1-mail">Correo de facturación</label>
+                <div class="in"><i class="ph ph-envelope-simple ic-t"></i><input id="c1-mail" type="email" inputmode="email" autocapitalize="off" placeholder="facturacion@empresa.com.ar" autocomplete="email"></div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-dots-three-circle"></i>Opcional marcado</span>
+              <div class="campo">
+                <label for="c1-tel">Teléfono <span class="marca-op">· opcional</span></label>
+                <div class="in"><i class="ph ph-phone ic-t"></i><input id="c1-tel" type="tel" inputmode="tel" placeholder="+54 9 291 456-7890" autocomplete="tel"></div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-warning-circle"></i>Con error, después de salir</span>
+              <div class="campo">
+                <label for="c1-cuit">CUIT</label>
+                <div class="in error ancho-s"><i class="ph ph-identification-card ic-t"></i><input id="c1-cuit" class="num" value="30-7158423" inputmode="numeric" aria-invalid="true" aria-describedby="c1-cuit-e"></div>
+                <p class="err" id="c1-cuit-e"><i class="ph-fill ph-warning-circle"></i>Faltan 2 números: son 11.</p>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-lock-simple"></i>Solo lectura, con el motivo</span>
+              <div class="campo">
+                <label for="c1-cod">Código de cliente</label>
+                <div class="in ro ancho-s" data-tip="Lo pone el sistema al crear el cliente"><input id="c1-cod" class="mono" value="CLI-00248" readonly><i class="ph ph-lock-simple ic-t"></i></div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-prohibit"></i>Deshabilitado, dice por qué</span>
+              <div class="campo">
+                <label for="c1-cond">Condición frente al IVA</label>
+                <div class="in dis"><input id="c1-cond" value="Responsable inscripto" disabled aria-describedby="c1-cond-a"></div>
+                <small id="c1-cond-a">Sale de ARCA con el CUIT: no se edita a mano.</small>
+              </div>
+            </div>
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-ruler"></i>Ancho según el dato: CUIT y fecha cortos, nombre y notas largos</span>
+              <div class="fila g5" style="align-items:flex-start">
+                <div class="campo" style="flex:1 1 280px"><label for="c1-cont">Contacto</label><div class="in"><i class="ph ph-user ic-t"></i><input id="c1-cont" value="Sofía Ledesma" autocomplete="name"></div></div>
+                <div class="campo" style="flex:0 1 180px"><label for="c1-cuit2">CUIT</label><div class="in"><input id="c1-cuit2" class="num" value="30-71584239-0" inputmode="numeric"></div></div>
+                <div class="campo" style="flex:0 1 150px"><label for="c1-cp">Código postal</label><div class="in"><input id="c1-cp" class="num" value="B8000" autocomplete="postal-code"></div></div>
+              </div>
+            </div>
+            <div class="variante mal">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: el placeholder como rótulo y asteriscos</span>
+              <div class="campo">
+                <div class="in"><input aria-label="Ejemplo de lo que no va: razón social sin rótulo" placeholder="Razón social *"></div>
+                <div class="in"><input aria-label="Ejemplo de lo que no va: correo sin rótulo" placeholder="Correo *"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Campo 40 px en escritorio, 52 px y letra de 16 px en el celular para que iOS no haga zoom.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 02 Moneda dentro del campo ══════════ -->
+    <section class="lamina" id="moneda-dentro-del-campo">
+      <header class="lamina-cab">
+        <h2>Moneda dentro del campo</h2>
+        <span class="lamina-sec">§5 Formularios · bi-moneda</span>
+        <p class="lamina-regla">La moneda es una <b>pastilla con menú dentro del campo</b>; se escribe sin separadores y al salir se formatea con miles y centavos, con su equivalente al tipo de cambio debajo.</p>
+        <p class="lamina-ref">Patrones 3.12 y 1.17 · ref. 08, 11</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-currency-circle-dollar"></i>Monto con su moneda</span>
+              <div class="campo">
+                <label for="m-monto">Precio mensual</label>
+                <div class="in"><button type="button" class="mon-btn" id="m-mon" data-menu="#menu-moneda" data-menu-lado="izq" aria-label="Moneda: pesos"><span>$</span><i class="ph ph-caret-down"></i></button><input id="m-monto" class="num" inputmode="decimal" value="1.250.000,00" aria-describedby="m-equiv"></div>
+                <div class="equiv num" id="m-equiv"><i class="ph ph-arrows-left-right" style="font-size:13px"></i>≈ <b id="m-eq">US$ 865,05</b> al TC $ 1.445 del 18 nov</div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-percent"></i>Unidad como sufijo</span>
+              <div class="campo">
+                <label for="m-pct">Ajuste por IPC</label>
+                <div class="in ancho-s"><input id="m-pct" class="num" inputmode="decimal" value="2,7"><span class="suf">% mensual</span></div>
+                <small>Se aplica el 1 de cada trimestre.</small>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-cube"></i>Cantidad con unidad</span>
+              <div class="campo">
+                <label for="m-vol">Volumen a despachar</label>
+                <div class="in ancho-s"><input id="m-vol" class="num" inputmode="decimal" value="38,40"><span class="suf">m³</span></div>
+              </div>
+            </div>
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-hand-coins"></i>Monto protagonista: el único dato del paso</span>
+              <div class="campo" style="max-width:460px">
+                <label for="m-grande">¿Cuánto cobraste?</label>
+                <div class="in grande"><button type="button" class="mon-btn" id="m-mon2" data-menu="#menu-moneda2" data-menu-lado="izq" aria-label="Moneda: dólares"><span>US$</span><i class="ph ph-caret-down"></i></button><input id="m-grande" class="num" inputmode="decimal" value="4.200,00" aria-describedby="m-saldo"></div>
+                <div class="equiv" id="m-saldo">Saldo de FAC-01102: <b>US$ 6.800,00</b> · <button type="button" class="btn enlace enl-c" id="m-todo">Cobrar todo</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Al enfocar, el monto se muestra sin puntos para corregirlo fácil; al salir vuelve con miles y centavos.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 03 Número con pasos ══════════ -->
+    <section class="lamina" id="numero-con-pasos">
+      <header class="lamina-cab">
+        <h2>Número con pasos</h2>
+        <span class="lamina-sec">§5 Formularios</span>
+        <p class="lamina-regla">− y + dentro del campo, ↑↓ del teclado (<b>Mayús salta de a 10</b>), mantener apretado repite y acelera; en el límite el botón se apaga y dice por qué.</p>
+        <p class="lamina-ref">Patrones 3.2 · ref. 61 · tweet 61</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-plus-minus"></i>Cuotas, con mínimo y máximo</span>
+              <div class="campo">
+                <label for="n-cuotas">Cuotas</label>
+                <div class="in stp ancho-s" data-min="1" data-max="36"><button type="button" class="bp" data-d="-1" aria-label="Una cuota menos"><i class="ph ph-minus"></i></button><input id="n-cuotas" inputmode="numeric" value="12" role="spinbutton" aria-valuemin="1" aria-valuemax="36" aria-valuenow="12"><button type="button" class="bp" data-d="1" aria-label="Una cuota más"><i class="ph ph-plus"></i></button></div>
+                <small id="n-cuota-a">12 cuotas de <b class="num tinta" id="n-cuota-v">$ 104.166,67</b></small>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-calendar-dots"></i>Con unidad</span>
+              <div class="campo">
+                <label for="n-plazo">Plazo de pago</label>
+                <div class="in stp ancho-s" data-min="0" data-max="120" data-paso="15"><button type="button" class="bp" data-d="-1" aria-label="15 días menos"><i class="ph ph-minus"></i></button><input id="n-plazo" inputmode="numeric" value="30" role="spinbutton" aria-valuemin="0" aria-valuemax="120" aria-valuenow="30"><span class="suf">días</span><button type="button" class="bp" data-d="1" aria-label="15 días más"><i class="ph ph-plus"></i></button></div>
+                <small>De a 15 · vence el <b class="tinta" id="n-vence">18 dic</b></small>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-calculator"></i>Cantidad × precio, en vivo</span>
+              <div class="campo">
+                <label for="n-cant">Módulos sanitarios</label>
+                <div class="in stp ancho-s" data-min="1" data-max="40"><button type="button" class="bp" data-d="-1" aria-label="Un módulo menos"><i class="ph ph-minus"></i></button><input id="n-cant" inputmode="numeric" value="4" role="spinbutton" aria-valuemin="1" aria-valuemax="40" aria-valuenow="4"><button type="button" class="bp" data-d="1" aria-label="Un módulo más"><i class="ph ph-plus"></i></button></div>
+              </div>
+              <div class="cuenta-linea num"><span>4 × $ 185.000</span><b class="num" id="n-sub">$ 740.000</b><span>Subtotal del renglón</span><b class="tot num" id="n-tot">$ 740.000</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Probá: mantené apretado el +, o ↑ con Mayús en el campo.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 04 Contraseña ══════════ -->
+    <section class="lamina" id="contrasena-con-mostrar">
+      <header class="lamina-cab">
+        <h2>Contraseña con mostrar</h2>
+        <span class="lamina-sec">§5 Ingreso</span>
+        <p class="lamina-regla">Ojo para mostrar adentro del campo, <b>requisitos que se tildan mientras se escribe</b> (no errores) y aviso ámbar si está activado Bloq Mayús.</p>
+        <p class="lamina-ref">SKILL.md §5 Ingreso · ref. 13 · patrón 13.4</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-key"></i>Crear contraseña</span>
+              <div class="campo">
+                <label for="pw-nueva">Contraseña nueva</label>
+                <div class="in"><i class="ph ph-lock-simple ic-t"></i><input id="pw-nueva" type="password" autocomplete="new-password" value="faronorte2026" aria-describedby="pw-reqs pw-caps"><button type="button" class="ojo" aria-label="Mostrar contraseña" aria-pressed="false" data-tip="Mostrar"><i class="ph ph-eye"></i></button></div>
+                <div class="fuerza" id="pw-fuerza" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+                <div class="fuerza-t"><span id="pw-nivel">Escribí al menos 12 caracteres</span><b id="pw-largo" class="num"></b></div>
+                <ul class="reqs" id="pw-reqs" aria-label="Requisitos">
+                  <li data-r="largo"><i class="ph-fill ph-check-circle"></i>12 caracteres o más</li>
+                  <li data-r="may"><i class="ph-fill ph-check-circle"></i>Una mayúscula</li>
+                  <li data-r="num"><i class="ph-fill ph-check-circle"></i>Un número</li>
+                  <li data-r="mail"><i class="ph-fill ph-check-circle"></i>No contiene tu nombre</li>
+                </ul>
+                <p class="avi" id="pw-caps" hidden><i class="ph-fill ph-warning"></i>Bloq Mayús está activado</p>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-sign-in"></i>Ingresar: la salida al lado del rótulo</span>
+              <div class="campo">
+                <div class="rl-fila"><label for="pw-ing">Contraseña</label><a class="btn enlace" href="#contrasena-con-mostrar">¿La olvidaste?</a></div>
+                <div class="in"><input id="pw-ing" type="password" autocomplete="current-password" value="faro-2026-norte"><button type="button" class="ojo" aria-label="Mostrar contraseña" aria-pressed="false" data-tip="Mostrar"><i class="ph ph-eye"></i></button></div>
+              </div>
+              <div class="banda-error" style="font-size:12px;border-radius:var(--radius-control);padding:var(--espacio-4) var(--espacio-5);display:flex;gap:var(--espacio-3);align-items:flex-start;background:var(--rojo-f);color:var(--rojo)"><i class="ph-fill ph-warning-circle" style="font-size:14px;margin-top:1px"></i><span>La contraseña no coincide. Te quedan 2 intentos antes de esperar 15 min.</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">El ojo cambia el tipo sin mover el cursor ni perder lo escrito.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 05 Buscador ══════════ -->
+    <section class="lamina" id="buscador">
+      <header class="lamina-cab">
+        <h2>Buscador</h2>
+        <span class="lamina-sec">§5 Listas · §6d</span>
+        <p class="lamina-regla">El placeholder nombra <b>qué campos busca</b>, la tecla <kbd>/</kbd> lo enfoca, sin acentos, × para limpiar y resultados con la coincidencia marcada; sin resultados ofrece crear.</p>
+        <p class="lamina-ref">Patrones 1.20 y 10.3 · ref. 06, 13 · tweet 47</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-magnifying-glass"></i>Con resultados en vivo</span>
+              <div class="in busca"><i class="ph ph-magnifying-glass ic-t" id="bu-ic"></i><input id="bu-q" type="search" placeholder="Cliente, CUIT o ciudad" aria-label="Buscar clientes" aria-controls="bu-res" autocomplete="off"><kbd id="bu-k">/</kbd><button type="button" class="limpia" id="bu-x" aria-label="Limpiar búsqueda" hidden><i class="ph ph-x"></i></button></div>
+              <div class="resultados" id="bu-res" aria-live="polite"></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-funnel-simple"></i>Chico, en la barra, con alcance</span>
+              <div class="fila g3">
+                <div class="in busca chico" style="flex:1;min-width:0"><i class="ph ph-magnifying-glass ic-t"></i><input type="search" placeholder="Buscar en facturas" aria-label="Buscar en facturas"><span class="alcance">Nov<i class="ph ph-caret-down" style="font-size:12px"></i></span></div>
+                <button type="button" class="btn chico"><i class="ph ph-sliders-horizontal"></i>Filtros</button>
+              </div>
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: "Buscar…" sin decir dónde</span>
+              <div class="in busca tachar"><i class="ph ph-magnifying-glass ic-t"></i><input type="search" placeholder="Buscar…" aria-label="Ejemplo de lo que no va"></div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Probá "neuquen" (sin tilde), "30-70" o algo que no exista.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 06 Texto largo ══════════ -->
+    <section class="lamina" id="texto-largo-con-contador">
+      <header class="lamina-cab">
+        <h2>Texto largo con contador</h2>
+        <span class="lamina-sec">§5 Formularios</span>
+        <p class="lamina-regla">Crece con el texto hasta 8 renglones y recién ahí scrollea; el contador <b>aparece cerca del límite</b>, ámbar al 90 % y rojo pasado, diciendo cuánto sobra.</p>
+        <p class="lamina-ref">Patrones 3.14 · tweet 40, 62</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-text-align-left"></i>Autoalto con límite</span>
+              <div class="campo">
+                <label for="ta-nota">Nota para el cliente <span class="marca-op">· opcional</span></label>
+                <div class="in area"><textarea id="ta-nota" rows="2" maxlength="400" data-max="280" aria-describedby="ta-cont">Incluye retiro del módulo el último día hábil del mes. El canje del grupo electrógeno queda para la próxima visita.</textarea><span class="cont" id="ta-cont" aria-live="polite"></span></div>
+                <small>Sale impresa al pie de la factura.</small>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-list-checks"></i>Una por línea: cada renglón es un ítem</span>
+              <div class="campo">
+                <label for="ta-lin">Tareas del parte</label>
+                <div class="in area"><textarea id="ta-lin" rows="3" placeholder="Una por línea" aria-describedby="ta-lin-c">Limpieza de baños químicos
+Recambio de filtros
+Control de tablero</textarea><span class="cont" id="ta-lin-c"></span></div>
+                <div class="lineas" id="ta-chips"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Seguí escribiendo en la nota: el contador aparece a los 200 caracteres.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 07 Validación al salir ══════════ -->
+    <section class="lamina" id="validacion-al-salir">
+      <header class="lamina-cab">
+        <h2>Validación al salir</h2>
+        <span class="lamina-sec">§5 Validación</span>
+        <p class="lamina-regla">Primer chequeo <b>al salir del campo con texto o al intentar crear</b>; desde ahí en vivo, y el error se va apenas está bien. Nunca rojo mientras se escribe la primera vez; el botón no se apaga.</p>
+        <p class="lamina-ref">SKILL.md §5 Formularios · patrón 3.11 · análisis 11</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="flujo-val" id="v-flujo" aria-hidden="true">
+            <div data-f="0"><span class="n">01</span><b><i class="ph ph-pencil-simple"></i>Escribiendo</b><span>Sin juicio: ni rojo ni verde.</span></div>
+            <div data-f="1"><span class="n">02</span><b><i class="ph ph-sign-out"></i>Al salir</b><span>Primer chequeo, con el dato concreto.</span></div>
+            <div data-f="2"><span class="n">03</span><b><i class="ph ph-lightning"></i>Desde ahí, en vivo</b><span>El error se va en cuanto se corrige.</span></div>
+          </div>
+          <form class="card pad pila g8" id="v-form" novalidate style="padding:var(--espacio-8)">
+            <div class="fila entre"><div class="pila g2"><h3 class="display t-20" style="font-weight:500">Nuevo cliente</h3><span class="gris t-12">Estudio Faro · Cuenta corriente</span></div><span class="chip d gr" id="v-estado">Borrador</span></div>
+            <div class="form-c">
+              <div class="campo todo"><label for="v-razon">Razón social</label><div class="in"><input id="v-razon" name="razon" placeholder="Ej.: Casa Lumen S.R.L." autocomplete="organization" data-v="razon"></div><p class="err" hidden></p></div>
+              <div class="campo"><label for="v-cuit">CUIT</label><div class="in"><i class="ph ph-identification-card ic-t"></i><input id="v-cuit" name="cuit" class="num" inputmode="numeric" placeholder="30-71203345-9" data-v="cuit"></div><p class="err" hidden></p><small class="ayuda">Con o sin guiones.</small></div>
+              <div class="campo"><label for="v-mail">Correo de facturación</label><div class="in"><i class="ph ph-envelope-simple ic-t"></i><input id="v-mail" name="mail" type="email" inputmode="email" autocapitalize="off" placeholder="facturacion@empresa.com.ar" data-v="mail"></div><p class="err" hidden></p></div>
+            </div>
+            <div class="form-pie">
+              <span class="falta" id="v-falta" hidden></span>
+              <button type="button" class="btn texto" id="v-limpiar">Vaciar</button>
+              <button type="submit" class="btn neg"><i class="ph ph-plus"></i>Crear cliente</button>
+            </div>
+          </form>
+        </div>
+        <div class="lamina-pie"><span class="nota">Probá apretar Crear sin tocar nada: baja al primer problema, lo enfoca y lo sacude. El CUIT se chequea con su dígito verificador.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 08 Corrección como botón ══════════ -->
+    <section class="lamina" id="correccion-como-boton">
+      <header class="lamina-cab">
+        <h2>Corrección como botón</h2>
+        <span class="lamina-sec">§5 Validación · §8 Textos</span>
+        <p class="lamina-regla">Si el sistema sabe qué quisiste poner, <b>lo dice con el dato y lo ofrece como botón</b>; ámbar si no frena, rojo solo si impide guardar.</p>
+        <p class="lamina-ref">SKILL.md §5 "¿Es sofia@orbe.com.ar? Usar ese" · análisis 11</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes" id="cr">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-at"></i>Dominio mal tipeado</span>
+              <div class="campo" data-cr="mail">
+                <label for="cr-mail">Correo</label>
+                <div class="in aviso"><i class="ph ph-envelope-simple ic-t"></i><input id="cr-mail" type="email" inputmode="email" autocapitalize="off" value="sofia@orbe.con.ar" aria-describedby="cr-mail-m"></div>
+                <p class="avi" id="cr-mail-m"></p>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-phone"></i>Formato del teléfono</span>
+              <div class="campo" data-cr="tel">
+                <label for="cr-tel">Celular</label>
+                <div class="in aviso"><i class="ph ph-phone ic-t"></i><input id="cr-tel" type="tel" inputmode="tel" value="0291 15 456 7890" aria-describedby="cr-tel-m"></div>
+                <p class="avi" id="cr-tel-m"></p>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-calendar-x"></i>Fecha que no existe: frena</span>
+              <div class="campo" data-cr="fecha">
+                <label for="cr-fecha">Fecha de entrega</label>
+                <div class="in error ancho-s"><i class="ph ph-calendar-blank ic-t"></i><input id="cr-fecha" class="num" value="31/11/2026" aria-invalid="true" aria-describedby="cr-fecha-m"></div>
+                <p class="err" id="cr-fecha-m"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Editá los campos y salí: la sugerencia se recalcula. Aplicarla se puede deshacer.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 09 Combobox ══════════ -->
+    <section class="lamina" id="combobox-con-busqueda">
+      <header class="lamina-cab">
+        <h2>Combobox con búsqueda</h2>
+        <span class="lamina-sec">§5 Formularios</span>
+        <p class="lamina-regla">Se escribe para filtrar sin acentos, <b>↑↓ Enter Esc</b>, recientes cuando está vacío y <b>"Crear «texto»"</b> al final si no existe: nunca un callejón sin salida.</p>
+        <p class="lamina-ref">Patrones 10.3 y 3.1 · ref. 03, 12</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-buildings"></i>Cliente, con crear</span>
+              <div class="campo">
+                <label for="cb-in" id="cb-rot">Cliente</label>
+                <div class="cb" id="cb">
+                  <div class="in"><span class="elegido" id="cb-el"></span><input id="cb-in" role="combobox" aria-expanded="false" aria-controls="cb-lista" aria-autocomplete="list" autocomplete="off" placeholder="Buscá o creá un cliente"><i class="ph ph-caret-up-down ic-t"></i></div>
+                  <div class="lista-cb" id="cb-lista" role="listbox" aria-labelledby="cb-rot" hidden></div>
+                </div>
+                <small id="cb-ayuda">Recientes primero · Enter elige</small>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-keyboard"></i>Teclado</span>
+              <div class="cuenta-linea" style="grid-template-columns:auto minmax(0,1fr);row-gap:var(--espacio-4)">
+                <span><kbd>↑</kbd> <kbd>↓</kbd></span><span>Moverse por la lista (da la vuelta)</span>
+                <span><kbd>Enter</kbd></span><span>Elegir o crear</span>
+                <span><kbd>Esc</kbd></span><span>Cerrar; otra vez, vaciar</span>
+                <span><kbd>Tab</kbd></span><span>Sale sin cambiar lo elegido</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Probá "lumen", "bahia" o "Panadería Sur" (no existe).</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 10 Selección múltiple ══════════ -->
+    <section class="lamina" id="seleccion-multiple-con-chips">
+      <header class="lamina-cab">
+        <h2>Selección múltiple con chips</h2>
+        <span class="lamina-sec">§5 Formularios</span>
+        <p class="lamina-regla">Lo elegido queda como chip dentro del campo, la lista <b>no se cierra al tildar</b> y Retroceso con el campo vacío marca el último chip y, otra vez, lo quita.</p>
+        <p class="lamina-ref">Patrones 3.14 y 10.2 · tweet 40</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-users-three"></i>Responsables</span>
+              <div class="campo">
+                <label for="ms-in" id="ms-rot">Responsables</label>
+                <div class="cb" id="ms">
+                  <div class="in multi" id="ms-caja"><input id="ms-in" role="combobox" aria-expanded="false" aria-controls="ms-lista" aria-autocomplete="list" autocomplete="off" placeholder="Agregá personas"></div>
+                  <div class="lista-cb" id="ms-lista" role="listbox" aria-multiselectable="true" aria-labelledby="ms-rot" hidden></div>
+                </div>
+                <small id="ms-cnt">2 personas · reciben los avisos del proyecto</small>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: lista con Ctrl+clic</span>
+              <div class="in area tachar" style="padding:var(--espacio-2)"><select multiple size="4" aria-label="Ejemplo de lo que no va: selección múltiple nativa" style="width:100%;border:0;border-radius:8px;background:none;font-size:13px;outline:0"><option>Lucía Benítez</option><option selected>Tomás Ferreyra</option><option>Valentina Ruiz</option><option selected>Martín Ocampo</option></select></div>
+              <small class="gris t-12">Nadie sabe que hay que mantener Ctrl, y no se ve lo elegido al cerrar.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 11 Etiquetas dentro del campo ══════════ -->
+    <section class="lamina" id="etiquetas-dentro-del-campo">
+      <header class="lamina-cab">
+        <h2>Etiquetas dentro del campo</h2>
+        <span class="lamina-sec">§5 Formularios</span>
+        <p class="lamina-regla">El placeholder dice la tecla: <b>"Escribí la etiqueta y Enter"</b>; coma y pegar varias también cortan, la repetida destella en vez de duplicarse.</p>
+        <p class="lamina-ref">Patrón 3.14 · tweet 40 (Tags)</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante ancha">
+              <div class="campo" style="max-width:560px">
+                <label for="et-in">Etiquetas</label>
+                <div class="in multi" id="et-caja"><input id="et-in" autocomplete="off" placeholder="Escribí la etiqueta y Enter" aria-describedby="et-a"></div>
+                <small id="et-a">Coma o Enter para cortar · pegá "a, b, c" y se separan solas</small>
+                <div class="sugeridas" id="et-sug"><span class="rot-g">Usadas en otros proyectos</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 12 Select con ícono ══════════ -->
+    <section class="lamina" id="select-con-icono">
+      <header class="lamina-cab">
+        <h2>Select con ícono</h2>
+        <span class="lamina-sec">§5 Formularios</span>
+        <p class="lamina-regla">El valor elegido lleva <b>su punto, su ícono o su avatar también cerrado</b>; el menú marca el actual con ✓ en la columna del ícono.</p>
+        <p class="lamina-ref">Patrones 3.4 y 10.5 · tweet 40 (Priority, Lead)</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-circle-half"></i>Estado</span>
+              <div class="campo"><span class="rl" id="sl-est-r">Estado</span>
+                <button type="button" class="in sel-btn" id="sl-est" data-menu="#menu-estado" data-menu-lado="izq" aria-labelledby="sl-est-r sl-est"><span class="val"><span class="dot" style="--ent:var(--azul)"></span><span>En curso</span></span><i class="ph ph-caret-down car"></i></button>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-cell-signal-high"></i>Prioridad</span>
+              <div class="campo"><span class="rl" id="sl-pri-r">Prioridad</span>
+                <button type="button" class="in sel-btn" id="sl-pri" data-menu="#menu-prio" data-menu-lado="izq" aria-labelledby="sl-pri-r sl-pri"><span class="val"><span class="prio p2"><i></i><i></i><i></i></span><span>Media</span></span><i class="ph ph-caret-down car"></i></button>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-user-circle"></i>Responsable</span>
+              <div class="campo"><span class="rl" id="sl-per-r">Responsable</span>
+                <button type="button" class="in sel-btn" id="sl-per" data-menu="#menu-pers" data-menu-lado="izq" aria-labelledby="sl-per-r sl-per"><span class="val" id="sl-per-v"></span><i class="ph ph-caret-down car"></i></button>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-map-pin"></i>Lista larga: nativo con ícono</span>
+              <div class="campo"><label for="sl-prov">Provincia</label>
+                <div class="in nativo"><i class="ph ph-map-pin ic-t"></i><select id="sl-prov" autocomplete="address-level1"><option>Buenos Aires</option><option>Catamarca</option><option>Chubut</option><option>Córdoba</option><option>Mendoza</option><option selected>Neuquén</option><option>Río Negro</option><option>Santa Fe</option><option>Tierra del Fuego</option></select><i class="ph ph-caret-down car"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Más de 10 opciones con búsqueda: pasá al combobox.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 13 Fecha que se escribe ══════════ -->
+    <section class="lamina" id="fecha-que-se-escribe">
+      <header class="lamina-cab">
+        <h2>Fecha que se escribe</h2>
+        <span class="lamina-sec">§5 Formularios · §1c</span>
+        <p class="lamina-regla">Se escribe como se dice ("15/12", "mañana", "vie", "+30") y <b>debajo se lee cómo se entendió</b>; el calendario está a un clic y se maneja con flechas.</p>
+        <p class="lamina-ref">SKILL.md §5 · patrones 3.1 y 2.4 · tweet 40 (Target date)</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-calendar-blank"></i>Escribir o elegir</span>
+              <div class="campo">
+                <label for="fe-in">Vence</label>
+                <div class="cb" id="fe">
+                  <div class="in ancho-m"><input id="fe-in" value="18/12/2026" autocomplete="off" aria-describedby="fe-interp"><button type="button" class="ojo" id="fe-btn" aria-label="Abrir calendario" aria-expanded="false" aria-controls="fe-pop" data-tip="Calendario"><i class="ph ph-calendar-blank"></i></button></div>
+                  <div class="pop" id="fe-pop" role="dialog" aria-label="Elegir fecha de vencimiento" hidden><div class="cal" id="fe-cal"></div></div>
+                </div>
+                <p class="interp" id="fe-interp"></p>
+                <div class="atajos" id="fe-atajos">
+                  <button type="button" data-a="hoy">Hoy</button><button type="button" data-a="+1">Mañana</button><button type="button" data-a="vie">Viernes</button><button type="button" data-a="fin">Fin de mes</button><button type="button" data-a="+30">+30 días</button>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-calendar"></i>Calendario abierto: hoy, feriados y fuera de rango</span>
+              <div class="card cal-card"><div class="cal" id="fe-cal2"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Probá escribir "mañana", "vie", "+45", "8/12" (feriado) o "32/13".</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 14 Rango de fechas ══════════ -->
+    <section class="lamina" id="rango-de-fechas">
+      <header class="lamina-cab">
+        <h2>Rango de fechas</h2>
+        <span class="lamina-sec">§5 Períodos</span>
+        <p class="lamina-regla">Atajos a la izquierda, <b>vista previa del rango al pasar</b> entre el primer y el segundo clic, y abajo cuántos días son y cuántos hábiles.</p>
+        <p class="lamina-ref">Patrones 7.10 y 2.4 · ref. 07, 10</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="rango">
+            <div class="rango-pre" id="ra-pre" role="group" aria-label="Atajos de período">
+              <button type="button" data-p="7">Últimos 7 días</button>
+              <button type="button" data-p="30">Últimos 30 días</button>
+              <button type="button" data-p="mes" class="on">Este mes</button>
+              <button type="button" data-p="pasado">Mes pasado</button>
+              <button type="button" data-p="tri">Este trimestre</button>
+              <button type="button" data-p="anio">En lo que va del año</button>
+            </div>
+            <div class="rango-der">
+              <div class="rango-campos">
+                <div class="in"><i class="ph ph-calendar-blank ic-t"></i><input id="ra-d" class="num" aria-label="Desde" readonly></div>
+                <i class="ph ph-arrow-right gris"></i>
+                <div class="in"><i class="ph ph-calendar-check ic-t"></i><input id="ra-h" class="num" aria-label="Hasta" readonly></div>
+              </div>
+              <div class="rango-meses" id="ra-meses"></div>
+              <div class="rango-pie">
+                <span class="res" id="ra-res" aria-live="polite"></span>
+                <button type="button" class="btn" id="ra-limpiar">Limpiar</button>
+                <button type="button" class="btn neg" id="ra-ok">Aplicar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Clic en un día, pasá por otro y mirá cómo se pinta el rango; el segundo clic lo cierra.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 15 Hora ══════════ -->
+    <section class="lamina" id="hora">
+      <header class="lamina-cab">
+        <h2>Hora</h2>
+        <span class="lamina-sec">§5 Agenda</span>
+        <p class="lamina-regla">"930" se lee 09:30; las franjas muestran <b>lo ocupado tachado</b>, la duración en chips y el resumen dice inicio, fin y zona.</p>
+        <p class="lamina-ref">Patrones 9.4 y 3.8 · ref. 02, 10</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-clock"></i>Escribir la hora</span>
+              <div class="campo">
+                <label for="ho-in">Empieza</label>
+                <div class="in ancho-s"><i class="ph ph-clock ic-t"></i><input id="ho-in" class="num" value="09:00" inputmode="numeric" autocomplete="off" aria-describedby="ho-int"><span class="suf">ART</span></div>
+                <p class="interp" id="ho-int">Escribí 930, 14 o 1415</p>
+              </div>
+              <div class="campo"><span class="rl" id="ho-dur-r">Duración</span>
+                <div class="chips-op" id="ho-dur" role="radiogroup" aria-labelledby="ho-dur-r">
+                  <button type="button" role="radio" aria-checked="false" data-m="15">15 min</button><button type="button" role="radio" aria-checked="false" data-m="30">30 min</button><button type="button" role="radio" aria-checked="true" data-m="45">45 min</button><button type="button" role="radio" aria-checked="false" data-m="60">1 h</button><button type="button" role="radio" aria-checked="false" data-m="90">1 h 30</button>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-calendar-check"></i>Franjas del jueves 19 nov</span>
+              <div class="franjas" id="ho-fr" role="radiogroup" aria-label="Franjas libres"></div>
+              <div class="resumen-h"><b id="ho-res">09:30 – 10:15</b><span id="ho-res2">jue 19 nov · 45 min · hora de Argentina</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 16 Chips ══════════ -->
+    <section class="lamina" id="chips-en-lugar-de-desplegable">
+      <header class="lamina-cab">
+        <h2>Chips en lugar de desplegable</h2>
+        <span class="lamina-sec">§5 Formularios</span>
+        <p class="lamina-regla">De 2 a 6 opciones van <b>todas a la vista como chips</b>: excluyentes como radio con flechas, múltiples con el cuadradito de 6 px.</p>
+        <p class="lamina-ref">Patrón 3.8 · tweet 21 (Trigger, Output action)</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes dos">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-radio-button"></i>Excluyentes</span>
+              <div class="campo"><span class="rl" id="ch-pl-r">Plazo de pago</span>
+                <div class="chips-op" id="ch-pl" role="radiogroup" aria-labelledby="ch-pl-r">
+                  <button type="button" role="radio" aria-checked="false" data-d="0">Contado</button><button type="button" role="radio" aria-checked="false" data-d="7">7 días</button><button type="button" role="radio" aria-checked="false" data-d="15">15</button><button type="button" role="radio" aria-checked="true" data-d="30">30</button><button type="button" role="radio" aria-checked="false" data-d="45">45</button><button type="button" role="radio" aria-checked="false" data-d="60">60</button>
+                </div>
+                <p class="vence-l" id="ch-vence">Vence el <b>viernes 18 dic</b></p>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-check-square"></i>Varias a la vez</span>
+              <div class="campo"><span class="rl" id="ch-me-r">Medios que acepta</span>
+                <div class="chips-op" id="ch-me" role="group" aria-labelledby="ch-me-r">
+                  <button type="button" role="checkbox" aria-checked="true"><span class="cm"></span>Transferencia</button><button type="button" role="checkbox" aria-checked="true"><span class="cm"></span>Echeq</button><button type="button" role="checkbox" aria-checked="false"><span class="cm"></span>Efectivo</button><button type="button" role="checkbox" aria-checked="false"><span class="cm"></span>Tarjeta</button>
+                </div>
+                <small id="ch-me-c">2 de 4 · salen en el pie del presupuesto</small>
+              </div>
+            </div>
+            <div class="variante mal">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: 6 plazos escondidos en un select</span>
+              <div class="in nativo"><select aria-label="Ejemplo de lo que no va: plazo en un select"><option>30 días</option><option>Contado</option><option>7 días</option></select><i class="ph ph-caret-down car"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 17 Tarjetas de opción ══════════ -->
+    <section class="lamina" id="tarjetas-de-opcion">
+      <header class="lamina-cab">
+        <h2>Tarjetas de opción</h2>
+        <span class="lamina-sec">§5 Formularios</span>
+        <p class="lamina-regla">Cuando cada opción necesita explicarse: fila de 56 px con ícono, título y consecuencia; <b>la elegida se marca con borde, no con relleno</b>, y "Recomendado" no preselecciona.</p>
+        <p class="lamina-ref">Patrón 3.9 · tweets 09, 17, 19, 59</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes dos">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-radio-button"></i>Radio con descripción</span>
+              <div class="campo"><span class="rl" id="tj-fac-r">Cómo se factura</span>
+                <div class="tarjs" role="radiogroup" aria-labelledby="tj-fac-r" data-radio>
+                  <button type="button" class="tarj" role="radio" aria-checked="true"><span class="tile"><i class="ph ph-calendar-plus"></i></span><span class="tx"><b>Mes adelantado</b><small>Se emite el 1 por el mes que empieza.</small></span><span class="rad"></span></button>
+                  <button type="button" class="tarj" role="radio" aria-checked="false"><span class="tile"><i class="ph ph-calendar-check"></i></span><span class="tx"><b>Mes vencido <span class="chip az">Recomendado</span></b><small>Se emite el 1 por el mes que terminó, con los extras.</small></span><span class="rad"></span></button>
+                  <button type="button" class="tarj" role="radio" aria-checked="false"><span class="tile"><i class="ph ph-flag-checkered"></i></span><span class="tx"><b>Por hito</b><small>Se emite al cerrar cada etapa del proyecto.</small></span><span class="rad"></span></button>
+                </div>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-check-square"></i>Varias, con casilla</span>
+              <div class="campo"><span class="rl" id="tj-av-r">Avisar al cliente por</span>
+                <div class="tarjs" role="group" aria-labelledby="tj-av-r">
+                  <button type="button" class="tarj" role="checkbox" aria-checked="true"><span class="tile"><i class="ph ph-envelope-simple"></i></span><span class="tx"><b>Correo</b><small>facturacion@orbe.com.ar</small></span><span class="casm"><i class="ph ph-check"></i></span></button>
+                  <button type="button" class="tarj" role="checkbox" aria-checked="false"><span class="tile"><i class="ph ph-whatsapp-logo"></i></span><span class="tx"><b>WhatsApp</b><small>+54 9 291 456-7890 · solo vencimientos</small></span><span class="casm"><i class="ph ph-check"></i></span></button>
+                </div>
+              </div>
+            </div>
+            <div class="variante ancha">
+              <span class="rot-g"><i class="ph ph-squares-four"></i>En tres columnas, para tonos</span>
+              <div class="campo"><span class="rl" id="tj-tono-r">Tono del recordatorio</span>
+                <div class="tarjs tres" role="radiogroup" aria-labelledby="tj-tono-r" data-radio>
+                  <button type="button" class="tarj" role="radio" aria-checked="false"><b>Formal</b><small>"Le recordamos que la factura…"</small><span class="rad"></span></button>
+                  <button type="button" class="tarj" role="radio" aria-checked="true"><b>Cercano</b><small>"Te escribimos por la factura…"</small><span class="rad"></span></button>
+                  <button type="button" class="tarj" role="radio" aria-checked="false"><b>Breve</b><small>"FAC-01102 vence el viernes."</small><span class="rad"></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">En oscuro la elegida lleva borde claro de 1 px, sin fondo de acento.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 18 Miniaturas ══════════ -->
+    <section class="lamina" id="miniaturas-para-elegir-forma">
+      <header class="lamina-cab">
+        <h2>Miniaturas para elegir forma</h2>
+        <span class="lamina-sec">§5 Documentos</span>
+        <p class="lamina-regla">Toda elección visual se hace <b>sobre el dibujo de lo que va a salir</b>: hoja arriba sobre bandeja, banda con ícono, nombre y radio de 18 px abajo.</p>
+        <p class="lamina-ref">Patrón 3.10 · tweets 08, 41, 47 (Theme)</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variante">
+            <span class="rot-g"><i class="ph ph-file-text"></i>Diseño de la factura</span>
+            <div class="minis" role="radiogroup" aria-label="Diseño de la factura" data-radio>
+              <button type="button" class="mini" role="radio" aria-checked="true"><span class="dib"><span class="hoja-m"><span class="fl"><i class="ac" style="flex:.4"></i><i style="flex:.6;opacity:0"></i></span><i class="os" style="width:60%"></i><i style="width:40%"></i><i></i><i></i><i></i><span class="fl"><i style="opacity:0"></i><i class="os"></i></span></span></span><span class="band"><i class="ph ph-file-text"></i><b>Clásica</b><span class="rad"></span></span></button>
+              <button type="button" class="mini" role="radio" aria-checked="false"><span class="dib"><span class="hoja-m"><span class="fl"><i class="os"></i><i class="ac"></i></span><span class="fl"><i></i><i></i></span><span class="fl"><i></i><i></i></span><i style="height:14px;border-radius:7px"></i><span class="fl"><i style="opacity:0"></i><i class="os"></i></span></span></span><span class="band"><i class="ph ph-columns"></i><b>Partida</b><span class="rad"></span></span></button>
+              <button type="button" class="mini" role="radio" aria-checked="false"><span class="dib"><span class="hoja-m"><i class="os" style="width:50%"></i><span class="grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="fl"><i style="opacity:0"></i><i class="ac"></i></span></span></span><span class="band"><i class="ph ph-table"></i><b>Libro mayor</b><span class="rad"></span></span></button>
+            </div>
+          </div>
+          <div class="variante">
+            <span class="rot-g"><i class="ph ph-palette"></i>Tema de la cuenta</span>
+            <div class="minis" role="radiogroup" aria-label="Tema de la cuenta" data-radio>
+              <button type="button" class="mini" role="radio" aria-checked="true"><span class="dib"><span class="hoja-m"><span class="fl"><i class="os" style="flex:.3"></i><i style="opacity:0"></i></span><i></i><i></i><i style="width:70%"></i></span></span><span class="band"><i class="ph ph-sun"></i><b>Claro</b><span class="rad"></span></span></button>
+              <button type="button" class="mini tema-o" role="radio" aria-checked="false"><span class="dib"><span class="hoja-m"><span class="fl"><i class="os" style="flex:.3"></i><i style="opacity:0"></i></span><i></i><i></i><i style="width:70%"></i></span></span><span class="band"><i class="ph ph-moon"></i><b>Oscuro</b><span class="rad"></span></span></button>
+              <button type="button" class="mini tema-s" role="radio" aria-checked="false"><span class="dib"><span class="hoja-m"><span class="fl"><i class="os" style="flex:.3"></i><i style="opacity:0"></i></span><i></i><i></i><i style="width:70%"></i></span></span><span class="band"><i class="ph ph-desktop"></i><b>Como el equipo</b><span class="rad"></span></span></button>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Las opciones de forma no tocan los datos del documento.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 19 Renglón de parámetros ══════════ -->
+    <section class="lamina" id="renglon-de-parametros">
+      <header class="lamina-cab">
+        <h2>Renglón de parámetros</h2>
+        <span class="lamina-sec">§5 Vistas</span>
+        <p class="lamina-regla">Renglones-pastilla de 38 px: rótulo gris, valor tinta; el número se cambia <b>arrastrando</b> y se llena hasta el valor; <b>lo cambiado se pinta en azul con su ↺</b>.</p>
+        <p class="lamina-ref">Patrón 3.2 · tweets 61, 63</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo puntos">
+          <div class="params-esc">
+            <div class="vista-g">
+              <div class="pila g2"><span class="rot-g" id="pa-tit">Cobrado · últimos 30 días</span><span class="cifra-g" id="pa-cifra">$ 41,6 M</span><span class="delta sube"><b><i class="ph ph-trend-up"></i>+8,1 %</b><span class="gris">vs. período anterior</span></span></div>
+              <div class="barras-g" id="pa-barras" aria-hidden="true"></div>
+            </div>
+            <div class="params" id="pa">
+              <div class="gp">Datos<button type="button" class="btn enlace enl-c" id="pa-todo" hidden>Volver todo</button></div>
+              <div class="ren" data-k="metrica"><span class="rr">Métrica</span><button type="button" class="v" data-menu="#menu-pa-metrica" aria-label="Métrica: Cobrado"><span>Cobrado</span><i class="ph ph-caret-down"></i></button><button type="button" class="vuelve" aria-label="Volver Métrica a Cobrado" data-tip="Volver a Cobrado"><i class="ph ph-arrow-counter-clockwise"></i></button></div>
+              <div class="ren" data-k="rango"><span class="rr">Rango</span><button type="button" class="v" data-menu="#menu-pa-rango" aria-label="Rango: 30 días"><span>30 días</span><i class="ph ph-caret-down"></i></button><button type="button" class="vuelve" aria-label="Volver Rango a 30 días" data-tip="Volver a 30 días"><i class="ph ph-arrow-counter-clockwise"></i></button></div>
+              <div class="ren" data-k="comparar"><span class="rr">Comparar</span><div class="seg chico" role="group" aria-label="Comparar con el período anterior" id="pa-comp"><button type="button" data-v="no" class="on">No</button><button type="button" data-v="si">Sí</button></div><button type="button" class="vuelve" aria-label="Volver Comparar a No" data-tip="Volver a No"><i class="ph ph-arrow-counter-clockwise"></i></button></div>
+              <div class="gp">Estilo</div>
+              <div class="ren scrub" data-k="radio" id="pa-radio" tabindex="0" role="slider" aria-label="Radio de barra" aria-valuemin="0" aria-valuemax="12" aria-valuenow="7"><span class="fill"></span><span class="rr">Radio de barra</span><span class="v" id="pa-radio-v">7</span><button type="button" class="vuelve" aria-label="Volver Radio de barra a 7" data-tip="Volver a 7"><i class="ph ph-arrow-counter-clockwise"></i></button></div>
+              <div class="ren" data-k="color"><span class="rr">Resaltado</span><input class="hex" id="pa-hex" value="#4f46e5" spellcheck="false" aria-label="Color de resaltado en hexadecimal"><span class="muestra" id="pa-muestra"></span><button type="button" class="vuelve" aria-label="Volver Resaltado al de la marca" data-tip="Volver al de la marca"><i class="ph ph-arrow-counter-clockwise"></i></button></div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Arrastrá de costado el radio (o ← →), cambiá la métrica y volvé de a uno con ↺.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 20 Color de entidad ══════════ -->
+    <section class="lamina" id="color-de-entidad">
+      <header class="lamina-cab">
+        <h2>Color de entidad</h2>
+        <span class="lamina-sec">§3 Color · §5</span>
+        <p class="lamina-regla">El color de un proyecto, cliente o etiqueta <b>sale de la paleta fija</b>: 8 círculos de 28 px, el elegido con anillo a 2 px y ✓; nunca un selector libre.</p>
+        <p class="lamina-ref">Patrón 3.7 · tweets 40 (Colour), 41</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-circles-four"></i>Paleta con vista previa</span>
+              <div class="campo"><span class="rl" id="co-r">Color del proyecto</span>
+                <div class="colores" id="co" role="radiogroup" aria-labelledby="co-r"></div>
+              </div>
+              <div class="prev-ent" id="co-prev"><span class="rayita"></span><span class="cuadro"><i class="ph-fill ph-lighthouse"></i></span><div class="min0"><b>Faro Norte · Obra Neuquén</b><small>Así aparece en el menú, el tablero y el calendario</small></div></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-tag"></i>Etiqueta con su color</span>
+              <div class="campo">
+                <label for="ec-in">Nueva etiqueta</label>
+                <div class="in"><button type="button" class="boton-color" id="ec-btn" data-menu="#menu-ec" data-menu-lado="izq" aria-label="Color de la etiqueta: verde" style="--c:var(--e4)"><i class="m"></i></button><input id="ec-in" value="Mantenimiento" autocomplete="off"><button type="button" class="btn chico" id="ec-ok">Crear</button></div>
+              </div>
+              <div class="fila g3" id="ec-lista"><span class="etq-col" style="--c:var(--e1)">Obra</span><span class="etq-col" style="--c:var(--e3)">Urgente</span></div>
+            </div>
+            <div class="variante mal">
+              <span class="rot-g"><i class="ph ph-x-circle no"></i>No: selector libre de color</span>
+              <div class="fila g3"><input type="color" value="#7fff00" aria-label="Ejemplo de lo que no va: selector libre" style="width:44px;height:44px;border:1px solid var(--borde);border-radius:10px;background:none"><span class="etq-col" style="--c:#7fff00;color:var(--tinta)">Proveedores</span></div>
+              <small class="gris t-12">Cada persona elige un verde distinto y el color deja de decir algo.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 21 Interruptor ══════════ -->
+    <section class="lamina" id="interruptor-con-explicacion">
+      <header class="lamina-cab">
+        <h2>Interruptor con explicación</h2>
+        <span class="lamina-sec">§5 Ajustes</span>
+        <p class="lamina-regla">Toda opción binaria lleva <b>su explicación y su valor vigente</b>; se aplica al instante con "Guardado" en el lugar, y el apagado del padre deja a los hijos al 30 % sin perder lo elegido.</p>
+        <p class="lamina-ref">SKILL.md §5 Ajustes · patrón 13.6 · ref. 04, 05</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="ajustes" id="aj">
+            <div class="aj"><span class="tile"><i class="ph ph-envelope-simple"></i></span><div class="tx"><b id="aj1-t">Avisos por correo <span class="guard"><i class="ph ph-check"></i>Guardado</span></b><small id="aj1-d">Los avisos de cobranza salen desde facturacion@estudiofaro.com.ar.</small></div><button type="button" class="toggle" role="switch" aria-checked="true" aria-labelledby="aj1-t" aria-describedby="aj1-d" data-padre></button></div>
+            <div class="aj hijo"><div class="tx"><b id="aj2-t">Recordatorio antes del vencimiento <span class="guard"><i class="ph ph-check"></i>Guardado</span></b><small id="aj2-d">3 días antes, al contacto de facturación de cada cliente.</small><span class="vig"><i class="ph ph-clock"></i>Próximo: FAC-01102 a Orbe Retail, lun 23 nov 09:00</span></div><button type="button" class="toggle" role="switch" aria-checked="true" aria-labelledby="aj2-t" aria-describedby="aj2-d"></button></div>
+            <div class="aj hijo"><div class="tx"><b id="aj3-t">Copia al vendedor <span class="guard"><i class="ph ph-check"></i>Guardado</span></b><small id="aj3-d">Cada aviso le llega también a quien cerró la venta.</small></div><button type="button" class="toggle" role="switch" aria-checked="false" aria-labelledby="aj3-t" aria-describedby="aj3-d"></button></div>
+            <div class="aj"><span class="tile"><i class="ph ph-receipt"></i></span><div class="tx"><b id="aj4-t">Bloquear facturas sin remito <span class="guard"><i class="ph ph-check"></i>Guardado</span></b><small id="aj4-d">No se puede emitir una factura de alquiler si la entrega no tiene remito firmado.</small></div><button type="button" class="toggle" role="switch" aria-checked="false" aria-labelledby="aj4-t" aria-describedby="aj4-d"></button></div>
+            <div class="aj"><span class="tile"><i class="ph ph-shield-check"></i></span><div class="tx"><b id="aj5-t">Doble verificación para todos <span class="candado"><i class="ph ph-lock-simple"></i>Lo cambia un administrador</span></b><small id="aj5-d">Pide un código al ingresar desde un equipo nuevo.</small></div><button type="button" class="toggle" role="switch" aria-checked="true" aria-disabled="true" data-manual aria-labelledby="aj5-t" aria-describedby="aj5-d" data-tip="Solo Brenda Sosa (administradora) puede cambiarlo"></button></div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">Apagá "Avisos por correo": los hijos quedan atenuados y vuelven como estaban.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 22 Casillas ══════════ -->
+    <section class="lamina" id="casillas-con-estado-intermedio">
+      <header class="lamina-cab">
+        <h2>Casillas con estado intermedio</h2>
+        <span class="lamina-sec">§5 Permisos</span>
+        <p class="lamina-regla">La casilla madre muestra <b>— cuando hay algunas</b>, el conteo dice "6 de 10"; un clic en la intermedia tilda todo. La casilla suelta lleva su consecuencia en dos líneas.</p>
+        <p class="lamina-ref">SKILL.md §5 Preferencias por canal · patrones 4.1 y 13.6</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-tree-structure"></i>Permisos del rol Vendedor</span>
+              <div class="arbol" id="ar"></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-check-square"></i>Casilla suelta, con consecuencia</span>
+              <div class="pila g6">
+                <div class="op-cas"><button type="button" class="casilla" role="checkbox" aria-checked="true" aria-labelledby="cs1-t" aria-describedby="cs1-d"></button><div><b id="cs1-t">Importar las facturas de octubre</b><small id="cs1-d">Lo que ya existe aparece ahora; lo nuevo, cada pocos minutos.</small></div></div>
+                <div class="op-cas"><button type="button" class="casilla" role="checkbox" aria-checked="false" aria-labelledby="cs2-t" aria-describedby="cs2-d"></button><div><b id="cs2-t">Mandarme una copia</b><small id="cs2-d">A brenda.sosa@estudiofaro.com.ar, sin los adjuntos.</small></div></div>
+                <div class="op-cas"><button type="button" class="casilla" role="checkbox" aria-checked="false" aria-disabled="true" data-manual aria-labelledby="cs3-t" aria-describedby="cs3-d"></button><div><b id="cs3-t" class="gris">Anular con nota de crédito</b><small id="cs3-d">Necesita el certificado de ARCA cargado.</small></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 23 Deslizador ══════════ -->
+    <section class="lamina" id="deslizador">
+      <header class="lamina-cab">
+        <h2>Deslizador</h2>
+        <span class="lamina-sec">§5 Formularios</span>
+        <p class="lamina-regla">Solo cuando el valor exacto importa menos que la proporción: <b>la cifra grande arriba se actualiza mientras se arrastra</b>, con burbuja sobre el control y marcas que se pueden leer.</p>
+        <p class="lamina-ref">Patrón 3.2 · ref. 07 · tweet 61</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-sliders-horizontal"></i>Un valor</span>
+              <div class="campo">
+                <div class="desl-cab"><label for="de-com">Comisión del vendedor</label><span class="val" id="de-com-v">5 %</span></div>
+                <div class="desl" id="de-com-w"><input type="range" id="de-com" min="0" max="15" step="0.5" value="5" aria-valuetext="5 %"><span class="burb" id="de-com-b">5 %</span></div>
+                <div class="marcas"><span>0 %</span><span>5</span><span>10</span><span>15 %</span></div>
+                <small id="de-com-e" class="num">Sobre $ 4.810.000 de octubre: <b class="tinta num">$ 240.500</b></small>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-arrows-horizontal"></i>Rango, sobre la distribución</span>
+              <div class="campo">
+                <div class="desl-cab"><span class="rl">Monto de la factura</span><span class="val t-16" id="de-r-v">$ 50 mil – $ 1,2 M</span></div>
+                <div class="histo" id="de-histo" aria-hidden="true"></div>
+                <div class="desl doble" id="de-r-w"><span class="riel"></span><input type="range" id="de-r1" min="0" max="20" value="1" aria-label="Monto mínimo"><input type="range" id="de-r2" min="0" max="20" value="12" aria-label="Monto máximo"></div>
+                <small id="de-r-c">184 facturas en el rango</small>
+              </div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-steps"></i>Pasos con nombre</span>
+              <div class="campo">
+                <div class="desl-cab"><label for="de-fr">Resumen de cobranzas</label><span class="val t-16" id="de-fr-v">Semanal</span></div>
+                <div class="desl"><input type="range" id="de-fr" min="0" max="3" step="1" value="2" aria-valuetext="Semanal"></div>
+                <div class="marcas pasos" id="de-fr-m"><span>Nunca</span><span>Diario</span><span class="on">Semanal</span><span>Mensual</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 24 Carga de archivos ══════════ -->
+    <section class="lamina" id="carga-de-archivos">
+      <header class="lamina-cab">
+        <h2>Carga de archivos</h2>
+        <span class="lamina-sec">§5 Archivos</span>
+        <p class="lamina-regla">Zona de soltar con el borde punteado (el único), <b>qué tipos y cuánto pesa como máximo</b>; cada archivo con su progreso y, si falla, el motivo con el dato y la salida.</p>
+        <p class="lamina-ref">Patrones 12.1 y 12.3 · tweet 47 (Upload)</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo">
+          <div class="variantes">
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-upload-simple"></i>Soltar o elegir</span>
+              <div class="soltar" id="ar-zona">
+                <span class="tile"><i class="ph ph-cloud-arrow-up"></i></span>
+                <b>Soltá los remitos acá</b>
+                <small>PDF, JPG o PNG · hasta 10 MB cada uno</small>
+                <div class="fila g3" style="justify-content:center;margin-top:var(--espacio-2)"><label class="btn chico" for="ar-in"><i class="ph ph-folder-open"></i>Elegir archivos</label><button type="button" class="btn chico texto" id="ar-ej">Probar con ejemplos</button></div>
+                <input type="file" id="ar-in" multiple accept=".pdf,.jpg,.jpeg,.png" hidden>
+              </div>
+              <div class="archivos" id="ar-lista" hidden></div>
+            </div>
+            <div class="variante">
+              <span class="rot-g"><i class="ph ph-paperclip"></i>Un solo adjunto, en un formulario</span>
+              <div class="campo"><span class="rl">Remito firmado</span>
+                <div class="adj"><span class="tipo" style="--ent:var(--e8)">PDF</span><b>REM-00871-firmado.pdf</b><span class="gris t-12 num">412 KB</span><button type="button" class="btn chico texto" data-tip="Cambiar archivo">Cambiar</button></div>
+                <small>Sin remito firmado no se puede facturar la entrega.</small>
+              </div>
+              <div class="campo"><span class="rl">Constancia de CUIT <span class="marca-op">· opcional</span></span>
+                <button type="button" class="btn punteado ancho" style="justify-content:flex-start"><i class="ph ph-paperclip"></i>Adjuntar PDF</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lamina-pie"><span class="nota">"Probar con ejemplos" carga 4 archivos: uno pesado y uno de un tipo que no se acepta.</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ 25 OTP ══════════ -->
+    <section class="lamina" id="codigo-de-un-solo-uso">
+      <header class="lamina-cab">
+        <h2>Código de un solo uso</h2>
+        <span class="lamina-sec">§5 Ingreso</span>
+        <p class="lamina-regla">Seis casillas en dos grupos de 3, avanza solo, <b>pegar reparte los números</b> y al completar verifica sin botón; el reenvío cuenta hacia atrás.</p>
+        <p class="lamina-ref">SKILL.md §5 Ingreso · patrón 13.2</p>
+      </header>
+      <div class="lamina-cuerpo">
+        <div class="demo centro puntos">
+          <div class="otp-caja">
+            <span class="tile blanco"><i class="ph ph-device-mobile"></i></span>
+            <div class="pila g2"><h3>Revisá tu celular</h3><p>Mandamos un código por SMS al <b class="num">+54 9 291 ••• 7890</b>.</p></div>
+            <div class="otp" id="otp" role="group" aria-label="Código de 6 números">
+              <input inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="Número 1 de 6"><input inputmode="numeric" maxlength="1" aria-label="Número 2 de 6"><input inputmode="numeric" maxlength="1" aria-label="Número 3 de 6"><span class="guion" aria-hidden="true"></span><input inputmode="numeric" maxlength="1" aria-label="Número 4 de 6"><input inputmode="numeric" maxlength="1" aria-label="Número 5 de 6"><input inputmode="numeric" maxlength="1" aria-label="Número 6 de 6">
+            </div>
+            <p class="otp-msj gris" id="otp-msj" aria-live="polite">Para la demo, el código es 246 810.</p>
+            <div class="fila entre"><span class="gris t-12" id="otp-reenv">Reenviar en <span class="num">0:30</span></span><button type="button" class="btn chico texto" id="otp-re" hidden><i class="ph ph-arrow-clockwise"></i>Reenviar código</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- menús -->
+<div class="menu" id="menu-moneda"><div class="gr-m"><span class="rot-m">Moneda del precio</span><button data-mon="ARS"><span class="marca"><i class="ph ph-check"></i></span>Pesos<span class="sec">$</span></button><button data-mon="USD"><span class="marca"></span>Dólares<span class="sec">US$</span></button><button data-mon="EUR"><span class="marca"></span>Euros<span class="sec">€</span></button></div></div>
+<div class="menu" id="menu-moneda2"><div class="gr-m"><button data-mon="ARS"><span class="marca"></span>Pesos<span class="sec">$</span></button><button data-mon="USD"><span class="marca"><i class="ph ph-check"></i></span>Dólares<span class="sec">US$</span></button></div></div>
+<div class="menu" id="menu-estado"><div class="gr-m">
+  <button data-v="Borrador" data-c="var(--gris)"><span class="marca"></span><span class="dot" style="--ent:var(--gris)"></span>Borrador</button>
+  <button data-v="En curso" data-c="var(--azul)"><span class="marca"><i class="ph ph-check"></i></span><span class="dot" style="--ent:var(--azul)"></span>En curso</button>
+  <button data-v="En revisión" data-c="var(--e5)"><span class="marca"></span><span class="dot" style="--ent:var(--e5)"></span>En revisión</button>
+  <button data-v="Terminado" data-c="var(--verde)"><span class="marca"></span><span class="dot" style="--ent:var(--verde)"></span>Terminado</button>
+</div></div>
+<div class="menu" id="menu-prio"><div class="gr-m">
+  <button data-v="Baja" data-p="p1"><span class="marca"></span><span class="prio p1"><i></i><i></i><i></i></span>Baja</button>
+  <button data-v="Media" data-p="p2"><span class="marca"><i class="ph ph-check"></i></span><span class="prio p2"><i></i><i></i><i></i></span>Media</button>
+  <button data-v="Alta" data-p="p3"><span class="marca"></span><span class="prio p3"><i></i><i></i><i></i></span>Alta</button>
+</div></div>
+<div class="menu" id="menu-pers"><div class="gr-m" id="menu-pers-g"></div><div class="gr-m"><button data-v=""><span class="marca"></span><i class="ph ph-user-minus"></i>Sin asignar</button></div></div>
+<div class="menu" id="menu-pa-metrica"><div class="gr-m"><button data-v="Cobrado"><span class="marca"><i class="ph ph-check"></i></span>Cobrado</button><button data-v="Facturado"><span class="marca"></span>Facturado</button><button data-v="Por cobrar"><span class="marca"></span>Por cobrar</button></div></div>
+<div class="menu" id="menu-pa-rango"><div class="gr-m"><button data-v="7 días"><span class="marca"></span>7 días</button><button data-v="30 días"><span class="marca"><i class="ph ph-check"></i></span>30 días</button><button data-v="90 días"><span class="marca"></span>90 días</button></div></div>
+<div class="menu" id="menu-ec"><div class="gr-m" style="padding:var(--espacio-3)"><span class="rot-m" style="padding-top:0">Color de la etiqueta</span><div class="colores chico" id="ec-col" role="radiogroup" aria-label="Color de la etiqueta"></div></div></div>
+
+<script src="base.js"></script>
+<script>
+/* 03 · Campos y formularios. Todo con bib.* (base.js). Datos de ejemplo: Estudio Faro. */
+const { $, $$, fmt, toast, anunciar, destellar, sinAcentos, escapar, avatar, colorDe, quieto } = bib;
+
+/* ───────── utilidades de la página ───────── */
+const HOYD = new Date(2026, 10, 18);                 // 18 nov 2026, día calendario
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const MES_C = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const FERIADOS = { '2026-12-08': 'Inmaculada Concepción', '2026-12-25': 'Navidad', '2027-01-01': 'Año nuevo', '2026-11-23': 'Soberanía Nacional' };
+const clave = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const masDias = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+const mismo = (a, b) => a && b && a.getTime() === b.getTime();
+const finMes = d => new Date(d.getFullYear(), d.getMonth() + 1, 0);
+const corta = d => `${d.getDate()} ${MES_C[d.getMonth()]}${d.getFullYear() !== 2026 ? ' ' + d.getFullYear() : ''}`;
+const larga = d => `${DIAS[d.getDay()]} ${corta(d)}`;
+const dmy = d => `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+const difD = (a, b) => Math.round((a - b) / 864e5);
+const habiles = (a, b) => { let n = 0; for (let d = a; d <= b; d = masDias(d, 1)) if (d.getDay() % 6 && !FERIADOS[clave(d)]) n++; return n; };
+const sacudir = el => { el.classList.remove('sacude'); void el.offsetWidth; el.classList.add('sacude'); };
+const marcarEn = (texto, q) => {
+  if (!q) return escapar(texto);
+  const i = sinAcentos(texto).indexOf(sinAcentos(q));
+  return i < 0 ? escapar(texto) : escapar(texto.slice(0, i)) + '<mark>' + escapar(texto.slice(i, i + q.length)) + '</mark>' + escapar(texto.slice(i + q.length));
+};
+const parseNum = s => {
+  s = String(s).trim().toLowerCase().replace(/\s/g, '');
+  let mult = 1;
+  if (/(k|mil)$/.test(s)) { mult = 1e3; s = s.replace(/(k|mil)$/, ''); }
+  else if (/(m|mm)$/.test(s)) { mult = 1e6; s = s.replace(/(m|mm)$/, ''); }
+  s = s.replace(/[^\d.,-]/g, '');
+  if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
+  else if ((s.match(/\./g) || []).length > 1 || /\.\d{3}$/.test(s)) s = s.replace(/\./g, '');
+  const n = parseFloat(s); return isNaN(n) ? null : n * mult;
+};
+const crudo = n => String(Math.round(n * 100) / 100).replace('.', ',');
+const peso = b => b >= 1e6 ? fmt.numero(b / 1e6, 1) + ' MB' : fmt.numero(Math.max(1, Math.round(b / 1e3))) + ' KB';
+function setCampo(campo, tipo, html) {          // tipo: null | 'err' | 'avi' | 'okm'
+  const caja = $('.in', campo), msj = $('.err, .avi, .okm', campo), input = $('input', caja);
+  caja.classList.toggle('error', tipo === 'err'); caja.classList.toggle('aviso', tipo === 'avi'); caja.classList.toggle('ok', tipo === 'okm');
+  if (input) { if (tipo === 'err') input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid'); }
+  if (!msj) return;
+  msj.className = tipo || 'err'; msj.hidden = !tipo; msj.innerHTML = html || '';
+  const ayuda = $('.ayuda', campo); if (ayuda) ayuda.hidden = !!tipo;
+  if (input && tipo) { if (!msj.id) msj.id = input.id + '-m'; input.setAttribute('aria-describedby', msj.id); }
+}
+
+/* Grupos de radio y casillas-botón: clic, flechas y tabindex que rota */
+function grupoRadio(g, alCambiar) {
+  const items = () => $$('[role=radio]', g);
+  const fijar = (b, avisar = true) => {
+    items().forEach(x => { x.setAttribute('aria-checked', x === b); x.tabIndex = x === b ? 0 : -1; });
+    if (avisar) g.dispatchEvent(new CustomEvent('cambio', { detail: b, bubbles: true }));
+    alCambiar?.(b);
+  };
+  const ini = items().find(x => x.getAttribute('aria-checked') === 'true') || items()[0];
+  items().forEach(x => (x.tabIndex = x === ini ? 0 : -1));
+  g.addEventListener('click', e => { const b = e.target.closest('[role=radio]'); if (b && g.contains(b)) fijar(b); });
+  g.addEventListener('keydown', e => {
+    const its = items(), i = its.indexOf(document.activeElement); if (i < 0) return;
+    const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (!d) return; e.preventDefault();
+    const b = its[(i + d + its.length) % its.length]; b.focus(); fijar(b);
+  });
+  return { fijar };
+}
+$$('[data-radio]').forEach(g => grupoRadio(g));
+document.addEventListener('click', e => {
+  const b = e.target.closest('button[role=checkbox]:not(.casilla)');
+  if (!b || b.getAttribute('aria-disabled') === 'true') return;
+  b.setAttribute('aria-checked', b.getAttribute('aria-checked') !== 'true');
+  b.dispatchEvent(new CustomEvent('cambio', { bubbles: true }));
+});
+
+/* Menús de valor: el botón muestra lo elegido y el ✓ se mueve */
+function menuValor(menuSel, alElegir) {
+  const menu = $(menuSel);
+  menu.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b || !b.closest('.gr-m') || b.closest('.colores')) return;
+    $$('.marca', menu).forEach(m => (m.innerHTML = ''));
+    const m = $('.marca', b); if (m) m.innerHTML = '<i class="ph ph-check"></i>';
+    alElegir(b);
+  });
+}
+
+/* ═════ 02 · Moneda ═════ */
+const TC = { USD: 1445, EUR: 1560, ARS: 1 };
+const SIM = { ARS: '$', USD: 'US$', EUR: '€' };
+const NOMBRE_MON = { ARS: 'pesos', USD: 'dólares', EUR: 'euros' };
+function campoMonto({ input, boton, menu, moneda, alCambiar }) {
+  const st = { n: parseNum(input.value), mon: moneda };
+  const pintar = () => { input.value = st.n == null ? '' : fmt.numero(st.n, 2); alCambiar?.(st); };
+  input.addEventListener('focus', () => { if (st.n != null) input.value = crudo(st.n); input.select(); requestAnimationFrame(() => { if (document.activeElement === input) input.select(); }); });
+  input.addEventListener('blur', () => { const v = parseNum(input.value); st.n = v; pintar(); });
+  input.addEventListener('input', () => { st.n = parseNum(input.value); alCambiar?.(st, true); });
+  menuValor(menu, b => { st.mon = b.dataset.mon; $('span', boton).textContent = SIM[st.mon]; boton.setAttribute('aria-label', 'Moneda: ' + NOMBRE_MON[st.mon]); alCambiar?.(st); anunciar('Moneda: ' + NOMBRE_MON[st.mon]); });
+  pintar();
+  return st;
+}
+campoMonto({ input: $('#m-monto'), boton: $('#m-mon'), menu: '#menu-moneda', moneda: 'ARS', alCambiar: st => {
+  const eq = $('#m-eq'); if (st.n == null) { eq.textContent = '—'; return; }
+  eq.textContent = st.mon === 'ARS' ? fmt.monto(st.n / TC.USD, 'USD') : fmt.monto(st.n * TC[st.mon], 'ARS');
+} });
+const SALDO = 6800;
+const stG = campoMonto({ input: $('#m-grande'), boton: $('#m-mon2'), menu: '#menu-moneda2', moneda: 'USD', alCambiar: st => {
+  const p = $('#m-saldo'), caja = $('#m-grande').closest('.in');
+  const de = st.mon === 'USD' ? st.n : (st.n || 0) / TC.USD;
+  caja.classList.toggle('aviso', de > SALDO);
+  p.className = de > SALDO ? 'avi' : 'equiv';
+  p.innerHTML = de > SALDO
+    ? `<i class="ph-fill ph-warning"></i>Es más que el saldo: quedan ${fmt.monto(de - SALDO, 'USD')} a favor de Orbe Retail.`
+    : `Saldo de FAC-01102: <b>${fmt.monto(SALDO, 'USD')}</b>${de ? ` · quedan <b>${fmt.monto(SALDO - de, 'USD')}</b>` : ''} · <button type="button" class="btn enlace enl-c" id="m-todo">Cobrar todo</button>`;
+} });
+$('#m-saldo').addEventListener('click', e => { if (e.target.id === 'm-todo') { stG.n = SALDO; $('#m-grande').value = fmt.numero(SALDO, 2); $('#m-grande').dispatchEvent(new Event('input')); destellar($('#m-grande').closest('.in')); } });
+$('#m-pct').addEventListener('blur', e => { const v = parseNum(e.target.value); if (v != null) e.target.value = fmt.numero(v, 1); });
+$('#m-vol').addEventListener('blur', e => { const v = parseNum(e.target.value); if (v != null) e.target.value = fmt.numero(v, 2); });
+
+/* ═════ 03 · Número con pasos ═════ */
+function stepper(caja, alCambiar) {
+  const input = $('input', caja), [menos, mas] = $$('.bp', caja);
+  const min = +caja.dataset.min, max = +caja.dataset.max, paso = +(caja.dataset.paso || 1);
+  let v = +input.value;
+  const fijar = (n, avisar) => {
+    v = Math.max(min, Math.min(max, n)); input.value = v; input.setAttribute('aria-valuenow', v);
+    menos.setAttribute('aria-disabled', v <= min); mas.setAttribute('aria-disabled', v >= max);
+    if (v <= min) menos.dataset.tip = `El mínimo es ${min}`; else delete menos.dataset.tip;
+    if (v >= max) mas.dataset.tip = `El máximo es ${max}`; else delete mas.dataset.tip;
+    alCambiar(v); if (avisar) anunciar(String(v));
+  };
+  let t1, t2;
+  const parar = () => { clearTimeout(t1); clearTimeout(t2); };
+  [menos, mas].forEach(b => {
+    const d = +b.dataset.d;
+    b.addEventListener('pointerdown', e => {
+      if (b.getAttribute('aria-disabled') === 'true') return;
+      e.preventDefault(); fijar(v + d * paso, true);
+      let vel = 140; const repetir = () => { fijar(v + d * paso); vel = Math.max(40, vel * 0.86); if ((d < 0 && v > min) || (d > 0 && v < max)) t2 = setTimeout(repetir, vel); };
+      t1 = setTimeout(repetir, 420);
+    });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, parar));
+    b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (b.getAttribute('aria-disabled') !== 'true') fijar(v + d * paso, true); } });
+  });
+  input.addEventListener('keydown', e => {
+    const k = { ArrowUp: 1, ArrowDown: -1, PageUp: 10, PageDown: -10 }[e.key];
+    if (k) { e.preventDefault(); fijar(v + k * paso * (e.shiftKey ? 10 : 1), true); }
+    if (e.key === 'Home') { e.preventDefault(); fijar(min, true); }
+    if (e.key === 'End') { e.preventDefault(); fijar(max, true); }
+  });
+  input.addEventListener('blur', () => { const n = parseInt(input.value.replace(/\D/g, ''), 10); fijar(isNaN(n) ? v : Math.round(n / paso) * paso); });
+  fijar(v);
+}
+stepper($('#n-cuotas').closest('.stp'), v => { $('#n-cuota-a').firstChild.textContent = `${fmt.plural(v, 'cuota', 'cuotas')} de `; $('#n-cuota-v').textContent = fmt.monto(1250000 / v, 'ARS'); });
+stepper($('#n-plazo').closest('.stp'), v => { $('#n-vence').textContent = v ? larga(masDias(HOYD, v)) : 'al entregar'; });
+stepper($('#n-cant').closest('.stp'), v => {
+  const t = v * 185000; $('#n-cant').closest('.variante').querySelector('.cuenta-linea span').textContent = `${v} × $ 185.000`;
+  $('#n-sub').textContent = fmt.monto(t, 'ARS', { centavos: false }); $('#n-tot').textContent = fmt.monto(t * 1.21, 'ARS', { centavos: false });
+  $('#n-cant').closest('.variante').querySelectorAll('.cuenta-linea span')[1].textContent = 'Con IVA 21 %';
+});
+
+/* ═════ 04 · Contraseña ═════ */
+$$('.ojo[aria-pressed]').forEach(b => b.addEventListener('click', () => {
+  const inp = $('input', b.closest('.in')), ver = inp.type === 'password';
+  const s = inp.selectionStart, f = inp.selectionEnd;
+  inp.type = ver ? 'text' : 'password'; b.setAttribute('aria-pressed', ver);
+  b.setAttribute('aria-label', ver ? 'Ocultar contraseña' : 'Mostrar contraseña'); b.dataset.tip = ver ? 'Ocultar' : 'Mostrar';
+  $('i', b).className = 'ph ' + (ver ? 'ph-eye-slash' : 'ph-eye');
+  if (document.activeElement === inp) inp.setSelectionRange(s, f);
+}));
+(() => {
+  const inp = $('#pw-nueva'), segs = $$('#pw-fuerza i');
+  const NIVEL = [['Escribí al menos 12 caracteres', 'var(--suave)', 'gris'], ['Débil', 'var(--rojo)', 'baja'], ['Aceptable', 'var(--ambar)', ''], ['Buena', 'var(--azul)', ''], ['Fuerte', 'var(--verde)', 'sube']];
+  inp.addEventListener('input', () => {
+    const v = inp.value;
+    const r = { largo: v.length >= 12, may: /[A-ZÁÉÍÓÚÑ]/.test(v), num: /\d/.test(v), mail: v.length > 0 && !/brenda|sosa/i.test(v) };
+    $$('#pw-reqs li').forEach(li => li.classList.toggle('ok', r[li.dataset.r]));
+    const n = v ? Object.values(r).filter(Boolean).length : 0;
+    const [txt, col, cl] = NIVEL[v ? Math.max(1, r.largo ? n : Math.min(n, 2)) : 0];
+    segs.forEach((s, i) => (s.style.background = i < (v ? Math.max(1, r.largo ? n : Math.min(n, 2)) : 0) ? col : ''));
+    $('#pw-nivel').textContent = txt; $('#pw-nivel').className = cl;
+    $('#pw-largo').textContent = v.length ? fmt.plural(v.length, 'carácter', 'caracteres') : '';
+  });
+  const caps = e => { if (e.getModifierState) $('#pw-caps').hidden = !e.getModifierState('CapsLock'); };
+  ['keydown', 'keyup'].forEach(ev => inp.addEventListener(ev, caps));
+  inp.dispatchEvent(new Event('input'));
+  inp.addEventListener('blur', () => ($('#pw-caps').hidden = true));
+})();
+
+/* ═════ 05 · Buscador ═════ */
+const CLIENTES = [
+  { id: 'orbe', n: 'Orbe Retail S.A.', cuit: '30-71584239-0', c: 'Bahía Blanca' },
+  { id: 'lumen', n: 'Casa Lumen S.R.L.', cuit: '30-70912488-5', c: 'Neuquén' },
+  { id: 'atlas', n: 'Grupo Atlas', cuit: '30-71203345-9', c: 'Córdoba' },
+  { id: 'patag', n: 'Logística Patagonia', cuit: '30-70455812-3', c: 'Río Gallegos' },
+  { id: 'cerro', n: 'Constructora Cerro Azul', cuit: '30-71877021-6', c: 'Mendoza' },
+  { id: 'nodo', n: 'Nodo Agro', cuit: '30-71099345-1', c: 'Pergamino' },
+  { id: 'brisa', n: 'Hotel Brisa Austral', cuit: '30-70388410-2', c: 'Ushuaia' },
+  { id: 'molino', n: 'Molinos del Sur', cuit: '30-50012876-8', c: 'Bahía Blanca' },
+  { id: 'tecno', n: 'Talleres Tecnomar', cuit: '27-38456120-4', c: 'Mar del Plata' },
+];
+const RECIENTES = ['orbe', 'lumen', 'atlas'];
+const cuadroDe = c => `<span class="cuadro" style="--ent:${colorDe(c.id)}" aria-hidden="true"><i class="ph-fill ph-buildings"></i></span>`;
+const buscar = q => { const s = sinAcentos(q.trim()); return CLIENTES.filter(c => sinAcentos(`${c.n} ${c.cuit} ${c.c}`).includes(s)); };
+(() => {
+  const q = $('#bu-q'), res = $('#bu-res'), ic = $('#bu-ic'), x = $('#bu-x'), k = $('#bu-k');
+  let t;
+  const pintar = () => {
+    const v = q.value.trim();
+    ic.className = 'ph ph-magnifying-glass ic-t';
+    if (!v) { res.innerHTML = `<div class="res-cab"><span>Recientes</span><span>${fmt.plural(CLIENTES.length, 'cliente', 'clientes')}</span></div>` + RECIENTES.map(id => CLIENTES.find(c => c.id === id)).map(c => fila(c, '')).join(''); return; }
+    const r = buscar(v);
+    res.innerHTML = r.length
+      ? `<div class="res-cab"><span>${r.length} de ${CLIENTES.length} clientes</span><span>Enter abre el primero</span></div>` + r.map(c => fila(c, v)).join('')
+      : `<div class="res-vacio"><i class="ph ph-magnifying-glass" style="font-size:24px"></i><span>Ningún cliente con «${escapar(v)}» en el nombre, CUIT o ciudad.</span><button type="button" class="btn chico" id="bu-crear"><i class="ph ph-plus"></i>Crear «${escapar(v)}»</button></div>`;
+  };
+  const fila = (c, v) => `<div class="res-it">${cuadroDe(c)}<div class="min0" style="flex:1"><div class="t trunca">${marcarEn(c.n, v)}</div><div class="m">${marcarEn(c.cuit, v)} · ${marcarEn(c.c, v)}</div></div></div>`;
+  q.addEventListener('input', () => {
+    x.hidden = !q.value; k.hidden = !!q.value;
+    clearTimeout(t); ic.className = 'ph ph-circle-notch ic-t gira';
+    t = setTimeout(pintar, quieto ? 0 : 220);
+  });
+  q.addEventListener('focus', () => (k.hidden = true));
+  q.addEventListener('blur', () => (k.hidden = !!q.value));
+  q.addEventListener('keydown', e => { if (e.key === 'Escape' && q.value) { e.stopPropagation(); q.value = ''; q.dispatchEvent(new Event('input')); } });
+  x.addEventListener('click', () => { q.value = ''; q.dispatchEvent(new Event('input')); q.focus(); });
+  res.addEventListener('click', e => { if (e.target.closest('#bu-crear')) toast({ titulo: `Cliente «${escapar(q.value.trim())}» en borrador`, detalle: 'Completá el CUIT para poder facturarle', deshacer: () => {} }); });
+  document.addEventListener('keydown', e => { if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); q.focus(); } });
+  pintar();
+})();
+
+/* ═════ 06 · Texto largo ═════ */
+function autoalto(ta, maxLin = 8) {
+  const lh = parseFloat(getComputedStyle(ta).lineHeight) || 21;
+  const ajustar = () => { ta.style.height = 'auto'; const tope = lh * maxLin; ta.style.height = Math.min(ta.scrollHeight, tope) + 'px'; ta.style.overflowY = ta.scrollHeight > tope ? 'auto' : 'hidden'; };
+  ta.addEventListener('input', ajustar); addEventListener('resize', ajustar); ajustar();
+}
+(() => {
+  const ta = $('#ta-nota'), c = $('#ta-cont'), max = +ta.dataset.max, caja = ta.closest('.in');
+  let nivel = '';
+  const contar = () => {
+    const n = ta.value.length, sobra = n - max;
+    c.textContent = n < 200 ? '' : sobra > 0 ? `${fmt.numero(sobra)} de más` : `${fmt.numero(n)} / ${fmt.numero(max)}`;
+    c.className = 'cont' + (sobra > 0 ? ' ro' : n >= max * 0.9 ? ' am' : '');
+    caja.classList.toggle('error', sobra > 0);
+    if (sobra > 0) ta.setAttribute('aria-invalid', 'true'); else ta.removeAttribute('aria-invalid');
+    const nv = sobra > 0 ? 'ro' : n >= max * 0.9 ? 'am' : '';
+    if (nv !== nivel) { nivel = nv; if (nv === 'am') anunciar(`Quedan ${max - n} caracteres`); if (nv === 'ro') anunciar('Te pasaste del límite de 280'); }
+  };
+  ta.addEventListener('input', contar); autoalto(ta); contar();
+  const tl = $('#ta-lin');
+  const lineas = () => {
+    const ls = tl.value.split('\n').map(s => s.trim()).filter(Boolean);
+    $('#ta-lin-c').textContent = fmt.plural(ls.length, 'ítem', 'ítems');
+    $('#ta-chips').innerHTML = ls.map((l, i) => `<span class="tag"><span class="mono gris">${i + 1}</span>${escapar(l)}</span>`).join('');
+  };
+  tl.addEventListener('input', lineas); autoalto(tl); lineas();
+})();
+
+/* ═════ 07 · Validación al salir ═════ */
+const cuitOk = d => { const w = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2]; let s = 0; for (let i = 0; i < 10; i++) s += +d[i] * w[i]; let r = 11 - (s % 11); r = r === 11 ? 0 : r === 10 ? 9 : r; return r; };
+const fmtCuit = d => `${d.slice(0, 2)}-${d.slice(2, 10)}-${d.slice(10)}`;
+const DOMINIOS = ['gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com.ar', 'orbe.com.ar', 'estudiofaro.com.ar', 'casalumen.com.ar', 'grupoatlas.com.ar'];
+const PERSONALES = ['gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com.ar'];
+function lev(a, b) { const m = Array.from({ length: a.length + 1 }, (_, i) => [i]); for (let j = 1; j <= b.length; j++) m[0][j] = j; for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) m[i][j] = Math.min(m[i - 1][j] + 1, m[i][j - 1] + 1, m[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); return m[a.length][b.length]; }
+function sugerirMail(v) {
+  const [u, dom] = v.toLowerCase().split('@'); if (!dom) return null;
+  let d = dom.replace(/\.con(\.|$)/, '.com$1').replace(/\.cm(\.|$)/, '.com$1').replace(/\.ar\.ar$/, '.ar');
+  if (!DOMINIOS.includes(d)) { const cerca = DOMINIOS.map(x => [x, lev(d, x)]).sort((a, b) => a[1] - b[1])[0]; if (cerca[1] <= 2) d = cerca[0]; }
+  return d !== dom ? `${u}@${d}` : null;
+}
+const REGLAS = {
+  razon: v => !v.trim() ? { t: 'err', m: 'Falta la razón social.' } : v.trim().length < 3 ? { t: 'err', m: `«${escapar(v.trim())}» es muy corto: ¿es el nombre completo?` } : null,
+  cuit: v => {
+    const d = v.replace(/\D/g, '');
+    if (!d) return { t: 'err', m: 'Falta el CUIT.' };
+    if (d.length < 11) return { t: 'err', m: `Faltan ${11 - d.length} ${11 - d.length === 1 ? 'número' : 'números'}: son 11.` };
+    if (d.length > 11) return { t: 'err', m: `Sobran ${d.length - 11}: son 11 números.` };
+    const dv = cuitOk(d);
+    if (dv !== +d[10]) return { t: 'err', m: `El último número no coincide: con ${fmtCuit(d).slice(0, 11)} termina en ${dv}.`, usar: fmtCuit(d.slice(0, 10) + dv) };
+    return null;
+  },
+  mail: v => {
+    const s = v.trim();
+    if (!s) return { t: 'err', m: 'Falta el correo de facturación.' };
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s)) return { t: 'err', m: s.includes('@') ? 'Le falta el dominio completo, como empresa.com.ar.' : 'Le falta la @.' };
+    const sug = sugerirMail(s); if (sug) return { t: 'avi', m: `¿Es ${escapar(sug)}?`, usar: sug };
+    if (PERSONALES.includes(s.split('@')[1].toLowerCase())) return { t: 'avi', m: 'Es una casilla personal: ¿no hay una de la empresa?' };
+    return null;
+  },
+};
+(() => {
+  const form = $('#v-form'), campos = $$('[data-v]', form), tocado = new Set(), flujo = $$('#v-flujo div');
+  const paso = i => flujo.forEach((d, j) => d.classList.toggle('on', j === i));
+  const chequear = inp => {
+    const r = REGLAS[inp.dataset.v](inp.value), campo = inp.closest('.campo');
+    if (!tocado.has(inp)) return r;
+    const boton = r?.usar ? ` <button type="button" class="btn" data-usar="${escapar(r.usar)}"><i class="ph ph-arrow-bend-down-left"></i>Usar ${escapar(r.usar)}</button>` : '';
+    setCampo(campo, r ? r.t : null, r ? `<i class="ph-fill ${r.t === 'err' ? 'ph-warning-circle' : 'ph-warning'}"></i>${r.m}${boton}` : '');
+    return r;
+  };
+  const faltan = () => campos.filter(i => REGLAS[i.dataset.v](i.value)?.t === 'err');
+  const pie = () => {
+    const f = faltan(), el = $('#v-falta');
+    if (!tocado.size || !f.length || tocado.size < campos.length) { el.hidden = true; return; }
+    el.hidden = false; el.innerHTML = `<i class="ph-fill ph-warning-circle" style="color:var(--rojo);font-size:14px"></i>Faltan <b>${f.length}</b> para crear · <button type="button" class="btn enlace" id="v-rev">Revisar</button>`;
+  };
+  campos.forEach(inp => {
+    inp.addEventListener('input', () => { if (tocado.has(inp)) { chequear(inp); paso(2); pie(); } else paso(0); });
+    inp.addEventListener('blur', () => {
+      if (inp.dataset.v === 'cuit') { const d = inp.value.replace(/\D/g, ''); if (d.length === 11) inp.value = fmtCuit(d); }
+      if (inp.value.trim() && !tocado.has(inp)) { tocado.add(inp); paso(1); }
+      chequear(inp); pie();
+    });
+  });
+  form.addEventListener('click', e => {
+    const u = e.target.closest('[data-usar]');
+    if (u) { const inp = $('input', u.closest('.campo')); inp.value = u.dataset.usar; chequear(inp); pie(); inp.focus(); destellar(inp.closest('.in')); anunciar('Corregido: ' + u.dataset.usar); }
+    if (e.target.closest('#v-rev')) irAlPrimero();
+  });
+  const irAlPrimero = () => { const f = faltan()[0]; if (!f) return; f.focus({ preventScroll: true }); f.closest('.in').scrollIntoView({ block: 'center', behavior: quieto ? 'auto' : 'smooth' }); sacudir(f.closest('.in')); };
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    campos.forEach(i => { tocado.add(i); chequear(i); }); pie();
+    if (faltan().length) { irAlPrimero(); anunciar(`Faltan ${faltan().length} para crear`); return; }
+    const antes = campos.map(i => i.value), nombre = campos[0].value.trim();
+    vaciar();
+    $('#v-estado').className = 'chip d v'; $('#v-estado').textContent = 'Creado';
+    toast({ titulo: `Cliente creado · ${escapar(nombre)}`, detalle: 'Quedó en Clientes con su cuenta corriente en cero', deshacer: () => { campos.forEach((i, k) => (i.value = antes[k])); $('#v-estado').className = 'chip d gr'; $('#v-estado').textContent = 'Borrador'; } });
+  });
+  const vaciar = () => { tocado.clear(); campos.forEach(i => { i.value = ''; setCampo(i.closest('.campo'), null); }); pie(); paso(-1); };
+  $('#v-limpiar').addEventListener('click', vaciar);
+})();
+
+/* ═════ 08 · Corrección como botón ═════ */
+const normalizarTel = v => {
+  let d = v.replace(/\D/g, '').replace(/^54/, '').replace(/^9/, '').replace(/^0/, '');
+  const m = d.match(/^(\d{2,4})15(\d{6,8})$/); if (m && (m[1] + m[2]).length === 10) d = m[1] + m[2];
+  if (d.length !== 10) return null;
+  const area = d.startsWith('11') ? 2 : d.length - 7 > 4 ? 4 : 3, a = d.slice(0, area), n = d.slice(area);
+  return `+54 9 ${a} ${n.slice(0, n.length - 4)}-${n.slice(-4)}`;
+};
+const CORRECCION = {
+  mail: v => { const s = sugerirMail(v.trim()); return s ? { t: 'avi', m: `¿Es ${escapar(s)}?`, usar: s, b: 'Usar ese' } : null; },
+  tel: v => { const s = normalizarTel(v); return s && s !== v.trim() ? { t: 'avi', m: 'Así no llega por WhatsApp.', usar: s, b: `Usar ${s}` } : !s && v.trim() ? { t: 'err', m: 'Le faltan números: son 10 con la característica.' } : null; },
+  fecha: v => {
+    const m = v.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/); if (!m) return v.trim() ? { t: 'err', m: 'Escribila como 30/11/2026.' } : null;
+    const [_, d, mo, a] = m.map(Number), dm = new Date(a, mo, 0).getDate();
+    if (mo < 1 || mo > 12) return { t: 'err', m: `No hay mes ${mo}.` };
+    if (d > dm) return { t: 'err', m: `${MESES[mo - 1][0].toUpperCase() + MESES[mo - 1].slice(1)} tiene ${dm} días.`, usar: `${dm}/${String(mo).padStart(2, '0')}/${a}`, b: `Usar ${dm}/${String(mo).padStart(2, '0')}` };
+    return null;
+  },
+};
+$$('#cr [data-cr]').forEach(campo => {
+  const inp = $('input', campo), regla = CORRECCION[campo.dataset.cr];
+  const evaluar = () => {
+    const r = regla(inp.value);
+    setCampo(campo, r ? r.t : null, r ? `<i class="ph-fill ${r.t === 'err' ? 'ph-warning-circle' : 'ph-warning'}"></i>${r.m}${r.usar ? ` <button type="button" class="btn" data-usar="${escapar(r.usar)}"><i class="ph ph-arrow-bend-down-left"></i>${escapar(r.b)}</button>` : ''}` : '');
+  };
+  campo.addEventListener('click', e => {
+    const u = e.target.closest('[data-usar]'); if (!u) return;
+    const antes = inp.value; inp.value = u.dataset.usar;
+    setCampo(campo, 'okm', '<i class="ph-fill ph-check-circle"></i>Corregido');
+    destellar(inp.closest('.in')); inp.focus();
+    toast({ titulo: 'Corregido', detalle: `${escapar(antes)} → ${escapar(inp.value)}`, deshacer: () => { inp.value = antes; evaluar(); } });
+  });
+  inp.addEventListener('blur', evaluar);
+  inp.addEventListener('input', () => { if ($('.in', campo).matches('.error,.aviso')) { const r = regla(inp.value); if (!r) setCampo(campo, null); } });
+  evaluar();
+});
+
+/* ═════ 09 · Combobox ═════ */
+function combobox({ raiz, input, lista, opciones, render, multiple, alElegir, crear, vacio }) {
+  let activo = -1, items = [];
+  const abierta = () => !lista.hidden;
+  const abrir = () => { lista.hidden = false; input.setAttribute('aria-expanded', 'true'); pintar(); };
+  const cerrar = () => { lista.hidden = true; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); };
+  const pintar = () => {
+    const q = input.value.trim(); const r = opciones(q);
+    items = r.items.slice();
+    const exacta = r.items.some(o => sinAcentos(o.n) === sinAcentos(q));
+    if (crear && q && !exacta) items.push({ crear: q });
+    let html = r.grupo ? `<div class="grp">${r.grupo}</div>` : '';
+    html += items.map((o, i) => o.crear
+      ? `<div class="opc crear" role="option" id="${lista.id}-o${i}" data-i="${i}" aria-selected="false"><span class="tile"><i class="ph ph-plus"></i></span><span class="tx"><b>Crear «${escapar(o.crear)}»</b></span><span class="ataj">Enter</span></div>`
+      : `<div class="opc${o.elegida ? ' elegida' : ''}" role="option" id="${lista.id}-o${i}" data-i="${i}" aria-selected="false"${multiple ? ` aria-checked="${!!o.elegida}"` : ''}>${render(o, q)}</div>`).join('');
+    if (!items.length) html = `<div class="cb-vacio">${vacio || 'Sin coincidencias'}</div>`;
+    lista.innerHTML = html;
+    activo = items.length ? Math.max(0, Math.min(activo, items.length - 1)) : -1;
+    if (activo < 0 && items.length) activo = 0;
+    marcar();
+  };
+  const marcar = () => {
+    $$('.opc', lista).forEach((o, i) => o.setAttribute('aria-selected', i === activo));
+    const o = $(`#${lista.id}-o${activo}`);
+    if (o) { input.setAttribute('aria-activedescendant', o.id); o.scrollIntoView({ block: 'nearest' }); } else input.removeAttribute('aria-activedescendant');
+  };
+  const elegir = i => { const o = items[i]; if (!o) return; alElegir(o); if (multiple) { input.value = ''; pintar(); } else cerrar(); };
+  input.addEventListener('focus', abrir);
+  input.addEventListener('click', () => { if (!abierta()) abrir(); });
+  input.addEventListener('input', () => { activo = 0; abierta() ? pintar() : abrir(); });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); if (!abierta()) return abrir(); activo = (activo + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % Math.max(1, items.length); marcar(); }
+    else if (e.key === 'Enter') { if (abierta() && activo >= 0) { e.preventDefault(); elegir(activo); } }
+    else if (e.key === 'Escape') { e.stopPropagation(); if (abierta()) cerrar(); else { input.value = ''; raiz.dispatchEvent(new CustomEvent('vaciar')); } }
+    else if (e.key === 'Tab') cerrar();
+  });
+  lista.addEventListener('pointerdown', e => e.preventDefault());
+  lista.addEventListener('click', e => { const o = e.target.closest('.opc'); if (o) elegir(+o.dataset.i); });
+  lista.addEventListener('pointermove', e => { const o = e.target.closest('.opc'); if (o && +o.dataset.i !== activo) { activo = +o.dataset.i; marcar(); } });
+  document.addEventListener('pointerdown', e => { if (abierta() && !raiz.contains(e.target)) cerrar(); });
+  return { pintar, cerrar };
+}
+(() => {
+  let elegido = null;
+  const input = $('#cb-in'), el = $('#cb-el');
+  const mostrar = () => { el.innerHTML = elegido ? cuadroDe(elegido) : ''; input.value = elegido ? elegido.n : ''; $('#cb-ayuda').textContent = elegido ? `${elegido.cuit} · ${elegido.c}` : 'Recientes primero · Enter elige'; };
+  combobox({
+    raiz: $('#cb'), input, lista: $('#cb-lista'), crear: true,
+    opciones: q => (!q || (elegido && q === elegido.n))
+      ? { grupo: 'Recientes', items: RECIENTES.map(id => ({ ...CLIENTES.find(c => c.id === id), elegida: elegido?.id === id })) }
+      : { grupo: `${buscar(q).length} de ${CLIENTES.length}`, items: buscar(q).map(c => ({ ...c, elegida: elegido?.id === c.id })) },
+    render: (o, q) => `${cuadroDe(o)}<span class="tx"><b>${marcarEn(o.n, q === elegido?.n ? '' : q)}</b><small>${o.cuit} · ${escapar(o.c)}</small></span><i class="ph ph-check chk"></i>`,
+    alElegir: o => {
+      if (o.crear) {
+        const nuevo = { id: 'n' + Date.now(), n: o.crear, cuit: 'CUIT pendiente', c: 'Sin ciudad' };
+        CLIENTES.push(nuevo); RECIENTES.unshift(nuevo.id); elegido = nuevo; mostrar();
+        toast({ titulo: `Cliente «${escapar(o.crear)}» creado`, detalle: 'Le falta el CUIT para poder facturarle', deshacer: () => { CLIENTES.pop(); RECIENTES.shift(); elegido = null; mostrar(); } });
+      } else { elegido = CLIENTES.find(c => c.id === o.id); mostrar(); anunciar('Cliente: ' + elegido.n); }
+    },
+  });
+  $('#cb').addEventListener('vaciar', () => { elegido = null; mostrar(); });
+  input.addEventListener('blur', () => setTimeout(() => { if (elegido && input.value !== elegido.n) input.value = elegido.n; }, 0));
+})();
+
+/* ═════ 10 · Selección múltiple ═════ */
+const PERSONAS = [
+  { id: 'lb', n: 'Lucía Benítez', r: 'Comercial' }, { id: 'tf', n: 'Tomás Ferreyra', r: 'Operaciones' }, { id: 'vr', n: 'Valentina Ruiz', r: 'Administración' },
+  { id: 'mo', n: 'Martín Ocampo', r: 'Logística' }, { id: 'bs', n: 'Brenda Sosa', r: 'Dirección' }, { id: 'jp', n: 'Joaquín Paz', r: 'Comercial' }, { id: 'ct', n: 'Camila Torres', r: 'Cobranzas' },
+];
+(() => {
+  const sel = new Set(['tf', 'ct']); const input = $('#ms-in'), caja = $('#ms-caja');
+  let marcadaUlt = false;
+  const chips = () => {
+    $$('.ficha', caja).forEach(f => f.remove());
+    input.insertAdjacentHTML('beforebegin', [...sel].map(id => { const p = PERSONAS.find(x => x.id === id); return `<span class="ficha" data-id="${id}">${avatar(p.n, { id: p.id, titulo: false })}${escapar(p.n.split(' ')[0])} ${escapar(p.n.split(' ')[1][0])}.<button type="button" class="quitar" aria-label="Quitar a ${escapar(p.n)}"><i class="ph ph-x"></i></button></span>`; }).join(''));
+    $('#ms-cnt').textContent = sel.size ? `${fmt.plural(sel.size, 'persona', 'personas')} · reciben los avisos del proyecto` : 'Nadie asignado: los avisos le llegan a Dirección';
+    marcadaUlt = false;
+  };
+  const cb = combobox({
+    raiz: $('#ms'), input, lista: $('#ms-lista'), multiple: true, vacio: 'Nadie con ese nombre en el equipo',
+    opciones: q => ({ items: PERSONAS.filter(p => sinAcentos(p.n + ' ' + p.r).includes(sinAcentos(q))).map(p => ({ ...p, elegida: sel.has(p.id) })) }),
+    render: (o, q) => `<span class="casilla-m"><i class="ph ph-check"></i></span>${avatar(o.n, { id: o.id, clase: 'ch', titulo: false })}<span class="tx"><b>${marcarEn(o.n, q)}</b><small>${o.r}</small></span>`,
+    alElegir: o => { sel.has(o.id) ? sel.delete(o.id) : sel.add(o.id); chips(); anunciar(`${o.n} ${sel.has(o.id) ? 'agregada' : 'quitada'}`); },
+  });
+  caja.addEventListener('click', e => { const q = e.target.closest('.quitar'); if (q) { sel.delete(q.closest('.ficha').dataset.id); chips(); cb.pintar(); input.focus(); } else input.focus(); });
+  input.addEventListener('keydown', e => {
+    if (e.key !== 'Backspace' || input.value) return;
+    const ult = $$('.ficha', caja).pop(); if (!ult) return;
+    if (!marcadaUlt) { ult.classList.add('marcada'); marcadaUlt = true; anunciar('Otra vez Retroceso para quitar'); }
+    else { sel.delete(ult.dataset.id); chips(); cb.pintar(); }
+  });
+  chips();
+})();
+
+/* ═════ 11 · Etiquetas ═════ */
+(() => {
+  const caja = $('#et-caja'), input = $('#et-in'); let tags = ['Obra', 'Neuquén'], marcada = false;
+  const SUG = ['Urgente', 'Mantenimiento', 'Alquiler', 'Retiro', 'Venta'];
+  const pintar = () => {
+    $$('.ficha', caja).forEach(f => f.remove());
+    input.insertAdjacentHTML('beforebegin', tags.map(t => `<span class="ficha sin-av" data-t="${escapar(t)}"><span class="punto" style="--ent:${colorDe(sinAcentos(t))}"></span>${escapar(t)}<button type="button" class="quitar" aria-label="Quitar ${escapar(t)}"><i class="ph ph-x"></i></button></span>`).join(''));
+    $('#et-sug').innerHTML = '<span class="rot-g">Usadas en otros proyectos</span>' + SUG.filter(s => !tags.includes(s)).map(s => `<button type="button" class="sug" data-s="${s}"><i class="ph ph-plus"></i>${s}</button>`).join('');
+    marcada = false;
+  };
+  const agregar = texto => {
+    const ts = texto.split(/[,;\n]/).map(s => s.trim()).filter(Boolean).map(s => s[0].toUpperCase() + s.slice(1));
+    let nuevas = 0;
+    ts.forEach(t => {
+      const ya = tags.find(x => sinAcentos(x) === sinAcentos(t));
+      if (ya) { const f = $(`.ficha[data-t="${CSS.escape(ya)}"]`, caja); f.classList.add('marcada'); sacudir(f); setTimeout(() => f.classList.remove('marcada'), 900); anunciar(`${ya} ya está`); }
+      else { tags.push(t); nuevas++; }
+    });
+    if (nuevas) { pintar(); anunciar(`${fmt.plural(nuevas, 'etiqueta agregada', 'etiquetas agregadas')}`); }
+  };
+  input.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ',' || (e.key === 'Tab' && input.value.trim())) && input.value.trim()) { e.preventDefault(); agregar(input.value); input.value = ''; }
+    else if (e.key === 'Backspace' && !input.value && tags.length) {
+      const ult = $$('.ficha', caja).pop();
+      if (!marcada) { ult.classList.add('marcada'); marcada = true; } else { tags.pop(); pintar(); }
+    }
+  });
+  input.addEventListener('paste', e => { const t = e.clipboardData.getData('text'); if (/[,;\n]/.test(t)) { e.preventDefault(); agregar(t); } });
+  caja.addEventListener('click', e => { const q = e.target.closest('.quitar'); if (q) { const t = q.closest('.ficha').dataset.t; tags = tags.filter(x => x !== t); pintar(); } input.focus(); });
+  $('#et-sug').addEventListener('click', e => { const s = e.target.closest('.sug'); if (s) { agregar(s.dataset.s); input.focus(); } });
+  pintar();
+})();
+
+/* ═════ 12 · Select con ícono ═════ */
+menuValor('#menu-estado', b => { $('#sl-est .val').innerHTML = `<span class="dot" style="--ent:${b.dataset.c}"></span><span>${b.dataset.v}</span>`; anunciar('Estado: ' + b.dataset.v); });
+menuValor('#menu-prio', b => { $('#sl-pri .val').innerHTML = `<span class="prio ${b.dataset.p}"><i></i><i></i><i></i></span><span>${b.dataset.v}</span>`; });
+$('#menu-pers-g').innerHTML = PERSONAS.slice(0, 5).map(p => `<button data-v="${p.id}" role="menuitem"><span class="marca">${p.id === 'lb' ? '<i class="ph ph-check"></i>' : ''}</span>${avatar(p.n, { id: p.id, clase: 'ch', titulo: false })}${p.n}<span class="sec">${p.r}</span></button>`).join('');
+const pintarPers = id => { const p = PERSONAS.find(x => x.id === id); $('#sl-per-v').innerHTML = p ? `${avatar(p.n, { id: p.id, clase: 'ch', titulo: false })}<span class="trunca">${p.n}</span>` : '<i class="ph ph-user-circle-dashed" style="color:var(--texto-3)"></i><span class="gris">Sin asignar</span>'; };
+menuValor('#menu-pers', b => pintarPers(b.dataset.v)); pintarPers('lb');
+
+/* ═════ 13 · Calendario y fecha que se escribe ═════ */
+function calendario(el, o) {
+  // o: { ver: Date (mes), sel?, ini?, fin?, hover?, min?, max?, alElegir(d), alPasar(d), navegar:true, alNavegar(delta) }
+  const pintar = () => {
+    const a = o.ver.getFullYear(), m = o.ver.getMonth(), primero = new Date(a, m, 1), corr = (primero.getDay() + 6) % 7;
+    const inicio = masDias(primero, -corr), foco = o.foco && o.foco.getMonth() === m ? o.foco : (o.sel && o.sel.getMonth() === m ? o.sel : (HOYD.getMonth() === m && HOYD.getFullYear() === a ? HOYD : primero));
+    let h = `<div class="cal-cab"><b>${MESES[m][0].toUpperCase() + MESES[m].slice(1)} ${a}</b>${o.navegar === false ? '' : `<button type="button" class="btn ic chico texto" data-nav="-1" aria-label="Mes anterior"><i class="ph ph-caret-left"></i></button><button type="button" class="btn ic chico texto" data-nav="1" aria-label="Mes siguiente"><i class="ph ph-caret-right"></i></button>`}</div><div class="cal-g" role="grid" aria-label="${MESES[m]} ${a}">`;
+    h += ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'].map(d => `<span class="dsem" aria-hidden="true">${d}</span>`).join('');
+    const [ri, rf] = o.ini && (o.fin || o.hover) ? [o.ini, o.fin || o.hover].sort((x, y) => x - y) : [o.ini, o.ini];
+    for (let i = 0; i < 42; i++) {
+      const d = masDias(inicio, i), k = clave(d), fuera = d.getMonth() !== m;
+      if (i === 35 && fuera) break;
+      if (fuera) { h += '<span class="fuera" aria-hidden="true"></span>'; continue; }
+      const cl = [d.getDay() % 6 === 0 && 'finde', mismo(d, HOYD) && 'hoy', FERIADOS[k] && 'feriado', mismo(d, o.sel) && 'sel'];
+      if (ri && !fuera) { if (mismo(d, ri) || mismo(d, rf)) cl.push('ext', mismo(d, ri) && 'ini', mismo(d, rf) && 'fin'); else if (d > ri && d < rf) cl.push(o.fin ? 'en' : 'prev'); }
+      const off = (o.min && d < o.min) || (o.max && d > o.max);
+      const etiqueta = `${larga(d)}${FERIADOS[k] ? ', feriado: ' + FERIADOS[k] : ''}${mismo(d, HOYD) ? ', hoy' : ''}`;
+      h += `<button type="button" class="${cl.filter(Boolean).join(' ')}" data-f="${k}" tabindex="${mismo(d, foco) && !fuera ? 0 : -1}" aria-label="${etiqueta}" ${mismo(d, o.sel) || cl.includes('ext') ? 'aria-pressed="true"' : ''} ${off ? 'disabled' : ''} ${FERIADOS[k] ? `data-tip="Feriado · ${FERIADOS[k]}"` : ''}>${d.getDate()}</button>`;
+    }
+    el.innerHTML = h + '</div>' + (o.pie ? `<div class="cal-pie">${o.pie()}</div>` : '');
+  };
+  const aFecha = k => { const [a, m, d] = k.split('-').map(Number); return new Date(a, m - 1, d); };
+  el.addEventListener('click', e => {
+    const n = e.target.closest('[data-nav]'); if (n) { mover(+n.dataset.nav); return; }
+    const b = e.target.closest('[data-f]'); if (b && !b.disabled) { o.foco = aFecha(b.dataset.f); o.alElegir?.(aFecha(b.dataset.f)); }
+  });
+  el.addEventListener('pointerover', e => { const b = e.target.closest('[data-f]'); if (b && o.alPasar) o.alPasar(aFecha(b.dataset.f)); });
+  el.addEventListener('keydown', e => {
+    const b = e.target.closest('[data-f]'); if (!b) return;
+    const d = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[e.key];
+    let f = aFecha(b.dataset.f);
+    if (d) f = masDias(f, d); else if (e.key === 'PageUp') f = new Date(f.getFullYear(), f.getMonth() - 1, f.getDate()); else if (e.key === 'PageDown') f = new Date(f.getFullYear(), f.getMonth() + 1, f.getDate()); else if (e.key === 'Home') f = masDias(f, -((f.getDay() + 6) % 7)); else if (e.key === 'End') f = masDias(f, 6 - (f.getDay() + 6) % 7); else return;
+    e.preventDefault(); o.foco = f;
+    if (f.getMonth() !== o.ver.getMonth() || f.getFullYear() !== o.ver.getFullYear()) { if (o.alNavegar) return o.alNavegar(f); o.ver = new Date(f.getFullYear(), f.getMonth(), 1); }
+    o.alPasar?.(f); pintar(); $(`[data-f="${clave(f)}"]`, el)?.focus();
+  });
+  const mover = d => { if (o.alNavegar) return o.alNavegar(null, d); o.ver = new Date(o.ver.getFullYear(), o.ver.getMonth() + d, 1); pintar(); };
+  pintar();
+  return { pintar, o };
+}
+function interpretar(t) {
+  const s = sinAcentos(t.trim()).replace(/\s+/g, ' ');
+  if (!s) return null;
+  if (s === 'hoy') return HOYD;
+  if (s === 'manana') return masDias(HOYD, 1);
+  if (s === 'pasado' || s === 'pasado manana') return masDias(HOYD, 2);
+  if (s === 'fin de mes' || s === 'fin') return finMes(HOYD);
+  let m = s.match(/^(?:\+|en )(\d{1,3})(?: ?d| dias?)?$/); if (m) return masDias(HOYD, +m[1]);
+  const DS = ['dom', 'lun', 'mar', 'mie', 'jue', 'vie', 'sab'], i = DS.findIndex(d => s.startsWith(d) && s.length <= 9);
+  if (i >= 0) { let n = (i - HOYD.getDay() + 7) % 7 || 7; return masDias(HOYD, n); }
+  m = s.match(/^(\d{1,2})[\/\-. ](\d{1,2})(?:[\/\-. ](\d{2,4}))?$/);
+  if (m) {
+    const d = +m[1], mo = +m[2]; let a = m[3] ? +m[3] : (mo - 1 < HOYD.getMonth() || (mo - 1 === HOYD.getMonth() && d < HOYD.getDate()) ? 2027 : 2026);
+    if (a < 100) a += 2000;
+    const f = new Date(a, mo - 1, d); return f.getMonth() === mo - 1 && f.getDate() === d ? f : 'mal';
+  }
+  return 'mal';
+}
+(() => {
+  const inp = $('#fe-in'), int = $('#fe-interp'), pop = $('#fe-pop'), btn = $('#fe-btn'), caja = inp.closest('.in');
+  let sel = new Date(2026, 11, 18), tocado = false;
+  const cal = calendario($('#fe-cal'), {
+    ver: new Date(2026, 11, 1), sel, min: HOYD,
+    alElegir: d => { fijar(d); cerrar(); inp.focus(); },
+    pie: () => `<span>Hoy: ${larga(HOYD)}</span><button type="button" class="btn chico texto" data-hoy>Hoy</button>`,
+  });
+  $('#fe-cal').addEventListener('click', e => { if (e.target.closest('[data-hoy]')) { fijar(HOYD); cerrar(); inp.focus(); } });
+  const leer = d => {
+    const dd = difD(d, HOYD), rel = dd === 0 ? 'hoy' : dd === 1 ? 'mañana' : dd > 0 ? `en ${dd} días` : `hace ${-dd} días`;
+    return `<i class="ph ph-arrow-elbow-down-right" style="font-size:13px"></i>${dd < 0 ? '<span style="color:var(--ambar)">Ya pasó:</span> ' : ''}<b>${larga(d)}${d.getFullYear() !== 2026 ? '' : ''}</b> · ${rel}${FERIADOS[clave(d)] ? ` · <span style="color:var(--ambar)">feriado (${FERIADOS[clave(d)]})</span>` : ''}`;
+  };
+  const fijar = d => {
+    sel = d; inp.value = dmy(d); cal.o.sel = d; cal.o.ver = new Date(d.getFullYear(), d.getMonth(), 1); cal.o.foco = d; cal.pintar();
+    caja.classList.remove('error'); inp.removeAttribute('aria-invalid'); int.className = 'interp'; int.innerHTML = leer(d);
+    $$('#fe-atajos button').forEach(b => b.setAttribute('aria-pressed', mismo(interpretar(b.dataset.a === 'fin' ? 'fin de mes' : b.dataset.a === '+1' ? 'manana' : b.dataset.a), d)));
+  };
+  inp.addEventListener('input', () => {
+    const r = interpretar(inp.value);
+    if (r instanceof Date) { int.className = 'interp'; int.innerHTML = leer(r); caja.classList.remove('error'); }
+    else if (r === 'mal' && tocado) { caja.classList.add('error'); int.className = 'err'; int.innerHTML = `<i class="ph-fill ph-warning-circle"></i>No entendí «${escapar(inp.value)}». Probá 15/12, «mañana» o «vie».`; }
+    else if (r === 'mal') { int.className = 'interp'; int.textContent = 'Seguí escribiendo… (15/12, mañana, vie, +30)'; }
+  });
+  inp.addEventListener('blur', () => {
+    const r = interpretar(inp.value); tocado = true;
+    if (r instanceof Date) fijar(r);
+    else if (r === 'mal') { caja.classList.add('error'); inp.setAttribute('aria-invalid', 'true'); int.className = 'err'; int.innerHTML = `<i class="ph-fill ph-warning-circle"></i>No entendí «${escapar(inp.value)}». Probá 15/12, «mañana» o «vie».`; }
+  });
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); inp.blur(); inp.focus(); } if (e.key === 'ArrowDown' && e.altKey) abrir(); });
+  const abrir = () => { pop.hidden = false; btn.setAttribute('aria-expanded', 'true'); cal.o.foco = sel; cal.pintar(); $('[tabindex="0"]', pop)?.focus(); };
+  const cerrar = () => { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); };
+  btn.addEventListener('click', () => (pop.hidden ? abrir() : cerrar()));
+  pop.addEventListener('keydown', e => { if (e.key === 'Escape') { e.stopPropagation(); cerrar(); btn.focus(); } });
+  document.addEventListener('pointerdown', e => { if (!pop.hidden && !$('#fe').contains(e.target)) cerrar(); });
+  $('#fe-atajos').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const a = b.dataset.a; fijar(a === 'hoy' ? HOYD : a === '+1' ? masDias(HOYD, 1) : a === 'fin' ? finMes(HOYD) : a === '+30' ? masDias(HOYD, 30) : interpretar('vie'));
+    destellar(caja);
+  });
+  fijar(sel);
+  // calendario de muestra: elegible, con mínimo hoy y feriados
+  let sel2 = new Date(2026, 10, 27);
+  const c2 = calendario($('#fe-cal2'), { ver: new Date(2026, 10, 1), sel: sel2, min: HOYD, alElegir: d => { c2.o.sel = d; c2.pintar(); $(`[data-f="${clave(d)}"]`, $('#fe-cal2'))?.focus(); anunciar('Elegiste ' + larga(d)); }, pie: () => `<span><span class="punto" style="--ent:var(--ambar)"></span> feriado</span><span>Antes de hoy, no</span>` });
+})();
+
+/* ═════ 14 · Rango de fechas ═════ */
+(() => {
+  const st = { ini: new Date(2026, 10, 1), fin: HOYD, hover: null, ver: new Date(2026, 9, 1) };
+  const cont = $('#ra-meses'); cont.innerHTML = '<div class="cal"></div><div class="cal"></div>';
+  const [e1, e2] = $$('.cal', cont);
+  const comun = {
+    alElegir: d => {
+      $$('#ra-pre button').forEach(b => b.classList.remove('on'));
+      if (!st.ini || st.fin) { st.ini = d; st.fin = null; } else { st.fin = d; if (st.fin < st.ini) [st.ini, st.fin] = [st.fin, st.ini]; st.hover = null; }
+      pintar();
+    },
+    alPasar: d => { if (st.ini && !st.fin && !mismo(d, st.hover)) { st.hover = d; pintar(true); } },
+    alNavegar: (f, delta) => {
+      if (delta) st.ver = new Date(st.ver.getFullYear(), st.ver.getMonth() + delta, 1);
+      else {
+        const vis = innerWidth < 1280 ? 1 : 2, fm = f.getFullYear() * 12 + f.getMonth(), vm = st.ver.getFullYear() * 12 + st.ver.getMonth();
+        if (fm < vm) st.ver = new Date(f.getFullYear(), f.getMonth(), 1); else if (fm >= vm + vis) st.ver = new Date(f.getFullYear(), f.getMonth() - vis + 1, 1);
+        if (st.ini && !st.fin) st.hover = f;
+      }
+      pintar(); if (f) $(`[data-f="${clave(f)}"]`, cont)?.focus();
+    },
+  };
+  const c1 = calendario(e1, { ...comun, ver: st.ver }), c2 = calendario(e2, { ...comun, ver: new Date(2026, 10, 1) });
+  const pintar = (soloCal) => {
+    [c1, c2].forEach((c, i) => { c.o.ver = new Date(st.ver.getFullYear(), st.ver.getMonth() + i, 1); c.o.ini = st.ini; c.o.fin = st.fin; c.o.hover = st.hover; c.pintar(); });
+    if (soloCal) return;
+    $('#ra-d').value = st.ini ? dmy(st.ini) : ''; $('#ra-h').value = st.fin ? dmy(st.fin) : '';
+    $('#ra-res').innerHTML = st.ini && st.fin ? `<b>${corta(st.ini)} – ${corta(st.fin)}</b> · ${fmt.plural(difD(st.fin, st.ini) + 1, 'día', 'días')} · ${fmt.plural(habiles(st.ini, st.fin), 'hábil', 'hábiles')}` : st.ini ? `Desde <b>${corta(st.ini)}</b> · elegí el último día` : 'Elegí el primer día';
+    $('#ra-ok').setAttribute('aria-disabled', !(st.ini && st.fin));
+  };
+  // en pantallas angostas se ve un solo mes: el del final del rango
+  const ajustarVista = () => { st.ver = innerWidth < 1280 ? new Date((st.fin || st.ini || HOYD).getFullYear(), (st.fin || st.ini || HOYD).getMonth(), 1) : new Date((st.fin || HOYD).getFullYear(), (st.fin || HOYD).getMonth() - 1, 1); };
+  $('#ra-pre').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    $$('#ra-pre button').forEach(x => x.classList.toggle('on', x === b));
+    const p = b.dataset.p, y = HOYD.getFullYear(), m = HOYD.getMonth();
+    [st.ini, st.fin] = p === '7' ? [masDias(HOYD, -6), HOYD] : p === '30' ? [masDias(HOYD, -29), HOYD] : p === 'mes' ? [new Date(y, m, 1), HOYD] : p === 'pasado' ? [new Date(y, m - 1, 1), new Date(y, m, 0)] : p === 'tri' ? [new Date(y, 9, 1), HOYD] : [new Date(y, 0, 1), HOYD];
+    st.hover = null; ajustarVista(); pintar(); anunciar(b.textContent);
+  });
+  cont.addEventListener('pointerleave', () => { if (st.hover) { st.hover = null; pintar(true); } });
+  $('#ra-limpiar').addEventListener('click', () => { st.ini = st.fin = st.hover = null; $$('#ra-pre button').forEach(x => x.classList.remove('on')); pintar(); });
+  $('#ra-ok').addEventListener('click', () => { if (!(st.ini && st.fin)) { sacudir(e1.closest('.rango-der')); return; } toast({ titulo: `Período aplicado · ${corta(st.ini)} – ${corta(st.fin)}`, detalle: 'El tablero ya muestra esas fechas', tipo: 'info' }); });
+  addEventListener('resize', () => { ajustarVista(); pintar(true); });
+  ajustarVista(); pintar();
+})();
+
+/* ═════ 15 · Hora ═════ */
+(() => {
+  const OCUP = [[600, 660, 'Visita a Orbe Retail'], [780, 840, 'Almuerzo con Grupo Atlas'], [990, 1020, 'Llamada con Casa Lumen']];
+  let ini = 540, dur = 45;
+  const hhmm = m => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+  const choca = m => OCUP.find(([a, b]) => m < b && m + dur > a);
+  const fr = $('#ho-fr');
+  const pintar = () => {
+    let h = '';
+    for (let m = 510; m <= 1050; m += 30) {
+      const c = choca(m);
+      h += c ? `<button type="button" role="radio" aria-checked="false" class="ocup" aria-disabled="true" data-tip="${c[2]} · ${hhmm(c[0])}–${hhmm(c[1])}" aria-label="${hhmm(m)}, ocupado: ${c[2]}"><s>${hhmm(m)}</s></button>`
+        : `<button type="button" role="radio" aria-checked="${m === ini}" class="${m === ini ? 'on' : ''}" data-m="${m}" tabindex="${m === ini ? 0 : -1}">${hhmm(m)}</button>`;
+    }
+    fr.innerHTML = h;
+    const c = choca(ini);
+    $('#ho-res').textContent = `${hhmm(ini)} – ${hhmm(ini + dur)}`;
+    $('#ho-res2').innerHTML = c ? `<span style="color:var(--ambar)"><i class="ph-fill ph-warning" style="font-size:13px"></i> Se pisa con ${c[2]}</span>` : `jue 19 nov · ${dur < 60 ? dur + ' min' : dur === 60 ? '1 h' : '1 h ' + (dur - 60)} · hora de Argentina`;
+  };
+  const inp = $('#ho-in');
+  const leerHora = v => {
+    const s = v.replace(/\s|hs?\.?$/gi, ''); let m = s.match(/^(\d{1,2})(?:[:.,h]?(\d{2}))?$/);
+    if (!m) { const d = s.replace(/\D/g, ''); if (d.length === 3 || d.length === 4) m = [0, d.slice(0, d.length - 2), d.slice(-2)]; }
+    if (!m) return null; const h = +m[1], mi = +(m[2] || 0); return h < 24 && mi < 60 ? h * 60 + mi : null;
+  };
+  inp.addEventListener('input', () => { const r = leerHora(inp.value); $('#ho-int').innerHTML = r == null ? (inp.value ? 'Seguí escribiendo…' : 'Escribí 930, 14 o 1415') : `<i class="ph ph-arrow-elbow-down-right" style="font-size:13px"></i>Se lee <b>${hhmm(r)}</b>`; });
+  inp.addEventListener('blur', () => {
+    const r = leerHora(inp.value), campo = inp.closest('.campo');
+    if (r == null) { inp.closest('.in').classList.add('error'); $('#ho-int').className = 'err'; $('#ho-int').innerHTML = '<i class="ph-fill ph-warning-circle"></i>No es una hora: probá 09:30.'; return; }
+    inp.closest('.in').classList.remove('error'); $('#ho-int').className = 'interp'; $('#ho-int').textContent = 'Escribí 930, 14 o 1415';
+    ini = r; inp.value = hhmm(r); pintar();
+  });
+  fr.addEventListener('click', e => { const b = e.target.closest('[data-m]'); if (b) { ini = +b.dataset.m; inp.value = hhmm(ini); pintar(); fr.querySelector('.on')?.focus(); } });
+  fr.addEventListener('keydown', e => {
+    const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (!d) return; e.preventDefault();
+    const libres = $$('[data-m]', fr), i = libres.findIndex(b => +b.dataset.m === ini), b = libres[(i + d + libres.length) % libres.length];
+    ini = +b.dataset.m; inp.value = hhmm(ini); pintar(); $(`[data-m="${ini}"]`, fr).focus();
+  });
+  grupoRadio($('#ho-dur'), b => { dur = +b.dataset.m; pintar(); });
+  pintar();
+})();
+
+/* ═════ 16 · Chips ═════ */
+grupoRadio($('#ch-pl'), b => { const d = +b.dataset.d; $('#ch-vence').innerHTML = d ? `Vence el <b>${larga(masDias(HOYD, d))}</b>${FERIADOS[clave(masDias(HOYD, d))] ? ' <span style="color:var(--ambar)">(feriado: pasa al día hábil siguiente)</span>' : ''}` : 'Se cobra <b>al entregar</b>'; });
+$('#ch-pl [aria-checked=true]').click();
+$('#ch-me').addEventListener('cambio', () => { const n = $$('#ch-me [aria-checked=true]').length; $('#ch-me-c').textContent = n ? `${n} de 4 · salen en el pie del presupuesto` : 'Elegí al menos uno: si no, el presupuesto no dice cómo pagar'; $('#ch-me-c').style.color = n ? '' : 'var(--ambar)'; });
+
+/* ═════ 19 · Renglón de parámetros ═════ */
+(() => {
+  const DEF = { metrica: 'Cobrado', rango: '30 días', comparar: 'no', radio: 7, color: '#4f46e5' };
+  const st = { ...DEF }, pa = $('#pa');
+  const CIFRA = { Cobrado: '$ 41,6 M', Facturado: '$ 52,3 M', 'Por cobrar': '$ 10,7 M' };
+  const serie = (n, sem) => Array.from({ length: n }, (_, i) => 40 + Math.round(30 * Math.sin((i + sem) * 0.7) + i * 2.4 + ((i * 37 + sem * 11) % 17)));
+  const pintar = () => {
+    const n = st.rango === '7 días' ? 7 : st.rango === '30 días' ? 15 : 13, sem = st.metrica.length;
+    const v = serie(n, sem), c = serie(n, sem + 3).map(x => x * 0.82), max = Math.max(...v, ...c);
+    $('#pa-barras').innerHTML = v.map((x, i) => `<i class="${i === n - 1 ? 'ult' : ''}" style="height:${(x / max) * 100}%;border-radius:${st.radio}px ${st.radio}px 0 0">${st.comparar === 'si' ? `<b style="height:${Math.min(100, (c[i] / x) * 100)}%"></b>` : ''}</i>`).join('');
+    $('#pa-barras').style.setProperty('--hl', st.color);
+    $('#pa-tit').textContent = `${st.metrica} · últimos ${st.rango}`; $('#pa-cifra').textContent = CIFRA[st.metrica];
+    $('#pa-radio-v').textContent = st.radio; $('#pa-radio').setAttribute('aria-valuenow', st.radio);
+    $('.fill', $('#pa-radio')).style.width = (st.radio / 12) * 100 + '%';
+    $('#pa-muestra').style.background = st.color;
+    let cambios = 0;
+    $$('.ren', pa).forEach(r => { const k = r.dataset.k, c2 = st[k] !== DEF[k]; r.classList.toggle('cambiado', c2); if (c2) cambios++; });
+    $('#pa-todo').hidden = cambios < 2;
+  };
+  const fijarMenu = (k, sel, menu) => menuValor(menu, b => { st[k] = b.dataset.v; const r = $(`.ren[data-k=${k}] .v`, pa); $('span', r).textContent = b.dataset.v; r.setAttribute('aria-label', `${k === 'metrica' ? 'Métrica' : 'Rango'}: ${b.dataset.v}`); pintar(); });
+  fijarMenu('metrica', null, '#menu-pa-metrica'); fijarMenu('rango', null, '#menu-pa-rango');
+  $('#pa-comp').addEventListener('cambio', e => { st.comparar = e.detail; pintar(); });
+  // número que se arrastra
+  const r = $('#pa-radio'); let x0 = null, v0 = 0;
+  r.addEventListener('pointerdown', e => { if (e.target.closest('.vuelve')) return; x0 = e.clientX; v0 = st.radio; r.setPointerCapture(e.pointerId); });
+  r.addEventListener('pointermove', e => { if (x0 == null) return; const n = Math.max(0, Math.min(12, v0 + Math.round((e.clientX - x0) / 10))); if (n !== st.radio) { st.radio = n; pintar(); } });
+  r.addEventListener('pointerup', () => (x0 = null));
+  r.addEventListener('keydown', e => { const d = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[e.key]; if (d) { e.preventDefault(); st.radio = Math.max(0, Math.min(12, st.radio + d)); pintar(); } });
+  $('#pa-hex').addEventListener('input', e => { const v = e.target.value.trim(); if (/^#[0-9a-f]{6}$/i.test(v)) { st.color = v.toLowerCase(); pintar(); } });
+  $('#pa-hex').addEventListener('blur', e => (e.target.value = st.color));
+  const volver = k => {
+    st[k] = DEF[k];
+    if (k === 'metrica' || k === 'rango') { $(`.ren[data-k=${k}] .v span`, pa).textContent = DEF[k]; const menu = $(k === 'metrica' ? '#menu-pa-metrica' : '#menu-pa-rango'); $$('.marca', menu).forEach(m => (m.innerHTML = '')); $(`[data-v="${DEF[k]}"] .marca`, menu).innerHTML = '<i class="ph ph-check"></i>'; }
+    if (k === 'comparar') $$('#pa-comp button').forEach(b => { b.classList.toggle('on', b.dataset.v === 'no'); b.setAttribute('aria-pressed', b.dataset.v === 'no'); });
+    if (k === 'color') $('#pa-hex').value = DEF.color;
+  };
+  pa.addEventListener('click', e => {
+    const v = e.target.closest('.vuelve'); if (v) { e.stopPropagation(); const k = v.closest('.ren').dataset.k; volver(k); pintar(); destellar(v.closest('.ren')); anunciar('Volvió al valor de siempre'); }
+    if (e.target.closest('#pa-todo')) { const antes = { ...st }; Object.keys(DEF).forEach(volver); pintar(); toast({ titulo: 'Volvieron los valores de siempre', deshacer: () => { Object.assign(st, antes); $('.ren[data-k=metrica] .v span', pa).textContent = st.metrica; $('.ren[data-k=rango] .v span', pa).textContent = st.rango; $$('#pa-comp button').forEach(b => b.classList.toggle('on', b.dataset.v === st.comparar)); $('#pa-hex').value = st.color; pintar(); } }); }
+  });
+  pintar();
+})();
+
+/* ═════ 20 · Color de entidad ═════ */
+const COLORES = [['e1', 'Azul'], ['e2', 'Fucsia'], ['e3', 'Naranja'], ['e4', 'Verde'], ['e5', 'Violeta'], ['e6', 'Turquesa'], ['e7', 'Mostaza'], ['e8', 'Rojo']];
+const botonesColor = el => (el.innerHTML = COLORES.map(([k, n], i) => `<button type="button" role="radio" aria-checked="${i === 0}" aria-label="${n}" data-k="${k}" data-tip="${n}" style="--c:var(--${k})"><i><i class="ph ph-check"></i></i></button>`).join(''));
+botonesColor($('#co'));
+grupoRadio($('#co'), b => { $('#co-prev').style.setProperty('--ent', `var(--${b.dataset.k})`); });
+$('#co [data-k=e4]').click();
+botonesColor($('#ec-col'));
+$('#ec-col').addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (!b) return; bib.cerrarMenu(true); $$('#ec-col [role=radio]').forEach(x => x.setAttribute('aria-checked', x === b)); const btn = $('#ec-btn'); btn.style.setProperty('--c', `var(--${b.dataset.k})`); btn.setAttribute('aria-label', 'Color de la etiqueta: ' + b.getAttribute('aria-label').toLowerCase()); btn.dataset.k = b.dataset.k; });
+$('#ec-col [data-k=e4]').setAttribute('aria-checked', 'true'); $('#ec-col [data-k=e1]').setAttribute('aria-checked', 'false');
+const crearEtq = () => {
+  const inp = $('#ec-in'), t = inp.value.trim(); if (!t) { sacudir(inp.closest('.in')); inp.focus(); return; }
+  const k = $('#ec-btn').dataset.k || 'e4';
+  $('#ec-lista').insertAdjacentHTML('beforeend', `<span class="etq-col entra" style="--c:var(--${k})">${escapar(t)}</span>`);
+  inp.value = ''; inp.focus(); anunciar(`Etiqueta ${t} creada`);
+};
+$('#ec-ok').addEventListener('click', crearEtq);
+$('#ec-in').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); crearEtq(); } });
+
+/* ═════ 21 · Interruptores ═════ */
+(() => {
+  const aj = $('#aj'), padre = $('[data-padre]', aj), hijos = $$('.aj.hijo', aj);
+  const timers = new WeakMap();
+  aj.addEventListener('cambio', e => {
+    const t = e.target, fila = t.closest('.aj'), g = $('.guard', fila);
+    g.classList.add('ver'); clearTimeout(timers.get(g)); timers.set(g, setTimeout(() => g.classList.remove('ver'), 1800));
+    anunciar(`${$('b', fila).firstChild.textContent.trim()}: ${e.detail ? 'activado' : 'desactivado'}`);
+    if (t === padre) hijos.forEach(h => { h.classList.toggle('apagada', !e.detail); const s = $('.toggle', h); s.toggleAttribute('data-manual', !e.detail); s.setAttribute('aria-disabled', !e.detail); });
+  });
+  $('[aria-disabled=true]', aj).addEventListener('click', e => sacudir(e.currentTarget));
+})();
+
+/* ═════ 22 · Casillas con estado intermedio ═════ */
+(() => {
+  const MOD = [
+    { n: 'Clientes', ic: 'buildings', h: [['Ver', 1], ['Crear', 1], ['Editar', 1], ['Borrar', 0, 'pide confirmación']] },
+    { n: 'Facturación', ic: 'receipt', h: [['Ver', 1], ['Emitir', 1], ['Anular', 0, 'con nota de crédito'], ['Exportar', 0]] },
+    { n: 'Caja', ic: 'cash-register', h: [['Ver saldos', 1], ['Registrar cobros', 0]] },
+  ];
+  const abiertos = new Set([0, 1]), ar = $('#ar');
+  const estado = hs => { const n = hs.filter(h => h[1]).length; return n === 0 ? 'false' : n === hs.length ? 'true' : 'mixed'; };
+  const pintar = foco => {
+    const todos = MOD.flatMap(m => m.h), n = todos.filter(h => h[1]).length;
+    ar.innerHTML = `<div class="arbol-cab"><button type="button" class="casilla" role="checkbox" data-manual aria-checked="${estado(todos)}" data-t="todo" aria-label="Todos los permisos"></button>Todos los permisos<span class="cnt">${n} de ${todos.length}</span></div>` +
+      MOD.map((m, i) => `<div class="nodo padre"><button type="button" class="casilla" role="checkbox" data-manual aria-checked="${estado(m.h)}" data-t="m${i}" aria-label="${m.n}: todos"></button><i class="ph ph-${m.ic}" style="color:var(--texto-3)"></i><span class="tx">${m.n}</span><span class="cnt">${m.h.filter(h => h[1]).length} de ${m.h.length}</span><button type="button" class="chev" aria-expanded="${abiertos.has(i)}" data-c="${i}" aria-label="${abiertos.has(i) ? 'Plegar' : 'Desplegar'} ${m.n}"><i class="ph ph-caret-down"></i></button></div>` +
+        (abiertos.has(i) ? m.h.map((h, j) => `<div class="nodo h"><button type="button" class="casilla" role="checkbox" data-manual aria-checked="${!!h[1]}" data-t="h${i}-${j}" aria-label="${m.n}: ${h[0]}"></button><span class="tx">${h[0]}${h[2] ? `<small>${h[2]}</small>` : ''}</span></div>`).join('') : '')).join('');
+    if (foco) $(`[data-t="${foco}"],[data-c="${foco}"]`, ar)?.focus();
+  };
+  ar.addEventListener('click', e => {
+    const c = e.target.closest('.casilla'), ch = e.target.closest('.chev');
+    if (ch) { const i = +ch.dataset.c; abiertos.has(i) ? abiertos.delete(i) : abiertos.add(i); pintar(String(i)); return; }
+    if (!c) return;
+    const t = c.dataset.t, v = c.getAttribute('aria-checked') !== 'true' ? 1 : 0;   // intermedia → todo
+    if (t === 'todo') MOD.forEach(m => m.h.forEach(h => (h[1] = v)));
+    else if (t[0] === 'm') MOD[+t.slice(1)].h.forEach(h => (h[1] = v));
+    else { const [i, j] = t.slice(1).split('-').map(Number); MOD[i].h[j][1] = v; }
+    pintar(t);
+    anunciar(`${$$('.casilla[aria-checked=true]', ar).length} casillas tildadas`);
+  });
+  pintar();
+})();
+
+/* ═════ 23 · Deslizador ═════ */
+(() => {
+  const r = $('#de-com'), w = $('#de-com-w'), b = $('#de-com-b');
+  const pintar = () => {
+    const p = (r.value - r.min) / (r.max - r.min) * 100, v = +r.value;
+    r.style.setProperty('--p', p + '%'); w.style.setProperty('--x', `calc(${p}% + ${10 - p * 0.2}px)`);
+    const t = fmt.numero(v, v % 1 ? 1 : 0) + ' %'; b.textContent = t; $('#de-com-v').textContent = t; r.setAttribute('aria-valuetext', t);
+    $('#de-com-e').innerHTML = `Sobre $ 4.810.000 de octubre: <b class="tinta num">${fmt.monto(4810000 * v / 100, 'ARS', { centavos: false })}</b>`;
+  };
+  r.addEventListener('input', () => { w.classList.add('activo'); pintar(); });
+  ['pointerdown', 'focus'].forEach(ev => r.addEventListener(ev, () => w.classList.add('activo')));
+  ['pointerup', 'blur'].forEach(ev => r.addEventListener(ev, () => w.classList.remove('activo')));
+  pintar();
+  // rango doble sobre el histograma
+  const MONTOS = [0, 25e3, 50e3, 75e3, 1e5, 15e4, 2e5, 3e5, 4e5, 5e5, 6e5, 8e5, 12e5, 15e5, 2e6, 25e5, 3e6, 4e6, 5e6, 75e5, 1e7];
+  const CANT = [4, 22, 31, 28, 26, 24, 19, 17, 14, 12, 9, 8, 6, 5, 4, 3, 2, 2, 1, 1];
+  $('#de-histo').innerHTML = CANT.map(c => `<i style="height:${(c / 31) * 100}%"></i>`).join('');
+  const a = $('#de-r1'), z = $('#de-r2'), ww = $('#de-r-w');
+  const mon = v => v >= 20 ? 'sin tope' : '$ ' + fmt.corto(MONTOS[v]);
+  const doble = src => {
+    if (+a.value >= +z.value) { if (src === a) a.value = +z.value - 1; else z.value = +a.value + 1; }
+    const p1 = a.value / 20 * 100, p2 = z.value / 20 * 100;
+    ww.style.setProperty('--a', `calc(${p1}% + ${10 - p1 * 0.2}px)`); ww.style.setProperty('--b', `calc(${p2}% + ${10 - p2 * 0.2}px)`);
+    a.style.zIndex = +a.value > 15 ? 3 : 2;
+    $('#de-r-v').textContent = `${mon(+a.value)} – ${mon(+z.value)}`;
+    a.setAttribute('aria-valuetext', mon(+a.value)); z.setAttribute('aria-valuetext', mon(+z.value));
+    $$('#de-histo i').forEach((i, k) => i.classList.toggle('en', k >= +a.value && k < +z.value));
+    $('#de-r-c').textContent = `${fmt.plural(CANT.slice(+a.value, +z.value).reduce((s, x) => s + x, 0), 'factura', 'facturas')} en el rango`;
+  };
+  a.addEventListener('input', () => doble(a)); z.addEventListener('input', () => doble(z)); doble();
+  const f = $('#de-fr'), N = ['Nunca', 'Diario', 'Semanal', 'Mensual'];
+  const pasos = () => { const v = +f.value; f.style.setProperty('--p', v / 3 * 100 + '%'); $('#de-fr-v').textContent = N[v]; f.setAttribute('aria-valuetext', N[v]); $$('#de-fr-m span').forEach((s, i) => s.classList.toggle('on', i === v)); };
+  f.addEventListener('input', pasos); pasos();
+})();
+
+/* ═════ 24 · Carga de archivos ═════ */
+(() => {
+  const zona = $('#ar-zona'), lista = $('#ar-lista'), inp = $('#ar-in');
+  const TIPO = { pdf: 'var(--e8)', jpg: 'var(--e6)', jpeg: 'var(--e6)', png: 'var(--e6)', xlsx: 'var(--e4)', docx: 'var(--e1)' };
+  const MAX = 10e6; let n = 0;
+  const agregar = (nombre, bytes, falla) => {
+    const ext = nombre.split('.').pop().toLowerCase(), id = 'f' + n++;
+    lista.hidden = false;
+    lista.insertAdjacentHTML('beforeend', `<div class="arch entra" id="${id}"><span class="tipo" style="--ent:${TIPO[ext] || 'var(--gris)'}">${ext.slice(0, 4).toUpperCase()}</span><div class="tx"><b>${escapar(nombre)}</b><small></small><div class="barra"><i></i></div></div><div class="acc"></div></div>`);
+    const fila = $('#' + id);
+    if (!['pdf', 'jpg', 'jpeg', 'png'].includes(ext)) return error(fila, `Solo PDF, JPG o PNG: este es .${ext}`, false);
+    if (bytes > MAX) return error(fila, `Pesa ${peso(bytes)}: el máximo es 10 MB`, false);
+    subir(fila, bytes, falla);
+  };
+  const error = (fila, msj, reintentar, bytes) => {
+    fila.className = 'arch mal'; $('.barra', fila).hidden = true;
+    $('small', fila).innerHTML = `<i class="ph-fill ph-warning-circle" style="font-size:13px"></i>${msj}`;
+    $('.acc', fila).innerHTML = (reintentar ? `<button type="button" class="btn chico" data-a="re">Reintentar</button>` : '') + `<button type="button" class="btn chico texto" data-a="quitar">Quitar</button>`;
+    fila._bytes = bytes;
+  };
+  const subir = (fila, bytes, falla) => {
+    fila.className = 'arch'; $('.barra', fila).hidden = false;
+    $('.acc', fila).innerHTML = `<button type="button" class="btn ic chico texto" data-a="cancelar" aria-label="Cancelar la subida" data-tip="Cancelar"><i class="ph ph-x"></i></button>`;
+    const vel = 1.6e6, total = Math.max(1200, bytes / vel * 1000), t0 = performance.now();
+    const tick = () => {
+      if (!fila.isConnected || fila._cancelado) return;
+      const p = Math.min(1, (performance.now() - t0) / total);
+      if (falla && p > 0.64) return error(fila, 'Se cortó la conexión al 64 %', true, bytes);
+      fila.style.setProperty('--p', p * 100 + '%');
+      $('small', fila).textContent = `${Math.round(p * 100)} % · ${peso(bytes * p)} de ${peso(bytes)} · quedan ${Math.max(1, Math.ceil((1 - p) * total / 1000))} s`;
+      if (p < 1) return setTimeout(tick, quieto ? 0 : 120);
+      fila.className = 'arch listo'; $('.barra', fila).hidden = true;
+      $('small', fila).innerHTML = `<i class="ph-fill ph-check-circle" style="font-size:13px"></i>Subido · ${peso(bytes)}`;
+      $('.acc', fila).innerHTML = `<button type="button" class="btn ic chico texto" data-a="quitar" aria-label="Quitar archivo" data-tip="Quitar"><i class="ph ph-trash"></i></button>`;
+      anunciar(`${$('b', fila).textContent} subido`);
+    };
+    $('.barra i', fila).style.width = ''; tick();
+  };
+  lista.addEventListener('click', e => {
+    const b = e.target.closest('[data-a]'); if (!b) return; const fila = b.closest('.arch');
+    if (b.dataset.a === 're') subir(fila, fila._bytes, false);
+    else if (b.dataset.a === 'cancelar') { fila._cancelado = true; fila.remove(); lista.hidden = !lista.children.length; anunciar('Subida cancelada'); }
+    else { const nom = $('b', fila).textContent, html = fila.outerHTML, sig = fila.nextElementSibling; fila.remove(); lista.hidden = !lista.children.length; toast({ titulo: `Se quitó ${escapar(nom)}`, deshacer: () => { lista.hidden = false; sig ? sig.insertAdjacentHTML('beforebegin', html) : lista.insertAdjacentHTML('beforeend', html); } }); }
+  });
+  let cuenta = 0;
+  zona.addEventListener('dragenter', e => { e.preventDefault(); cuenta++; zona.classList.add('encima'); $('b', zona).textContent = 'Soltalos para subirlos'; });
+  zona.addEventListener('dragover', e => e.preventDefault());
+  zona.addEventListener('dragleave', () => { if (--cuenta <= 0) { cuenta = 0; zona.classList.remove('encima'); $('b', zona).textContent = 'Soltá los remitos acá'; } });
+  zona.addEventListener('drop', e => { e.preventDefault(); cuenta = 0; zona.classList.remove('encima'); $('b', zona).textContent = 'Soltá los remitos acá'; [...e.dataTransfer.files].forEach(f => agregar(f.name, f.size)); });
+  inp.addEventListener('change', () => { [...inp.files].forEach(f => agregar(f.name, f.size)); inp.value = ''; });
+  $('#ar-ej').addEventListener('click', () => {
+    [['REM-00871-firmado.pdf', 412e3], ['foto-entrega-obra-neuquen.jpg', 2.4e6, true], ['planilla-horas-octubre.xlsx', 88e3], ['contrato-marco-orbe-escaneado.pdf', 14.2e6], ['REM-00872-firmado.pdf', 1.1e6]].forEach(([a, b, c], i) => setTimeout(() => agregar(a, b, c), i * 90));
+  });
+})();
+
+/* ═════ 25 · OTP ═════ */
+(() => {
+  const g = $('#otp'), cs = $$('input', g), msj = $('#otp-msj'), CODIGO = '246810';
+  let intentos = 3, seg = 30, timer;
+  const valor = () => cs.map(c => c.value).join('');
+  const msjSet = (cl, html) => { msj.className = 'otp-msj ' + cl; msj.innerHTML = html; };
+  const verificar = () => {
+    if (valor().length < 6) return;
+    if (valor() === CODIGO) {
+      g.classList.add('bien'); cs.forEach(c => (c.readOnly = true));
+      msjSet('', '<i class="ph-fill ph-check-circle" style="color:var(--verde)"></i><span style="color:var(--verde)">Verificado. Entrando a Estudio Faro…</span>');
+      setTimeout(() => { g.classList.remove('bien'); cs.forEach(c => { c.readOnly = false; c.value = ''; c.classList.remove('lleno'); }); msjSet('gris', 'Para la demo, el código es 246 810.'); }, 3200);
+      return;
+    }
+    intentos--; g.classList.add('error'); sacudir(g);
+    msjSet('', `<i class="ph-fill ph-warning-circle" style="color:var(--rojo)"></i><span style="color:var(--rojo)">${intentos ? `No es ese código. ${intentos === 1 ? 'Te queda 1 intento' : `Te quedan ${intentos} intentos`}.` : 'Se terminaron los intentos: pedí un código nuevo.'}</span>`);
+    setTimeout(() => { g.classList.remove('error'); cs.forEach(c => { c.value = ''; c.classList.remove('lleno'); c.disabled = !intentos; }); if (intentos) cs[0].focus(); else { seg = 0; reloj(); } }, 650);
+  };
+  const poner = (i, txt) => { const d = txt.replace(/\D/g, '').split(''); let k = i; d.forEach(x => { if (k < 6) { cs[k].value = x; cs[k].classList.add('lleno'); setTimeout(((c) => () => c.classList.remove('lleno'))(cs[k]), 160); k++; } }); cs[Math.min(k, 5)].focus(); verificar(); };
+  cs.forEach((c, i) => {
+    c.addEventListener('input', () => { const v = c.value.replace(/\D/g, ''); c.value = ''; if (v) poner(i, v); });
+    c.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && !c.value && i) { e.preventDefault(); cs[i - 1].value = ''; cs[i - 1].focus(); }
+      else if (e.key === 'ArrowLeft' && i) { e.preventDefault(); cs[i - 1].focus(); }
+      else if (e.key === 'ArrowRight' && i < 5) { e.preventDefault(); cs[i + 1].focus(); }
+    });
+    c.addEventListener('paste', e => { e.preventDefault(); poner(i, e.clipboardData.getData('text')); });
+    c.addEventListener('focus', () => c.select());
+  });
+  const reloj = () => {
+    clearInterval(timer);
+    const pintar = () => { $('#otp-reenv').hidden = seg <= 0; $('#otp-re').hidden = seg > 0; $('#otp-reenv .num').textContent = `0:${String(seg).padStart(2, '0')}`; };
+    pintar(); timer = setInterval(() => { seg--; pintar(); if (seg <= 0) clearInterval(timer); }, 1000);
+  };
+  $('#otp-re').addEventListener('click', () => { seg = 30; intentos = 3; cs.forEach(c => { c.disabled = false; c.value = ''; }); msjSet('gris', 'Para la demo, el código es 246 810.'); reloj(); cs[0].focus(); toast({ titulo: 'Código nuevo enviado', detalle: 'Al +54 9 291 ••• 7890 · vence en 10 min', tipo: 'info' }); });
+  reloj();
+})();
+</script>
+</body>
+</html>
