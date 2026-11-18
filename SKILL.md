@@ -1,309 +1,511 @@
 ---
 name: diseno-sistemas
-description: Lenguaje visual y de UX para sistemas de gestión (CRM, ERP, tableros internos, portales B2B), en escritorio y celular. Sacado de 14 referencias (Axon, CloseCRM, Gr8r, Loops, Finora, Tessera, Solexa y apps móviles) analizadas por 15 agentes. Usar SIEMPRE al diseñar, rediseñar o revisar una pantalla, tablero, lista, ficha, calendario, formulario, hoja lateral o vista de celular de un sistema de gestión; también al decidir colores, tipografía, radios, espaciados, estados o botones.
+description: Lenguaje visual y de UX para sistemas de gestión (CRM, ERP, tableros internos, portales B2B), en escritorio y celular, con tokens, piezas React + Tailwind v4, ejemplos HTML, guías y dos scripts (revisor visual y guardia de datos). Sacado de 14 referencias analizadas por agentes. Usar SIEMPRE al crear, rediseñar, hacer un overhaul o revisar una pantalla de un sistema nuevo o existente (tablero, dashboard, tabla, lista, pipeline, kanban, ficha, calendario, formulario, alta, ajustes, login, hoja lateral, documento imprimible, correo o vista de celular) y al decidir colores, tipografía, espacios, radios, estados, botones, íconos, gráficos, textos o movimiento.
 ---
 
-# Diseño de sistemas: un solo lenguaje para todos
+# Diseño de sistemas, versión 2
 
-Neutro en la base, **vivo en los datos**. La estructura (fondos, menú, bordes) es calma y neutra, y encima los datos tienen color, forma y movimiento: gráficos, avance, personas y proyectos con su color. **Una pantalla sin gráficos, sin color por entidad y sin un protagonista se siente muerta**. Ver la sección "Vida" y abrir 06, 07, 08 y 14 antes de diseñar un tablero. Varios sistemas de una misma empresa se sienten de la misma familia porque comparten tokens, tipografía, radios, estados y piezas. Lo que cambia por sistema es el acento y el **tinte de los neutros**.
+Un solo lenguaje para todos los sistemas de gestión de una empresa. **Neutro en la base, vivo en los datos**: el marco (fondos, menú, bordes, textos) es calmo y del mismo tinte; encima, los datos llevan color, forma y movimiento. Varios sistemas se sienten de la misma familia porque comparten tokens, letras, radios, estados y piezas. Por sistema cambian solo **el acento y el tinte de los neutros**.
 
-**Neutro no quiere decir gris.** La base puede tener el tono que pida la marca o el uso de cada sistema:
-- **Tinte de marca:** fondo con un leve tinte del acento, por ejemplo un violeta o un azulado muy suave.
-- **Fondo con tono:** un fondo con tono y un menú de marca oscuro y apagado (por ejemplo azul marino) en vez del blanco plano.
-- **Cálido o frío** según el rubro.
-- **Oscuro** para monitoreo.
+**Principios (en este orden cuando chocan):**
+1. **No romper datos ni comportamiento.** En un sistema existente, lo visual se cambia; lo que se pide, se manda y se permite, no (§0b).
+2. **Una pantalla, una pregunta. Un bloque, un foco. Un texto, un trabajo.** El título y la primera fila contestan la pregunta.
+3. **Fricción cero:** una acción principal por pantalla, la acción de la fila en la fila, deshacer antes que confirmar, todo botón que lleva a una lista te deja parado en la fila.
+4. **Legible antes que lindo:** nada debajo de 12 px, nada debajo de 4,5:1, lo relacionado más cerca que lo distinto (§4).
+5. **Vivo:** sin gráficos, sin color por entidad y sin protagonista, la pantalla se siente muerta (§1b).
+6. **Sin textos de relleno:** fuera taglines, ayudas obvias y rótulos secundarios. Si hacen falta para entender, el layout está mal.
 
-La regla es la saturación y el contraste, no el color: los neutros llevan croma muy bajo (OKLCH C ≤ 0,02, o hasta ~0,03 en el lienzo), siempre del mismo tinte en todo el sistema. Tienen que dejar que los estados y el acento se lean como lo único con color de verdad. Los hex grises de este documento son el punto de partida, no una obligación: cada sistema arma su rampa de neutros con su tinte (ver `tokens.css`).
+**Precedencia:** si existe `marcas.local.md` en esta carpeta, leelo primero: el acento, el tinte y las reglas de cada marca mandan sobre los valores de ejemplo. Después manda este archivo. Si una guía o un ejemplo dice otra cosa (un 15, 17 o 28 px, un corte en 860 px), corregí hacia lo que dice acá.
 
-- Tokens listos para pegar: `tokens.css`. Nombres en español (`fondo`, `superficie`, `tinta`, `texto-2`, `acento`, `verde-fondo`…).
-- **Ejemplos** en `ejemplos/`:
-  - `tablero-crm.html`: pantalla completa de un CRM.
-  - `componentes.html`: galería de todas las piezas, con claro, oscuro y celular.
-  - `recetas-tailwind.md`: las piezas en React + Tailwind v4 para copiar.
+## Cuándo leer qué
 
-  Abrilos y superalos.
-- Capturas de referencia: `referencias/01…14-*.jpg`. Abrí la que corresponda antes de diseñar algo parecido.
-- Análisis completo por tema, con valores y ejemplos: `analisis/01-estructura.md` … `analisis/15-homogeneidad.md`. Leé el del tema que estés tocando.
+Rutas relativas a esta carpeta; los números sueltos (`06`, `07`…) son las capturas `referencias/NN-*.jpg`. Abrí siempre el ejemplo del mismo tipo de pantalla y superalo.
 
-Si existe `marcas.local.md` en esta carpeta, leelo primero: tiene el acento, el tinte y las reglas propias de cada marca de quien usa la skill. Lo que diga ahí manda sobre los valores de ejemplo de este documento.
+| Tarea | Leé | Abrí / usá |
+|---|---|---|
+| Cualquier pantalla | este archivo, `guias/jerarquia-y-espacios.md` | `tokens.css`, `06`, `07`, `08`, `14` (piso de terminación) |
+| Tablero / dashboard | §1, §1b, §5 KPI y Gráficos | `ejemplos/tablero-crm.html`, `componentes/datos/Kpi.tsx`, `KpiProtagonista.tsx` |
+| Lista, tabla, cobranzas | §5 Listas y tablas | `ejemplos/pantallas/lista-cobranzas.html`, `componentes/estructura/Tabla.tsx`, `01`, `07` |
+| Colección grande con vistas (tabla, kanban, galería) | §5 Vistas de datos | `ejemplos/pantallas/vistas-de-datos.html` |
+| Pipeline / kanban | §5 Pipeline | `ejemplos/pantallas/pipeline.html` |
+| Ficha de cliente o entidad | §1 Ficha | `ejemplos/pantallas/ficha-cliente.html`, `03` |
+| Formulario o alta larga | §5 Formularios | `ejemplos/pantallas/formulario-alta.html`, `componentes/base/Campo.tsx`, `componentes/estructura/HojaLateral.tsx` |
+| Ajustes, permisos, integraciones | §5 Ajustes | `ejemplos/pantallas/ajustes.html`, `04`, `05` |
+| Calendario / agenda | §5 Calendario | `ejemplos/pantallas/calendario.html`, `02`, `10` |
+| Login / acceso | §5 Acceso | `ejemplos/pantallas/login.html` |
+| Celular | §5 Celular, §6e | `ejemplos/pantallas/celular.html`, `09`, `11`, `12` |
+| Gráficos | §5 Gráficos, `guias/graficos.md` | `ejemplos/graficos.html`, `componentes/datos/` |
+| Textos de interfaz | §6 Textos, `guias/textos.md` | — |
+| Íconos | §6 Íconos, `guias/iconos.md` | `ejemplos/iconos.html` |
+| Vacío, error, bienvenida | §6 Ilustraciones, §6b | `ilustraciones/*.svg`, `ejemplos/ilustraciones.html`, `componentes/estructura/Vacio.tsx` |
+| Movimiento | §6f, `guias/movimiento.md` | `ejemplos/movimiento.html` |
+| Factura, presupuesto, informe, correo | §5 Documentos, `guias/documentos.md` | `ejemplos/documentos/` |
+| Rediseñar una pantalla existente | §0b, `guias/rediseno.md` | `ejemplos/antes-despues.html` |
+| Overhaul de un sistema en producción | §0b, `guias/overhaul.md`, `guias/overhaul-ejemplo.md` | `scripts/guardia-datos.mjs` |
+| Código React + Tailwind v4 | §6g, `ejemplos/recetas-tailwind.md` | `componentes/base/`, `componentes/datos/`, `componentes/estructura/` |
+| Revisar antes de entregar | §8, `scripts/README.md` | `scripts/revisar.mjs` |
+| Patrón concreto con medidas (tabla, vista, lote, proceso, ⌘K, menú, kanban, carga del equipo, facturación, oscuro) | §1c, `guias/patrones-de-referencia.md` (Top 25 al final, tabla de lo que no se copia) | — |
+| Profundizar un tema | `analisis/01-estructura.md` … `15-homogeneidad.md` | `ejemplos/componentes.html` (galería de piezas) |
 
-**Receta rápida para una pantalla nueva:**
-1. Elegí qué pantalla es (tablero, lista, ficha, calendario, formulario, celular) y abrí su referencia y su ejemplo en `ejemplos/`.
-2. Definí el acento y el tinte de los neutros del sistema (`tokens.css`).
-3. Armá el marco: barra lateral sobre el lienzo y el panel con migas de pan.
-4. Escribí la cabecera: título display grande y liviano, subtítulo con cifras reales, un solo botón relleno.
-5. Fila de 3 a 6 KPIs: uno protagonista y el resto en bandeja con tarjeta adentro, cada uno con su dibujo.
-6. Cuerpo: tarjetas de entidad para lo que está en curso, tabla o lista para el resto y un panel lateral de contexto.
-7. Dale vida: color por entidad, avatares, un gráfico con estado y movimiento al cargar.
-8. Diseñá los estados vacío, cargando y error (sección 6b).
-9. Probala a 390 px y en oscuro.
-10. Pasá la lista de la sección 8, comparándola al lado de las referencias.
+## Receta rápida
 
-Principios de base: fricción cero, una acción principal por pantalla, nada de textos de relleno, y todo botón que lleva a una lista te deja parado en la fila que corresponde.
+1. Decidí el modo: **crear** (§0a) u **overhaul** (§0b).
+2. Escribí la pregunta de la pantalla y clasificá todo en **Actuar / Saber / Consultar** (`guias/jerarquia-y-espacios.md` §1).
+3. Abrí la referencia y el ejemplo de ese tipo de pantalla.
+4. Definí acento y tinte (`tokens.css`, `marcas.local.md`).
+5. Marco: barra lateral sobre el lienzo, panel con migas (§1).
+6. Cabecera: título display liviano, subtítulo con cifras reales, un solo botón relleno.
+7. Fila de 3–6 KPIs: uno protagonista, el resto en bandeja con tarjeta adentro, cada uno con su dibujo.
+8. Cuerpo: tarjetas de entidad para lo que está en curso, tabla o lista para el resto, panel de contexto a la derecha.
+9. Espacios con la tabla de §4a; escalera tipográfica de 5 niveles (§4e).
+10. Vida (§1b): color por entidad, caras, un gráfico con estado, movimiento al cargar.
+11. Estados vacío, cargando y error (§6b); textos según `guias/textos.md`.
+12. Probá a 1440, 390 y en oscuro; pasá `scripts/revisar.mjs` y la lista de §8.
+
+---
+
+## 0. Dos modos
+
+### 0a. Crear una pantalla nueva
+- Partí del ejemplo más parecido de `ejemplos/pantallas/` y de las piezas de `componentes/`; no arranques de una hoja en blanco.
+- Datos de ejemplo realistas y del rubro (nombres, montos con centavos, fechas cercanas, monedas mezcladas), nunca "Lorem" ni "Cliente 1".
+- Antes de dibujar, escribí la pregunta, las tres pilas y la densidad (§4c).
+- Terminada = revisor ≥ 85 en las tres pasadas, estados completos y comparada al lado de 06, 07, 08 y 14 sin verse más pobre.
+
+### 0b. Overhaul de un sistema existente
+**Regla:** el overhaul cambia cómo se ve y cómo se ordena; nunca qué se pide, qué se manda, a quién se le muestra ni a dónde lleva. Antes de tocar código, leé `guias/overhaul.md` (código) y `guias/rediseno.md` (relevamiento, mapeo, informe).
+
+- **Intocable** (se puede mudar de archivo, no renombrar ni "limpiar"): llamadas a la API, método y claves del cuerpo; hooks de datos y query keys; server actions, loaders y `revalidatePath`; consultas y sus filtros; rutas, URLs, `?parametros` y `#anclas`; `name` de campos y su validación (los mensajes sí se reescriben); tipos exportados; permisos y condiciones de visibilidad; estado de negocio; `data-testid`, `data-focus`, eventos de analítica; atajos, impresión y exportación.
+- **Se puede cambiar:** JSX de presentación, clases y tokens, layout, orden y agrupación de bloques, piezas visuales, textos, íconos, animaciones, estado visual.
+- **Zona gris, solo con OK anotado:** sacar un dato de la vista (se muda a ficha, ⋯ o pestaña, nunca se borra), sumar un parámetro de URL (los viejos siguen llegando), partir o juntar pantallas (la ruta vieja redirige), cambiar un orden por defecto del cliente, un total que cambia (por ejemplo, dejar de sumar monedas), un `data-testid` que se mueve.
+- **Guardia obligatoria:** `node scripts/guardia-datos.mjs --base main` da PASA antes de entregar cada commit. Lo cambiado a propósito va en `.guardia-datos-permitir` con motivo y OK de quién. Nunca se apaga la guardia.
+- **Orden por fases:** 0 relevar (capturas 1440/390/oscuro con los mismos datos y fecha fija, inventario de datos y acciones, lista de comportamiento, red grabada) → 1 tokens con alias → 2 marco → 3 pantalla por pantalla, de la más usada a la menos → 4 limpieza.
+- **Dentro de cada pantalla:** 3a extraer los datos a `use<Pantalla>.ts` sin cambiar un píxel (guardia PASA, capturas idénticas) → 3b vista nueva detrás de bandera o ruta paralela, que lee del mismo cargador y consume solo lo que devuelve el hook, con adaptadores puros → 3c una semana con dos o tres personas → 3d para todos; la vieja se borra en un commit aparte. Las tandas visuales siguen `guias/rediseno.md` §5: tokens → marco → cabecera → piezas → vida → celular y oscuro. Una tanda = un commit que se revierte solo; nunca tokens globales y piezas de una pantalla en el mismo commit.
+- **Nada de comportamiento perdido:** cada acción, filtro, vacío, carga, error, permiso, link de entrada y atajo de antes sigue existiendo (lista en [x]). Lo que se muda al ⋯ o a una hoja se lleva su condición de permiso. Un modal se cambia por Deshacer solo si el servidor ya permite revertir; si no, queda y se anota como pendiente.
+- **Tokens:** migrar con alias (variables viejas apuntando a las nuevas, en el mismo selector del tema) y cambiar clases pantalla por pantalla; nunca un `sed` global. En shadcn, `accent` es el hover: nunca lo apuntes al acento de marca.
+- **"No rompí nada"** = typecheck, lint, pruebas y build verdes; la misma red en la tarea principal (URLs, métodos, cuerpos); cada rol ve y hace lo mismo (cuentas de prueba); revisor ≥ 85 en 1440, 390 y oscuro; la tarea principal con igual o menos clics; informe de `guias/rediseno.md` §9 en el repo con capturas.
+- **Agentes en paralelo:** uno por pantalla en su rama, dueño solo de su carpeta; `tokens.css`, `lib/`, tipos y piezas compartidas congelados en manos de un coordinador; cada agente entrega la guardia con `--solo <carpeta>`; un revisor re-audita hasta que no quede nada.
+
+---
 
 ## 1. Marco de la app (referencias 02, 03, 07, 13)
-- El lienzo es `bg-fondo` (#F4F4F5). La barra lateral va **directo sobre el lienzo**, de 240–256 px.
-- El contenido va en un panel `bg-panel` o `bg-superficie`, `rounded-[var(--radius-marco)]`, separado 8 px del borde y de la barra, con borde de 1 px.
-- **Barra lateral:**
-  - Arriba, logo o selector de empresa. Opcionalmente, buscador ⌘K.
-  - Grupos con rótulo de 11 px en `texto-3`, mayúscula y `tracking-wider`.
-  - Ítems de 32–36 px con ícono de 16 px gris y conteo gris a la derecha.
-  - El ítem activo es una pastilla `bg-superficie` (o `bg-tinta text-white`): nunca color de marca.
-  - Usuario (avatar, nombre y rol) al pie.
-- **Barra superior del panel:** 56 px con `border-b`. A la izquierda, migas de pan ("Sección / **Página**", el padre en gris). A la derecha, buscador ⌘K, avisos y avatar.
-- **Cabecera de página:**
-  - Título de 20–24 px, peso 500–600, `tracking-tight`.
-  - Debajo, un subtítulo gris con **cifras reales del estado**: "12 por facturar · 3 vencidas", nunca una descripción genérica.
-  - Acciones a la derecha, en la misma fila.
-- **Orden vertical fijo:** cabecera → filtros y vista (segmentado) → fila de KPIs → cuerpo.
-- **Cuerpo con contexto:** `grid-cols-[1fr_360px]`, con lista o calendario a la izquierda y panel de detalle a la derecha (01, 02, 07).
-- **Ficha:** 3 columnas `[1fr_1.6fr_1fr]`, con datos, actividad en pestañas con conteo y la empresa relacionada (03).
+- Lienzo `bg-fondo`. La barra lateral va **directo sobre el lienzo**, de 240–256 px (248 en `MarcoApp`), colapsable a 68 px con ⌘\ y recordada en `localStorage` con try/catch. Por debajo de 1280 px pasa a riel de íconos.
+- Contenido en un panel `bg-panel`, radio `--radius-marco`, separado 8 px del borde y de la barra, borde 1 px. Arriba del panel, opcional, un degradé muy suave del tinte (clima).
+- **Barra lateral:** logo o selector de empresa arriba; buscador ⌘K; grupos con rótulo de 11 px `texto-3` en mayúscula y `tracking-wider`; ítems de 32–36 px con ícono 17 gris y conteo gris a la derecha; ítem activo en pastilla `bg-superficie` con sombra mínima (o `bg-tinta text-superficie`) e ícono fill, nunca color de marca; entidades con cuadradito de color; usuario al pie.
+- **Barra superior del panel:** 56–58 px con `border-b`. Migas "Sección / **Página**" (padre en gris) a la izquierda; ⌘K, avisos (con `aria-label` que diga cuántos) y avatar a la derecha. En celular: flecha al padre y título.
+- **Cabecera:** título display (§2); subtítulo `texto-2` con **cifras reales del estado** unidas con " · " ("12 por facturar · 3 vencidas"), lo que exige actuar primero y coloreado solo en esa pieza; cada cifra lleva a su lista filtrada. Acciones a la derecha, alineadas abajo con el título.
+- **Orden vertical fijo:** cabecera → filtros que cambian los KPIs (período) → KPIs → cuerpo (lo de hoy primero) → consulta. Nunca KPIs debajo de una tabla ni filtros debajo de lo que filtran.
+- **Cuerpo con contexto:** `grid-cols-[1fr_360px]`: el trabajo a la izquierda, el contexto o lo siguiente a la derecha. En celular la derecha baja, salvo que sea de la pila Actuar: entonces sube arriba de todo.
+- **Ficha:** 3 columnas `minmax(244px,.85fr) minmax(0,1.7fr) minmax(272px,.95fr)`: datos y contactos / actividad en pestañas con conteo / resumen que abre con su protagonista. Medí que las pestañas entren a 1440; si no, pasá los secundarios de la cabecera a íconos con tooltip antes de achicar letra. Cabecera de ficha: cuadro con el color de la entidad, nombre display, pastillas, subtítulo con cifras; correo, teléfono, Meet y nueva tarea como íconos de 38 px con tooltip, separados por una rayita del único botón relleno. Actividad: compositor arriba (bandeja con caja blanca, tipos en chips), línea de tiempo con un color fijo por tipo y lo que trae el evento en línea. Detalle en `ejemplos/pantallas/ficha-cliente.html`.
+- **Grillas declaradas:** KPIs `repeat(4,1fr)` o `1.25fr repeat(3,1fr)` con protagonista; tarjetas de entidad 4 → 2 (< 1280) → 1 (< 768). Todo hijo de grilla lleva `min-w-0`.
 
 ## 1b. Vida (lo que hace que no sea una planilla prolija)
+Mirá 06, 07, 08 y 14. Todo tablero lleva al menos 5 de estos recursos:
 
-Mirá 06 (Gr8r), 07 (Loops), 08 (Finora) y 14 (Solexa). Todo tablero lleva al menos 5 de estos recursos:
+1. **Color por entidad.** Cada proyecto, cliente, persona o servicio tiene color fijo de la paleta de datos, asignado con `colorDe(id)` / `colorEntidad(id)`, nunca a mano. Si hay 6 o menos a la vista, fijalo para que no repitan tono. Aparece en el monograma (al 15 %), el cuadradito con ícono fill blanco, la barra de avance, el sparkline y la rayita de 3 px de la tabla.
+2. **Toda cifra con un dibujo:** sparkline con área degradé, rayitas hasta el % (07), bloques "3 de 10" (06) o anillo (09, 13, 14). Un número solo es un número muerto.
+3. **Un protagonista por pantalla:** tarjeta con degradé del acento, cifra grande blanca y línea blanca con un punto marcado (08, 09). Como máximo una.
+4. **Tarjetas de entidad** para lo que está en curso (06): pastilla de prioridad y etiquetas, título con descripción de 2 líneas, bloques "3 de 6 hechas · Vence 15 dic", sparkline, "Próximos pasos" con checks y "+ Agregar".
+5. **Gente con cara:** foto, avatar ilustrado o monograma pastel. Pilas superpuestas con borde de 2,5 px y "+N". Equipo en tarjetas con barra de carga.
+6. **Gráficos con estado:** lo activo sólido, el resto rayado o tenue; tooltip oscuro; período en curso rayado.
+7. **Fondo con clima:** degradé muy suave del tinte arriba del panel, o foto o ilustración en la franja de cabecera (14) o en una tarjeta de promo (06). Nunca foto detrás de cifras o tablas.
+8. **Movimiento con propósito:** cifras que cuentan (700 ms), barras que crecen, líneas que se dibujan (900 ms), tarjeta que sube 2 px al pasar el mouse, éxito en el lugar. Detalle en §6f.
+9. **Bandeja con tarjeta adentro** (lo que se ve premium): bandeja `bg-suave` radio 20 y padding 4; arriba, sobre la bandeja, rótulo con ícono y ⋯ (07); adentro, tarjeta `superficie` radio 16 con el número y su dibujo; abajo, sobre la bandeja, pie con ícono, contexto y delta (06). Mismo patrón para los íconos: cuadro blanco de 36–40 px con borde y sombra mínima (08).
+10. **Aire:** lo premium respira. Si se ve apretado, sacá cosas antes que achicar (§4).
 
-1. **Color por entidad.** Cada proyecto, cliente, persona o servicio tiene su color fijo, de la paleta de datos y asignado por id. Aparece en:
-   - su ícono o avatar;
-   - su barra de avance;
-   - su sparkline;
-   - la rayita de la tabla.
-   Es lo que más vida da (06: cada proyecto y cada persona con su color).
-2. **Toda cifra con un dibujo.** Un sparkline con área degradé, una barra de ticks (07: rayitas finas coloreadas hasta el %), una barra segmentada (06: bloques de 1 de 10) o un anillo de avance (09, 13, 14). Un número solo es un número muerto.
-3. **Un protagonista por pantalla.** Una tarjeta llena de color con degradé del acento, cifra grande en blanco y un gráfico de línea blanco con un punto marcado (08 "Total Expenses", 09 "halfway there").
-4. **Tarjetas de entidad**, no solo tablas. Para lo que está "en curso" (proyectos, servicios, oportunidades grandes) van tarjetas en grilla como en 06:
-   - pastilla de prioridad y etiquetas;
-   - título grande con descripción de 2 líneas;
-   - barra segmentada con "3 de 6 hechas · Vence 15 dic";
-   - sparkline de actividad;
-   - "Próximos pasos" con checks y "+ Agregar".
-5. **Gente con cara.** Foto o avatar ilustrado. Si no hay, monograma de color. Pilas de avatares superpuestos para participantes. El equipo va en tarjetas con su barra de carga (06 "Team").
-6. **Gráficos con estado.** La barra o el punto activo va sólido y el resto rayado o tenue. Tooltip oscuro con "valor | participación | vs. otro" (08). Mes en curso rayado "MTD" (07).
-7. **Fondo con clima.** Un degradé muy suave del tinte del sistema en la parte de arriba del panel (08), o una foto o ilustración en la franja de cabecera (14) o en la tarjeta de promo o plan (06 y 14, ilustración de línea).
-8. **Movimiento con propósito.** Al cargar, las cifras cuentan hasta su valor (~600 ms), las barras crecen desde 0 y las líneas se dibujan. Al pasar el mouse, la tarjeta sube 1–2 px y el borde se marca. El éxito se ve en el lugar con un toast. Todo `ease-out` y respetando `prefers-reduced-motion`.
+**Límite:** el color vive en los datos, las entidades y un protagonista. El marco sigue neutro.
 
-9. **Bandeja con tarjeta adentro (lo que se ve "premium").** El KPI no es una caja plana: es una bandeja `bg-suave` con radio 16 y padding 4 que lleva:
-   - arriba, el rótulo con ícono y ⋯ sobre la bandeja (07);
-   - adentro, una tarjeta blanca con radio 12, el número y su dibujo;
-   - abajo, el pie sobre la bandeja con ícono, contexto y delta (06).
-   Mismo patrón para los íconos: un cuadrado blanco de 36–40 px con borde y sombra mínima, sobre la bandeja (08).
-10. **Aire.** Padding generoso (20–24 en tarjetas grandes) y gaps de 16–20. Cifras de 28–40 px. Lo premium respira: si se ve apretado, sacá cosas antes que achicar.
+## 1c. Reglas transversales (valen en todas las pantallas)
+Sacadas de `guias/patrones-de-referencia.md`; el cómo con medidas está ahí, el detalle de cada pieza en §5.
 
-**Límite:** el color vive en los datos, las entidades y un protagonista. El marco (menú, fondos, bordes, textos) sigue neutro.
+1. **La vista es del usuario.** Densidad (28 / 36 / 44), columnas visibles, orden, anchos y filtros se guardan por persona y por tabla (§6g). El panel Vista muestra el valor actual de cada ajuste en el primer nivel ("Densidad · Compacta ›") y el botón de filtros dice cuántos hay activos.
+2. **El estado es forma + color + palabra**, idéntico en menú, fila y panel. Lo normal o resuelto va en gris sin pastilla; solo lo que exige actuar lleva color, y siempre con el motivo después de una raya ("Bloqueado — falta remito").
+3. **Ningún aviso sin acción.** Cada problema aparece en todos los niveles donde se ve, con el botón que lo resuelve, y además en una lista de control. Deshabilitado, solo con la causa escrita al lado o cuando es obvia por la posición (§5 Acciones).
+4. **Todo proceso se ve correr en el lugar.** Pasos con ícono por estado (punteado / girando / ✓ / ✕), tiempo en mono y "n/N". El resultado se escribe en verbos y cifras ("Facturó 12 · 1 sin correr: falta X") y queda un registro de las corridas. Nunca un spinner que tape la pantalla.
+5. **Consecuencia antes de actuar.** Una acción masiva muestra antes una vista previa con datos reales y la fila "sin asignar" en rojo. Una opción cuyo efecto no se ve lleva vista previa en vivo o una línea gris con la consecuencia.
+6. **No se navega para ver o editar:** hoja lateral que empuja la tabla sin taparla, modal con el contexto ya cargado (y "Crear otra" en las altas) o ⌘K. Dentro de un módulo el marco queda quieto; nunca un panel en blanco entre dos estados: esqueleto con la propia interfaz en fantasma o el contenido anterior hasta que llega el nuevo.
+7. **Los conteos dicen algo.** En pestañas de estado, punto + nombre + conteo, también en 0 (sirven de leyenda); en el menú, con verbo ("2 te necesitan", "3 vencidas"), en ámbar o rojo solo si exige actuar; en el subtítulo, número en `tinta` + rótulo gris. Toda tabla con montos lleva pie fijo con "N registros" y el total del filtro, una línea por moneda.
+8. **El color tiene dueño.** Cada entidad, su color fijo por id en todo el sistema (§1b). En un gráfico, color solo en lo nombrado en la leyenda; el resto, grises escalonados.
+9. **El movimiento explica.** Al ordenar o filtrar, las filas viajan a su lugar en 200–300 ms; la cascada de entrada solo en la primera visita, ≤ 8 piezas y completa antes de 600 ms; los números que cambian ruedan dígito por dígito; lo que llega en vivo entra desde un desenfoque de 6 px a 0 en ~300 ms. Nada en bucle detrás de los datos (§6f).
+10. **El oscuro es el mismo layout con otros tokens.** El botón principal pasa a blanco, los estados van como ícono + palabra sin pastilla y las capas se separan por luminosidad, sin sombras (§5 Oscuro).
 
 ## 2. Tipografía (análisis 02)
-- **Dos voces, no una:**
-  - **Display** para títulos, saludo y cifras: una geométrica o grotesca con carácter como Outfit, General Sans, Satoshi o Plus Jakarta (08 usa una de este tipo).
-  - **Texto** para la interfaz: Plus Jakarta Sans, Manrope o Inter.
-  - **Mono** con personalidad (JetBrains Mono, Geist Mono) para códigos (PR-0241, FAC-01101) y, en tableros técnicos o de monitoreo, también para las cifras (14).
-  - Geist o Inter solas quedan "básicas".
-- **Títulos grandes y livianos:** el saludo o título de página va a 36–44 px en peso **400**, con `tracking-tight` (06 "Good evening, Alex", 08). Lo grande no necesita negrita.
-- Escala: **11 / 12 / 13 / 14 / 16 / 20 / 24 / 32 / 40**. Una tarjeta no mezcla más de 3 tamaños.
-- Pesos: 400 texto y títulos grandes, 500 títulos de tarjeta y acciones, 500–600 cifras. Nada de 700.
-- **Dato = rótulo gris de 12–13 px arriba y valor `tinta` de 14 px abajo.** Nunca "Rótulo: valor" en la misma línea dentro de una ficha.
-- Cifras con `tabular-nums`, montos alineados a la derecha. **El símbolo de moneda, los centavos y la unidad** van en `texto-3`, un paso más chicos: `$ 24.957`<span>,81</span>.
-- Metadatos en una línea de 12 px gris, unidos con " · ": "Cobranzas · FAC-01101 · hace 2 min".
-- La mayúscula queda solo para los rótulos de grupo del menú. Encabezados de tabla, botones y pestañas van en minúscula inicial.
+- **Dos voces y una mono:** display (Outfit, General Sans, Satoshi) para títulos y cifras; interfaz (Plus Jakarta Sans, Manrope, Inter) para el resto; mono (JetBrains Mono, Geist Mono) para códigos (FAC-01101, CUIT) y, en monitoreo, cifras. Una sola familia, o tres o más, no va.
+- **Escala única:** 11 / 12 / 13 / 14 / 16 / 20 / 24 / 32 / 40, y 36–44 para títulos display grandes (48 solo para el monto de un formulario en celular). Si una guía o ejemplo usa 15, 17 o 28, usá el escalón vecino de la escala.
+- **Pesos:** 300–400 en títulos display de 36 o más; 400 texto; 500 nombres, rótulos, acciones y cifras; 600 solo en cifras (opcional). Nada de 700. Por tarjeta, ≤ 3 tamaños y ≤ 2 pesos (más el 600 de la cifra).
+- **Tracking:** −0,02 a −0,03 em en display de 20 o más; `tracking-wider` solo en el rótulo de grupo del menú.
+- **Títulos grandes y livianos:** saludo o título de inicio 36–44/300–400; título de página 24–32/400–500; título de sección 16–20/500 display con conteo gris; nombre de tarjeta 16–20/500.
+- **Dato = rótulo arriba y valor abajo** (§4e). Nunca "Rótulo: valor" en la misma línea dentro de una ficha (sí en leyendas y metadatos).
+- **Cifras:** `tabular-nums`, a la derecha en tablas (encabezado incluido). Moneda, centavos y unidad en `texto-3`, un paso más chicos (la moneda al 60–65 % de la cifra): `US$ 24.957`<span>,81</span>. En tablas, centavos completos pero igual en gris; en celular, sin centavos.
+- **Mayúscula** solo en el rótulo de grupo del menú. Encabezados de tabla, botones y pestañas en tipo oración.
+- **Nunca el atajo `font:`** sobre algo con cifras: resetea `font-variant-numeric`. Usá `font-size` y `font-weight` sueltos o repetí `tabular-nums` después.
 
 ## 3. Color (análisis 03)
-- Hay tres planos (`fondo` → `panel` → `superficie`) y la profundidad sale del tono más un borde de 1 px y sombras mínimas (ver la sección 4).
-- **Neutros a medida de cada sistema:**
-  - **Una sola rampa:** cada sistema elige el tinte de sus neutros (de su marca o de su uso) y lo usa en toda la rampa: fondo, panel, bordes y los tres textos.
-  - **Croma bajo:** el tinte tiene que notarse como "clima", no como color. Si el fondo compite con una pastilla de estado, está demasiado saturado.
-  - **Sin mezclas:** nunca combinar una rampa fría y una cálida en el mismo sistema.
-  - **Puede ir más allá del gris:** un fondo con tono o un menú oscuro de marca también son válidos. La condición es que el contenido siga en superficies claras y legibles, con los estados como la única nota fuerte.
-- Texto en `tinta` / `texto-2` / `texto-3`, que son neutros con el mismo tinte. Prohibido `#000` sobre `#FFF`.
-- **Un solo acento por sistema**, usado solo en el botón principal, el toggle, el foco, el punto de no leído y la pestaña activa del celular. Nunca en títulos, fondos de tarjeta ni el menú.
-- **Acento por sistema:** cada sistema o empresa tiene un solo acento (su color de marca). Si no tiene marca definida, grafito `#18181B`. El resto de la skill es igual para todos.
+- **Tres planos** `fondo` → `panel` → `superficie`; la profundidad sale del tono (2–4 % de luz entre planos), un borde de 1 px y sombras mínimas.
+- **Neutro no quiere decir gris:** cada sistema elige un tinte (de marca o de uso: violeta, azulado, azul marino, cálido, frío, oscuro para monitoreo) y lo usa en toda la rampa (fondo, panel, bordes y los tres textos) con croma bajo (OKLCH C ≤ 0,02; hasta ~0,03 en el lienzo). Receta en el comentario de `tokens.css`. Nunca dos tintes en un sistema. Un fondo con tono o un menú oscuro de marca apagado valen si el contenido sigue en superficies claras.
+- **Textos:** `tinta` / `texto-2` / `texto-3` del mismo tinte. Prohibido `#000` sobre `#fff`. **`texto-3` (#646979, 4,8:1) es el gris más claro para cualquier texto, placeholders incluidos.** `--color-deshabilitado` (#a1a1aa) solo para íconos decorativos y bordes punteados, nunca para texto que se lee.
+- **Un solo acento por sistema** (color de marca; si no hay, grafito `#18181b`): botón principal, toggle, foco, punto de no leído, pestaña activa del celular, indicadores de arrastre. Nunca en títulos, fondos de tarjeta ni el menú.
+- **Estados = pastilla:** fondo al 10 % + texto saturado + punto de 6 px, siempre con palabra. Colores de `tokens.css` (los de algunos ejemplos son más claros y no pasan AA).
+  - Verde: hecho, cobrado, en línea. Ámbar: pendiente, parcial, por vencer. Rojo: vencido, falló, sin conexión. Azul: en curso, informativo. Gris: borrador, anulado, reintegrado.
+  - Nombres estándar por entidad en `guias/textos.md` §12.
+- **Lo normal no se colorea.** Rojo solo para lo que exige actuar; más de 3 rojos en pantalla se agrupan en un aviso.
+- **Paleta de datos** (`dato-1…6`, máximo 6 por gráfico) solo en gráficos, avance, entidades e íconos de tipo; en tablas, como rayita de 3 px, nunca pintando la fila. Los cuadros de tipo usan las familias de `guias/iconos.md` §6.
+- **Lo proyectado, parcial o no seleccionado va rayado o al 30–40 %; lo real, sólido.**
+- **Conteo final:** neutros + 1 acento + estados + ≤ 6 de datos/tipo a la vista.
+- **Vidrio** (`rgb(255 255 255/.14)` + borde `.24` + `backdrop-filter`) solo en pastillas y bandejas sobre un panel de color, y en el pie fijo de un formulario. El dato va siempre en tarjeta sólida.
 
-- **Estados = pastilla:** fondo al 10 % + texto saturado + punto de 6 px. Nunca un fondo saturado con texto blanco y **nunca solo color**: siempre con palabra.
-  - Verde: hecho, cobrado, en línea.
-  - Ámbar: pendiente, parcial, por vencer.
-  - Rojo: vencido, falló, sin conexión.
-  - Azul: en curso, informativo.
-  - Gris: borrador, anulado, reintegrado.
-- **Lo normal no se colorea.** El rojo es solo para lo que exige actuar. Si hay más de 3 rojos en la pantalla, se agrupan en un aviso.
-- **La paleta de datos** (`dato-1…6`, máximo 6) vive solo en gráficos, barras de progreso e íconos de tipo. En una tabla se repite como rayita de 3 px, nunca pintando la fila.
-- Lo proyectado, parcial o no seleccionado va **rayado o al 30 %**; lo real, sólido. Por ejemplo, el mes en curso "MTD" (07, 08).
-- Como máximo **una** tarjeta héroe rellena de color por pantalla (08, 09).
-- Antes de terminar, contá los colores: grises + 1 acento + hasta 4 de estado + hasta 6 de datos.
+---
 
-## 4. Superficies, radios y espacios (análisis 04)
+## 4. Espacios y legibilidad
 
-**Radios en capas.** Cada nivel adentro va un poco menos redondeado que el que lo contiene (radio interno ≈ radio externo − padding). No inventar otros valores:
+La jerarquía hace que se entienda. Detalle, antes/después y pruebas en `guias/jerarquia-y-espacios.md` §2, §4–§8, §11.
 
-| Elemento | Radio |
-|---|---|
-| Marco de la app (todo el sistema en una caja) | 26 |
-| Panel principal | 20 |
-| Tarjeta / bandeja / hoja | 20 |
-| Tarjeta dentro de la bandeja | 16 |
-| Botón / campo / buscador / ícono en cuadro | 11–12 |
-| Botón chico / pastilla / etiqueta | 7–9, o redonda para filtros y "+12 %" |
+### 4a. Entre X e Y van N px
+Solo valores de `--espacio-*` (`tokens.css`). La única excepción literal es el **14 del gap entre tarjetas**. Nada de 10, 18, 22, 30 inventados.
 
-En celular, las tarjetas van a 20–24.
+| Entre… | Valor | Variable |
+|---|---|---|
+| Rótulo ↔ su valor | 2–4 | `--espacio-1` / `--espacio-2` |
+| Cifra ↔ su contexto ("69 % de la meta") | 2–4 | `--espacio-1` / `--espacio-2` |
+| Título ↔ subtítulo o metadato | 4 | `--espacio-2` |
+| Rótulo de campo ↔ campo; campo ↔ ayuda o error | 6 | `--espacio-3` |
+| Chips entre sí | 6 | `--espacio-3` |
+| Ícono ↔ texto | 8 (4 junto a texto de 12 o en botón chico) | `--espacio-4` (`--espacio-2`) |
+| Botones entre sí; ítems de menú | 8 | `--espacio-4` |
+| Ítem ↔ ítem del mismo grupo | 8–12, o la altura de fila | `--espacio-4` / `--espacio-5` |
+| Rótulo del KPI ↔ cifra | 8 | `--espacio-4` |
+| Título de sección ↔ su contenido | 12 | `--espacio-5` |
+| Piezas dentro de una tarjeta (gap interno) | 12 | `--espacio-5` |
+| Entre campos de un formulario | 20 (16 en hoja o denso) | `--espacio-7` (`--espacio-6`) |
+| Grupo ↔ grupo dentro de una tarjeta | 16–24 | `--espacio-6` / `--espacio-8` |
+| Grupo ↔ grupo de un formulario | 24 + rótulo de grupo (o banda fina) | `--espacio-8` |
+| Bandeja ↔ tarjeta interna | 4 | `--espacio-2` |
+| Padding de tarjeta | 16 (densa, celular); 20 (normal); 24 (vistazo, protagonista) | `--espacio-6` / `-7` / `-8` |
+| Padding del panel | 24 arriba y abajo, 28 a los costados; 16 en celular | `--espacio-8` + `--espacio-9`; `--espacio-6` |
+| Entre tarjetas hermanas (gap de grilla) | 14 (12 en celular) | literal / `--espacio-5` |
+| Entre bloques grandes (KPIs → cuerpo) | 28 | `--espacio-9` |
+| Aire sobre un título de sección | 40 (28 en pantallas de operación y en celular) | `--espacio-10` (`--espacio-9`) |
+| Márgenes laterales en celular | 16 | `--espacio-6` |
 
-**Espacios.** Escala 4 / 8 / 12 / 16 / 20 / 24 / 32 / 40, sin 10, 14 ni 18.
-- Padding: 16–20 en tarjeta (12 si es densa o en celular) y 26–28 en panel.
-- Gap de grilla: 14.
-- Entre bloques grandes: 28.
-- Entre secciones: 32–40 de aire más un título. Nunca una línea gruesa ni un fondo de color.
+### 4b. Proximidad
+- **Adentro ≤ la mitad de afuera.** Si un título está a 16 de lo suyo y a 16 de lo anterior, flota.
+- El título de sección nunca es simétrico: 40 (o 28) arriba, 12 abajo.
+- El rótulo está a 2–4 de su valor y a 16 o más del dato siguiente.
+- Padding interno ≤ espacio entre bloques: una tarjeta con 20 de padding vive en un gap de 14 y a 28 del bloque siguiente.
+- **Separá con la herramienta más débil que alcance:** aire → divisor 1 px → banda o bandeja → tarjeta → título de sección + aire. Nunca dos fuertes juntas para lo mismo; nunca tres niveles de cajas con borde. Una tarjeta = un tema.
+- **Topes por bloque** (si hay más, "+N más" o "Ver todo"): KPIs 3–6 por fila; pasos visibles 3–5; filas en tarjeta de lista 5–7; etiquetas 2; piezas de metadato 3; series 3–6; avatares en pila 3–4. Tabla completa en `guias/jerarquia-y-espacios.md` §4.
 
-**Bordes y sombras.**
-- Borde siempre de 1 px `borde`. Nada de 2 px ni bordes de color, salvo el foco.
-- **Sombras en tres niveles, siempre suaves y del tono de la tinta (nunca negro puro):**
-  - **Mínima** (`0 1px 2px /.05`): en botones con borde, la tarjeta dentro de la bandeja, el ítem activo del menú y los íconos en cuadro. Es lo que les da "relieve" premium.
-  - **Al pasar el mouse** (`0 14px 30px -18px /.3`, junto con subir 2 px): en las tarjetas clickeables.
-  - **Flotante** (`0 24px 48px -16px /.22`): en menú, hoja, modal y toast. El botón negro principal lleva sombra propia y un brillo arriba (`inset 0 1px 0 /.12`).
-  - Una tarjeta quieta de contenido va con borde, sin sombra grande.
+### 4c. Densidad y alto de filas
+| Uso | Alto de fila | Padding tarjeta | Letra base | Cifras |
+|---|---|---|---|---|
+| Vistazo (inicio, dirección) | 36–40 (pasos) | 20–24 | 13–14 | 32–40 |
+| Operación (cobranzas, pipeline, avisos) | tabla 28 / 36 / 44 (36 por defecto) · 56–64 lista de 2 líneas | 16–20 | 13–14 | 24–32 |
+| Consulta (historial, caja, registro) | tabla 28 / 36 / 44 (28 o 36 por defecto) | 16 | 13 | 14 en la tabla |
+| Monitoreo (pantalla siempre abierta) | tarjetas de 180–200 en grilla de 4 | 16 | 12–13 | 32 mono |
+| Celular | 56–64 (toque ≥ 44) | 16 | 14–16 | 32–36 |
 
-**Subdivisiones.** Para subdividir una tarjeta, usá bandas a todo el ancho (`border-t` o un fondo `suave`) o el patrón bandeja + tarjeta blanca (ver "Vida", punto 9). Lo que no va es apilar tres niveles de cajas con borde. Las métricas en fila se separan con `divide-x`.
+Ítem de menú 32–36; botón 36–38 (chico 28; 44 en celular); campo 36–40 (52 en celular). Una sola densidad por zona; en tablas la elige la persona (§1c.1); la densidad se logra con altura y padding, nunca con letra de menos de 12. Lo premium respira, lo operativo rinde: elegí por el uso.
+
+### 4d. Legibilidad
+- **Interlineado por tamaño:** cifras de 24 o más 1,05–1,1; títulos de 16–44 1,15–1,25; texto de filas y controles (13–14) 1,35–1,4; párrafos y descripciones 1,5; metadatos de 12 1,35.
+- **Ancho de línea:** texto corrido a 64–72 caracteres (`max-width:68ch`); ayuda de campo una línea (~70); descripción de tarjeta 2 líneas con `line-clamp`.
+- **Mínimo 12 px** para todo lo que se lee. 11 solo en el rótulo de grupo del menú y la unidad de una cifra. Inputs a 16 px en celular (si no, iOS hace zoom).
+- **Contraste AA:** texto ≥ 4,5:1 sobre su fondo real (bandeja incluida); cifras de 24 o más e íconos que informan ≥ 3:1. `texto-3` es el piso, y nunca para algo que haga falta para decidir.
+- **Truncá el final, nunca el principio**; el texto completo vive en la ficha o en un tooltip. Si no entra, recortá con "+N más" o "Ver todo" antes que achicar.
+- **Alineación:** un solo borde izquierdo por columna (título, KPIs, secciones y primera columna de la tabla en la misma x); el texto se alinea al texto, no al ícono; nada centrado en escritorio salvo estados vacíos; columnas fijas para tile, avatar, fecha y ⋯; tarjetas de una fila con la misma altura y el pie pegado abajo.
+
+### 4e. Escalera tipográfica y dónde va el énfasis
+**Pesan tres cosas: el dato, la acción y el nombre. Todo lo demás va en gris.**
+
+| Nivel | Qué | Letra | Peso | Color |
+|---|---|---|---|---|
+| 1. Protagonista | La cifra o el título que contesta el bloque | 32–40 display (24 en KPI denso) | 500 (300–400 en títulos de 36+) | `tinta` |
+| 2. Nombre | Título de tarjeta, entidad, título de fila | 16–20 display / 13–14 en fila | 500 | `tinta` |
+| 3. Texto | La frase de un aviso, un paso | 13–14 | 400 | `tinta` (descripción: `texto-2`) |
+| 4. Rótulo | Rótulo de KPI y de campo, encabezado de tabla | 12–13 | 500 | `texto-2` |
+| 5. Metadato | Cuándo, dónde, cuántos, unidad, moneda | 12 | 400 | `texto-3` |
+
+- Un nivel 1 por bloque. Para subir un texto de nivel, cambiá **una** palanca (posición > tamaño > color > peso).
+- Más de 3 textos en `tinta` 500 por tarjeta: bajá los que sobran a gris.
+- **Rótulo gris arriba, valor negro abajo, nunca al revés** (la ref. 03 lo tiene invertido).
+- **Quién manda según la pregunta:** ¿cuánto? el número; ¿qué pasó / qué hago? la frase, con el importe adentro en 500; ¿quién? el nombre, con el monto a la derecha en el mismo peso; ¿cómo va? el avance; ¿cuándo? la hora.
+- **Un foco por bloque:** si una cifra y una alerta compiten, la cifra queda en `tinta` y el rojo baja al pie con palabra. Probalo con `filter:blur(4px)` (una mancha por bloque) y `grayscale(1)` (la jerarquía sigue sin color).
+- **Fila:** nombre → dato → estado → cuándo → acción. Primera palabra distintiva ("Casa Lumen · Web", no al revés); código en mono `texto-3` dentro del metadato (salvo tablas de comprobantes, donde el código es el nombre); la fecha se pinta solo si apura (vencida rojo 500, hoy `tinta` 500).
+- **Recorridos:** F en listas y fichas (lo urgente en las primeras filas, montos encolumnados a la derecha); Z en tableros, cabeceras y hojas (qué es arriba a la izquierda, acción arriba a la derecha, salida abajo a la derecha); I en celular (cifra, lo de hoy, acción fija abajo).
+- Tabla de 23 tipos de bloque con su énfasis: `guias/jerarquia-y-espacios.md` §9.
+
+### 4f. Superficies, radios y sombras (análisis 04)
+**Radios en capas** (interno ≈ externo − padding), solo los de `tokens.css`:
+
+| Elemento | Radio | Variable |
+|---|---|---|
+| Marco de la app | 26 | `--radius-app` |
+| Panel principal, tarjeta, bandeja, hoja | 20 (20–24 en celular) | `--radius-marco` / `--radius-tarjeta` |
+| Tarjeta dentro de la bandeja; tarjeta de kanban | 16 | `--radius-interno` |
+| Botón, campo, buscador, ícono en cuadro | 12 (cuadro de 32: 10) | `--radius-control` |
+| Botón chico, pastilla, etiqueta, cuadradito de entidad | 7–8; redonda para filtros y deltas | `--radius-chip` |
+
+- **Borde** siempre 1 px `borde` (`borde-fuerte` en campos). Nada de 2 px ni bordes de color salvo el foco y el hueco punteado de arrastre.
+- **Sombras del tono de la tinta, nunca negras:** mínima (`--shadow-min`) en botones con borde, tarjeta interna, ítem activo y cuadros de ícono; hover (`--shadow-hover` + subir 2 px) en tarjetas clickeables; flotante (`--shadow-flotante`) en menú, hoja, modal, toast y barras flotantes; `--shadow-principal` en el botón relleno. Una tarjeta quieta va con borde, sin sombra grande.
+- **Subdividir** con bandas a todo el ancho (`border-t` o fondo `suave`) o bandeja + tarjeta blanca; métricas en fila con `divide-x`. Nunca tarjeta dentro de tarjeta con borde.
+
+---
 
 ## 5. Piezas
 
-### Tarjeta KPI (06, 07, 13, 14 · análisis 06)
-- Lleva **rótulo + número + línea de contexto**, siempre. Un número sin su "de qué" o "respecto de qué" no va.
-- El número va en `tinta` (24–28 px, 600, `tabular-nums`). El color va solo en el delta, la pastilla o la barra.
-- **El delta** dice su período ("+12 % vs. mes anterior", "+3 esta semana"), lleva flecha ↗/↘ y su color sale de si es **bueno o malo para el negocio**, no del signo: si baja la mora, es verde.
-- Si hay algo vencido, el pie lleva un ícono de alerta y un texto rojo con cuántos ("2 vencidas · Requiere atención").
-- El avance contra una meta va como barra fina de 3–6 px + "3 de 6" o "71 % de lo esperado". Nunca una torta.
-- Van en filas de 3 a 6 del mismo tamaño. Cada una lleva a su lista filtrada (pie clickeable o ↗).
+### Botones rellenos: la regla
+- **Un solo botón relleno por pantalla**, arriba a la derecha (en celular, la píldora fija).
+- **Más uno por capa que cierra una decisión:** hoja lateral, modal, panel de detalle abierto por la persona (eligió una fila o un evento), barra de "cambios sin guardar" y barra de selección múltiple (su principal va en blanco sobre la barra oscura).
+- **Mientras haya una capa abierta, el relleno de la pantalla pasa a borde.** Nunca dos rellenos compitiendo a la vista.
+- Un panel de contexto fijo que ya está al cargar (la "Próxima reunión" del calendario) no es capa: su botón va con borde, salvo que sea la acción principal de la pantalla; entonces es el relleno único y la cabecera va con borde.
+- Las acciones de fila rellenas (24–28 px) no cuentan: solo la que resuelve una decisión pendiente (Aprobar, Cobrar), máximo 2 visibles por fila.
 
-### Listas y tablas (01, 07 · análisis 08)
-- **Tabla:**
-  - Sin líneas verticales.
-  - Encabezado de 12 px gris en `bg-suave` (o solo hairline: elegí uno por sistema).
-  - Filas de 40 px con `divide-divisor`.
-  - Montos a la derecha y estado en pastilla, como máximo 2 pastillas por fila (estado + prioridad).
-- **Lista de actividad o avisos:**
-  - Filas de dos líneas, de 56–64 px.
-  - Tile de ícono de 32–40 px con fondo de estado al 10 %.
-  - Título y metadatos.
-  - Acción en línea.
-  - ⋯ a la derecha.
-- Las listas temporales se agrupan con "Hoy / Ayer / Esta semana".
-- **No leído** es un punto `acento` de 6 px a la izquierda. Junto al título va "78 sin leer · Marcar todo leído".
-- Los textos largos se truncan con `truncate` y se ven completos en la ficha.
-- **Terminado** es un check verde relleno en lugar del círculo vacío. Las tareas no se tachan. Solo se tachan, en gris, los montos anulados.
+### Tarjeta KPI (06, 07, 13, 14 · `componentes/datos/Kpi.tsx`)
+- **Rótulo + número + contexto**, siempre; número en `tinta`, display 500; el color va solo en el delta, la pastilla o la barra.
+- **Delta** con período ("+12 % vs. octubre"), flecha ↗/↘ y color por **bueno o malo para el negocio** (`sentido="bajar-es-bueno"` en mora, gastos, días de cobro), nunca por el signo.
+- Si hay algo vencido, el pie lleva ícono de alerta y texto rojo con cuántos ("2 vencidas · Requiere atención"); el número sigue negro.
+- Avance contra meta: barra de 3–6 px, rayitas con marca de "esperado a hoy" o "3 de 6". Nunca una torta.
+- Filas de 3–6 del mismo tamaño; cada KPI lleva a su lista filtrada (pie clickeable con ↗) y la deja destellando.
+- Sin valor: "—" en gris; cargando: esqueleto con la forma del KPI.
 
-### Acciones (01, 02, 06 · análisis 10)
-- **Un solo botón relleno por pantalla**, arriba a la derecha. Los secundarios van en `bg-superficie border`, de 32–36 px, radio 10, con ícono de 16 + texto de 13–14 en peso 500.
-- **La acción de la fila va en la fila**, de 24–28 px. Solo se rellena la que resuelve una decisión pendiente (Aprobar, Cobrar, Facturar), y hay como máximo 2 visibles por fila.
-- **Menú ⋯** con grupos separados por línea: lo reversible arriba, silenciar u ocultar en el medio, ajustes o borrar al final. Los atajos de teclado van a la derecha.
-- **Éxito en el lugar:**
-  - La fila se tiñe de verde tenue y el botón pasa a ser una pastilla "✓ Aprobado". La fila no desaparece en el momento.
-  - Aparece un toast abajo a la derecha que dice qué pasó, con el ID y el monto, más la consecuencia ("Quedó en Cobranzas"), **Deshacer** y ×.
-- **Deshacer antes que confirmar.** El modal queda solo para lo irreversible.
-- "+ Agregar …" va al final de su propia lista, en gris.
-- Correo, teléfono y Meet van como botones cuadrados de 36 px, solo ícono, con tooltip.
-- Nunca un botón deshabilitado sin decir por qué: si no aplica, no se muestra.
+### Listas y tablas (01, 07 · `componentes/estructura/Tabla.tsx`, `ejemplos/pantallas/lista-cobranzas.html`)
+- **Tabla:** sin líneas verticales; encabezado 12 px `texto-2` en `bg-suave` o solo hairline (uno por sistema), fijo y ordenable con `aria-sort`; filas en tres densidades (28 / 36 / 44) con `divide-divisor`; primera columna fija con fondo sólido; pie fijo con "N registros" y total del filtro (§1c.7); montos a la derecha; ≤ 2 pastillas por fila; rayita de 3 px del color de la entidad; códigos en mono; anulado tachado en gris; 5–8 columnas (el resto en "Columnas" y en la ficha).
+- **Filtros pegados a la tabla**, dentro de su tarjeta: segmentado con conteo, chips con conteo y búsqueda (`/` enfoca, sin acentos). Arriba de los KPIs va solo lo que cambia los KPIs.
+- **Resumen vivo** al lado de los filtros: "18 facturas · $ 20.970.000 · US$ 11.200". **Nunca sumes monedas distintas**; `moneda` por fila.
+- **Lista de actividad o avisos:** filas de 2 líneas (56–64), tile de 32–40 con fondo de estado al 10 %, título y metadato, acción en línea, ⋯. Agrupadas "Hoy / Ayer / Esta semana"; no leído = punto de acento de 6 px y "78 sin leer · Marcar todo leído".
+- **Orden de trabajo:** vencido → hoy → mañana → después → sin fecha; lo hecho al final o detrás de "3 hechas".
+- **Agrupar** por la entidad que decide la acción (cliente), grupos ordenados por urgencia; cabecera de grupo con casilla de estado intermedio, cuadro de color, "N facturas · M vencidas", rayitas por ítem del color de su estado, total alineado a la columna de montos y responsable.
+- **Selección múltiple:** barra oscura flotante abajo al centro con cantidad, total de lo elegido y ≤ 3 acciones más ×; Esc limpia, shift+clic hace rango. En celular reemplaza a la píldora.
+- **Toda fila abre su hoja de detalle** con clic o Enter, y la hoja se recorre con ↑/↓ sin cerrarla; historial armado de los datos reales y notas internas.
+- **Después de una acción, la fila queda visible** aunque el filtro ya no la incluya, hasta que cambie el filtro.
+- Cobro parcial = barra verde de 3 px bajo el saldo, nunca otra pastilla. Terminado = check verde relleno; las tareas no se tachan.
+- `vacio` es obligatorio en `<Tabla>`; al llevar a una lista, `enfocar={id}` centra la fila y destella 2 s.
 
-### Selector segmentado
-- Lo usa todo cambio de vista o período de 2 a 4 opciones (Día/Semana/Mes, Mes/Año, Todos/Míos).
-- Es un riel `bg-suave` con la opción activa en pastilla `bg-superficie shadow-pastilla`. En oscuro, la activa es pastilla blanca con texto negro.
-- Las pestañas de una ficha llevan conteo gris: "Actividad 16".
+### Vistas de datos (`ejemplos/pantallas/vistas-de-datos.html`)
+- Colección grande = barra de vistas Tabla / Lista / Kanban / Galería + vistas guardadas con nombre y "+ Vista" (su menú explica cada tipo en una línea). Cada vista guarda filtros, agrupación y orden; todas leen el mismo arreglo filtrado y escriben por la misma función.
+- **La grilla tipo planilla es la única excepción a "sin líneas verticales"**: divisores verticales casi invisibles, número de fila que cambia por casilla al pasar el mouse, ícono gris por encabezado, entidad y casillas fijas a la izquierda con sombra solo si hay scroll, ancho por arrastre del borde (doble clic restablece), columnas que se mueven arrastrando el encabezado y menú de columna con clic.
+- Filtros como chips que se leen como frase: "Responsable es [avatar] Ana Ruiz ×"; también "Agrupado por País ×"; al final "+ Filtro", "Limpiar", "Mostrando 8 de 32".
+- Grupos plegables con conteo en mono y suma; se pliegan con `grid-template-rows` 1fr → 0fr y `overflow:clip` (no `hidden`, que rompe las columnas fijas). Pie "Calcular" por columna.
+- Borrar en lote mueve a la papelera con toast y Deshacer (foto previa); nunca confirmación.
 
-### Formularios y ajustes (01, 04 · análisis 11)
-- Las ediciones secundarias se abren en una **hoja lateral derecha** de 380–440 px, sin cambiar de página.
-- **Pie de la hoja:** "Volver a lo predeterminado" como enlace a la izquierda; Cancelar (con borde) y Guardar (relleno) a la derecha.
-- **Preferencias por canal:** tabla de casillas con eventos en las filas (título y explicación gris) y canales en las columnas.
-- Las opciones binarias son toggles con su explicación debajo. Los selects llevan ícono.
-- **Ajustes en dos niveles:** columna interna con grupos (Personal / Empresa / Integraciones) y el contenido a la derecha.
-- El uso contra un límite va como barra apilada con leyenda de punto + valor.
+### Acciones (01, 02, 06 · análisis 10 · `componentes/base/Boton.tsx`)
+- Secundarios `bg-superficie border`, 36–38 px, radio 12, ícono 17 + texto 13–14/500. Chico 28 px radio 8. Celular 44.
+- **Texto:** verbo + objeto, ≤ 3 palabras; el que confirma repite la acción ("Anular factura"), nunca "Sí", "Aceptar" ni "OK".
+- **Menú ⋯** con grupos: reversible arriba, silenciar u ocultar al medio, ajustes o borrar al final (tono peligro); atajos a la derecha. Editar y Eliminar van al ⋯, nunca visibles en cada fila. En celular el ⋯ abre hoja desde abajo con filas de 44 y sin atajos.
+- **Acciones rápidas** secundarias de una fila aparecen con hover **y** `:focus-within`, superpuestas con un degradé del fondo; en celular, siempre visibles.
+- **Guardando:** el botón recibe `cargando` desde el primer render, fija su ancho, pasa a gerundio ("Guardando…") con `aria-busy` y sin perder el foco.
+- **Éxito en el lugar:** la fila se tiñe de verde tenue, el botón pasa a pastilla "✓ Aprobado", nada desaparece en el momento; toast abajo a la derecha con participio + código + monto, la consecuencia ("Quedó en Cobranzas"), **Deshacer** y ×; 5 s (8 s con Deshacer), se pausa con mouse, foco o pestaña oculta; máximo 3 apilados.
+- **Deshacer antes que confirmar.** Modal solo para lo irreversible, con la consecuencia y el botón que repite la acción.
+- **Nunca un control deshabilitado sin decir por qué.** Deshabilitado solo con la causa escrita al lado, o cuando es obvia por la posición ("Mover a la izquierda" en la primera columna, que queda en su lugar al 40 %). Si no aplica, no se muestra; si espera tiempo, contador ("Podés pedir otro en 0:28"); si falta algo, el botón dice qué y lleva ahí.
+- "+ Agregar …" al final de su propia lista, en gris. Correo, teléfono y Meet como botones cuadrados de ícono con tooltip.
 
-### Calendario (02, 10 · análisis 09)
-- **Eventos:** tarjeta `superficie` con borde y el ícono del proveedor (Meet) en color, o fondos pastel por tipo con texto `tinta` (10). Nunca saturados.
-- **Ahora:** línea negra con la pastilla de la hora; el encabezado del día de hoy va en negro.
-- **Panel derecho "Próxima reunión":** agenda, link, duración, anfitrión, participantes y notas. Al pie, "Reprogramar" (con borde) y "Unirse" (relleno).
-- **Filtros:** chips redondos, con el activo en negro.
+### Selector segmentado y pestañas (`componentes/base/Segmentado.tsx`)
+- Todo cambio de vista o período de 2–4 opciones (y toda elección de 2–3 en un formulario) va en segmentado: riel `bg-suave`, activa en pastilla `bg-superficie` con sombra mínima que se desliza (sin animar en el primer pintado). En oscuro, la activa es pastilla clara (`bg-tinta text-superficie`).
+- Pestañas con conteo gris ("Actividad 16"); el conteo de la activa va invertido y se actualiza en el momento. Riel deslizable de costado si no entra.
 
-### Celular (09, 11, 12 · análisis 12)
-- Fondo `#F2F2F2`, tarjetas `superficie` `rounded-2xl` sin borde y márgenes de 16 px.
-- **Arriba:** saludo o título centrado con botones circulares de 40 px. Debajo, **la cifra protagonista** de 32–36 px con su delta.
-- **Contenido:**
-  - Accesos rápidos en grilla de 3–4 (ícono + rótulo).
-  - Secciones con "Ver todo".
-  - Filas con tile de 40 px, dos líneas y monto a la derecha.
-- **La acción principal es una píldora negra a todo el ancho**, fija abajo, de 52–56 px con `pb-[env(safe-area-inset-bottom)]`. También puede ser un botón flotante de acento.
-- La barra inferior es de 4 íconos, con la pestaña activa en pastilla de acento.
-- Los toques miden 44 px como mínimo.
+### Formularios (01, 04 · análisis 11 · `ejemplos/pantallas/formulario-alta.html`)
+- Ediciones secundarias en **hoja lateral derecha** de 420 px (380–440), sin cambiar de página; en celular sube desde abajo. Pie: "Volver a lo predeterminado" a la izquierda; Cancelar (borde) y Guardar (relleno) a la derecha.
+- Rótulo siempre visible arriba; el placeholder es un ejemplo, nunca el rótulo. **Se marca lo opcional ("· opcional"), no lo obligatorio**: sin asteriscos.
+- **Ancho del campo según el dato** (fecha y CUIT cortos, cliente y notas largos). Moneda o unidad dentro del campo como pastilla; montos formateados al salir.
+- **Validación:** el primer chequeo al salir de un campo con texto o al intentar guardar; desde ahí, en vivo, y el error se va apenas el valor es válido. Nunca rojo mientras se escribe por primera vez; lo que falta y nadie tocó va en gris hasta que se intente crear. Error debajo del campo, con ícono, `aria-invalid` y `aria-describedby`.
+- **Mensajes con el dato concreto y la corrección como botón** ("¿Es sofia@orbe.com.ar? Usar ese"). Ámbar para lo que no frena; rojo solo para lo que impide guardar.
+- **El botón principal no se apaga por campos que faltan:** si falta algo, baja al primer problema, lo enfoca y lo sacude; el pie dice "Faltan 2 para crear · Revisar".
+- **Altas largas (5+ secciones):** menú plegado a riel de 60 px; índice pegajoso de ~200 px con estado por sección (anillo, check, "!" y meta concreta), formulario y resumen vivo pegajoso de 320–344 px. Borrador automático a los ~900 ms con "Cambios sin guardar / Guardando… / Guardado hace N s"; Cancelar vacía y ofrece Deshacer. Debajo de 1280 el índice pasa a tira de chips.
+- Ítems repetibles con rayita de color propio (repetida en el resumen), subtotal vivo, "+ Agregar ítem" al pie y quitar con Deshacer.
+- Combobox con búsqueda sin acentos, teclado completo y "Crear «texto»"; fecha que se puede escribir o elegir, con atajos. Los selects llevan ícono; las opciones binarias son toggles con su explicación debajo.
 
-### Gráficos (05, 07, 08, 14 · análisis 07)
-- Ejes mínimos, grilla tenue y sin bordes.
-- La leyenda va arriba, con punto + nombre (+ valor).
-- Barras apiladas por canal o estado. El ítem activo va sólido y el resto rayado o tenue.
-- Tooltip oscuro con el valor, la participación y la comparación.
-- Sparklines sin ejes dentro de las tarjetas.
+### Ajustes (04, 05 · `ejemplos/pantallas/ajustes.html`)
+- Dos niveles: columna interna con grupos (Personal / Empresa / Integraciones) y contenido a la derecha; en celular, riel horizontal de pastillas fijo arriba.
+- **Sin Guardar por sección:** cada edición marca el campo y su ítem del menú interno con un punto de acento (rojo si necesita atención) y levanta la barra flotante "Tenés cambios sin guardar · N cambios en Perfil y Notificaciones", con Descartar (con Deshacer) y Guardar cambios (⌘S). Esa barra es la capa: el relleno de la cabecera pasa a borde.
+- Lo que se aplica al instante (tema, vista) no pasa por la barra; lo que cambia datos de otros sí. Acciones sobre una persona o integración (invitar, suspender, conectar) se ejecutan en el momento con toast y Deshacer.
+- **Preferencias por canal:** tarjeta por canal con su destino real e interruptor; tabla de casillas evento × canal con casilla maestra de estado intermedio y "6 de 10"; un canal apagado deja su columna al 30 % sin perder lo elegido.
+- Toggles con su explicación debajo y su valor vigente. Uso contra un límite: real sólido, proyección rayada, línea del límite rotulada, barra apilada por módulo + "Libre".
+- Integración: logo en cuadro blanco con borde, estado en pastilla, cuenta en mono, curva de 7 días si está conectada, aviso rojo con "Reconectar" si falló, costo real si está disponible.
+- Tu propio rol, como texto con candado y el motivo al pasar el mouse.
+
+### Calendario (02, 10 · `ejemplos/pantallas/calendario.html`)
+- Eventos en pastel por tipo con texto `tinta` y el ícono del proveedor, o tarjeta `superficie` con borde; nunca saturados. Los chips de tipo son la leyenda (mismo pastel, punto y conteo, se apagan al tocarlos).
+- **Hoy:** un solo bloque negro (la cabecera del día), la columna teñida al 3–4 % y la línea de "ahora" solo en esa columna con la hora en mono (hora de Argentina).
+- **Estado por forma:** sin confirmar rayado con borde punteado; pasado al 55 %. El estado nunca cambia el pastel del tipo.
+- Bloque según duración: < 45 min una línea; 45–74 título y rango; ≥ 75 título en 2 líneas. Superpuestos en carriles.
+- **Próxima reunión** es el protagonista: tarjeta de acento con cuenta regresiva ("en 50 min") y la línea del día. Pie: Reprogramar (borde) y la acción según proveedor (Unirme / Cómo llegar / Llamar); pasada, solo "Agendar seguimiento". Aplicá la regla de rellenos de arriba.
+- Reprogramar despliega 2–3 huecos libres en común en el panel, sin modal. Hover en un hueco: casilla punteada "+ 10:30"; clic crea borrador con Deshacer.
+- Filtros por persona y tipo: chips redondos, activo en negro con ✓.
+
+### Pipeline (`ejemplos/pantallas/pipeline.html`)
+- Cada columna es una bandeja: punto de la etapa, nombre y conteo; monto total que cuenta, ponderado y barrita de participación; tarjetas de radio 16 adentro. Las 5 columnas entran a 1440 (≥ 200 px cada una); en celular, carrusel con encastre al 84 % que se apaga mientras se arrastra.
+- Etapas abiertas en una rampa de un solo tono, de claro a oscuro; solo Ganada en verde.
+- Tarjeta: cuadradito del cliente, código mono, monto con moneda gris, anillo de probabilidad; pie en dos líneas con la fecha relativa arriba (vencida en rojo con ícono) y la próxima acción abajo.
+- Arrastre con pointer events (no HTML5 drag): copia que vuela (`rotate:2deg; scale:1.03`), hueco punteado de acento, vecinos con FLIP de 240 ms, autoscroll en bordes, Esc cancela; en el dedo, toque largo de ~230 ms. Alternativa por teclado (Mayúscula + ←/→ cambia de etapa) y anuncio en `aria-live`.
+- Todo cambio de etapa: toast con qué cambió ("probabilidad 30 % → 75 %") y Deshacer. Ganada tiñe de verde con sello ~4 s; Perdida es una zona que aparece solo al arrastrar.
+- Barra apilada: rótulo de tramo solo si mide ≥ 96 px reales; clic en tramo o leyenda lleva a la columna con destello.
+
+### Acceso (`ejemplos/pantallas/login.html`)
+- Dos mitades dentro del marco de 26: formulario sobre `superficie` a la izquierda; panel con degradé del acento, puntos con máscara y 2–3 tarjetas del producto a la derecha. En celular, solo el formulario.
+- Error del servidor en el lugar, arriba del formulario: qué pasó, intentos que quedan y la salida ("Recuperar contraseña"); nunca modal, nunca borrar lo escrito.
+- `autocomplete` (`username`, `current-password`), `inputmode="email"`, `autocapitalize="off"`; campos de 52 px y 16 px en celular; foco automático solo en escritorio.
+- Al cambiar de vista, el foco pasa al título nuevo (`tabindex="-1"`).
+
+### Celular (09, 11, 12 · análisis 12 · `ejemplos/pantallas/celular.html`)
+- Fondo `fondo` del sistema, tarjetas `superficie` radio 20–24 sin borde, márgenes de 16, gap 12.
+- Arriba: saludo o título con botones circulares de 40 (área 44); debajo, **la cifra protagonista** de 32–36 con su delta. Lo primero que se ve es lo que hay que hacer hoy.
+- Accesos rápidos en grilla de 3–4 (ícono fill + rótulo); secciones con "Ver todo"; filas con tile de 40, dos líneas y monto a la derecha.
+- **Acción principal:** píldora del acento a todo el ancho, fija abajo, 52–56 px con `pb-[env(safe-area-inset-bottom)]`. Si falta algo, nunca deshabilitada: dice qué falta en gris ("Cerrar visita · faltan 3 + firma") y lleva ahí. En colecciones donde la acción es crear, puede ser un botón flotante "+"; nunca los dos.
+- **Barra inferior** de 4 destinos, cápsula flotante de 64 px a 16 de los bordes: activo en pastilla de acento suave con ícono fill y texto, el resto solo ícono; degradé del fondo detrás.
+- Toasts arriba de la barra y de la píldora (`--ds-pie-movil`). Toques ≥ 44 px.
+- Lo que pasa en una pantalla actualiza las otras (contadores, anillos, KPIs). La falta de señal se muestra en el dato ("1 sin subir" en ámbar), no en un cartel.
+- Monto en celular: 40–48 centrado, moneda y centavos en gris, formato en vivo, impacto contra el tope debajo (cargado sólido, este rayado).
+
+### Gráficos (05, 07, 08, 14 · `guias/graficos.md` · `ejemplos/graficos.html`)
+- **Primero la pregunta**, después el tipo (`guias/graficos.md` §1). Si la respuesta es un número, va un KPI con dibujo.
+- Arriba de todo gráfico, la cifra con su delta y período: la conclusión antes del dibujo.
+- Ejes mínimos, grilla tenue, sin bordes; leyenda arriba con punto + nombre (+ valor); sparklines sin ejes dentro de tarjetas.
+- Dona solo con 2–4 partes, en un tono escalonado; 5–6, barra de reparto; más, ranking con "Otros". Más de 5 barras verticales en celular pasan a horizontales.
+- **Estados del dato por forma:** parcial rayado con chip "Mes en curso" (su tooltip dice "sin cerrar", sin comparar); proyectado punteado con punto hueco; período anterior gris punteado; meta como rayita.
+- Tooltip oscuro (invertido en oscuro) con ≤ 3 datos: valor | detalle | comparación coloreada por bueno o malo; se abre con mouse, foco y toque; se mide para no salirse.
+- SVG al ancho real y redibujado al redimensionar; nunca `preserveAspectRatio="none"` con texto. Con estirado: `vector-effect:non-scaling-stroke` y el punto y el globo en HTML encima. El punto marcado nunca pegado al borde.
+- Todo gráfico con ejes: teclado (Tab, flechas, Esc), "Ver como tabla", `aria-label` con la conclusión y una tabla `sr-only` dentro de un div.
 
 ### Oscuro (14)
-- Los fondos suben de luz por capa: #0A0A0A → #111113 → #18181B, con borde #27272A y **sin sombras**.
-- Las barras normales van en gris claro y se colorean solo con un estado.
-- Si hay foto, va solo en la franja de cabecera (~150 px) con degradé hacia el fondo y los controles en pastillas translúcidas encima. **Nunca hay foto detrás de cifras o tablas.**
+- Fondos que suben de luz por capa (#0a0a0a → #111113 → #18181b), borde #27272a, **sin sombras**; la selección se invierte (pastilla clara).
+- Barras normales en gris claro; se colorean solo con un estado.
+- Foto solo en la franja de cabecera (~150 px) con degradé hacia el fondo y controles en pastillas translúcidas.
+- **Ningún color escrito a mano en el HTML:** avatares, rayitas y pastillas salen de variables que cambian con `[data-tema=oscuro]`. Cuadros de tipo al 18 %.
+
+### Documentos y correos (`guias/documentos.md` · `ejemplos/documentos/`)
+- Hoja A4 (210 × 297 mm) con `@page{size:A4;margin:12mm 14mm 14mm}` y "Hoja N de M" en las cajas del margen.
+- El oscuro vive dentro de `@media screen`: papel y PDF siempre claros. Al imprimir, fuera sombras, radios y lo `.solo-pantalla`; `print-color-adjust:exact` en todo color que deba salir.
+- Animaciones con estado final como base (si la impresión las corta, quedan completas).
+- Páginas fijas: una `.hoja` por página con `break-after:page`; largo variable: `break-inside:avoid` y `thead{display:table-header-group}`. Imprimí a PDF y contá las hojas.
+- El total es el único bloque relleno; cada concepto dice por qué se cobra; el estado cambia el contenido (cobrada reemplaza "Cómo pagar").
+- Informe con titular que dice la conclusión y 2–3 cifras reales debajo.
+- Correos: tablas de 600 px con estilos en línea, sin íconos de fuente, SVG, flex ni variables; un solo botón con versión VML; oscuro con clases `em-*` y `[data-ogsc]`.
+
+---
 
 ## 6. Textos e íconos (análisis 14)
-- **Un solo juego de íconos con dos pesos: Phosphor** (`@phosphor-icons/react` o `@phosphor-icons/web`). La versión *regular* va en todo lo normal y la *fill* en el ítem activo del menú y dentro de los cuadritos de color. El tamaño es 17 px en el menú y los botones, y 14–15 px en botones chicos y pies de tarjeta. Prohibido mezclar juegos de íconos.
-- **Íconos grises en la interfaz.** El color va solo:
-  - dentro de un cuadro de estado o de tipo;
-  - en el cuadradito de color de cada entidad, con el ícono relleno en blanco (proyectos del menú, títulos de tarjeta);
-  - en el logo del proveedor (Meet, Gmail) dentro de un cuadro blanco con borde.
-- **Cada ícono dice algo:** billetera para el pipeline, sello para lo ganado, diana para la tasa, teléfono para los seguimientos, tendencia ↗/↘ para la variación. Nada de un ícono genérico repetido.
-- Avatares con foto, ilustración (estilo de 06) o monograma pastel con iniciales. Varios juntos van en pila superpuesta con borde blanco de 2,5 px.
-- Títulos funcionales que dicen qué hay. Saludo personal solo en el inicio ("Buenas tardes, Ana").
-- Metadatos útiles: "3 de 6 hechas · Vence 9 dic", "hace 2 min", "vuelve mañana 09:00".
-- Sin taglines, ayudas obvias ni rótulos de relleno.
+
+### Textos (`guias/textos.md`)
+- **Voseo y tipo oración**, sin signos de exclamación ni emojis. El dato primero; una idea por frase; el sistema se hace cargo ("No pudimos…"); nombres, no categorías.
+- **Mismo nombre para lo mismo** en botón, pastilla, filtro, toast e historial ("Registrar cobro" → "Cobro registrado").
+- **Límites:** botón 3 palabras; ítem de menú 2; título de página 3; subtítulo 3 datos; toast 60 caracteres; metadato 3 piezas con " · "; pastilla 1–2 palabras; ayuda una línea; error 2 frases.
+- **Títulos** funcionales que nombran; el subtítulo cuenta cómo está. Saludo solo en el inicio, según la hora de Argentina.
+- **Errores:** qué pasó + qué hacer, en el lugar, sin códigos a la vista; si los datos quedaron a salvo, decilo.
+- **Toast:** participio + código + monto; consecuencia; Deshacer. Prohibido "exitosamente", "correctamente", "¡Listo!".
+- **Estados:** nombres estándar en el género de la entidad ("Cobrada" / "Cobrado"); "Por + verbo" para lo que espera acción ("Por cobrar").
+- **Vacíos, tres casos:** primera vez (invita a crear), al día (buena noticia sin botón de crear), filtro sin resultados (nombra el filtro y ofrece limpiarlo).
+- **Plurales resueltos en el código**; nunca "(s)", "null", "undefined", "N/A".
+- Sin jerga de base de datos ("registro", "ítem", "usuario", "entidad"): el objeto real o la persona por su nombre.
+- Metadatos útiles ("3 de 6 hechas · Vence 9 dic", "vuelve mañana 09:00"). Sin taglines ni ayudas obvias.
+
+### Íconos (`guias/iconos.md` · `ejemplos/iconos.html`)
+- **Un solo juego: Phosphor 2.1.x**, solo *regular* y *fill*. Nunca thin, light, bold ni duotone; nunca mezclar juegos.
+- **Un concepto, un ícono:** buscalo en el mapa de `guias/iconos.md` §7. Un ícono nunca representa dos conceptos. Para uno nuevo, verificá que exista y sumalo al mapa y al `MAPA` de `ejemplos/iconos.html` con su "No usar".
+- **Fill solo en:** el ítem activo (menú, barra inferior), sobre fondo de color sólido (cuadradito de entidad, botón principal) y accesos rápidos del celular.
+- **Tamaños:** 13 en texto, 14–15 en pies y botones chicos, 17 en menú y botones, 16 en cuadro de 32, 18 en uno de 36, 19–20 en uno de 40. Nunca más de 22.
+- **Grises por defecto.** Color solo dentro de un cuadro: de tipo (familia al 12 %, 18 % en oscuro), de estado, de entidad (fill blanco) o logo de proveedor con su color dentro de un cuadro blanco con borde. Sueltos con color, solo `trend-up`/`trend-down` y el `warning-circle` del pie del KPI.
+- El cuadro dice el **tipo**; la pastilla dice el **estado**. Solo los avisos que son un estado usan cuadro de estado. Una variante de cuadro por lista.
+- Cada ícono dice algo (billetera para el valor del pipeline, sello para lo ganado, diana para la tasa). Avatares: foto, ilustrado o monograma pastel.
+
+### Ilustraciones (`ilustraciones/*.svg` · `ejemplos/ilustraciones.html`)
+- Todo vacío, error o momento (bienvenida, éxito, proceso largo) usa las de `ilustraciones/`; nunca un ícono suelto agrandado ni otro estilo. Para una nueva: viewBox 200×160, trazo 1,3 redondeado, círculo guía punteado r 58, piso en y=128, una cara rayada, un solo elemento en acento.
+- **Pegalas en línea** (`<svg>` en el HTML o JSX), nunca `<img>`. Variables en `:root`: `--ilus-trazo: color-mix(in oklch, var(--acento) 30%, var(--texto-3))`, `--ilus-acento: var(--acento)` (en oscuro, 62 % con blanco), `--ilus-papel: var(--superficie)`. Si se repite en la página, renombrá el id del `<pattern>`.
+- Tamaño: 160–180 en página o tarjeta, 96–120 en hoja o panel, 64 en fila; menos, ícono.
+- Detrás, un `radial-gradient` del acento al 7 % (12 % en oscuro; verde si es éxito). Nunca fondo lleno.
 
 ## 6b. Vacío, cargando y error (toda pantalla los tiene)
-- **Cargando:** esqueletos con la forma final (bloques `bg-suave` con brillo suave que pasa), nunca un spinner en el medio de la pantalla. Si tarda menos de 300 ms, no mostrar nada.
-- **Vacío:** ilustración de línea chica (como la tarjeta de plan de 06), una frase que dice qué va a aparecer acá y el botón que lo crea: "Todavía no hay oportunidades. Cargá la primera y aparece en el pipeline. [+ Nueva oportunidad]". Si un filtro es lo que deja la pantalla vacía, decirlo y ofrecer limpiarlo.
-- **Error:** en el lugar, no en un modal. Qué pasó en palabras de la persona y "Reintentar". Los datos que ya estaban quedan a la vista.
-- **Guardando:** el botón dice "Guardando…" con el ancho fijo, y después éxito en el lugar (fila teñida y toast con Deshacer).
+- **Cargando:** esqueletos con la forma final y brillo que pasa; nada si tarda menos de 300 ms (`CargaDiferida`); nunca spinner en el medio. Proceso largo: ilustración animada + barra con avance, cantidad y tiempo restante + "Podés seguir usando el sistema".
+- **Vacío:** ilustración, título display 20/500, una frase con un dato real y como máximo dos botones, uno relleno. Los tres casos de §6 Textos; con filtro, "Limpiar «X»".
+- **Error:** en el lugar, no en modal (`ErrorEnLugar`: `bloque` reemplaza lo que no llegó, `banda` arriba de datos viejos, `linea` en una fila o pie). Qué pasó y "Reintentar"; los datos que ya estaban quedan a la vista; nota mono gris con código y hora ("ERR-504 · 17 nov 15:42") y el detalle técnico detrás de "Ver detalle".
+- **Guardando:** ancho fijo y gerundio; después éxito en el lugar.
+- **Sin conexión:** en el dato o en la barra ("Sin conexión · se guarda al volver"), nunca un cartel que tape.
 
-## 6c. Formato de datos
-- **Números:** usar `Intl.NumberFormat` con el idioma del sistema (en español: `1.234.567,89`). Montos grandes en tarjetas, abreviados ("US$ 184,2 mil", "$ 1,2 M"), y completos en tablas.
-- **Moneda:** siempre con su símbolo o código ("US$", "$"). Si conviven monedas, el código va en gris y nunca se suman.
-- **Fechas:** relativas si son cercanas ("hace 2 min", "ayer 16:00", "mañana") y cortas si no ("9 dic", "9 dic 2025" si es de otro año). Hora en 24 h donde se use así.
-- **Porcentajes y deltas:** "+12,4 %" con espacio fino antes del %, flecha y período.
-- **Vacíos:** "—" en gris, nunca "0" si no hay dato, ni "null" o "undefined".
+## 6c. Formato de datos (`componentes/datos/formato.ts`)
+- Todo número y fecha sale de `formato.ts` (es-AR, zona America/Argentina/Buenos_Aires). Nada de `toLocaleString()` suelto ni `new Date()` del navegador para decidir "hoy"; las fechas `YYYY-MM-DD` son día calendario, sin pasar por UTC.
+- **Números:** `1.234.567,89`. En tarjetas, abreviados ("US$ 184,2 mil", "$ 1,2 M"); en tablas, completos.
+- **Moneda:** siempre con símbolo o código; si conviven monedas, el código en gris y **nunca se suman**.
+- **Fechas:** relativas si son cercanas ("hace 2 min", "ayer 16:00", "mañana"), cortas si no ("9 dic", "9 dic 2025" si es de otro año). 24 h.
+- **Porcentajes y deltas:** "+12,4 %" con espacio fino, signo menos tipográfico, flecha y período.
+- **Vacíos:** "—" en gris; nunca "0" si no hay dato.
+- Pasá los formatos por nombre (`formato="montoCorto"`), nunca como función, para poder usar el componente desde un Server Component.
 
-## 6d. Accesibilidad y uso real
-- Contraste AA: el texto normal sobre su fondo da 4,5:1 o más. `texto-3` solo para metadatos, nunca para texto que haya que leer para decidir.
+## 6d. Accesibilidad
+- Contraste AA (§4d). El estado nunca va solo por color: palabra, ícono o forma.
 - Foco visible en todo lo clickeable: anillo de 2 px del acento con 2 px de separación (`focus-visible:ring-2 ring-acento/40 ring-offset-2`).
-- Toques de 44 px como mínimo en celular. Los íconos sin texto llevan `aria-label` y tooltip.
-- El estado nunca va solo por color: siempre palabra, ícono o forma.
-- Teclado: ⌘K busca, Esc cierra, Enter confirma, flechas en listas. Las acciones frecuentes no se animan.
-- `prefers-reduced-motion`: sin cuentas ni dibujos animados, aparece directo.
+- **Todo lo clickeable es `<button>` o `<a href>`**, nunca un `div` con cursor de mano. Casillas de tildar: `<button role="checkbox" aria-checked aria-label="…">`.
+- Botones de solo ícono con `aria-label` (obligatorio por tipo) y tooltip; el tooltip se abre con mouse o foco de teclado, nunca con el toque, y pasa sin espera al vecino. Un punto de aviso sobre un ícono exige que el botón lo diga ("Avisos, 3 sin leer").
+- Toques de 44 × 44 a menos de 768 px; si el dibujo es más chico, agrandá el área con `::after` o padding.
+- Teclado: ⌘K busca, `/` enfoca la búsqueda, Esc cierra y devuelve el foco, Enter confirma, flechas en listas y menús (Inicio/Fin, salto por letra). El resaltado del menú sigue un índice activo (`data-activo`) compartido por teclado y mouse, no `:focus`.
+- Hojas y modales: portal, foco atrapado, Esc cierra, el foco vuelve a quien la abrió, la página no scrollea.
+- Cambios por arrastre o en lote se anuncian en `aria-live`. Imágenes con `alt` (`alt=""` si son decorativas); ilustraciones `aria-hidden`.
+- `prefers-reduced-motion`: sin cuentas ni dibujos; el estado final se ve igual.
 
 ## 6e. Del escritorio al celular
-- Menos de 1280 px: los KPIs pasan a 2 columnas, las tarjetas de entidad a 2 y el panel lateral baja abajo.
-- Menos de 768 px:
-  - Sin barra lateral: va barra inferior de 4 íconos con el activo en pastilla.
-  - Una columna, con márgenes de 16.
-  - La acción principal en píldora negra fija abajo.
-  - Las tablas pasan a tarjetas de 2 líneas (título y monto arriba, estado y fecha abajo).
-- La cifra protagonista sigue arriba. Lo que se ve primero en celular es lo que hay que hacer hoy.
+- **Cortes únicos:** < 1280 px los KPIs y las tarjetas de entidad pasan a 2, el panel lateral baja y la barra lateral pasa a riel de íconos; **< 768 px es celular**. Si un ejemplo usa otro corte, manda este.
+- Celular: sin barra lateral (barra inferior de 4), una columna con márgenes de 16, acción principal en la píldora fija y **no repetida en la cabecera** (`ocultarAccionesEnCelular`).
+- **Tablas → tarjetas de 2 líneas por CSS** (mismo HTML; áreas por columna): nombre y monto arriba, estado y fecha abajo, casilla con área de 44. Sin encabezado ni pie de cálculo.
+- **Ficha de varias columnas → una columna con segmentado fijo arriba** (Actividad / Resumen / Datos, abre en Actividad); nunca las tres apiladas.
+- Hoja lateral → hoja inferior con agarre; KPIs y kanban en carrusel con `scroll-snap`; filtros que se deslizan de costado.
+- Grillas con `minmax(0,1fr)`; números largos (CVU, alias) con `word-break:break-all`. Nunca scroll horizontal de página: lo ancho se desplaza dentro de su tarjeta.
+- Para mostrar pantallas de celular lado a lado en una galería: cada una a 390 reales achicada con `zoom`; a < 600 px, una sola pantalla real que navega.
+
+## 6f. Movimiento (`guias/movimiento.md` · `ejemplos/movimiento.html`)
+- **Prueba de la frecuencia:** lo que la misma persona ve cientos de veces por día (⌘K, pestañas, filtros, tipeo) aparece directo; decenas, solo opacidad o ≤ 180 ms; pocas, completo.
+- **Solo tokens:** 120 / 180 / 240 / 320 ms en la interfaz, 700 para contar, 900 para dibujar (total ≤ 1,2 s); escalón de 35 ms, tope 8 ítems y 300 ms, solo en la primera carga.
+- **Curvas:** `--ease` para casi todo, `--ease-mover` para lo que ya está y cambia de lugar, `--ease-resorte` solo en confirmaciones. Nunca `ease-in` ni `transition: all`; `linear` solo en el brillo del esqueleto y la barrita del toast.
+- Solo `transform` y `opacity` (y `stroke-dashoffset`). Salidas más rápidas que entradas (240 → 180); se entra desde 4–8 px o desde el borde de la capa; escala mínima 0,96, nunca `scale(0)`.
+- Barra lateral, barra superior y migas nunca entran animadas. Los datos que se refrescan cuentan desde su valor anterior, no desde 0.
+- Lo que abre y cierra (hoja, menú, modal) va con clase + `transition` para poder interrumpirse. Las piezas que aparecen usan `starting:` (`@starting-style`) con `motion-reduce:transition-none`; JS solo para contar (`<Cuenta>`, con el valor final ya en el HTML).
+- **Las capas flotantes viven fuera de todo contenedor con `transform`** (rompe `position: fixed`).
+- Hover que mueve, siempre dentro de `@media (hover: hover)`. Filas: solo fondo; tarjetas clickeables: suben 2 px con sombra de hover.
+- Cambio de vista: fundido + escala .985 + desenfoque 4 px (~140 ms sale, ~300 ms entra).
+- Reduced-motion: distancias × `--mueve` (0) y dibujos a fundido de 120 ms.
+
+## 6g. Implementación (React + Tailwind v4)
+- Tokens con nombres en español (`bg-fondo`, `text-tinta`, `rounded-tarjeta`, `shadow-min`); recetas en `ejemplos/recetas-tailwind.md`, piezas en `componentes/`.
+- Oscuro por `[data-tema=oscuro]` con la variante `[[data-tema=oscuro]_&]:`, nunca `dark:` (en v4 sigue al sistema operativo). Lo invertido se escribe `bg-tinta text-superficie`.
+- Controles a 44 px con `pointer-coarse:`; campos a 16 px por debajo de `sm`.
+- Un `sticky` que muestra globos o menús lleva `z-index` (arma su propio contexto).
+- Colores de SVG por variable en `style={{ fill, stroke, stopColor }}`, no como atributo; patrones y degradés en un `<svg>` oculto compartido.
+- Preferencias por persona (tema, vista, columnas) en `localStorage` dentro de try/catch; los datos nunca.
+
+---
 
 ## 7. Antipatrones (si aparece uno, rehacer)
-- Fondos o menús de marca **saturados**, que compiten con los datos. Un tono de marca apagado (azul marino, verde petróleo) sí va. Tampoco van degradés decorativos ni sombras marcadas en tarjetas.
-- Neutros de tintes distintos mezclados en un mismo sistema.
-- Varios botones rellenos o botones de color por acción (verde guardar, rojo borrar).
-- Filas pintadas por estado o pastillas saturadas con texto blanco.
-- Estado comunicado solo con color.
-- Encabezados de tabla en MAYÚSCULA negrita, grillas con líneas verticales o tarjetas dentro de tarjetas.
-- KPI sin contexto, porcentaje sin período o número coloreado.
-- Torta para mostrar avance.
-- Una sola letra "neutra" (Geist o Inter sola) en todo, o tres o más familias. Van dos voces (display + interfaz) y una mono. Tampoco 700 en todos lados.
-- Íconos de juegos mezclados, o todos del mismo peso sin un activo relleno.
-- Formularios que reemplazan la página para editar algo menor.
-- Modal de confirmación para algo reversible.
-- Foto detrás de datos o texto blanco sobre foto sin degradé.
+- Fondos o menús de marca **saturados**; degradés decorativos; sombras marcadas o negras.
+- Neutros de tintes distintos mezclados; `#000` sobre `#fff`; texto más claro que `texto-3`.
+- Dos botones rellenos a la vista, o botones de color por acción (verde guardar, rojo borrar).
+- Filas pintadas por estado o pastillas saturadas con texto blanco; estado solo con color.
+- Encabezados en MAYÚSCULA negrita, líneas verticales fuera de la grilla tipo planilla, tarjetas dentro de tarjetas con borde.
+- KPI sin contexto, porcentaje sin período, número coloreado, delta coloreado por el signo; torta para avance.
+- Una sola familia tipográfica o tres; 700; tamaños fuera de la escala; texto de menos de 12 px.
+- Espacios simétricos o iguales para todo; separar con tarjeta + borde + título + divisor + fondo a la vez; achicar letra para que entre.
+- Todo en `tinta` 500; rótulo más fuerte que su valor; títulos que solo nombran sin subtítulo con cifras; lo urgente al fondo.
+- Íconos de juegos mezclados, de color sueltos, o sin el activo en fill.
+- Formularios que reemplazan la página para algo menor; asteriscos rojos; rojo mientras se escribe; botón deshabilitado sin motivo.
+- Modal de confirmación para algo reversible; filas que desaparecen al resolverse.
+- Spinner a pantalla completa; vacío sin acción ni dato; "null", "(s)", "exitosamente".
+- Foto detrás de datos o texto blanco sobre foto sin degradé; color escrito a mano que no cambia en oscuro.
+- Sumar monedas distintas.
+- En un overhaul: renombrar o "limpiar" una firma de datos, borrar un comportamiento, mezclar tokens globales con piezas en un commit, apagar la guardia.
 
-## 8. Antes de entregar una pantalla
-1. ¿Hay un solo botón relleno? ¿Las acciones de la fila están en la fila?
-2. ¿Tiene vida? Color por entidad, cifras con dibujo, un protagonista, caras y movimiento al cargar. ¿Usa la letra display con títulos grandes y livianos? Ponela al lado de 06 y 08: si se ve más pobre o más plana, no está terminada.
-2b. ¿La cabecera tiene un subtítulo con cifras reales? ¿Cada KPI tiene contexto y lleva a su lista?
-3. ¿Los colores entran en el conteo (1 acento, estados con palabra, datos ≤ 6)? ¿Lo normal quedó neutro, con el tinte del sistema, y los estados siguen siendo lo único que resalta?
-4. ¿Los radios van en capas (26/20/16/12/8)? ¿Los espacios están en la escala? ¿Las sombras son suaves en sus tres niveles? ¿Los íconos son de un solo juego, con el activo relleno?
-5. ¿Los montos llevan `tabular-nums`, van a la derecha y tienen la moneda y los centavos en gris?
-6. ¿Toda acción reversible tiene Deshacer y el éxito se ve en el lugar?
-7. ¿Funciona a 390 px de ancho (toques de 44 px, acción fija abajo) y en oscuro? ¿Tiene sus estados vacío, cargando y error? ¿Los números y fechas tienen el formato de la sección 6c?
-8. Probala en el navegador, compará contra la referencia del mismo tipo de pantalla y mirá a 2× los bordes, las alineaciones y los números.
+## 8. Antes de entregar
+1. **Revisor:** `node scripts/revisar.mjs <pantalla>`, con `--celular` y `--oscuro` → **≥ 85 en 1440, 390 y oscuro**. Con 85 igual se compara a ojo.
+2. **Referencias:** captura al lado de la referencia del mismo tipo y de 06, 07, 08 y 14; si se ve más pobre o más plana, no está terminada. Mirá a 2× bordes, alineaciones y números.
+3. **Overhaul:** `node scripts/guardia-datos.mjs --base main` en PASA (lo permitido con motivo y OK); typecheck, pruebas y build verdes; misma red y mismos permisos por rol; lista de comportamiento en [x]; informe con capturas del antes y del después.
+4. **Rellenos:** uno por pantalla más uno por capa abierta; acciones de fila en la fila (≤ 2).
+5. **Jerarquía:** prueba de 5 segundos, desenfoque (una mancha por bloque), escala de grises, ≤ 3 textos en `tinta` 500 por tarjeta, ≤ 3 tamaños y ≤ 2 pesos.
+6. **Espacios:** todos de §4a; adentro ≤ la mitad de afuera; título de sección 40/12; un borde izquierdo por columna.
+7. **Legibilidad:** nada < 12 px, contraste AA, interlineado por tamaño, texto corrido ≤ 72 caracteres, truncado al final.
+8. **Vida:** color por entidad, cifras con dibujo, un protagonista, caras, movimiento al cargar; letra display con títulos grandes y livianos.
+9. **Cabecera y KPIs:** subtítulo con cifras reales; cada KPI con contexto, delta por sentido y link a su lista.
+10. **Color:** 1 acento, estados con palabra, datos ≤ 6, lo normal neutro con el tinte del sistema; nada escrito a mano que no cambie en oscuro.
+11. **Radios, sombras e íconos:** radios en capas de `tokens.css`; sombras suaves en sus niveles; Phosphor regular + fill activo, cada concepto con su ícono del mapa.
+12. **Datos:** montos `tabular-nums` a la derecha con moneda y centavos en gris, sin sumar monedas; números y fechas de `formato.ts`; "—" para lo vacío.
+13. **Estados:** vacío (los tres casos), cargando con esqueleto, error en el lugar con Reintentar, guardando con ancho fijo, éxito en el lugar con Deshacer.
+14. **Textos:** pasada la lista de `guias/textos.md` §14 (incluido el grep de palabras prohibidas).
+15. **Celular:** a 390 sin scroll horizontal, toques de 44, acción fija abajo y no repetida arriba, tablas en tarjetas, inputs de 16.
+16. **Teclado y lector:** todo alcanzable con Tab, foco visible, Esc cierra, `aria-label` en íconos, gráficos con "Ver como tabla".
+17. **Movimiento:** tokens, `prefers-reduced-motion` probado, nada animado en el marco ni en acciones de cientos de veces por día.
+18. **Peor caso:** nombre de 60 caracteres, monto de 9 cifras, 0 y 40 elementos: el foco sigue en su lugar.
+19. **Transversales:** las 10 reglas de §1c, una por una.

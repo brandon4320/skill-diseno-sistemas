@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" width="200" height="160" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-ilus="bienvenida">
+  <defs>
+    <pattern id="ray-bienvenida" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <path d="M0 0v4" stroke="currentColor" stroke-width=".8" stroke-opacity=".5"/>
+    </pattern>
+  </defs>
+  <g class="ilus-guia" stroke-width="1" stroke-opacity=".34">
+    <circle cx="100" cy="76" r="58" stroke-dasharray="1.5 4.5"/>
+    <path d="M100 6v8M28 76h6M166 76h6" />
+    <path d="M36 128h128"/>
+    <path d="M24 128h6M170 128h6" stroke-dasharray="1 3"/>
+  </g>
+
+  <path d="M92 50L44 36v34l48-14z" fill="var(--ilus-acento, #6d63ff)" fill-opacity="0.09" stroke="none"/>
+  <path d="M108 50l48-14v34l-48-14z" fill="var(--ilus-acento, #6d63ff)" fill-opacity="0.09" stroke="none"/>
+  <g stroke="var(--ilus-acento, #6d63ff)" stroke-opacity=".75" class="ilus-haz">
+    <path d="M92 50L44 36M92 56L44 70M108 50l48-14M108 56l48 14"/>
+  </g>
+  <path d="M88 128l5-62h14l5 62z" fill="var(--ilus-papel, #fff)"/>
+  <path d="M90.4 98l1-12h17.2l1 12z" fill="url(#ray-bienvenida)"/>
+  <path d="M88.5 122l1-12h21l1 12z" fill="url(#ray-bienvenida)"/>
+  <path d="M90.4 98h19.2M91.4 86h17.2M89.5 110h21M88.5 122h23" stroke-opacity=".55"/>
+  <path d="M97 128v-7a3 3 0 0 1 6 0v7"/>
+  <rect x="86" y="60" width="28" height="6" rx="2" fill="var(--ilus-papel, #fff)"/>
+  <rect x="92" y="46" width="16" height="14" rx="2" fill="var(--ilus-papel, #fff)"/>
+  <rect x="92" y="46" width="16" height="14" rx="2" fill="var(--ilus-acento, #6d63ff)" fill-opacity="0.2" stroke="var(--ilus-acento, #6d63ff)"/>
+  <path d="M100 46v14" stroke="var(--ilus-acento, #6d63ff)" stroke-opacity=".6"/>
+  <path d="M89 46l11-10 11 10z" fill="var(--ilus-papel, #fff)"/>
+  <path d="M100 36v-5"/>
+  <g stroke-opacity=".6">
+    <path d="M40 136c5-2.6 9-2.6 14 0s9 2.6 14 0"/><path d="M132 136c5-2.6 9-2.6 14 0s9 2.6 14 0"/>
+  </g>
+  <path d="M138 22l4 3 4-3M150 28l3 2.2 3-2.2" stroke-opacity=".7"/>
+  <path d="M52 19v6M49 22h6"/><circle cx="62" cy="104" r="1.3" fill="currentColor" stroke="none" opacity=".5"/><circle cx="146" cy="96" r="1.6" fill="var(--ilus-acento, #6d63ff)" stroke="none"/>
+</svg>

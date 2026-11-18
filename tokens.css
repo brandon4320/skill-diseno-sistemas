@@ -10,8 +10,8 @@
  *   --color-superficie: oklch(1 0 0);
  *   --color-borde:      oklch(0.92 0.012 H);
  *   --color-tinta:      oklch(0.21 0.015 H);
- *   --color-texto-2:    oklch(0.52 0.02 H);
- *   --color-texto-3:    oklch(0.68 0.015 H);
+ *   --color-texto-2:    oklch(0.48 0.02 H);   (AA sobre superficie y bandeja)
+ *   --color-texto-3:    oklch(0.56 0.018 H);  (AA 4,5:1: es el gris más claro permitido para leer)
  */
 @theme {
   /* Dos voces + mono: display para títulos y cifras, interfaz para el resto */
@@ -31,8 +31,9 @@
 
   /* Texto: tres grises, nunca #000 */
   --color-tinta: #18181b;
-  --color-texto-2: #71717a;
-  --color-texto-3: #a1a1aa;
+  --color-texto-2: #565b68;   /* rótulos: 6,9:1 sobre blanco */
+  --color-texto-3: #646979;   /* metadatos: 4,5:1 o más también sobre la bandeja; el gris más claro para cualquier texto (placeholders incluidos) */
+  --color-deshabilitado: #a1a1aa; /* solo íconos decorativos y bordes punteados: nunca texto */
 
   /* Acento: uno solo por sistema (botón principal, ítem activo, toggles, foco, no leído) */
   --color-acento: var(--acento, #18181b);
@@ -57,6 +58,20 @@
   --radius-control: 12px;  /* botones, campos, buscador, íconos en cuadro */
   --radius-chip: 8px;      /* botón chico, pastilla, etiqueta */
 
+  /* Espacios: escala única (px). Lo relacionado más cerca que lo distinto: adentro ≤ la mitad de afuera. */
+  --espacio-1: 2px;   /* rótulo ↔ su valor (2–4) */
+  --espacio-2: 4px;   /* ícono ↔ texto chico, título ↔ subtítulo */
+  --espacio-3: 6px;   /* rótulo de campo ↔ campo, chips entre sí */
+  --espacio-4: 8px;   /* ícono ↔ texto, botones entre sí, ítems de menú */
+  --espacio-5: 12px;  /* título de sección ↔ su contenido, gap interno de tarjeta */
+  --espacio-6: 16px;  /* padding de tarjeta, entre filas de datos, entre campos densos */
+  --espacio-7: 20px;  /* padding de tarjeta grande, entre campos de formulario */
+  --espacio-8: 24px;  /* padding del panel, entre grupos de un formulario */
+  --espacio-gap: 14px; /* única excepción: gap entre tarjetas de una grilla */
+  --espacio-9: 28px;  /* entre bloques grandes de una pantalla */
+  --espacio-10: 40px; /* (28 en pantallas de operación y celular) */
+  --espacio-11: 32px; /* entre secciones de un formulario largo */ /* aire sobre un título de sección */
+
   /* Sombras: suaves, del tono de la tinta */
   --shadow-min: 0 1px 2px rgb(22 24 29 / 0.05);                        /* botones, tarjeta interna, ítem activo */
   --shadow-hover: 0 14px 30px -18px rgb(22 24 29 / 0.3);               /* tarjeta clickeable al pasar el mouse (+ subir 2px) */
@@ -71,7 +86,7 @@
   --color-fondo: #0a0a0a; --color-panel: #111113; --color-superficie: #18181b;
   --color-suave: #232326; --color-hover: #1f1f22; --color-borde: #27272a;
   --color-borde-fuerte: #3f3f46; --color-divisor: #202023;
-  --color-tinta: #fafafa; --color-texto-2: #a1a1aa; --color-texto-3: #71717a;
+  --color-tinta: #fafafa; --color-texto-2: #b4b4bd; --color-texto-3: #8f8f9a;
   --color-verde-fondo: #22c55e1f; --color-verde-texto: #4ade80;
   --color-ambar-fondo: #f5b8001f; --color-ambar-texto: #fbbf24;
   --color-rojo-fondo: #ef44441f;  --color-rojo-texto: #f87171;

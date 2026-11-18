@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Factura A 0003-00001287 · Estudio Faro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+/* ── Tokens (los mismos de tokens.css; el oscuro es solo de pantalla: el papel siempre es claro) ── */
+:root{
+  --lienzo:#e8eaee; --superficie:#fff; --bandeja:#f4f5f7; --suave:#f0f1f4; --hover:#f7f8fa;
+  --borde:#e6e8ec; --divisor:#eef0f3;
+  --tinta:#16181d; --texto-2:#565b68; --texto-3:#6b7080;
+  --acento:#4f46e5;
+  --verde:#15803d; --verde-f:#ebf8f0; --ambar:#b45309; --ambar-f:#fdf3e1; --rojo:#b91c1c; --rojo-f:#fdecec; --azul:#1d4ed8; --azul-f:#e9f1fd; --gris-f:#f0f1f4;
+  --e1:#3b6fe0; --e2:#d6336c; --e3:#b4561c; --e4:#25a866; --e5:#7c5ce0;
+  --display:'Outfit',sans-serif; --ui:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --s-min:0 1px 2px rgb(22 24 29/.05); --s-hoja:0 1px 2px rgb(22 24 29/.04),0 40px 80px -40px rgb(22 24 29/.28);
+  --s-flot:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
+  --ease:cubic-bezier(.23,1,.32,1); --neg:#16181d; --neg-t:#fff;
+}
+@media screen{
+  [data-tema=oscuro]{
+    --lienzo:#050506; --superficie:#151518; --bandeja:#0f0f12; --suave:#1d1d21; --hover:#1a1a1e;
+    --borde:#26262b; --divisor:#1f1f23; --tinta:#f4f4f5; --texto-2:#b4b4bd; --texto-3:#8f8f9a;
+    --verde:#4ade80; --verde-f:rgb(34 197 94/.13); --ambar:#fbbf24; --ambar-f:rgb(245 184 0/.13); --rojo:#f87171; --rojo-f:rgb(239 68 68/.13); --azul:#60a5fa; --azul-f:rgb(59 130 246/.13); --gris-f:#232327;
+    --s-min:none; --s-hoja:0 40px 80px -40px rgb(0 0 0/.9); --neg:#f4f4f5; --neg-t:#16181d;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--ui);background:var(--lienzo);color:var(--tinta);font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .3s}
+button{font:inherit;color:inherit}
+.ph,.ph-fill{font-size:17px;line-height:1}
+.num{font-variant-numeric:tabular-nums}
+/* En papel todas las cifras alinean: los atajos font: no pisan las cifras tabulares */
+.hoja,.hoja *{font-variant-numeric:tabular-nums!important}
+.mono{font-family:var(--mono)}
+.g{color:var(--texto-3)}
+
+/* ── Barra de la vista previa (no se imprime) ── */
+.barra{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;padding:12px 20px;background:color-mix(in oklch,var(--lienzo) 82%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.barra .der{margin-left:auto;display:flex;gap:8px;align-items:center}
+.volver{width:36px;height:36px;border-radius:11px;border:1px solid var(--borde);background:var(--superficie);display:grid;place-items:center;color:var(--texto-2);box-shadow:var(--s-min);text-decoration:none;flex:none}
+.seg{display:inline-flex;background:var(--bandeja);border:1px solid var(--borde);padding:3px;border-radius:12px;gap:2px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg a,.seg button{border:0;background:none;height:28px;padding:0 11px;border-radius:9px;font-weight:600;font-size:12.5px;color:var(--texto-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none;white-space:nowrap}
+.seg .on{background:var(--superficie);color:var(--tinta);box-shadow:0 1px 2px rgb(22 24 29/.1),0 0 0 1px var(--borde)}
+[data-tema=oscuro] .seg .on{background:#f4f4f5;color:#16181d}
+.seg .ph,.seg .ph-fill{font-size:15px}
+.btn{height:36px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:13px;border:1px solid var(--borde);background:var(--superficie);cursor:pointer;box-shadow:var(--s-min);transition:transform .15s var(--ease),background .15s;white-space:nowrap;text-decoration:none}
+.btn:hover{background:var(--hover)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible,.seg a:focus-visible,.seg button:focus-visible,.volver:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 45%,transparent);outline-offset:2px}
+.btn.neg{background:var(--neg);border-color:var(--neg);color:var(--neg-t);box-shadow:inset 0 1px 0 rgb(255 255 255/.12),0 4px 10px -2px rgb(22 24 29/.35)}
+.btn.chico{height:28px;padding:0 10px;border-radius:9px;font-size:12px;gap:6px}
+.btn.chico .ph{font-size:14px}
+.demo{font:500 12px var(--mono);color:var(--texto-2);border:1px dashed var(--borde);border-radius:7px;padding:3px 7px;white-space:nowrap}
+
+/* ── Hoja A4 ── */
+.hoja{width:210mm;min-height:297mm;margin:12px auto 64px;background:var(--superficie);border:1px solid var(--borde);border-radius:20px;padding:16mm 15mm 14mm;box-shadow:var(--s-hoja);position:relative;overflow:hidden;display:flex;flex-direction:column;animation:entra .6s var(--ease) both}
+.hoja::before{content:"";position:absolute;inset:0 0 auto 0;height:260px;background:radial-gradient(60% 120% at 92% -30%,rgb(109 99 255/.10),transparent 62%),radial-gradient(40% 90% at 0% -40%,rgb(59 111 224/.06),transparent 60%);pointer-events:none}
+.hoja>*{position:relative}
+@keyframes entra{from{opacity:0;transform:translateY(10px)}}
+
+/* Cabecera */
+.cab{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:start}
+.marca{display:flex;gap:12px;align-items:center}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(140deg,#1d1b2e,#3a3560);display:grid;place-items:center;flex:none;box-shadow:inset 0 1px 0 rgb(255 255 255/.15);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.marca b{font:500 19px/1.1 var(--display);letter-spacing:-.02em;display:block}
+.marca small{font-size:12px;color:var(--texto-3)}
+.emisor{margin-top:14px;font-size:12px;color:var(--texto-2);line-height:1.65}
+.emisor span{color:var(--texto-3)}
+.letra{width:58px;border:1px solid var(--borde);border-radius:12px;background:var(--superficie);text-align:center;padding:6px 0 5px;box-shadow:var(--s-min)}
+.letra b{font:500 30px/1 var(--display);display:block}
+.letra small{font:500 11px var(--mono);letter-spacing:-.02em;color:var(--texto-3)}
+.doc{text-align:right}
+.doc small{font-size:12px;color:var(--texto-2);font-weight:500;display:flex;justify-content:flex-end;gap:6px;align-items:center}
+.doc h1{font:300 44px/1 var(--display);letter-spacing:-.035em;margin-top:6px}
+.doc .nro{font:500 14px var(--mono);margin-top:8px;letter-spacing:-.01em}
+.doc .estado{margin-top:12px;display:flex;justify-content:flex-end}
+.chip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:8px;font-weight:600;font-size:12px;white-space:nowrap;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.v{background:var(--verde-f);color:var(--verde)}.am{background:var(--ambar-f);color:var(--ambar)}.ro{background:var(--rojo-f);color:var(--rojo)}.az{background:var(--azul-f);color:var(--azul)}.gr{background:var(--gris-f);color:var(--texto-2)}
+
+/* Partes: bandeja con tarjeta adentro */
+.partes{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bandeja{background:var(--bandeja);border:1px solid var(--borde);border-radius:16px;padding:4px;display:flex;flex-direction:column;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.bandeja .rot{display:flex;align-items:center;gap:7px;padding:7px 10px 6px;color:var(--texto-2);font-weight:600;font-size:12px}
+.bandeja .rot .ph{font-size:15px;color:var(--texto-3)}
+.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:12px;padding:14px 16px;box-shadow:var(--s-min);flex:1}
+.cliente b{font:500 18px/1.2 var(--display);letter-spacing:-.015em;display:block}
+.cliente p{font-size:12px;color:var(--texto-2);margin-top:6px;line-height:1.6}
+.datos{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px 18px}
+.dato small{display:block;font-size:12px;color:var(--texto-3);font-weight:500}
+.dato b{font-weight:600;font-size:13.5px;display:flex;align-items:center;gap:7px;margin-top:1px}
+.dato b.num{white-space:nowrap}
+.dato b em{white-space:nowrap;font-style:normal;font-weight:500;font-size:12px;color:var(--texto-3)}
+.dato b em.rojo{color:var(--rojo)}
+.cuad{width:16px;height:16px;border-radius:5px;display:grid;place-items:center;color:#fff;flex:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.cuad .ph-fill{font-size:10px}
+
+/* Tabla */
+.sec{display:flex;align-items:baseline;gap:10px;margin:28px 0 10px}
+.sec h2{font:500 17px var(--display);letter-spacing:-.01em}
+.sec span{font-size:12px;color:var(--texto-3);font-weight:500}
+table{width:100%;border-collapse:collapse}
+thead th{font-size:12px;font-weight:500;color:var(--texto-3);text-align:left;padding:0 10px 8px;border-bottom:1px solid var(--borde)}
+thead th.d,td.d{text-align:right}
+tbody td{padding:12px 10px;border-bottom:1px solid var(--divisor);vertical-align:top}
+tbody tr{break-inside:avoid}
+td.con{position:relative;padding-left:18px}
+td.con::before{content:"";position:absolute;left:4px;top:14px;bottom:14px;width:3px;border-radius:3px;background:var(--c);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+td.con b{font-weight:600;font-size:13.5px;display:block}
+td.con small{font-size:12px;color:var(--texto-2)}
+td.d{font-weight:500;white-space:nowrap}
+.cv{color:var(--texto-3);font-size:max(12px,.86em);font-weight:400}
+td .un{color:var(--texto-3);font-size:12px;font-weight:400}
+
+/* Pie: pago + totales */
+.pie{display:grid;grid-template-columns:1fr 300px;gap:16px;margin-top:20px;align-items:start;break-inside:avoid}
+.pago .adentro{display:flex;flex-direction:column;gap:12px}
+.cbu{display:flex;align-items:center;gap:10px}
+.cbu .ico{width:34px;height:34px;border-radius:10px;border:1px solid var(--borde);background:var(--superficie);display:grid;place-items:center;color:var(--texto-2);box-shadow:var(--s-min);flex:none}
+.cbu small{display:block;font-size:12px;color:var(--texto-3);font-weight:500}
+.cbu b{font:500 13px var(--mono);letter-spacing:-.01em}
+.cbu .btn{margin-left:auto}
+.nota{font-size:12px;color:var(--texto-2);padding:4px 10px 6px;display:flex;gap:7px}
+.nota .ph{font-size:15px;color:var(--texto-3);margin-top:1px}
+.cobrada{display:none;align-items:center;gap:12px}
+.cobrada .ico{width:34px;height:34px;border-radius:10px;background:var(--verde-f);color:var(--verde);display:grid;place-items:center;flex:none}
+.cobrada b{font-weight:600;display:block}.cobrada small{font-size:12px;color:var(--texto-2)}
+[data-estado=pagada] .cobrada{display:flex}
+[data-estado=pagada] .cbu{display:none}
+
+.totales{display:flex;flex-direction:column}
+.linea{display:flex;justify-content:space-between;padding:7px 4px;font-size:13px;color:var(--texto-2);border-bottom:1px solid var(--divisor)}
+.linea b{color:var(--tinta);font-weight:500}
+.total{margin-top:12px;border-radius:16px;padding:16px 18px 18px;color:#fff;position:relative;overflow:hidden;
+  background:radial-gradient(120% 140% at 100% 0%,#7b72ff 0%,transparent 55%),linear-gradient(150deg,#3f36c9,#5a50f0 60%,#4b42dc);
+  box-shadow:0 18px 36px -18px rgb(79 70 229/.6),inset 0 1px 0 rgb(255 255 255/.18);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.total::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgb(255 255 255/.10) 1px,transparent 1.2px);background-size:14px 14px;mask:linear-gradient(200deg,#000,transparent 60%);-webkit-mask:linear-gradient(200deg,#000,transparent 60%);pointer-events:none}
+.total small{font-weight:500;opacity:.92;font-size:12px;display:flex;justify-content:space-between}
+.total .n{font:500 32px/1.1 var(--display);letter-spacing:-.03em;margin-top:6px;white-space:nowrap}
+.total .n span{opacity:.88;font-size:19px;font-weight:400;margin-right:4px}
+.total .n i{font-style:normal;opacity:.88;font-size:.6em;font-weight:400}
+.total p{font-size:12px;opacity:.88;margin-top:8px;line-height:1.45}
+
+/* Cierre fiscal */
+.fiscal{margin-top:auto;padding-top:28px;break-inside:avoid}
+.fiscal .banda{display:flex;align-items:center;gap:14px;border-top:1px solid var(--borde);padding-top:14px;font-size:12px;color:var(--texto-2)}
+.fiscal .banda .mono{color:var(--tinta);font-size:12px}
+.fiscal .der{margin-left:auto;text-align:right;color:var(--texto-3)}
+
+/* Toast */
+.toast{position:fixed;right:24px;bottom:24px;background:#16181d;color:#fff;border-radius:16px;box-shadow:var(--s-flot);padding:12px 14px;display:flex;gap:12px;align-items:center;transform:translateY(16px) scale(.98);opacity:0;transition:transform .35s var(--ease),opacity .25s;pointer-events:none;z-index:9}
+.toast.ver{transform:none;opacity:1;pointer-events:auto}
+.toast .ok{width:30px;height:30px;border-radius:10px;background:rgb(31 157 92/.2);color:#4ade80;display:grid;place-items:center}
+.toast b{font-weight:600;font-size:13px;display:block}.toast small{opacity:.6;font-size:12px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ── Celular: la hoja deja de ser A4 y la tabla pasa a filas de dos líneas ── */
+@media screen and (max-width:820px){
+  .hoja{width:auto;min-height:0;margin:8px 16px 48px;padding:24px 20px;border-radius:20px}
+}
+@media screen and (max-width:640px){
+  .barra{padding:10px 16px;flex-wrap:wrap}
+  .barra .der{margin-left:0;width:100%;justify-content:space-between}
+  #estado{flex:1;min-width:0}
+  .barra .txt,.demo{display:none}
+  .cab{grid-template-columns:1fr auto;grid-template-areas:"marca letra" "doc doc"}
+  .cab .marca-col{grid-area:marca}.cab .letra{grid-area:letra}.cab .doc{grid-area:doc;text-align:left}
+  .doc small,.doc .estado{justify-content:flex-start}
+  .doc h1{font-size:36px}
+  .partes,.pie{grid-template-columns:minmax(0,1fr)}
+  .cbu>div{min-width:0}.cbu .btn span{display:none}.cbu .btn{width:44px;height:44px;padding:0;justify-content:center}.cbu b{word-break:break-all}
+  thead{display:none}
+  tbody tr{display:grid;grid-template-columns:1fr auto;padding:12px 0 12px 14px;border-bottom:1px solid var(--divisor);position:relative}
+  tbody td{border:0;padding:0}
+  td.con{grid-column:1/-1;padding-left:0;position:static}
+  td.con::before{left:0;top:14px;bottom:14px}
+  td.cant,td.pu{display:none}
+  td.d.imp{grid-column:2;grid-row:1;padding-left:12px}
+  td.con{grid-column:1;grid-row:1}
+  td.det{display:block!important;grid-column:1/-1;font-size:12px;color:var(--texto-3);margin-top:4px}
+  .fiscal .banda{flex-wrap:wrap}
+  .fiscal .der{margin-left:0;text-align:left}
+  .total .n{font-size:28px}
+}
+td.det{display:none}
+
+/* ── Impresión: A4, sin sombras, sin barra, siempre claro ── */
+/* Toques de 44 px en celular */
+@media screen and (max-width:640px){
+  .seg a,.seg button,.btn,.volver{min-height:44px;min-width:44px}
+  .seg a,.seg button{justify-content:center}
+  .marcar{position:relative}.marcar::before{content:"";position:absolute;inset:-13px}
+}
+
+@page{size:A4;margin:12mm 14mm 14mm;
+  @bottom-left{content:"Estudio Faro S.R.L. · Factura A 0003-00001287";font:400 9pt 'Plus Jakarta Sans',sans-serif;color:#6b7080}
+  @bottom-right{content:"Hoja " counter(page) " de " counter(pages);font:400 9pt 'Plus Jakarta Sans',sans-serif;color:#6b7080}
+}
+@media print{
+  body{background:#fff;font-size:10pt}
+  .barra,.solo-pantalla,.toast{display:none!important}
+  .hoja{width:auto;min-height:262mm;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;overflow:visible;animation:none}
+  .hoja::before{display:none}
+  *,*::before,*::after{box-shadow:none!important;animation:none!important;transition:none!important}
+  .total::after{display:none}
+  .partes{margin-top:20px}.sec{margin:20px 0 8px}.pie{margin-top:16px}.fiscal{padding-top:16px}
+  tbody td{padding:10px}
+  thead{display:table-header-group}
+  .sec,.sec h2{break-after:avoid}
+  a{color:inherit;text-decoration:none}
+}
+</style>
+</head>
+<body data-estado="cobrar">
+
+<!-- Barra de vista previa: navegación entre documentos, tema y estado de ejemplo. No se imprime. -->
+<nav class="barra" aria-label="Vista previa">
+  <div class="seg" role="tablist" aria-label="Documentos">
+    <a class="on" href="factura.html" aria-current="page"><i class="ph-fill ph-receipt"></i><span class="txt">Factura</span></a>
+    <a href="presupuesto.html"><i class="ph ph-calculator"></i><span class="txt">Presupuesto</span></a>
+    <a href="informe-mensual.html"><i class="ph ph-chart-line-up"></i><span class="txt">Informe</span></a>
+    <a href="correo.html"><i class="ph ph-envelope-simple"></i><span class="txt">Correo</span></a>
+  </div>
+  <div class="der">
+    <span class="demo">datos de ejemplo</span>
+    <div class="seg" id="estado" aria-label="Estado de la factura">
+      <button class="on" data-e="cobrar">Por cobrar</button><button data-e="vencida">Vencida</button><button data-e="pagada">Cobrada</button>
+    </div>
+    <div class="seg" id="tema" aria-label="Tema">
+      <button class="on" data-t="claro" aria-label="Claro"><i class="ph ph-sun"></i></button><button data-t="oscuro" aria-label="Oscuro"><i class="ph ph-moon"></i></button>
+    </div>
+    <button class="btn neg" onclick="window.print()"><i class="ph ph-download-simple"></i><span class="txt">Descargar PDF</span></button>
+  </div>
+</nav>
+
+<article class="hoja" aria-label="Factura A 0003-00001287">
+  <header class="cab">
+    <div class="marca-col">
+      <div class="marca">
+        <span class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 19.5v-15h9M8 12h7" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18.6" cy="18.6" r="1.6" fill="#8f86ff"/></svg></span>
+        <div><b>Estudio Faro S.R.L.</b><small>Diseño de marca y producto digital</small></div>
+      </div>
+      <div class="emisor">
+        Gorriti 5120, of. 4 · C1414 CABA<br>
+        <span>CUIT</span> 30-70912345-6 · <span>IVA</span> Responsable inscripto<br>
+        <span>IIBB</span> 901-284511-3 · <span>Inicio de act.</span> 03/2019
+      </div>
+    </div>
+    <div class="letra" aria-label="Comprobante tipo A, código 01"><b>A</b><small>Cód. 01</small></div>
+    <div class="doc">
+      <small><i class="ph ph-receipt" style="font-size:15px"></i>Original</small>
+      <h1>Factura</h1>
+      <div class="nro">0003-00001287</div>
+      <div class="estado"><span class="chip am" id="chipEstado">Por cobrar · vence en 15 días</span></div>
+    </div>
+  </header>
+
+  <section class="partes">
+    <div class="bandeja">
+      <div class="rot"><i class="ph ph-buildings"></i>Facturado a</div>
+      <div class="adentro cliente">
+        <b>Orbe Retail S.A.</b>
+        <p>CUIT 30-71458823-1 · Responsable inscripto<br>Av. Rivadavia 6420, piso 2 · C1406 CABA<br>Pagos: Sofía Medina · pagos@orberetail.com.ar</p>
+      </div>
+    </div>
+    <div class="bandeja">
+      <div class="rot"><i class="ph ph-calendar-blank"></i>Datos del comprobante</div>
+      <div class="adentro datos">
+        <div class="dato"><small>Emisión</small><b class="num">17 nov 2026</b></div>
+        <div class="dato"><small>Vencimiento</small><b class="num">2 dic 2026 <em id="faltan">en 15 días</em></b></div>
+        <div class="dato"><small>Proyecto</small><b><span class="cuad" style="background:var(--e1)"><i class="ph-fill ph-storefront"></i></span>Identidad Orbe Retail</b></div>
+        <div class="dato"><small>Condición de venta</small><b>Cta. cte. a 15 días</b></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sec"><h2>Detalle</h2><span class="num">4 conceptos · etapa 2 de 3</span></div>
+  <table>
+    <thead><tr><th>Concepto</th><th class="d">Cant.</th><th class="d">Precio unitario</th><th class="d">Importe</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="con" style="--c:var(--e1)"><b>Identidad de marca · etapa 2</b><small>Tres rutas de logo, paleta y tipografía cerradas</small></td>
+        <td class="d num cant">1</td><td class="d num pu"><span class="cv">$</span> 1.450.000<span class="cv">,00</span></td><td class="d num imp"><span class="cv">$</span> 1.450.000<span class="cv">,00</span></td>
+        <td class="det num">1 × $ 1.450.000,00</td>
+      </tr>
+      <tr>
+        <td class="con" style="--c:var(--e1)"><b>Manual de marca</b><small>48 páginas con usos, márgenes y aplicaciones</small></td>
+        <td class="d num cant">1</td><td class="d num pu"><span class="cv">$</span> 620.000<span class="cv">,00</span></td><td class="d num imp"><span class="cv">$</span> 620.000<span class="cv">,00</span></td>
+        <td class="det num">1 × $ 620.000,00</td>
+      </tr>
+      <tr>
+        <td class="con" style="--c:var(--e3)"><b>Mockups de fachada</b><small>Un render por formato de local</small></td>
+        <td class="d num cant">6</td><td class="d num pu"><span class="cv">$</span> 45.000<span class="cv">,00</span></td><td class="d num imp"><span class="cv">$</span> 270.000<span class="cv">,00</span></td>
+        <td class="det num">6 × $ 45.000,00</td>
+      </tr>
+      <tr>
+        <td class="con" style="--c:var(--e5)"><b>Horas de ajustes fuera de alcance</b><small>Pedidas por Sofía el 4 y el 11 de noviembre</small></td>
+        <td class="d num cant">8 <span class="un">h</span></td><td class="d num pu"><span class="cv">$</span> 32.500<span class="cv">,00</span></td><td class="d num imp"><span class="cv">$</span> 260.000<span class="cv">,00</span></td>
+        <td class="det num">8 h × $ 32.500,00</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <section class="pie">
+    <div class="bandeja pago">
+      <div class="rot"><i class="ph ph-hand-coins"></i>Cómo pagar</div>
+      <div class="adentro">
+        <div class="cbu">
+          <span class="ico"><i class="ph ph-arrows-left-right"></i></span>
+          <div><small>Transferencia · CVU</small><b class="num">0000003100098765432107</b></div>
+          <button class="btn chico solo-pantalla" onclick="copiar('0000003100098765432107','CVU copiado')" aria-label="Copiar CVU"><i class="ph ph-copy"></i><span>Copiar</span></button>
+        </div>
+        <div class="cbu">
+          <span class="ico"><i class="ph ph-at"></i></span>
+          <div><small>Alias · a nombre de Estudio Faro S.R.L.</small><b>faro.estudio.cobros</b></div>
+          <button class="btn chico solo-pantalla" onclick="copiar('faro.estudio.cobros','Alias copiado')" aria-label="Copiar alias"><i class="ph ph-copy"></i><span>Copiar</span></button>
+        </div>
+        <div class="cobrada">
+          <span class="ico"><i class="ph-fill ph-check-circle"></i></span>
+          <div><b>Cobrada el 20 nov 2026</b><small>Transferencia de Orbe Retail S.A. · $ 3.146.000,00</small></div>
+        </div>
+      </div>
+      <div class="nota"><i class="ph ph-note"></i>La etapa 3 (aplicaciones en locales) se factura al entregar el manual impreso.</div>
+    </div>
+
+    <div class="totales">
+      <div class="linea"><span>Subtotal neto</span><b class="num"><span class="cv">$</span> 2.600.000<span class="cv">,00</span></b></div>
+      <div class="linea"><span>IVA 21 %</span><b class="num"><span class="cv">$</span> 546.000<span class="cv">,00</span></b></div>
+      <div class="linea"><span>Percepciones</span><b class="num g">—</b></div>
+      <div class="total">
+        <small><span>Total a pagar</span><span>ARS</span></small>
+        <div class="n num"><span>$</span>3.146.000<i>,00</i></div>
+        <p>Son pesos tres millones ciento cuarenta y seis mil con 00/100.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="fiscal">
+    <div class="banda">
+      <span class="chip v">Autorizada</span>
+      <div>CAE <span class="mono">76451239847562</span> · Vto. CAE <span class="num">27/11/2026</span></div>
+      <div class="der">Punto de venta 0003 · Comprobante electrónico</div>
+    </div>
+  </footer>
+</article>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span class="ok"><i class="ph ph-check" style="font-size:16px"></i></span><div><b id="toastT"></b><small id="toastS"></small></div></div>
+
+<script>
+const $=s=>document.querySelector(s);
+// Tema (solo pantalla)
+document.querySelectorAll('#tema button').forEach(b=>b.onclick=()=>{document.documentElement.dataset.tema=b.dataset.t;document.querySelectorAll('#tema button').forEach(x=>x.classList.toggle('on',x===b))});
+// Estado de ejemplo: el mismo comprobante en sus tres momentos
+const ESTADOS={
+  cobrar:{c:'chip am',t:'Por cobrar · vence en 15 días',f:'en 15 días',r:false},
+  vencida:{c:'chip ro',t:'Vencida hace 3 días',f:'hace 3 días',r:true},
+  pagada:{c:'chip v',t:'Cobrada · 20 nov',f:'',r:false}
+};
+document.querySelectorAll('#estado button').forEach(b=>b.onclick=()=>{
+  const e=ESTADOS[b.dataset.e];document.body.dataset.estado=b.dataset.e;
+  $('#chipEstado').className=e.c;$('#chipEstado').textContent=e.t;
+  $('#faltan').textContent=e.f;$('#faltan').classList.toggle('rojo',e.r);
+  document.querySelectorAll('#estado button').forEach(x=>x.classList.toggle('on',x===b));
+});
+// Copiar con aviso en el lugar
+let tt;
+function copiar(v,t){navigator.clipboard?.writeText(v).catch(()=>{});$('#toastT').textContent=t;$('#toastS').textContent=v;$('#toast').classList.add('ver');clearTimeout(tt);tt=setTimeout(()=>$('#toast').classList.remove('ver'),3000)}
+</script>
+</body>
+</html>

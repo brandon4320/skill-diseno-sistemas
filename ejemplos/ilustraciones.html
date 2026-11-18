@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ilustraciones · diseno-sistemas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+/* Mismos tokens que tokens.css y componentes.html (acento y tinte de ejemplo) */
+:root{
+  --lienzo:#e8eaee; --marco:#f4f5f7; --superficie:#fff; --bandeja:#f4f5f7; --suave:#f0f1f4; --hover:#f7f8fa;
+  --borde:#e6e8ec; --borde-f:#d6d9df; --divisor:#eef0f3; --tinta:#16181d; --texto-2:#565b68; --texto-3:#6b7080;
+  --acento:#4f46e5; --verde:#15803d; --verde-f:#ebf8f0; --ambar:#b45309; --ambar-f:#fdf3e1; --rojo:#b91c1c; --rojo-f:#fdecec; --azul:#1d4ed8; --azul-f:#e9f1fd; --gris-f:#f0f1f4;
+  --display:'Outfit',sans-serif; --ui:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --s-min:0 1px 2px rgb(22 24 29/.05); --s-hover:0 14px 30px -18px rgb(22 24 29/.3); --s-flot:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
+  --ease:cubic-bezier(.23,1,.32,1); --neg:#16181d; --neg-t:#fff;
+  /* Ilustraciones: tres variables y listo */
+  --ilus-acento:var(--acento);
+  --ilus-trazo:color-mix(in oklch,var(--acento) 30%,var(--texto-3));
+  --ilus-papel:var(--superficie);
+  --ilus-clima:color-mix(in oklch,var(--acento) 7%,transparent);
+}
+[data-tema=oscuro]{
+  --lienzo:#050506; --marco:#0b0b0d; --superficie:#151518; --bandeja:#0f0f12; --suave:#1d1d21; --hover:#1a1a1e;
+  --borde:#26262b; --borde-f:#34343a; --divisor:#1f1f23; --tinta:#f4f4f5; --texto-2:#b4b4bd; --texto-3:#8f8f9a;
+  --verde:#4ade80; --verde-f:rgb(34 197 94/.13); --ambar:#fbbf24; --ambar-f:rgb(245 184 0/.13); --rojo:#f87171; --rojo-f:rgb(239 68 68/.13); --azul:#60a5fa; --azul-f:rgb(59 130 246/.13); --gris-f:#232327;
+  --s-min:none; --s-hover:0 14px 30px -18px rgb(0 0 0/.8); --neg:#f4f4f5; --neg-t:#16181d;
+  --ilus-acento:color-mix(in oklch,var(--acento) 62%,white);
+  --ilus-trazo:color-mix(in oklch,var(--acento) 28%,#6b6b75);
+  --ilus-clima:color-mix(in oklch,var(--acento) 12%,transparent);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ui);background:var(--lienzo);color:var(--tinta);font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .3s}
+button,input{font:inherit;color:inherit}
+a{color:inherit}
+.ph,.ph-fill{font-size:17px;line-height:1}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--mono)}
+.gris{color:var(--texto-3)}
+.pag{max-width:1280px;margin:0 auto;padding:40px 24px 96px}
+
+/* cabecera */
+.cabeza{display:flex;align-items:flex-end;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.cabeza small{font:500 12px var(--mono);color:var(--texto-2)}
+.cabeza h1{font:300 44px/1.05 var(--display);letter-spacing:-.035em;margin-top:6px}
+.cabeza p{color:var(--texto-2);margin-top:8px;max-width:600px}
+.cabeza .der{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.enlaces{display:flex;gap:16px;margin-top:14px;font-weight:600;font-size:12.5px}
+.enlaces a{color:var(--texto-2);text-decoration:none;display:inline-flex;gap:4px;align-items:center}
+.enlaces a:hover{color:var(--tinta)}
+.bloque{margin-top:48px}
+.bloque>h2{font:500 20px var(--display);letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.bloque>h2 span{font:500 12px var(--mono);color:var(--texto-3);border:1px solid var(--borde);border-radius:6px;padding:2px 6px}
+.bloque>p.reg{color:var(--texto-2);margin:4px 0 16px;max-width:720px}
+.lamina{background:var(--marco);border:1px solid var(--borde);border-radius:26px;padding:20px}
+
+/* controles */
+.btn{height:38px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:13px;border:1px solid var(--borde);background:var(--superficie);cursor:pointer;box-shadow:var(--s-min);transition:transform .15s var(--ease),background .15s;white-space:nowrap;text-decoration:none}
+.btn:hover{background:var(--hover)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible,.seg button:focus-visible,.copiar:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 45%,transparent);outline-offset:2px}
+.btn.neg{background:var(--neg);border-color:var(--neg);color:var(--neg-t);box-shadow:inset 0 1px 0 rgb(255 255 255/.12),0 4px 10px -2px rgb(22 24 29/.35)}
+.btn.chico{height:30px;padding:0 11px;border-radius:9px;font-size:12.5px;gap:6px}.btn.chico .ph,.btn.chico .ph-fill{font-size:14px}
+.btn.texto{border:0;background:none;box-shadow:none;color:var(--texto-2)}
+.seg{display:inline-flex;background:var(--bandeja);border:1px solid var(--borde);padding:3px;border-radius:12px;gap:2px}
+.seg button{border:0;background:none;height:30px;min-width:32px;padding:0 10px;border-radius:9px;font-weight:600;font-size:12.5px;color:var(--texto-2);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.seg button.on{background:var(--superficie);color:var(--tinta);box-shadow:0 1px 2px rgb(22 24 29/.1),0 0 0 1px var(--borde)}
+[data-tema=oscuro] .seg button.on{background:#f4f4f5;color:#16181d}
+.seg .bola{width:12px;height:12px;border-radius:50%;box-shadow:inset 0 0 0 1px rgb(0 0 0/.12)}
+.chip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:7px;font-weight:600;font-size:12px;white-space:nowrap}
+.chip.d::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.v{background:var(--verde-f);color:var(--verde)}.ro{background:var(--rojo-f);color:var(--rojo)}.az{background:var(--azul-f);color:var(--azul)}.gr{background:var(--gris-f);color:var(--texto-2)}
+.tag{height:24px;padding:0 6px 0 9px;border-radius:8px;border:1px solid var(--borde);background:var(--superficie);font-weight:500;font-size:12px;color:var(--texto-2);display:inline-flex;align-items:center;gap:4px}
+
+/* ilustración */
+.ilus{color:var(--ilus-trazo);display:block;width:100%;height:auto}
+.ilus svg{display:block;width:100%;height:auto;overflow:visible}
+.ilus .ilus-gira{transform-box:view-box;transform-origin:100px 76px;animation:gira 9s linear infinite}
+.ilus .ilus-cae{animation:cae 1.1s linear infinite}
+.ilus .ilus-haz{animation:haz 2.8s var(--ease) infinite alternate}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes cae{to{stroke-dashoffset:-8.8}}
+@keyframes haz{from{opacity:.35}to{opacity:1}}
+.entra{opacity:0;transform:translateY(10px) scale(.985);transition:opacity .6s var(--ease),transform .7s var(--ease)}
+.entra.ver{opacity:1;transform:none}
+@media print{.entra{opacity:1;transform:none;transition:none}}
+
+/* galería: bandeja con tarjeta adentro */
+.galeria{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.bandeja{background:var(--bandeja);border:1px solid var(--borde);border-radius:20px;padding:4px;display:flex;flex-direction:column;transition:transform .25s var(--ease),box-shadow .25s}
+.bandeja:hover{transform:translateY(-2px);box-shadow:var(--s-hover)}
+.bandeja .rot{display:flex;align-items:center;gap:8px;padding:8px 8px 7px 10px;color:var(--texto-2);font:500 12px var(--mono)}
+.copiar{margin-left:auto;width:28px;height:28px;border-radius:9px;border:1px solid transparent;background:none;display:grid;place-items:center;color:var(--texto-3);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.copiar:hover{background:var(--superficie);border-color:var(--borde);color:var(--tinta)}
+.copiar .ph{font-size:15px}
+.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;box-shadow:var(--s-min);padding:18px 22px 10px;position:relative;overflow:hidden;
+  background-image:radial-gradient(60% 70% at 50% 40%,var(--ilus-clima),transparent 70%),radial-gradient(color-mix(in oklch,var(--texto-3) 22%,transparent) .8px,transparent 1px);
+  background-size:auto,14px 14px;background-position:center,7px 7px}
+.bandeja .pie{display:flex;align-items:center;gap:8px;padding:9px 10px 7px;font-size:12px;font-weight:500;color:var(--texto-2)}
+.bandeja .pie .ph{font-size:15px;color:var(--texto-3)}
+
+/* tamaños */
+.tamanos{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:14px}
+.tam{background:var(--superficie);border:1px solid var(--borde);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tam .cab{display:flex;justify-content:space-between;align-items:baseline}
+.tam b{font:500 15px var(--display)}.tam small{font:500 12px var(--mono);color:var(--texto-3)}
+.tam .escena{flex:1;display:flex;align-items:center;justify-content:center;border-radius:16px;background:var(--bandeja);border:1px dashed var(--borde);min-height:170px;padding:12px}
+.fila-mini{display:flex;align-items:center;gap:12px;background:var(--superficie);border:1px solid var(--borde);border-radius:14px;padding:8px 14px 8px 8px;width:100%;box-shadow:var(--s-min)}
+.fila-mini .ilus{width:64px;flex:none}
+.fila-mini b{font:600 13px var(--ui);display:block}.fila-mini span{font-size:12px;color:var(--texto-3)}
+
+/* estados vacíos en contexto */
+.estados{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ancho{grid-column:span 2}
+.card{border:1px solid var(--borde);border-radius:20px;background:var(--superficie);display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.card .tit{display:flex;align-items:center;gap:10px;padding:14px 16px 12px 18px;border-bottom:1px solid var(--divisor);min-height:58px;flex-wrap:wrap}
+.card .tit h3{font:500 16px var(--display);letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.card .tit h3 .ph{color:var(--texto-3);font-size:16px}
+.card .tit .c{color:var(--texto-3);font-weight:500}
+.card .tit .der{margin-left:auto;display:flex;gap:6px;align-items:center}
+.buscador{height:30px;border:1px solid var(--acento);box-shadow:0 0 0 3px color-mix(in oklch,var(--acento) 16%,transparent);border-radius:10px;display:flex;align-items:center;gap:6px;padding:0 10px;font-weight:500;font-size:12.5px;background:var(--superficie);min-width:120px}
+.buscador .ph{font-size:14px;color:var(--texto-3)}
+.vacio{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:22px 24px 26px;
+  background:radial-gradient(70% 60% at 50% 30%,var(--ilus-clima),transparent 70%)}
+.vacio .ilus{width:176px;margin-bottom:6px}
+.vacio h4{font:500 19px/1.25 var(--display);letter-spacing:-.02em;max-width:300px}
+.vacio p{color:var(--texto-2);font-size:13px;max-width:300px;margin-top:6px}
+.vacio .acc{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;justify-content:center}
+.vacio .nota{font:500 12px var(--mono);color:var(--texto-3);margin-top:14px}
+.segs{display:flex;gap:3px}.segs i{flex:1;height:7px;border-radius:3px;background:var(--suave)}
+
+/* bienvenida */
+.bienv{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:12px;align-items:center;padding:16px 28px 24px 12px;flex:1;
+  background:radial-gradient(60% 90% at 18% 40%,var(--ilus-clima),transparent 70%)}
+.bienv h4{font:300 34px/1.1 var(--display);letter-spacing:-.03em}
+.bienv h4 b{font-weight:500}
+.bienv>div>p{color:var(--texto-2);margin-top:8px;max-width:380px}
+.pasos{margin-top:18px;border:1px solid var(--borde);border-radius:16px;background:var(--bandeja);padding:4px}
+.pasos .cab{display:flex;align-items:center;gap:10px;padding:8px 10px 8px;font-size:12px;font-weight:600;color:var(--texto-2)}
+.pasos .cab .segs{width:90px;margin-left:auto}
+.pasos ul{list-style:none;background:var(--superficie);border:1px solid var(--borde);border-radius:12px;box-shadow:var(--s-min)}
+.pasos li{display:flex;align-items:center;gap:12px;height:48px;padding:0 12px;border-top:1px solid var(--divisor);font-weight:500}
+.pasos li:first-child{border-top:0}
+.pasos li .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pasos li .t small{color:var(--texto-3);font-weight:400;font-size:12px;margin-left:6px}
+.pasos li.hecho .t{color:var(--texto-3)}
+.check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--borde-f);display:grid;place-items:center;flex:none}
+.check.ok{background:var(--verde);border-color:var(--verde)}.check.ok::after{content:"";width:8px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+
+/* importación */
+.carga{flex:1;display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:center;padding:16px 28px 24px 16px;background:radial-gradient(60% 90% at 16% 40%,var(--ilus-clima),transparent 70%)}
+.carga h4{font:500 22px/1.2 var(--display);letter-spacing:-.02em}
+.carga>div>p{color:var(--texto-2);margin-top:4px}
+.barra{height:10px;border-radius:99px;background:var(--suave);overflow:hidden;margin-top:18px;position:relative}
+.barra i{position:absolute;inset:0 auto 0 0;width:0;border-radius:99px;background:linear-gradient(90deg,color-mix(in oklch,var(--acento) 70%,white),var(--acento));transition:width .9s var(--ease)}
+.barra i::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,rgb(255 255 255/.22) 0 6px,transparent 6px 12px);background-size:17px 100%;animation:raya 1s linear infinite}
+@keyframes raya{to{background-position:17px 0}}
+.carga .datos{display:flex;gap:0;margin-top:14px;border:1px solid var(--borde);border-radius:14px;overflow:hidden}
+.carga .datos div{flex:1;padding:10px 12px;border-left:1px solid var(--divisor)}
+.carga .datos div:first-child{border-left:0}
+.carga .datos small{display:block;color:var(--texto-3);font-size:12px}
+.carga .datos b{font:500 18px var(--display);letter-spacing:-.01em}
+.carga .datos b span{color:var(--texto-3);font-size:13px;font-weight:400;margin-left:2px}
+
+/* éxito */
+.exito{flex:1;display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:center;padding:16px 28px 24px 16px;background:radial-gradient(60% 90% at 16% 40%,color-mix(in oklch,var(--verde) 8%,transparent),transparent 70%)}
+.exito h4{font:500 22px/1.2 var(--display);letter-spacing:-.02em}
+.exito>div>p{color:var(--texto-2);margin-top:4px;max-width:420px}
+.recibo{margin-top:16px;display:flex;align-items:center;gap:12px;border:1px solid var(--borde);border-radius:14px;padding:10px 12px;background:var(--bandeja)}
+.recibo img{width:34px;height:34px;border-radius:50%;background:#e9f1fd}
+.recibo b{font-weight:600;display:block;font-size:13px}.recibo small{color:var(--texto-3);font-size:12px}
+.recibo .monto{margin-left:auto;font:500 18px var(--display);text-align:right}.recibo .monto span{color:var(--texto-3);font-size:13px;font-weight:400;margin-right:3px}
+.exito .acc,.carga .acc,.bienv .acc{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+
+/* permisos */
+.quien{display:flex;align-items:center;gap:10px;margin-top:14px;padding:6px 12px 6px 6px;border:1px solid var(--borde);border-radius:99px;background:var(--superficie);box-shadow:var(--s-min)}
+.quien img{width:28px;height:28px;border-radius:50%;background:#efe9ff}
+.quien b{font-weight:600;font-size:12.5px}.quien span{font-size:12px;color:var(--texto-3)}
+
+/* reglas */
+.reglas{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.regla{background:var(--superficie);border:1px solid var(--borde);border-radius:20px;padding:18px}
+.regla .n{width:28px;height:28px;border-radius:9px;background:var(--bandeja);border:1px solid var(--borde);display:grid;place-items:center;font:500 12px var(--mono);color:var(--texto-2)}
+.regla b{font:500 16px var(--display);display:block;margin-top:12px;letter-spacing:-.01em}
+.regla p{color:var(--texto-2);font-size:12.5px;margin-top:4px}
+.regla code{font:500 12px var(--mono);background:var(--bandeja);border:1px solid var(--borde);border-radius:7px;padding:1px 5px;color:var(--tinta)}
+
+.toast{position:fixed;right:24px;bottom:24px;background:#16181d;color:#fff;border-radius:16px;box-shadow:var(--s-flot);padding:12px 14px;display:flex;gap:12px;align-items:center;transform:translateY(16px);opacity:0;transition:transform .35s var(--ease),opacity .25s;pointer-events:none;min-width:320px;max-width:calc(100vw - 32px);z-index:9}
+.toast.ver{transform:none;opacity:1;pointer-events:auto}
+.toast .okc{width:30px;height:30px;border-radius:10px;background:rgb(31 157 92/.22);color:#4ade80;display:grid;place-items:center;flex:none}
+.toast b{font-weight:600;display:block}.toast small{opacity:.6;font-size:12px}
+.toast a{margin-left:auto;color:#a5a0ff;font-weight:600;cursor:pointer;padding-left:8px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.entra{opacity:1;transform:none}}
+@media (max-width:1100px){.galeria{grid-template-columns:repeat(3,1fr)}.estados{grid-template-columns:repeat(2,1fr)}.reglas{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){
+  /* Toques de 44 px */
+  .seg button,.btn.chico{min-height:44px;min-width:44px;justify-content:center}
+  .copiar{flex:none;width:44px;height:44px;margin:-8px -8px -8px auto}
+  .enlaces a{min-height:44px}
+  .pag{padding:28px 16px 80px}.cabeza h1{font-size:34px}.cabeza .der{margin-left:0}
+  .galeria{grid-template-columns:1fr 1fr;gap:10px}.adentro{padding:12px 12px 6px}
+  .bandeja .pie{display:none}
+  .tamanos,.estados,.reglas{grid-template-columns:1fr}.ancho{grid-column:auto}
+  .lamina{padding:12px;border-radius:22px}
+  .bienv,.carga,.exito{grid-template-columns:1fr;padding:12px 18px 22px;text-align:left}
+  .bienv>.ilus,.carga>.ilus,.exito>.ilus{width:180px;margin:0 auto}
+  .bienv h4{font-size:28px}
+  .vacio .acc .btn,.carga .acc .btn,.exito .acc .btn,.bienv .acc .btn{flex:1;height:44px}
+  .card .tit .der{margin-left:0;width:100%}
+  .toast{left:16px;right:16px;bottom:16px;min-width:0}
+}
+</style>
+</head>
+<body>
+<div class="pag">
+  <div class="cabeza">
+    <div>
+      <small>diseno-sistemas · ilustraciones</small>
+      <h1>Ilustraciones</h1>
+      <p>Doce dibujos de línea fina para los estados vacíos y los momentos del sistema. Toman el trazo de <span class="mono">currentColor</span> y el acento de <span class="mono">--ilus-acento</span>: cambiá el tema o el acento y se adaptan solos.</p>
+      <div class="enlaces"><a href="componentes.html"><i class="ph ph-squares-four"></i>Componentes</a><a href="tablero-crm.html"><i class="ph ph-layout"></i>Tablero CRM</a><a href="../ilustraciones/bienvenida.svg"><i class="ph ph-folder-simple"></i>Carpeta de SVG</a></div>
+    </div>
+    <div class="der">
+      <div class="seg" id="acentos" role="group" aria-label="Acento">
+        <button class="on" data-a="#4f46e5" aria-label="Índigo"><span class="bola" style="background:#4f46e5"></span></button>
+        <button data-a="#0e7c86" aria-label="Petróleo"><span class="bola" style="background:#0e7c86"></span></button>
+        <button data-a="#d6336c" aria-label="Frambuesa"><span class="bola" style="background:#d6336c"></span></button>
+        <button data-a="#c8692b" aria-label="Terracota"><span class="bola" style="background:#c8692b"></span></button>
+      </div>
+      <div class="seg" id="tema" role="group" aria-label="Tema"><button class="on" data-t="claro" aria-label="Claro"><i class="ph ph-sun"></i></button><button data-t="oscuro" aria-label="Oscuro"><i class="ph ph-moon"></i></button></div>
+    </div>
+  </div>
+
+  <section class="bloque">
+    <h2>Galería <span>12 · SVG 200 × 160</span></h2>
+    <p class="reg">Misma grilla, mismo trazo de 1,3, el mismo círculo guía punteado y la misma línea de piso. Un solo elemento lleva el acento; una sola cara lleva rayado.</p>
+    <div class="lamina"><div class="galeria" id="galeria"></div></div>
+  </section>
+
+  <section class="bloque">
+    <h2>Tamaños <span>§6b</span></h2>
+    <p class="reg">160–180 px en una página o tarjeta vacía, 96–120 px en un panel lateral o una hoja, 64 px en una fila. Por debajo de 64 px se pierde el rayado: usá un ícono.</p>
+    <div class="tamanos">
+      <div class="tam"><div class="cab"><b>Página o tarjeta</b><small>176 px</small></div><div class="escena"><span class="ilus" data-ilus="sin-facturas" style="width:176px"></span></div></div>
+      <div class="tam"><div class="cab"><b>Panel lateral u hoja</b><small>112 px</small></div><div class="escena"><span class="ilus" data-ilus="sin-reuniones" style="width:112px"></span></div></div>
+      <div class="tam"><div class="cab"><b>Fila o aviso</b><small>64 px</small></div><div class="escena"><div class="fila-mini"><span class="ilus" data-ilus="sin-tareas"></span><div><b>Nada pendiente hoy</b><span>Lo próximo vence mañana 09:00</span></div></div></div></div>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <h2>Estados completos <span>§6b Vacío, cargando y error</span></h2>
+    <p class="reg">Ilustración, una frase que dice qué va a aparecer o qué pasó, y el botón que lo resuelve. Si el vacío es por un filtro, se dice y se ofrece limpiarlo.</p>
+    <div class="estados">
+
+      <section class="card ancho entra">
+        <div class="tit"><h3><i class="ph ph-house"></i>Inicio</h3><div class="der"><span class="chip d az">Cuenta nueva</span></div></div>
+        <div class="bienv">
+          <span class="ilus" data-ilus="bienvenida"></span>
+          <div>
+            <h4>Bienvenida, <b>Ana</b></h4>
+            <p>Estudio Faro ya está listo. Con estos tres pasos el tablero se llena solo.</p>
+            <div class="pasos">
+              <div class="cab">Para arrancar<span class="num" style="font-weight:500;color:var(--texto-3)">1 de 3</span><div class="segs"><i style="background:var(--verde)"></i><i></i><i></i></div></div>
+              <ul>
+                <li class="hecho"><span class="check ok"></span><span class="t">Invitar al equipo<small>4 personas</small></span></li>
+                <li><span class="check"></span><span class="t">Importar clientes<small>desde una planilla</small></span><i class="ph ph-arrow-right gris" style="font-size:15px"></i></li>
+                <li><span class="check"></span><span class="t">Conectar el correo<small>Gmail u Outlook</small></span><i class="ph ph-arrow-right gris" style="font-size:15px"></i></li>
+              </ul>
+            </div>
+            <div class="acc"><button class="btn neg"><i class="ph ph-upload-simple"></i>Importar clientes</button><button class="btn texto">Lo hago después</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card entra">
+        <div class="tit"><h3><i class="ph ph-check-square"></i>Tareas de hoy</h3><span class="c num">7</span><div class="der"><span class="chip d v">7 de 7</span></div></div>
+        <div class="vacio">
+          <span class="ilus" data-ilus="sin-tareas"></span>
+          <h4>Terminaste todo lo de hoy</h4>
+          <p>Lo próximo vence mañana 09:00: llamar a Café Brío por la propuesta.</p>
+          <div class="acc"><button class="btn"><i class="ph ph-calendar-blank"></i>Ver mañana</button></div>
+        </div>
+      </section>
+
+      <section class="card entra">
+        <div class="tit"><h3><i class="ph ph-buildings"></i>Clientes</h3><div class="der"><div class="buscador"><i class="ph ph-magnifying-glass"></i>Lumen</div><span class="tag">Activos<i class="ph ph-x" style="font-size:12px"></i></span></div></div>
+        <div class="vacio">
+          <span class="ilus" data-ilus="sin-resultados"></span>
+          <h4>Ningún cliente activo coincide con “Lumen”</h4>
+          <p>Hay 2 coincidencias entre los inactivos.</p>
+          <div class="acc"><button class="btn"><i class="ph ph-x"></i>Limpiar filtro</button><button class="btn neg"><i class="ph ph-magnifying-glass"></i>Buscar en todos</button></div>
+        </div>
+      </section>
+
+      <section class="card entra">
+        <div class="tit"><h3><i class="ph ph-users-three"></i>Clientes</h3><span class="c num">0</span></div>
+        <div class="vacio">
+          <span class="ilus" data-ilus="sin-clientes"></span>
+          <h4>Todavía no hay clientes</h4>
+          <p>Cargá el primero o subí tu planilla: cada cliente queda con su color, sus contactos y sus propuestas.</p>
+          <div class="acc"><button class="btn"><i class="ph ph-file-xls"></i>Subir planilla</button><button class="btn neg"><i class="ph ph-plus"></i>Nuevo cliente</button></div>
+        </div>
+      </section>
+
+      <section class="card entra">
+        <div class="tit"><h3><i class="ph ph-receipt"></i>Facturas</h3><span class="c">noviembre</span><div class="der"><div class="seg"><button class="on">Todas</button><button>Vencidas</button></div></div></div>
+        <div class="vacio">
+          <span class="ilus" data-ilus="sin-facturas"></span>
+          <h4>No hay facturas en noviembre</h4>
+          <p>Las que emitas desde una propuesta ganada aparecen acá con su vencimiento.</p>
+          <div class="acc"><button class="btn neg"><i class="ph ph-plus"></i>Nueva factura</button></div>
+        </div>
+      </section>
+
+      <section class="card ancho entra">
+        <div class="tit"><h3><i class="ph ph-database"></i>Importación</h3><span class="c mono" style="font-size:12px">contactos-2026.xlsx</span><div class="der"><span class="chip d az">En curso</span></div></div>
+        <div class="carga">
+          <span class="ilus" data-ilus="cargando-algo-grande"></span>
+          <div>
+            <h4>Importando <span class="num">12.480</span> contactos</h4>
+            <p>Podés seguir usando el sistema. Te avisamos cuando termine.</p>
+            <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="barra"><i></i></div>
+            <div class="datos">
+              <div><small>Avance</small><b class="num" id="pct">0<span>%</span></b></div>
+              <div><small>Cargados</small><b class="num" id="cargados">0</b></div>
+              <div><small>Faltan</small><b class="num" id="falta">~3<span>min</span></b></div>
+            </div>
+            <div class="acc"><button class="btn"><i class="ph ph-bell-simple"></i>Avisarme al terminar</button><button class="btn texto">Cancelar importación</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card entra">
+        <div class="tit"><h3><i class="ph ph-calendar-blank"></i>Agenda</h3><span class="c">jueves 19</span><div class="der"><div class="seg"><button class="on">Día</button><button>Semana</button></div></div></div>
+        <div class="vacio">
+          <span class="ilus" data-ilus="sin-reuniones"></span>
+          <h4>Día sin reuniones</h4>
+          <p>La próxima es el lunes 23 a las 10:00 con Café Brío.</p>
+          <div class="acc"><button class="btn"><i class="ph ph-calendar-plus"></i>Agendar</button></div>
+        </div>
+      </section>
+
+      <section class="card entra">
+        <div class="tit"><h3><i class="ph ph-tray"></i>Bandeja</h3><div class="der"><span class="chip d ro">Sin conexión</span></div></div>
+        <div class="vacio">
+          <span class="ilus" data-ilus="sin-conexion"></span>
+          <h4>Estás sin conexión</h4>
+          <p>Lo que cargues queda guardado en este equipo y se envía solo al volver.</p>
+          <div class="acc"><button class="btn" id="reintentar"><i class="ph ph-arrow-clockwise"></i>Reintentar</button></div>
+          <div class="nota">último dato · hace 4 min</div>
+        </div>
+      </section>
+
+      <section class="card entra">
+        <div class="tit"><h3><i class="ph ph-chart-line-up"></i>Cobranzas por mes</h3></div>
+        <div class="vacio">
+          <span class="ilus" data-ilus="error"></span>
+          <h4>No pudimos armar el reporte</h4>
+          <p>Con 14 meses de datos el servidor tardó demasiado. Probá con 6 meses o reintentá.</p>
+          <div class="acc"><button class="btn">Ver 6 meses</button><button class="btn neg"><i class="ph ph-arrow-clockwise"></i>Reintentar</button></div>
+          <div class="nota">ERR-504 · 17 nov 15:42</div>
+        </div>
+      </section>
+
+      <section class="card entra">
+        <div class="tit"><h3><i class="ph ph-folder-simple"></i>Archivos</h3><span class="c">Identidad Orbe</span></div>
+        <div class="vacio">
+          <span class="ilus" data-ilus="archivo-vacio"></span>
+          <h4>Este proyecto no tiene archivos</h4>
+          <p>Arrastrá logos, contratos o fotos acá. Hasta 50 MB cada uno.</p>
+          <div class="acc"><button class="btn neg"><i class="ph ph-upload-simple"></i>Subir archivos</button></div>
+        </div>
+      </section>
+
+      <section class="card entra">
+        <div class="tit"><h3><i class="ph ph-lock-simple"></i>Sueldos</h3></div>
+        <div class="vacio">
+          <span class="ilus" data-ilus="sin-permisos"></span>
+          <h4>Esta sección es solo de dirección</h4>
+          <p>Si la necesitás, pedile acceso a quien administra la cuenta.</p>
+          <div class="quien"><img src="https://api.dicebear.com/9.x/notionists/svg?seed=Ana&backgroundColor=efe9ff" alt=""><b>Ana Ruiz</b><span>Dirección</span></div>
+          <div class="acc"><button class="btn">Volver al inicio</button><button class="btn neg"><i class="ph ph-paper-plane-tilt"></i>Pedir acceso</button></div>
+        </div>
+      </section>
+
+      <section class="card ancho entra">
+        <div class="tit"><h3><i class="ph ph-file-text"></i>Propuestas</h3><span class="c mono" style="font-size:12px">PR-0242</span><div class="der"><span class="chip d v">Enviada</span></div></div>
+        <div class="exito">
+          <span class="ilus" data-ilus="exito"></span>
+          <div>
+            <h4>Propuesta enviada a Orbe Retail</h4>
+            <p>Te avisamos cuando Sofía la abra. Si no responde en 3 días, queda un seguimiento en tus tareas.</p>
+            <div class="recibo"><img src="https://api.dicebear.com/9.x/notionists/svg?seed=Sofia&backgroundColor=e9f1fd" alt=""><div><b>Sofía Paz</b><small>sofia@orberetail.com.ar · hace 1 min</small></div><div class="monto num"><span>US$</span>18.400</div></div>
+            <div class="acc"><button class="btn neg"><i class="ph ph-arrow-up-right"></i>Ver propuesta</button><button class="btn" id="deshacerEnvio"><i class="ph ph-arrow-counter-clockwise"></i>Deshacer envío</button></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+  <section class="bloque">
+    <h2>Cómo usarlas <span>reglas</span></h2>
+    <p class="reg">Las tres variables viven en <span class="mono">:root</span> del sistema, al lado de los tokens.</p>
+    <div class="reglas">
+      <div class="regla"><span class="n">01</span><b>Pegalas en línea</b><p>Como <code>&lt;svg&gt;</code> dentro del HTML o del componente, nunca como <code>&lt;img&gt;</code>: así heredan <code>color</code>, <code>--ilus-acento</code> y <code>--ilus-papel</code>.</p></div>
+      <div class="regla"><span class="n">02</span><b>Trazo tenue, acento puntual</b><p><code>color</code> = 30 % del acento sobre <code>texto-3</code>. El acento va en un solo elemento: el que cuenta la historia.</p></div>
+      <div class="regla"><span class="n">03</span><b>Papel = superficie</b><p><code>--ilus-papel</code> es el fondo de la tarjeta donde vive. En oscuro cambia solo y las piezas siguen tapando las líneas de atrás.</p></div>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span class="okc"><i class="ph ph-check" style="font-size:16px"></i></span><div><b id="toastT"></b><small id="toastS"></small></div><a id="toastA"></a></div>
+
+<script>
+const ILUS = {"sin-resultados":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-resultados\">\n  <defs>\n    <pattern id=\"ray-sin-resultados\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/>\n    </pattern>\n  </defs>\n  <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\">\n    <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/>\n    <path d=\"M100 6v8M28 76h6M166 76h6\" />\n    <path d=\"M36 128h128\"/>\n    <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/>\n  </g>\n\n  <rect x=\"50\" y=\"38\" width=\"74\" height=\"86\" rx=\"10\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M50 54h74\" stroke-opacity=\".5\"/>\n  <path d=\"M60 46h20\" />\n  <g stroke-opacity=\".55\" stroke-dasharray=\"2 3.5\">\n    <rect x=\"60\" y=\"64\" width=\"9\" height=\"9\" rx=\"2.5\"/><path d=\"M76 68.5h32\"/>\n    <rect x=\"60\" y=\"82\" width=\"9\" height=\"9\" rx=\"2.5\"/><path d=\"M76 86.5h24\"/>\n    <rect x=\"60\" y=\"100\" width=\"9\" height=\"9\" rx=\"2.5\"/><path d=\"M76 104.5h28\"/>\n  </g>\n  <rect x=\"139\" y=\"98.5\" width=\"24\" height=\"9\" rx=\"4.5\" transform=\"rotate(45 151 103)\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.16\" stroke=\"var(--ilus-acento, #6d63ff)\"/>\n  <circle cx=\"124\" cy=\"76\" r=\"24\" fill=\"var(--ilus-papel, #fff)\"/>\n  <circle cx=\"124\" cy=\"76\" r=\"24\" fill=\"url(#ray-sin-resultados)\" fill-opacity=\".35\"/>\n  <circle cx=\"124\" cy=\"76\" r=\"18\" fill=\"var(--ilus-papel, #fff)\"/>\n  <circle cx=\"124\" cy=\"76\" r=\"24\"/>\n  <path d=\"M110.5 69a15 15 0 0 1 7-7.5\" stroke-opacity=\".6\"/>\n  <path d=\"M119.5 71.5a4.6 4.6 0 1 1 6.6 4.1c-1.3.6-2.1 1.5-2.1 2.9v1.2\"/>\n  <circle cx=\"124\" cy=\"85\" r=\"1.2\" fill=\"currentColor\" stroke=\"none\"/>\n  <path d=\"M58 22.5v7M54.5 26h7\"/><path d=\"M166 41v6M163 44h6\" stroke-opacity=\".7\"/>\n  <circle cx=\"40\" cy=\"96\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"160\" cy=\"30\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/>\n</svg>","sin-tareas":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-tareas\">\n  <defs>\n    <pattern id=\"ray-sin-tareas\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/>\n    </pattern>\n  </defs>\n  <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\">\n    <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/>\n    <path d=\"M100 6v8M28 76h6M166 76h6\" />\n    <path d=\"M36 128h128\"/>\n    <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/>\n  </g>\n\n  <rect x=\"62\" y=\"34\" width=\"66\" height=\"90\" rx=\"11\" fill=\"var(--ilus-papel, #fff)\"/>\n  <rect x=\"80\" y=\"27\" width=\"30\" height=\"13\" rx=\"4.5\" fill=\"var(--ilus-papel, #fff)\"/>\n  <rect x=\"80\" y=\"27\" width=\"30\" height=\"13\" rx=\"4.5\" fill=\"url(#ray-sin-tareas)\"/>\n  <circle cx=\"95\" cy=\"27\" r=\"2\" fill=\"var(--ilus-papel, #fff)\"/>\n  <g>\n    <circle cx=\"77\" cy=\"60\" r=\"5.5\"/><path d=\"M74.6 60.2l1.7 1.7 3.3-3.4\"/><path d=\"M89 60h26\" stroke-opacity=\".55\"/>\n    <circle cx=\"77\" cy=\"80\" r=\"5.5\"/><path d=\"M74.6 80.2l1.7 1.7 3.3-3.4\"/><path d=\"M89 80h20\" stroke-opacity=\".55\"/>\n    <circle cx=\"77\" cy=\"100\" r=\"5.5\"/><path d=\"M74.6 100.2l1.7 1.7 3.3-3.4\"/><path d=\"M89 100h14\" stroke-opacity=\".55\"/>\n  </g>\n  <circle cx=\"131\" cy=\"110\" r=\"17\" fill=\"var(--ilus-papel, #fff)\"/>\n  <circle cx=\"131\" cy=\"110\" r=\"17\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.16\" stroke=\"var(--ilus-acento, #6d63ff)\"/>\n  <circle cx=\"131\" cy=\"110\" r=\"22\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-opacity=\".45\" stroke-dasharray=\"1.5 3.5\"/>\n  <path d=\"M123.5 110.5l5 5 10-10.5\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.7\"/>\n  <g stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.2\">\n    <path d=\"M153 90l4-4\"/><path d=\"M158 106h6\"/><path d=\"M150 132l3 3\"/>\n  </g>\n  <path d=\"M48 46.5v7M44.5 50h7\"/><path d=\"M150 37v6M147 40h6\" stroke-opacity=\".7\"/>\n  <circle cx=\"52\" cy=\"96\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"44\" cy=\"72\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/>\n</svg>","sin-clientes":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-clientes\">\n  <defs>\n    <pattern id=\"ray-sin-clientes\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/>\n    </pattern>\n  </defs>\n  <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\">\n    <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/>\n    <path d=\"M100 6v8M28 76h6M166 76h6\" />\n    <path d=\"M36 128h128\"/>\n    <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/>\n  </g>\n\n  <rect x=\"122\" y=\"70\" width=\"38\" height=\"58\" rx=\"4\" stroke-dasharray=\"3 3.5\" stroke-opacity=\".6\"/>\n  <rect x=\"56\" y=\"52\" width=\"58\" height=\"76\" rx=\"4\" fill=\"var(--ilus-papel, #fff)\"/>\n  <rect x=\"64\" y=\"38\" width=\"42\" height=\"14\" rx=\"4\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M72 45h26\" stroke-opacity=\".55\"/>\n  <path d=\"M52 62h66l-3 10H55z\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M52 62h66l-3 10H55z\" fill=\"url(#ray-sin-clientes)\"/>\n  <path d=\"M55 72c0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0 0 3.5 6.6 3.5 6.6 0\" fill=\"var(--ilus-papel, #fff)\"/>\n  <rect x=\"64\" y=\"86\" width=\"16\" height=\"14\" rx=\"2.5\"/><path d=\"M72 86v14\" stroke-opacity=\".5\"/>\n  <rect x=\"90\" y=\"86\" width=\"16\" height=\"14\" rx=\"2.5\"/><path d=\"M98 86v14\" stroke-opacity=\".5\"/>\n  <rect x=\"78\" y=\"106\" width=\"14\" height=\"22\" rx=\"2\" fill=\"url(#ray-sin-clientes)\"/>\n  <rect x=\"78\" y=\"106\" width=\"14\" height=\"22\" rx=\"2\"/>\n  <circle cx=\"141\" cy=\"99\" r=\"10\" fill=\"var(--ilus-papel, #fff)\"/>\n  <circle cx=\"141\" cy=\"99\" r=\"10\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.16\" stroke=\"var(--ilus-acento, #6d63ff)\"/>\n  <path d=\"M141 94.5v9M136.5 99h9\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.6\"/>\n  <path d=\"M44 36.5v7M40.5 40h7\"/><path d=\"M160 45v6M157 48h6\" stroke-opacity=\".7\"/>\n  <circle cx=\"134\" cy=\"58\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"48\" cy=\"104\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/>\n</svg>","sin-facturas":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-facturas\">\n  <defs>\n    <pattern id=\"ray-sin-facturas\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/>\n    </pattern>\n  </defs>\n  <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\">\n    <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/>\n    <path d=\"M100 6v8M28 76h6M166 76h6\" />\n    <path d=\"M36 128h128\"/>\n    <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/>\n  </g>\n\n  <g transform=\"rotate(9 118 72)\" stroke-opacity=\".55\">\n    <rect x=\"84\" y=\"30\" width=\"52\" height=\"82\" rx=\"6\" fill=\"var(--ilus-papel, #fff)\"/>\n    <path d=\"M94 44h22M94 56h30M94 66h24\" stroke-dasharray=\"2 3\"/>\n  </g>\n  <path d=\"M62 34a6 6 0 0 1 6-6h48a6 6 0 0 1 6 6v84l-6 5-6-5-6 5-6-5-6 5-6-5-6 5-6-5-6 5-6-5z\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M72 42h22\" stroke-width=\"1.6\"/>\n  <path d=\"M72 50h12\" stroke-opacity=\".5\"/>\n  <g stroke-opacity=\".6\">\n    <path d=\"M72 64h22M104 64h8\"/><path d=\"M72 74h18M104 74h8\"/><path d=\"M72 84h26M104 84h8\"/>\n  </g>\n  <path d=\"M72 96h40\" stroke-dasharray=\"2 3\" stroke-opacity=\".6\"/>\n  <path d=\"M72 106h12M98 106h14\" stroke-width=\"1.6\"/>\n  <g transform=\"rotate(-12 132 96)\">\n    <circle cx=\"132\" cy=\"96\" r=\"17\" fill=\"var(--ilus-papel, #fff)\"/>\n    <circle cx=\"132\" cy=\"96\" r=\"17\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.14\" stroke=\"var(--ilus-acento, #6d63ff)\"/>\n    <circle cx=\"132\" cy=\"96\" r=\"12.5\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-dasharray=\"1.5 2.8\" stroke-opacity=\".7\"/>\n    <path d=\"M135.4 91.3c-.8-1.2-2-1.8-3.4-1.8-2 0-3.4 1-3.4 2.6 0 3.6 7 2 7 5.6 0 1.6-1.5 2.6-3.6 2.6-1.6 0-3-.6-3.7-1.8M132 87.3v2.2M132 100.4v2.2\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.4\"/>\n  </g>\n  <path d=\"M48 42.5v7M44.5 46h7\"/><path d=\"M156 55v6M153 58h6\" stroke-opacity=\".7\"/>\n  <circle cx=\"46\" cy=\"100\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"150\" cy=\"124\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/>\n</svg>","sin-reuniones":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-reuniones\">\n  <defs>\n    <pattern id=\"ray-sin-reuniones\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/>\n    </pattern>\n  </defs>\n  <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\">\n    <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/>\n    <path d=\"M100 6v8M28 76h6M166 76h6\" />\n    <path d=\"M36 128h128\"/>\n    <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/>\n  </g>\n\n  <rect x=\"54\" y=\"38\" width=\"82\" height=\"86\" rx=\"11\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M54 56v-7a11 11 0 0 1 11-11h60a11 11 0 0 1 11 11v7z\" fill=\"url(#ray-sin-reuniones)\"/>\n  <path d=\"M54 56h82\"/>\n  <rect x=\"72\" y=\"30\" width=\"6\" height=\"14\" rx=\"3\" fill=\"var(--ilus-papel, #fff)\"/>\n  <rect x=\"112\" y=\"30\" width=\"6\" height=\"14\" rx=\"3\" fill=\"var(--ilus-papel, #fff)\"/>\n  <g stroke-opacity=\".5\" stroke-dasharray=\"2 2.6\">\n    <rect x=\"64\" y=\"66\" width=\"10\" height=\"10\" rx=\"3\"/><rect x=\"82\" y=\"66\" width=\"10\" height=\"10\" rx=\"3\"/><rect x=\"100\" y=\"66\" width=\"10\" height=\"10\" rx=\"3\"/><rect x=\"118\" y=\"66\" width=\"10\" height=\"10\" rx=\"3\"/>\n    <rect x=\"64\" y=\"84\" width=\"10\" height=\"10\" rx=\"3\"/><rect x=\"82\" y=\"84\" width=\"10\" height=\"10\" rx=\"3\"/><rect x=\"118\" y=\"84\" width=\"10\" height=\"10\" rx=\"3\"/>\n    <rect x=\"64\" y=\"102\" width=\"10\" height=\"10\" rx=\"3\"/><rect x=\"82\" y=\"102\" width=\"10\" height=\"10\" rx=\"3\"/>\n  </g>\n  <rect x=\"100\" y=\"84\" width=\"10\" height=\"10\" rx=\"3\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.2\" stroke=\"var(--ilus-acento, #6d63ff)\"/>\n  <circle cx=\"142\" cy=\"106\" r=\"17\" fill=\"var(--ilus-papel, #fff)\"/>\n  <circle cx=\"142\" cy=\"106\" r=\"17\"/>\n  <circle cx=\"142\" cy=\"106\" r=\"13\" stroke-opacity=\".4\" stroke-dasharray=\"1 3.2\"/>\n  <path d=\"M142 97v9l6 3.5\"/>\n  <circle cx=\"142\" cy=\"106\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>\n  <path d=\"M44 48.5v7M40.5 52h7\"/><path d=\"M158 37v6M155 40h6\" stroke-opacity=\".7\"/>\n  <circle cx=\"42\" cy=\"90\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"160\" cy=\"70\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/>\n</svg>","sin-conexion":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-conexion\">\n  <defs>\n    <pattern id=\"ray-sin-conexion\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/>\n    </pattern>\n  </defs>\n  <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\">\n    <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/>\n    <path d=\"M100 6v8M28 76h6M166 76h6\" />\n    <path d=\"M36 128h128\"/>\n    <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/>\n  </g>\n\n  <g stroke-opacity=\".55\">\n    <path d=\"M84 50a22 22 0 0 1 32 0\"/><path d=\"M90 56a13 13 0 0 1 20 0\"/>\n    <circle cx=\"100\" cy=\"61\" r=\"1.5\" fill=\"currentColor\" stroke=\"none\"/>\n  </g>\n  <path d=\"M86 36l28 30\" stroke-opacity=\".7\"/>\n  <path d=\"M30 112c20 0 22-26 42-26\"/>\n  <rect x=\"72\" y=\"77\" width=\"22\" height=\"18\" rx=\"5\" fill=\"var(--ilus-papel, #fff)\"/>\n  <rect x=\"72\" y=\"77\" width=\"22\" height=\"18\" rx=\"5\" fill=\"url(#ray-sin-conexion)\"/>\n  <path d=\"M94 81.5h8M94 90.5h8\"/>\n  <path d=\"M170 112c-20 0-20-26-38-26\"/>\n  <rect x=\"116\" y=\"75\" width=\"18\" height=\"22\" rx=\"5\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M122 83v6M128 83v6\" />\n  <g stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.3\">\n    <path d=\"M109 69v-6\"/><path d=\"M103 73l-3-4\"/><path d=\"M115 73l3-4\"/>\n    <path d=\"M109 103v6\"/><path d=\"M103 99l-3 4\"/><path d=\"M115 99l3 4\"/>\n  </g>\n  <circle cx=\"109\" cy=\"86\" r=\"1.7\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/>\n  <path d=\"M46 46.5v7M42.5 50h7\"/><path d=\"M158 43v6M155 46h6\" stroke-opacity=\".7\"/>\n  <circle cx=\"150\" cy=\"128\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/>\n</svg>","error":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"error\">\n  <defs>\n    <pattern id=\"ray-error\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/>\n    </pattern>\n  </defs>\n  <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\">\n    <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/>\n    <path d=\"M100 6v8M28 76h6M166 76h6\" />\n    <path d=\"M36 128h128\"/>\n    <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/>\n  </g>\n\n  <rect x=\"46\" y=\"36\" width=\"98\" height=\"78\" rx=\"11\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M46 52h98\" stroke-opacity=\".6\"/>\n  <circle cx=\"57\" cy=\"44\" r=\"1.7\" fill=\"currentColor\" stroke=\"none\" opacity=\".55\"/><circle cx=\"64\" cy=\"44\" r=\"1.7\" fill=\"currentColor\" stroke=\"none\" opacity=\".55\"/><circle cx=\"71\" cy=\"44\" r=\"1.7\" fill=\"currentColor\" stroke=\"none\" opacity=\".55\"/>\n  <g stroke-opacity=\".6\">\n    <path d=\"M58 64h24M58 74h16M58 84h22M58 94h12\"/>\n    <path d=\"M106 68h26M108 78h18M107 88h22\"/>\n  </g>\n  <path d=\"M96 52l-7 13 8 7-8 12 7 9-4 11\" stroke-width=\"1.4\"/>\n  <path d=\"M60 128l7-9 9 9z\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M60 128l7-9 9 9z\" fill=\"url(#ray-error)\"/>\n  <path d=\"M82 128l3-4 3 4\" stroke-opacity=\".6\"/>\n  <path d=\"M137.4 83.5a3 3 0 0 1 5.2 0l15.6 27.5a3 3 0 0 1-2.6 4.5h-30.8a3 3 0 0 1-2.6-4.5z\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M137.4 83.5a3 3 0 0 1 5.2 0l15.6 27.5a3 3 0 0 1-2.6 4.5h-30.8a3 3 0 0 1-2.6-4.5z\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.16\" stroke=\"var(--ilus-acento, #6d63ff)\"/>\n  <path d=\"M140 94v9\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.7\"/>\n  <circle cx=\"140\" cy=\"108.5\" r=\"1.5\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/>\n  <path d=\"M40 48.5v7M36.5 52h7\"/><path d=\"M160 41v6M157 44h6\" stroke-opacity=\".7\"/>\n  <circle cx=\"36\" cy=\"100\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/>\n</svg>","bienvenida":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"bienvenida\">\n  <defs>\n    <pattern id=\"ray-bienvenida\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/>\n    </pattern>\n  </defs>\n  <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\">\n    <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/>\n    <path d=\"M100 6v8M28 76h6M166 76h6\" />\n    <path d=\"M36 128h128\"/>\n    <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/>\n  </g>\n\n  <path d=\"M92 50L44 36v34l48-14z\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.09\" stroke=\"none\"/>\n  <path d=\"M108 50l48-14v34l-48-14z\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.09\" stroke=\"none\"/>\n  <g stroke=\"var(--ilus-acento, #6d63ff)\" stroke-opacity=\".75\" class=\"ilus-haz\">\n    <path d=\"M92 50L44 36M92 56L44 70M108 50l48-14M108 56l48 14\"/>\n  </g>\n  <path d=\"M88 128l5-62h14l5 62z\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M90.4 98l1-12h17.2l1 12z\" fill=\"url(#ray-bienvenida)\"/>\n  <path d=\"M88.5 122l1-12h21l1 12z\" fill=\"url(#ray-bienvenida)\"/>\n  <path d=\"M90.4 98h19.2M91.4 86h17.2M89.5 110h21M88.5 122h23\" stroke-opacity=\".55\"/>\n  <path d=\"M97 128v-7a3 3 0 0 1 6 0v7\"/>\n  <rect x=\"86\" y=\"60\" width=\"28\" height=\"6\" rx=\"2\" fill=\"var(--ilus-papel, #fff)\"/>\n  <rect x=\"92\" y=\"46\" width=\"16\" height=\"14\" rx=\"2\" fill=\"var(--ilus-papel, #fff)\"/>\n  <rect x=\"92\" y=\"46\" width=\"16\" height=\"14\" rx=\"2\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.2\" stroke=\"var(--ilus-acento, #6d63ff)\"/>\n  <path d=\"M100 46v14\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-opacity=\".6\"/>\n  <path d=\"M89 46l11-10 11 10z\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M100 36v-5\"/>\n  <g stroke-opacity=\".6\">\n    <path d=\"M40 136c5-2.6 9-2.6 14 0s9 2.6 14 0\"/><path d=\"M132 136c5-2.6 9-2.6 14 0s9 2.6 14 0\"/>\n  </g>\n  <path d=\"M138 22l4 3 4-3M150 28l3 2.2 3-2.2\" stroke-opacity=\".7\"/>\n  <path d=\"M52 19v6M49 22h6\"/><circle cx=\"62\" cy=\"104\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"146\" cy=\"96\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/>\n</svg>","cargando-algo-grande":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"cargando-algo-grande\">\n  <defs>\n    <pattern id=\"ray-cargando-algo-grande\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/>\n    </pattern>\n  </defs>\n  <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\">\n    <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/>\n    <path d=\"M100 6v8M28 76h6M166 76h6\" />\n    <path d=\"M36 128h128\"/>\n    <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/>\n  </g>\n\n  <path d=\"M80 41v74M120 41v74\" stroke-opacity=\".5\"/>\n  <path d=\"M84 41c0 22 16 26 16 37s-16 15-16 37h32c0-22-16-26-16-37s16-15 16-37z\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M89 52h22c-2 9-9 14-11 19-2-5-9-10-11-19z\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.22\" stroke=\"var(--ilus-acento, #6d63ff)\"/>\n  <path d=\"M100 80v24\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-dasharray=\"1 3.4\" class=\"ilus-cae\"/>\n  <path d=\"M87.5 115c2-8 7-12.5 12.5-13.5 5.5 1 10.5 5.5 12.5 13.5z\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.22\" stroke=\"var(--ilus-acento, #6d63ff)\"/>\n  <path d=\"M84 41c0 22 16 26 16 37s-16 15-16 37h32c0-22-16-26-16-37s16-15 16-37z\"/>\n  <path d=\"M88.5 46c.6 5 2 8 4 10.5\" stroke-opacity=\".5\"/>\n  <rect x=\"72\" y=\"34\" width=\"56\" height=\"8\" rx=\"4\" fill=\"var(--ilus-papel, #fff)\"/>\n  <rect x=\"72\" y=\"34\" width=\"56\" height=\"8\" rx=\"4\" fill=\"url(#ray-cargando-algo-grande)\"/>\n  <rect x=\"72\" y=\"114\" width=\"56\" height=\"8\" rx=\"4\" fill=\"var(--ilus-papel, #fff)\"/>\n  <rect x=\"72\" y=\"114\" width=\"56\" height=\"8\" rx=\"4\" fill=\"url(#ray-cargando-algo-grande)\"/>\n  <g class=\"ilus-gira\">\n    <circle cx=\"100\" cy=\"18\" r=\"3.4\" fill=\"var(--ilus-papel, #fff)\" stroke=\"var(--ilus-acento, #6d63ff)\"/>\n    <circle cx=\"158\" cy=\"76\" r=\"2\" fill=\"currentColor\" stroke=\"none\" opacity=\".45\"/>\n  </g>\n  <path d=\"M46 40.5v7M42.5 44h7\"/><path d=\"M156 109v6M153 112h6\" stroke-opacity=\".7\"/>\n  <circle cx=\"48\" cy=\"108\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/>\n</svg>","archivo-vacio":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"archivo-vacio\">\n  <defs>\n    <pattern id=\"ray-archivo-vacio\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/>\n    </pattern>\n  </defs>\n  <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\">\n    <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/>\n    <path d=\"M100 6v8M28 76h6M166 76h6\" />\n    <path d=\"M36 128h128\"/>\n    <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/>\n  </g>\n\n  <path d=\"M74 70l4-16h44l4 16\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M74 70h52l12 14H62z\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M74 70h52l12 14H62z\" fill=\"url(#ray-archivo-vacio)\" fill-opacity=\".9\"/>\n  <path d=\"M62 84L44 74l14-14 16 10\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M138 84l18-10-14-14-16 10\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M138 84l18-10-14-14-16 10\" fill=\"url(#ray-archivo-vacio)\" fill-opacity=\".6\"/>\n  <path d=\"M62 84h76v40a4 4 0 0 1-4 4H66a4 4 0 0 1-4-4z\" fill=\"var(--ilus-papel, #fff)\"/>\n  <rect x=\"88\" y=\"98\" width=\"24\" height=\"13\" rx=\"2.5\" stroke-dasharray=\"2 2.6\" stroke-opacity=\".6\"/>\n  <g stroke=\"var(--ilus-acento, #6d63ff)\">\n    <circle cx=\"100\" cy=\"46\" r=\"2.6\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.2\"/>\n    <circle cx=\"110\" cy=\"36\" r=\"1.8\"/>\n    <circle cx=\"92\" cy=\"32\" r=\"1.3\"/>\n    <path d=\"M118 24l1.5 3M82 22l-1 3\" stroke-opacity=\".7\"/>\n  </g>\n  <path d=\"M40 42.5v7M36.5 46h7\"/><path d=\"M162 37v6M159 40h6\" stroke-opacity=\".7\"/>\n  <circle cx=\"160\" cy=\"104\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"42\" cy=\"108\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/>\n</svg>","sin-permisos":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"sin-permisos\">\n  <defs>\n    <pattern id=\"ray-sin-permisos\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/>\n    </pattern>\n  </defs>\n  <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\">\n    <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/>\n    <path d=\"M100 6v8M28 76h6M166 76h6\" />\n    <path d=\"M36 128h128\"/>\n    <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/>\n  </g>\n\n  <path d=\"M84 76V60a16 16 0 0 1 32 0v16\"/>\n  <path d=\"M90 76V60a10 10 0 0 1 20 0v16\" stroke-opacity=\".6\"/>\n  <rect x=\"72\" y=\"74\" width=\"56\" height=\"50\" rx=\"11\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M112 74h5a11 11 0 0 1 11 11v28a11 11 0 0 1-11 11h-5z\" fill=\"url(#ray-sin-permisos)\"/>\n  <path d=\"M112 74v50\" stroke-opacity=\".45\"/>\n  <rect x=\"72\" y=\"74\" width=\"56\" height=\"50\" rx=\"11\"/>\n  <circle cx=\"94\" cy=\"94\" r=\"5.5\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.2\" stroke=\"var(--ilus-acento, #6d63ff)\"/>\n  <path d=\"M94 99.5v8\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.6\"/>\n  <g stroke-opacity=\".6\" stroke-dasharray=\"2 2.4\">\n    <circle cx=\"146\" cy=\"120\" r=\"6\"/><path d=\"M152 120h14M161 120v4M165 120v3\"/>\n  </g>\n  <path d=\"M54 40.5v7M50.5 44h7\"/><path d=\"M150 41v6M147 44h6\" stroke-opacity=\".7\"/>\n  <circle cx=\"50\" cy=\"100\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"146\" cy=\"70\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/>\n</svg>","exito":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 160\" width=\"200\" height=\"160\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" data-ilus=\"exito\">\n  <defs>\n    <pattern id=\"ray-exito\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <path d=\"M0 0v4\" stroke=\"currentColor\" stroke-width=\".8\" stroke-opacity=\".5\"/>\n    </pattern>\n  </defs>\n  <g class=\"ilus-guia\" stroke-width=\"1\" stroke-opacity=\".34\">\n    <circle cx=\"100\" cy=\"76\" r=\"58\" stroke-dasharray=\"1.5 4.5\"/>\n    <path d=\"M100 6v8M28 76h6M166 76h6\" />\n    <path d=\"M36 128h128\"/>\n    <path d=\"M24 128h6M170 128h6\" stroke-dasharray=\"1 3\"/>\n  </g>\n\n  <path d=\"M88 92l-9 32 9-4.5 5.5 8.5 6.5-29\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M88 92l-9 32 9-4.5 5.5 8.5 6.5-29\" fill=\"url(#ray-exito)\"/>\n  <path d=\"M112 92l9 32-9-4.5-5.5 8.5-6.5-29\" fill=\"var(--ilus-papel, #fff)\"/>\n  <path d=\"M100 34Q103.02 33.52 105.21 38.46Q108.1 37.75 111.63 36.05Q114.63 36.63 115 42.02Q117.96 42.35 121.85 41.95Q124.47 43.53 122.98 48.72Q125.65 50.04 129.44 51Q131.37 53.37 128.19 57.74Q130.25 59.9 133.48 62.1Q134.48 64.98 130 68Q131.19 70.73 133.48 73.9Q133.43 76.96 128.19 78.26Q128.38 81.23 129.44 85Q128.35 87.85 122.98 87.28Q122.14 90.14 121.85 94.05Q119.85 96.35 115 93.98Q113.23 96.38 111.63 99.95Q108.96 101.43 105.21 97.54Q102.73 99.19 100 102Q96.98 102.48 94.79 97.54Q91.9 98.25 88.37 99.95Q85.37 99.37 85 93.98Q82.04 93.65 78.15 94.05Q75.53 92.47 77.02 87.28Q74.35 85.96 70.56 85Q68.63 82.63 71.81 78.26Q69.75 76.1 66.52 73.9Q65.52 71.02 70 68Q68.81 65.27 66.52 62.1Q66.57 59.04 71.81 57.74Q71.62 54.77 70.56 51Q71.65 48.15 77.02 48.72Q77.86 45.86 78.15 41.95Q80.15 39.65 85 42.02Q86.77 39.62 88.37 36.05Q91.04 34.57 94.79 38.46Q97.27 36.81 100 34Z\" fill=\"var(--ilus-papel, #fff)\"/>\n  <circle cx=\"100\" cy=\"68\" r=\"27\" stroke-opacity=\".4\" stroke-dasharray=\"1.5 3.4\"/>\n  <circle cx=\"100\" cy=\"68\" r=\"21\" fill=\"var(--ilus-acento, #6d63ff)\" fill-opacity=\"0.16\" stroke=\"var(--ilus-acento, #6d63ff)\"/>\n  <path d=\"M90.5 68.5l6.5 6.5 13-13.5\" stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.8\"/>\n  <g stroke=\"var(--ilus-acento, #6d63ff)\" stroke-width=\"1.2\">\n    <path d=\"M146 40l5-3\"/><path d=\"M152 60h6\"/><path d=\"M48 54l-5-2\"/><path d=\"M56 30l-3-4\"/>\n  </g>\n  <path d=\"M150 88.5v7M146.5 92h7\"/><path d=\"M46 83v6M43 86h6\" stroke-opacity=\".7\"/>\n  <circle cx=\"140\" cy=\"22\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/><circle cx=\"62\" cy=\"116\" r=\"1.6\" fill=\"var(--ilus-acento, #6d63ff)\" stroke=\"none\"/><circle cx=\"140\" cy=\"120\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\" opacity=\".5\"/>\n</svg>"};
+const USOS = {
+  'sin-resultados':['Búsqueda o filtro sin coincidencias','ph-magnifying-glass'],
+  'sin-tareas':['Todo hecho, nada pendiente','ph-check-circle'],
+  'sin-clientes':['Lista nueva de clientes','ph-buildings'],
+  'sin-facturas':['Sin comprobantes en el período','ph-receipt'],
+  'sin-reuniones':['Día o semana sin reuniones','ph-calendar-blank'],
+  'sin-conexion':['Se cortó la conexión','ph-wifi-slash'],
+  'error':['Algo falló al cargar','ph-warning'],
+  'bienvenida':['Primer ingreso a la cuenta','ph-hand-waving'],
+  'cargando-algo-grande':['Importación o proceso largo','ph-hourglass-medium'],
+  'archivo-vacio':['Carpeta o adjuntos vacíos','ph-folder-simple'],
+  'sin-permisos':['Sección sin acceso','ph-lock-simple'],
+  'exito':['Algo importante salió bien','ph-seal-check'],
+};
+const $ = s => document.querySelector(s);
+let n = 0;
+// cada copia lleva su propio id de rayado para no pisarse en la página
+const pintar = (el, id) => { el.innerHTML = ILUS[id].replace(/ray-([a-z-]+)/g, (_, x) => `ray-${x}-${++n}`); };
+
+$('#galeria').innerHTML = Object.keys(ILUS).map(id => `
+  <div class="bandeja entra">
+    <div class="rot">${id}.svg<button class="copiar" data-copiar="${id}" title="Copiar SVG" aria-label="Copiar ${id}.svg"><i class="ph ph-copy"></i></button></div>
+    <div class="adentro"><span class="ilus" data-ilus="${id}"></span></div>
+    <div class="pie"><i class="ph ${USOS[id][1]}"></i>${USOS[id][0]}</div>
+  </div>`).join('');
+document.querySelectorAll('[data-ilus]').forEach(el => { if (!el.querySelector('svg') && el.tagName !== 'svg') pintar(el, el.dataset.ilus); });
+
+// tema y acento
+document.querySelectorAll('#tema button').forEach(b => b.onclick = () => {
+  document.documentElement.dataset.tema = b.dataset.t;
+  document.querySelectorAll('#tema button').forEach(x => x.classList.toggle('on', x === b));
+});
+document.querySelectorAll('#acentos button').forEach(b => b.onclick = () => {
+  document.documentElement.style.setProperty('--acento', b.dataset.a);
+  document.querySelectorAll('#acentos button').forEach(x => x.classList.toggle('on', x === b));
+});
+
+// toast
+let tt;
+function toast(t, s, accion, fn) {
+  $('#toastT').textContent = t; $('#toastS').textContent = s;
+  const a = $('#toastA'); a.textContent = accion || ''; a.onclick = () => { fn && fn(); $('#toast').classList.remove('ver'); };
+  $('#toast').classList.add('ver'); clearTimeout(tt); tt = setTimeout(() => $('#toast').classList.remove('ver'), 5000);
+}
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-copiar]'); if (!b) return;
+  const id = b.dataset.copiar;
+  try { await navigator.clipboard.writeText(ILUS[id]); toast(`Copiado ${id}.svg`, 'Pegalo en línea para que tome el color del tema'); }
+  catch { toast('No se pudo copiar', `Abrí ilustraciones/${id}.svg y copialo desde ahí`); }
+});
+$('#deshacerEnvio').onclick = () => toast('Envío deshecho · PR-0242', 'Volvió a borrador. Sofía no recibió nada.', 'Rehacer', () => toast('Propuesta enviada · PR-0242', 'Quedó en Propuestas como enviada'));
+$('#reintentar').onclick = e => { const b = e.currentTarget, o = b.innerHTML; b.style.width = b.offsetWidth + 'px'; b.textContent = 'Probando…'; setTimeout(() => { b.innerHTML = o; b.style.width = ''; toast('Seguís sin conexión', 'Volvemos a probar solos cada 30 s'); }, 1200); };
+
+// entrada escalonada
+const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const obs = 'IntersectionObserver' in window && !reducido ? new IntersectionObserver(es => es.forEach(x => {
+  if (x.isIntersecting) { const el = x.target, i = [...el.parentElement.children].indexOf(el); el.style.transitionDelay = `${Math.min(i, 8) * 45}ms`; el.classList.add('ver'); obs.unobserve(el); }
+}), { threshold: .12 }) : null;
+document.querySelectorAll('.entra').forEach(el => obs ? obs.observe(el) : el.classList.add('ver'));
+// por si el observador no dispara (vista previa, impresión): nada queda invisible
+setTimeout(() => document.querySelectorAll('.entra:not(.ver)').forEach(el => { const r = el.getBoundingClientRect(); if (r.top < innerHeight) el.classList.add('ver'); }), 1500);
+
+// importación que avanza
+const total = 12480, fmt = new Intl.NumberFormat('es-AR');
+let pct = 0;
+function avanzar() {
+  pct = Math.min(pct + (pct < 38 ? 4 : 1), 97);
+  $('#barra i').style.width = pct + '%'; $('#barra').setAttribute('aria-valuenow', pct);
+  $('#pct').innerHTML = `${pct}<span>%</span>`;
+  $('#cargados').textContent = fmt.format(Math.round(total * pct / 100));
+  const min = Math.max(1, Math.round((100 - pct) / 30 * 1.6));
+  $('#falta').innerHTML = `~${min}<span>min</span>`;
+  if (pct < 97) setTimeout(avanzar, pct < 38 ? 90 : 1400);
+}
+if (reducido) { pct = 37; }
+setTimeout(avanzar, 400);
+</script>
+</body>
+</html>

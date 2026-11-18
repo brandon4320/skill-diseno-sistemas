@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presupuesto PRE-0241 · Estudio Faro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+/* ── Tokens (los mismos de tokens.css; el oscuro es solo de pantalla: el papel siempre es claro) ── */
+:root{
+  --lienzo:#e8eaee; --superficie:#fff; --bandeja:#f4f5f7; --suave:#f0f1f4; --hover:#f7f8fa;
+  --borde:#e6e8ec; --divisor:#eef0f3;
+  --tinta:#16181d; --texto-2:#565b68; --texto-3:#6b7080;
+  --acento:#4f46e5;
+  --verde:#15803d; --verde-f:#ebf8f0; --ambar:#b45309; --ambar-f:#fdf3e1; --rojo:#b91c1c; --rojo-f:#fdecec; --azul:#1d4ed8; --azul-f:#e9f1fd; --gris-f:#f0f1f4;
+  --e1:#3b6fe0; --e2:#d6336c; --e3:#b4561c; --e4:#25a866; --e5:#7c5ce0;
+  --display:'Outfit',sans-serif; --ui:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --s-min:0 1px 2px rgb(22 24 29/.05); --s-hoja:0 1px 2px rgb(22 24 29/.04),0 40px 80px -40px rgb(22 24 29/.28);
+  --s-flot:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
+  --ease:cubic-bezier(.23,1,.32,1); --neg:#16181d; --neg-t:#fff;
+}
+@media screen{
+  [data-tema=oscuro]{
+    --lienzo:#050506; --superficie:#151518; --bandeja:#0f0f12; --suave:#1d1d21; --hover:#1a1a1e;
+    --borde:#26262b; --divisor:#1f1f23; --tinta:#f4f4f5; --texto-2:#b4b4bd; --texto-3:#8f8f9a;
+    --verde:#4ade80; --verde-f:rgb(34 197 94/.13); --ambar:#fbbf24; --ambar-f:rgb(245 184 0/.13); --rojo:#f87171; --rojo-f:rgb(239 68 68/.13); --azul:#60a5fa; --azul-f:rgb(59 130 246/.13); --gris-f:#232327;
+    --s-min:none; --s-hoja:0 40px 80px -40px rgb(0 0 0/.9); --neg:#f4f4f5; --neg-t:#16181d;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--ui);background:var(--lienzo);color:var(--tinta);font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .3s}
+button{font:inherit;color:inherit}
+.ph,.ph-fill{font-size:17px;line-height:1}
+.num{font-variant-numeric:tabular-nums}
+/* En papel todas las cifras alinean: los atajos font: no pisan las cifras tabulares */
+.hoja,.hoja *{font-variant-numeric:tabular-nums!important}
+.mono{font-family:var(--mono)}
+.g{color:var(--texto-3)}
+
+/* ── Barra de la vista previa (no se imprime) ── */
+.barra{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;padding:12px 20px;background:color-mix(in oklch,var(--lienzo) 82%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.barra .der{margin-left:auto;display:flex;gap:8px;align-items:center}
+.volver{width:36px;height:36px;border-radius:11px;border:1px solid var(--borde);background:var(--superficie);display:grid;place-items:center;color:var(--texto-2);box-shadow:var(--s-min);text-decoration:none;flex:none}
+.seg{display:inline-flex;background:var(--bandeja);border:1px solid var(--borde);padding:3px;border-radius:12px;gap:2px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg a,.seg button{border:0;background:none;height:28px;padding:0 11px;border-radius:9px;font-weight:600;font-size:12.5px;color:var(--texto-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none;white-space:nowrap}
+.seg .on{background:var(--superficie);color:var(--tinta);box-shadow:0 1px 2px rgb(22 24 29/.1),0 0 0 1px var(--borde)}
+[data-tema=oscuro] .seg .on{background:#f4f4f5;color:#16181d}
+.seg .ph,.seg .ph-fill{font-size:15px}
+.btn{height:36px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:13px;border:1px solid var(--borde);background:var(--superficie);cursor:pointer;box-shadow:var(--s-min);transition:transform .15s var(--ease),background .15s;white-space:nowrap;text-decoration:none}
+.btn:hover{background:var(--hover)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible,.seg a:focus-visible,.seg button:focus-visible,.volver:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 45%,transparent);outline-offset:2px}
+.btn.neg{background:var(--neg);border-color:var(--neg);color:var(--neg-t);box-shadow:inset 0 1px 0 rgb(255 255 255/.12),0 4px 10px -2px rgb(22 24 29/.35)}
+.btn.chico{height:28px;padding:0 10px;border-radius:9px;font-size:12px;gap:6px}
+.btn.chico .ph{font-size:14px}
+.demo{font:500 12px var(--mono);color:var(--texto-2);border:1px dashed var(--borde);border-radius:7px;padding:3px 7px;white-space:nowrap}
+
+/* ── Hoja A4 ── */
+.hoja{width:210mm;min-height:297mm;margin:12px auto 64px;background:var(--superficie);border:1px solid var(--borde);border-radius:20px;padding:16mm 15mm 14mm;box-shadow:var(--s-hoja);position:relative;overflow:hidden;display:flex;flex-direction:column;animation:entra .6s var(--ease) both}
+.hoja::before{content:"";position:absolute;inset:0 0 auto 0;height:260px;background:radial-gradient(60% 120% at 92% -30%,rgb(109 99 255/.10),transparent 62%),radial-gradient(40% 90% at 0% -40%,rgb(59 111 224/.06),transparent 60%);pointer-events:none}
+.hoja>*{position:relative}
+@keyframes entra{from{opacity:0;transform:translateY(10px)}}
+
+
+/* Piezas comunes: marca, chips, bandeja, datos, tabla, totales, toast */
+.marca{display:flex;gap:12px;align-items:center}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(140deg,#1d1b2e,#3a3560);display:grid;place-items:center;flex:none;box-shadow:inset 0 1px 0 rgb(255 255 255/.15);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.marca b{font:500 19px/1.1 var(--display);letter-spacing:-.02em;display:block}
+.marca small{font-size:12px;color:var(--texto-3)}
+.emisor{margin-top:14px;font-size:12px;color:var(--texto-2);line-height:1.65}
+.emisor span{color:var(--texto-3)}
+.doc{text-align:right}
+.doc small{font-size:12px;color:var(--texto-2);font-weight:500;display:flex;justify-content:flex-end;gap:6px;align-items:center}
+.doc h1{font:300 44px/1 var(--display);letter-spacing:-.035em;margin-top:6px}
+.doc .nro{font:500 14px var(--mono);margin-top:8px;letter-spacing:-.01em}
+.chip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:8px;font-weight:600;font-size:12px;white-space:nowrap;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.v{background:var(--verde-f);color:var(--verde)}.am{background:var(--ambar-f);color:var(--ambar)}.ro{background:var(--rojo-f);color:var(--rojo)}.az{background:var(--azul-f);color:var(--azul)}.gr{background:var(--gris-f);color:var(--texto-2)}
+.bandeja{background:var(--bandeja);border:1px solid var(--borde);border-radius:16px;padding:4px;display:flex;flex-direction:column;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.bandeja .rot{display:flex;align-items:center;gap:7px;padding:7px 10px 6px;color:var(--texto-2);font-weight:600;font-size:12px}
+.bandeja .rot .ph{font-size:15px;color:var(--texto-3)}
+.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:12px;padding:14px 16px;box-shadow:var(--s-min);flex:1}
+.datos{display:grid;grid-template-columns:1fr 1.1fr;gap:14px 18px}
+.dato small{display:block;font-size:12px;color:var(--texto-3);font-weight:500}
+.dato b{font-weight:600;font-size:13.5px;display:flex;align-items:center;gap:7px;margin-top:1px}
+.dato b em{font-style:normal;font-weight:500;font-size:12px;color:var(--texto-3)}
+.dato b em.rojo{color:var(--rojo)}
+.cuad{width:16px;height:16px;border-radius:5px;display:grid;place-items:center;color:#fff;flex:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.cuad .ph-fill{font-size:10px}
+.sec{display:flex;align-items:baseline;gap:10px;margin:28px 0 10px}
+.sec h2{font:500 17px var(--display);letter-spacing:-.01em}
+.sec span{font-size:12px;color:var(--texto-3);font-weight:500}
+table{width:100%;border-collapse:collapse}
+thead th{font-size:12px;font-weight:500;color:var(--texto-3);text-align:left;padding:0 10px 8px;border-bottom:1px solid var(--borde)}
+thead th.d,td.d{text-align:right}
+tbody td{padding:12px 10px;border-bottom:1px solid var(--divisor);vertical-align:top}
+tbody tr{break-inside:avoid}
+td.con{position:relative;padding-left:18px}
+td.con::before{content:"";position:absolute;left:4px;top:14px;bottom:14px;width:3px;border-radius:3px;background:var(--c);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+td.con b{font-weight:600;font-size:13.5px;display:block}
+td.con small{font-size:12px;color:var(--texto-2)}
+td.d{font-weight:500;white-space:nowrap}
+.cv{color:var(--texto-3);font-size:max(12px,.86em);font-weight:400}
+td .un{color:var(--texto-3);font-size:12px;font-weight:400}
+.nota{font-size:12px;color:var(--texto-2);padding:4px 10px 6px;display:flex;gap:7px}
+.nota .ph{font-size:15px;color:var(--texto-3);margin-top:1px}
+.totales{display:flex;flex-direction:column}
+.linea{display:flex;justify-content:space-between;padding:7px 4px;font-size:13px;color:var(--texto-2);border-bottom:1px solid var(--divisor)}
+.linea b{color:var(--tinta);font-weight:500}
+.total{margin-top:12px;border-radius:16px;padding:16px 18px 18px;color:#fff;position:relative;overflow:hidden;
+  background:radial-gradient(120% 140% at 100% 0%,#7b72ff 0%,transparent 55%),linear-gradient(150deg,#3f36c9,#5a50f0 60%,#4b42dc);
+  box-shadow:0 18px 36px -18px rgb(79 70 229/.6),inset 0 1px 0 rgb(255 255 255/.18);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.total::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgb(255 255 255/.10) 1px,transparent 1.2px);background-size:14px 14px;mask:linear-gradient(200deg,#000,transparent 60%);-webkit-mask:linear-gradient(200deg,#000,transparent 60%);pointer-events:none}
+.total small{font-weight:500;opacity:.92;font-size:12px;display:flex;justify-content:space-between}
+.total .n{font:500 32px/1.1 var(--display);letter-spacing:-.03em;margin-top:6px;white-space:nowrap}
+.total .n span{opacity:.88;font-size:19px;font-weight:400;margin-right:4px}
+.total .n i{font-style:normal;opacity:.88;font-size:.6em;font-weight:400}
+.total p{font-size:12px;opacity:.88;margin-top:8px;line-height:1.45}
+.toast{position:fixed;right:24px;bottom:24px;background:#16181d;color:#fff;border-radius:16px;box-shadow:var(--s-flot);padding:12px 14px;display:flex;gap:12px;align-items:center;transform:translateY(16px) scale(.98);opacity:0;transition:transform .35s var(--ease),opacity .25s;pointer-events:none;z-index:9}
+.toast.ver{transform:none;opacity:1;pointer-events:auto}
+.toast .ok{width:30px;height:30px;border-radius:10px;background:rgb(31 157 92/.2);color:#4ade80;display:grid;place-items:center}
+.toast b{font-weight:600;font-size:13px;display:block}.toast small{opacity:.6;font-size:12px}
+
+/* ── Presupuesto ── */
+.cab{display:flex;justify-content:space-between;gap:24px;align-items:flex-start}
+.doc{text-align:right}
+.doc .estado{margin-top:12px;display:flex;justify-content:flex-end}
+
+.para{margin-top:32px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
+.para small{font-size:12px;color:var(--texto-2);font-weight:500;display:flex;gap:8px;align-items:center}
+.para h2{font:300 30px/1.12 var(--display);letter-spacing:-.03em;margin-top:8px}
+.para h2 b{font-weight:500}
+.para p{color:var(--texto-2);margin-top:8px;max-width:440px;font-size:13px}
+.contacto{display:flex;gap:10px;align-items:center;justify-content:flex-end}
+.contacto img{width:38px;height:38px;border-radius:50%;background:#fde8f0;border:2.5px solid var(--superficie);box-shadow:var(--s-min)}
+.contacto b{font-weight:600;font-size:13px;display:block;line-height:1.25}.contacto span{font-size:12px;color:var(--texto-3)}
+
+.franja{margin-top:20px}
+.franja .adentro{display:grid;grid-template-columns:repeat(4,1fr);padding:0}
+.franja .dato{padding:12px 16px}
+.franja .dato b{white-space:nowrap}
+.franja .dato+.dato{border-left:1px solid var(--divisor)}
+
+/* Opcionales */
+.opc td.con b{display:flex;align-items:center;gap:8px}
+.marcar{width:18px;height:18px;border-radius:6px;border:1.5px solid #878d9b;display:grid;place-items:center;cursor:pointer;flex:none;background:var(--superficie);transition:all .2s var(--ease)}
+.marcar:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 45%,transparent);outline-offset:2px}
+.marcar.on{background:var(--acento);border-color:var(--acento)}
+.marcar.on::after{content:"";width:8px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.opc tr.no td{color:var(--texto-3)}
+.opc tr.no td.con::before{opacity:.3}
+.opc tr.no td.con b{color:var(--texto-2)}
+.incl{display:none;font:500 12px var(--ui);color:var(--texto-3)}
+
+/* Cronograma */
+.crono{border:1px solid var(--borde);border-radius:16px;overflow:hidden;break-inside:avoid}
+.crono .fila{display:grid;grid-template-columns:150px repeat(8,1fr);align-items:center;min-height:36px;border-top:1px solid var(--divisor)}
+.crono .fila:first-child{border-top:0;background:var(--bandeja);min-height:30px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.crono .fila>span{font-size:12px;color:var(--texto-3);text-align:center;font-weight:500}
+.crono .fila>b{font-weight:500;font-size:12.5px;padding:0 14px;display:flex;gap:8px;align-items:center;white-space:nowrap}
+.crono .fila>b i{width:8px;height:8px;border-radius:3px;flex:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.barra-t{height:18px;border-radius:6px;margin:0 3px;position:relative;-webkit-print-color-adjust:exact;print-color-adjust:exact;transform-origin:left;animation:crece .9s var(--ease) both}
+.barra-t em{position:absolute;inset:0;display:flex;align-items:center;padding-left:8px;font:600 12px var(--ui);color:#fff;font-style:normal;white-space:nowrap;overflow:hidden}
+.hito{justify-self:center;width:12px;height:12px;transform:rotate(45deg);border-radius:3px;background:var(--tinta);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@keyframes crece{from{transform:scaleX(0)}}
+
+/* Pago + totales */
+.pie{display:grid;grid-template-columns:1fr 300px;gap:16px;margin-top:20px;align-items:start;break-inside:avoid}
+.tramos{display:flex;gap:3px;height:10px;margin-top:4px}
+.tramos i{border-radius:4px;-webkit-print-color-adjust:exact;print-color-adjust:exact;transform-origin:left;animation:crece .9s var(--ease) both}
+.tramo-l{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.tramo-l div small{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--texto-3);font-weight:500}
+.tramo-l div small i{width:8px;height:8px;border-radius:3px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tramo-l div b{display:block;font-weight:600;font-size:13px;margin-top:2px;white-space:nowrap}
+.tramo-l div span{font-size:12px;color:var(--texto-2)}
+.totales{display:flex;flex-direction:column}
+
+/* Aceptación */
+.acepta{margin-top:auto;padding-top:28px;break-inside:avoid}
+.firmas{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.firma{border:1px solid var(--borde);border-radius:16px;padding:14px 16px}
+.firma small{font-size:12px;color:var(--texto-3);font-weight:500}
+.firma .trazo{height:44px;border-bottom:1px dashed #cfd3da;margin:4px 0 8px;display:flex;align-items:flex-end}
+.firma .trazo svg{margin-bottom:-6px}
+.firma b{font-weight:600;font-size:13px;display:block}.firma span{font-size:12px;color:var(--texto-2)}
+.accion{display:flex;align-items:center;gap:12px;margin-top:14px}
+.accion p{font-size:12px;color:var(--texto-2)}
+.accion .btn{margin-left:auto}
+.ok-pill{display:none;margin-left:auto;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:12px;background:var(--verde-f);color:var(--verde);font-weight:600;font-size:13px}
+[data-estado=aceptado] .accion .btn{display:none}
+[data-estado=aceptado] .ok-pill{display:inline-flex}
+.letra-chica{margin-top:16px;font-size:12px;color:var(--texto-3);line-height:1.55}
+.toast a{margin-left:12px;color:#a5a0ff;font-weight:600;font-size:13px;cursor:pointer}
+
+td.det{display:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+@media screen and (max-width:820px){
+  .hoja{width:auto;min-height:0;margin:8px 16px 48px;padding:24px 20px}
+}
+@media screen and (max-width:640px){
+  .barra{padding:10px 16px}
+  .barra .txt,.demo{display:none}
+  .cab{flex-direction:column;gap:20px}
+  .doc{text-align:left}.doc small,.doc .estado{justify-content:flex-start}
+  .doc h1{font-size:36px}
+  .para,.pie{grid-template-columns:minmax(0,1fr)}
+  .para h2{font-size:26px}
+  .contacto{justify-content:flex-start}
+  .franja .adentro{grid-template-columns:1fr 1fr}
+  .franja .dato:nth-child(3){border-left:0}
+  .franja .dato:nth-child(n+3){border-top:1px solid var(--divisor)}
+  thead{display:none}
+  tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;padding:12px 0;border-bottom:1px solid var(--divisor);position:relative}
+  tbody td{border:0;padding:0}
+  td.con{grid-column:1;grid-row:1;padding-left:14px;position:static}
+  td.con::before{left:0}
+  td.cant,td.pu{display:none}
+  td.d.imp{grid-column:2;grid-row:1;padding-left:12px}
+  td.det{display:block!important;grid-column:1/-1;font-size:12px;color:var(--texto-3);margin-top:4px;padding-left:14px}
+  .crono{overflow-x:auto}
+  .crono .fila{grid-template-columns:120px repeat(8,minmax(52px,1fr));width:max-content;min-width:100%}
+  .crono .fila>span{white-space:nowrap}
+  .crono .fila>b{padding:0 10px;font-size:12px}
+  .tramo-l{grid-template-columns:1fr}
+  .firmas{grid-template-columns:1fr}
+  .accion{flex-wrap:wrap}
+  .accion .btn,.ok-pill{margin-left:0;width:100%;justify-content:center;height:48px}
+  .total .n{font-size:28px}
+}
+
+/* Toques de 44 px en celular */
+@media screen and (max-width:640px){
+  .seg a,.seg button,.btn,.volver{min-height:44px;min-width:44px}
+  .seg a,.seg button{justify-content:center}
+  .marcar{position:relative}.marcar::before{content:"";position:absolute;inset:-13px}
+}
+
+@page{size:A4;margin:12mm 14mm 14mm;
+  @bottom-left{content:"Estudio Faro S.R.L. · Presupuesto PRE-0241 · válido hasta el 2 dic 2026";font:400 9pt 'Plus Jakarta Sans',sans-serif;color:#6b7080}
+  @bottom-right{content:"Hoja " counter(page) " de " counter(pages);font:400 9pt 'Plus Jakarta Sans',sans-serif;color:#6b7080}
+}
+@media print{
+  body{background:#fff;font-size:10pt}
+  .barra,.solo-pantalla,.toast{display:none!important}
+  .hoja{width:auto;min-height:0;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;overflow:visible;animation:none}
+  .hoja::before,.total::after{display:none}
+  *,*::before,*::after{box-shadow:none!important;animation:none!important;transition:none!important}
+  thead{display:table-header-group}
+  .sec{break-after:avoid;margin:20px 0 8px}
+  .para{margin-top:22px}
+  tbody td{padding:9px 10px}
+  /* lo que no se eligió no viaja en el PDF */
+  .opc tr.no{display:none}
+  .marcar{display:none}
+  .incl{display:inline}
+  .acepta{padding-top:20px}
+  a{color:inherit;text-decoration:none}
+}
+</style>
+</head>
+<body data-estado="enviado">
+
+<nav class="barra" aria-label="Vista previa">
+  <div class="seg" aria-label="Documentos">
+    <a href="factura.html"><i class="ph ph-receipt"></i><span class="txt">Factura</span></a>
+    <a class="on" href="presupuesto.html" aria-current="page"><i class="ph-fill ph-calculator"></i><span class="txt">Presupuesto</span></a>
+    <a href="informe-mensual.html"><i class="ph ph-chart-line-up"></i><span class="txt">Informe</span></a>
+    <a href="correo.html"><i class="ph ph-envelope-simple"></i><span class="txt">Correo</span></a>
+  </div>
+  <div class="der">
+    <span class="demo">datos de ejemplo</span>
+    <div class="seg" id="tema" aria-label="Tema">
+      <button class="on" data-t="claro" aria-label="Claro"><i class="ph ph-sun"></i></button><button data-t="oscuro" aria-label="Oscuro"><i class="ph ph-moon"></i></button>
+    </div>
+    <button class="btn" onclick="window.print()"><i class="ph ph-download-simple"></i><span class="txt">Descargar PDF</span></button>
+  </div>
+</nav>
+
+<article class="hoja" aria-label="Presupuesto PRE-0241">
+  <header class="cab">
+    <div>
+      <div class="marca">
+        <span class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 19.5v-15h9M8 12h7" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18.6" cy="18.6" r="1.6" fill="#8f86ff"/></svg></span>
+        <div><b>Estudio Faro S.R.L.</b><small>Diseño de marca y producto digital</small></div>
+      </div>
+      <div class="emisor">Gorriti 5120, of. 4 · C1414 CABA<br><span>CUIT</span> 30-70912345-6 · <span>IVA</span> Responsable inscripto</div>
+    </div>
+    <div class="doc">
+      <small><i class="ph ph-calculator" style="font-size:15px"></i>Propuesta comercial</small>
+      <h1>Presupuesto</h1>
+      <div class="nro">PRE-0241</div>
+      <div class="estado"><span class="chip az" id="chipEstado">Enviado · válido 15 días</span></div>
+    </div>
+  </header>
+
+  <section class="para">
+    <div>
+      <small><span class="cuad" style="background:var(--e2)"><i class="ph-fill ph-lamp"></i></span>Casa Lumen S.R.L. · CUIT 30-71690214-5</small>
+      <h2>Tienda online de <b>Casa Lumen</b></h2>
+      <p>Catálogo de 300 lámparas con armado de ambientes, pago en cuotas y envíos a todo el país.</p>
+    </div>
+    <div class="contacto">
+      <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Lucia&backgroundColor=fde8f0" alt="">
+      <div><b>Lucía Ferrari</b><span>Dueña · pide el presupuesto</span></div>
+    </div>
+  </section>
+
+  <div class="bandeja franja">
+    <div class="adentro">
+      <div class="dato"><small>Fecha</small><b class="num">17 nov 2026</b></div>
+      <div class="dato"><small>Válido hasta</small><b class="num">2 dic 2026 <em>15 días</em></b></div>
+      <div class="dato"><small>Inicio</small><b class="num">1 dic 2026</b></div>
+      <div class="dato"><small>Publicación</small><b class="num">26 ene 2027 <em>8 sem.</em></b></div>
+    </div>
+  </div>
+
+  <div class="sec"><h2>Alcance</h2><span class="num" id="cuentaBase"></span></div>
+  <table>
+    <thead><tr><th>Concepto</th><th class="d">Cant.</th><th class="d">Precio unitario</th><th class="d">Importe</th></tr></thead>
+    <tbody id="base"></tbody>
+  </table>
+
+  <div class="sec"><h2>Opcionales</h2><span class="solo-pantalla">Marcá los que querés sumar</span></div>
+  <table class="opc">
+    <tbody id="opc"></tbody>
+  </table>
+
+  <section class="pie">
+    <div class="bandeja">
+      <div class="rot"><i class="ph ph-hand-coins"></i>Forma de pago</div>
+      <div class="adentro">
+        <div class="tramos" id="tramos"></div>
+        <div class="tramo-l" id="tramoL"></div>
+      </div>
+      <div class="nota"><i class="ph ph-note"></i>Transferencia a 7 días de cada factura.</div>
+    </div>
+    <div class="totales">
+      <div class="linea"><span>Subtotal neto</span><b class="num" id="sub"></b></div>
+      <div class="linea"><span>IVA 21 %</span><b class="num" id="iva"></b></div>
+      <div class="total">
+        <small><span>Total del proyecto</span><span>ARS</span></small>
+        <div class="n num" id="tot"></div>
+        <p id="totCtx"></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="sec"><h2>Cronograma</h2><span>8 semanas desde el 1 dic</span></div>
+  <div class="crono" id="crono"></div>
+
+  <section class="acepta">
+    <div class="firmas">
+      <div class="firma">
+        <small>Por Estudio Faro</small>
+        <div class="trazo"><svg width="120" height="34" viewBox="0 0 120 34" fill="none" stroke="#3a3560" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 26c8-14 14-20 18-18s-6 18-2 18 10-16 16-16-4 14 2 14 8-10 12-10 2 8 8 8 10-12 16-12 4 10 10 10 12-6 18-8"/></svg></div>
+        <b>Ana Ruiz</b><span>Directora · 17 nov 2026</span>
+      </div>
+      <div class="firma">
+        <small>Por Casa Lumen</small>
+        <div class="trazo" id="firmaCli"></div>
+        <b>Lucía Ferrari</b><span id="firmaCliF">Firma y fecha</span>
+      </div>
+    </div>
+    <div class="accion solo-pantalla">
+      <p>Al aceptar se emite la factura del anticipo (<span id="anticipo"></span>).</p>
+      <button class="btn neg" id="aceptar"><i class="ph ph-signature"></i>Aceptar presupuesto</button>
+      <span class="ok-pill"><i class="ph-fill ph-check-circle"></i>Aceptado el 17 nov</span>
+    </div>
+    <p class="letra-chica">Precios en pesos con IVA discriminado. Si se acepta después del 2 dic 2026, se actualizan por el índice de precios del mes. Los cambios de alcance se presupuestan aparte a $ 32.500 + IVA la hora.</p>
+  </section>
+</article>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span class="ok"><i class="ph ph-check" style="font-size:16px"></i></span><div><b id="toastT"></b><small id="toastS"></small></div><a id="deshacer">Deshacer</a></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const nf=new Intl.NumberFormat('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});
+// "$ 1.234,56" con símbolo y centavos en gris
+function plata(n,{tot=false}={}){const [e,d]=nf.format(n).split(',');return tot?`<span>$</span>${e}<i>,${d}</i>`:`<span class="cv">$</span> ${e}<span class="cv">,${d}</span>`}
+const corto=n=>'$ '+nf.format(n);
+
+const BASE=[
+ {t:'Descubrimiento y mapa del sitio',d:'Entrevistas, recorrido de compra y arquitectura de 40 páginas',q:1,p:780000,c:'var(--e5)'},
+ {t:'Diseño de pantallas',d:'Home, catálogo, ficha, armado de ambientes, carrito y checkout',q:12,u:'pant.',p:85000,c:'var(--e2)'},
+ {t:'Desarrollo de la tienda',d:'Catálogo con filtros por ambiente, medios de pago y envíos',q:1,p:2400000,c:'var(--e1)'},
+ {t:'Carga de productos',d:'Fotos, medidas y variantes de 300 lámparas',q:300,p:2500,c:'var(--e3)'},
+];
+const OPC=[
+ {t:'Fotos de ambientes',d:'Dos jornadas en el showroom, 60 fotos editadas',q:2,u:'jorn.',p:380000,c:'var(--e4)',on:true},
+ {t:'Mantenimiento mensual',d:'Actualizaciones, respaldo y 4 h de cambios por mes',q:6,u:'meses',p:95000,c:'var(--e5)',on:false},
+];
+function fila(x,i,opc){
+  const imp=x.q*x.p,u=x.u?` <span class="un">${x.u}</span>`:'';
+  return `<tr class="${opc&&!x.on?'no':''}">
+   <td class="con" style="--c:${x.c}"><b>${opc?`<span class="marcar${x.on?' on':''}" role="checkbox" tabindex="0" aria-checked="${x.on}" aria-label="Sumar ${x.t}" data-i="${i}"></span>`:''}${x.t}${opc?'<span class="incl">· incluido</span>':''}</b><small>${x.d}</small></td>
+   <td class="d num cant">${x.q.toLocaleString('es-AR')}${u}</td><td class="d num pu">${plata(x.p)}</td><td class="d num imp">${plata(imp)}</td>
+   <td class="det num">${x.q.toLocaleString('es-AR')}${x.u?' '+x.u:''} × ${corto(x.p)}</td></tr>`;
+}
+$('#base').innerHTML=BASE.map((x,i)=>fila(x,i,false)).join('');
+$('#cuentaBase').textContent=`${BASE.length} conceptos`;
+
+const TRAMOS=[['Al aceptar',.4,'#4f46e5'],['Al aprobar el diseño',.4,'#8b84f0'],['Al publicar',.2,'#c7c3fa']];
+function recalcular(){
+  $('#opc').innerHTML=OPC.map((x,i)=>fila(x,i,true)).join('');
+  const sub=[...BASE,...OPC.filter(o=>o.on)].reduce((a,x)=>a+x.q*x.p,0),iva=Math.round(sub*.21*100)/100,tot=sub+iva;
+  $('#sub').innerHTML=plata(sub);$('#iva').innerHTML=plata(iva);$('#tot').innerHTML=plata(tot,{tot:true});
+  const n=OPC.filter(o=>o.on).length;
+  $('#totCtx').textContent=n?`Incluye ${n===1?'1 opcional':n+' opcionales'} · IVA incluido`:'Sin opcionales · IVA incluido';
+  $('#tramos').innerHTML=TRAMOS.map(([,p,c],i)=>`<i style="flex:${p};background:${c};animation-delay:${i*90}ms"></i>`).join('');
+  $('#tramoL').innerHTML=TRAMOS.map(([t,p,c])=>`<div><small><i style="background:${c}"></i>${Math.round(p*100)} %</small><b class="num">${plata(tot*p)}</b><span>${t}</span></div>`).join('');
+  $('#anticipo').textContent=corto(tot*.4);
+  document.querySelectorAll('.marcar').forEach(m=>{const f=()=>{OPC[m.dataset.i].on=!OPC[m.dataset.i].on;recalcular();document.querySelector(`.marcar[data-i="${m.dataset.i}"]`).focus()};m.onclick=f;m.onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();f()}}});
+}
+recalcular();
+
+// Cronograma: semanas 1–8 desde el 1 dic
+const SEM=['1 dic','8 dic','15 dic','22 dic','29 dic','5 ene','12 ene','19 ene'];
+const ETAPAS=[['Descubrimiento',1,2,'#7c5ce0'],['Diseño',2,4,'#d6336c'],['Desarrollo',4,7,'#3b6fe0'],['Carga y fotos',6,8,'#b4561c']];
+$('#crono').innerHTML=`<div class="fila"><b style="color:var(--texto-3);font-size:12px">Etapa</b>${SEM.map(s=>`<span>${s}</span>`).join('')}</div>`+
+ ETAPAS.map(([n,a,b,c],k)=>`<div class="fila"><b><i style="background:${c}"></i>${n}</b><div class="barra-t" style="grid-column:${a+1}/${b+2};background:${c};animation-delay:${k*120}ms"><em>${b-a+1} sem.</em></div></div>`).join('')+
+ `<div class="fila"><b><i style="background:var(--tinta)"></i>Publicación</b><span class="hito" style="grid-column:9" title="26 ene 2027"></span></div>`;
+
+// Tema
+document.querySelectorAll('#tema button').forEach(b=>b.onclick=()=>{document.documentElement.dataset.tema=b.dataset.t;document.querySelectorAll('#tema button').forEach(x=>x.classList.toggle('on',x===b))});
+
+// Aceptar con éxito en el lugar y Deshacer
+let tt;
+function estado(e){
+  document.body.dataset.estado=e;const ok=e==='aceptado';
+  $('#chipEstado').className='chip '+(ok?'v':'az');$('#chipEstado').textContent=ok?'Aceptado · 17 nov 2026':'Enviado · válido 15 días';
+  $('#firmaCli').innerHTML=ok?'<svg width="110" height="34" viewBox="0 0 110 34" fill="none" stroke="#d6336c" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 24c6-10 10-16 14-14s-4 16 2 14 8-14 14-12-2 12 4 12 10-8 16-8 6 8 12 6 12-10 18-10 8 6 16 4"/></svg>':'';
+  $('#firmaCliF').textContent=ok?'Dueña · 17 nov 2026':'Firma y fecha';
+}
+$('#aceptar').onclick=()=>{estado('aceptado');$('#toastT').textContent='Presupuesto PRE-0241 aceptado';$('#toastS').textContent=`Quedó en Facturación: anticipo de ${$('#anticipo').textContent}`;$('#toast').classList.add('ver');clearTimeout(tt);tt=setTimeout(()=>$('#toast').classList.remove('ver'),6000)};
+$('#deshacer').onclick=()=>{estado('enviado');$('#toast').classList.remove('ver')};
+</script>
+</body>
+</html>

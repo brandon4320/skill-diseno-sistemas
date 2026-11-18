@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" width="200" height="160" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-ilus="sin-tareas">
+  <defs>
+    <pattern id="ray-sin-tareas" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <path d="M0 0v4" stroke="currentColor" stroke-width=".8" stroke-opacity=".5"/>
+    </pattern>
+  </defs>
+  <g class="ilus-guia" stroke-width="1" stroke-opacity=".34">
+    <circle cx="100" cy="76" r="58" stroke-dasharray="1.5 4.5"/>
+    <path d="M100 6v8M28 76h6M166 76h6" />
+    <path d="M36 128h128"/>
+    <path d="M24 128h6M170 128h6" stroke-dasharray="1 3"/>
+  </g>
+
+  <rect x="62" y="34" width="66" height="90" rx="11" fill="var(--ilus-papel, #fff)"/>
+  <rect x="80" y="27" width="30" height="13" rx="4.5" fill="var(--ilus-papel, #fff)"/>
+  <rect x="80" y="27" width="30" height="13" rx="4.5" fill="url(#ray-sin-tareas)"/>
+  <circle cx="95" cy="27" r="2" fill="var(--ilus-papel, #fff)"/>
+  <g>
+    <circle cx="77" cy="60" r="5.5"/><path d="M74.6 60.2l1.7 1.7 3.3-3.4"/><path d="M89 60h26" stroke-opacity=".55"/>
+    <circle cx="77" cy="80" r="5.5"/><path d="M74.6 80.2l1.7 1.7 3.3-3.4"/><path d="M89 80h20" stroke-opacity=".55"/>
+    <circle cx="77" cy="100" r="5.5"/><path d="M74.6 100.2l1.7 1.7 3.3-3.4"/><path d="M89 100h14" stroke-opacity=".55"/>
+  </g>
+  <circle cx="131" cy="110" r="17" fill="var(--ilus-papel, #fff)"/>
+  <circle cx="131" cy="110" r="17" fill="var(--ilus-acento, #6d63ff)" fill-opacity="0.16" stroke="var(--ilus-acento, #6d63ff)"/>
+  <circle cx="131" cy="110" r="22" stroke="var(--ilus-acento, #6d63ff)" stroke-opacity=".45" stroke-dasharray="1.5 3.5"/>
+  <path d="M123.5 110.5l5 5 10-10.5" stroke="var(--ilus-acento, #6d63ff)" stroke-width="1.7"/>
+  <g stroke="var(--ilus-acento, #6d63ff)" stroke-width="1.2">
+    <path d="M153 90l4-4"/><path d="M158 106h6"/><path d="M150 132l3 3"/>
+  </g>
+  <path d="M48 46.5v7M44.5 50h7"/><path d="M150 37v6M147 40h6" stroke-opacity=".7"/>
+  <circle cx="52" cy="96" r="1.3" fill="currentColor" stroke="none" opacity=".5"/><circle cx="44" cy="72" r="1.6" fill="var(--ilus-acento, #6d63ff)" stroke="none"/>
+</svg>

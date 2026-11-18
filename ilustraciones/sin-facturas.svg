@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" width="200" height="160" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-ilus="sin-facturas">
+  <defs>
+    <pattern id="ray-sin-facturas" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <path d="M0 0v4" stroke="currentColor" stroke-width=".8" stroke-opacity=".5"/>
+    </pattern>
+  </defs>
+  <g class="ilus-guia" stroke-width="1" stroke-opacity=".34">
+    <circle cx="100" cy="76" r="58" stroke-dasharray="1.5 4.5"/>
+    <path d="M100 6v8M28 76h6M166 76h6" />
+    <path d="M36 128h128"/>
+    <path d="M24 128h6M170 128h6" stroke-dasharray="1 3"/>
+  </g>
+
+  <g transform="rotate(9 118 72)" stroke-opacity=".55">
+    <rect x="84" y="30" width="52" height="82" rx="6" fill="var(--ilus-papel, #fff)"/>
+    <path d="M94 44h22M94 56h30M94 66h24" stroke-dasharray="2 3"/>
+  </g>
+  <path d="M62 34a6 6 0 0 1 6-6h48a6 6 0 0 1 6 6v84l-6 5-6-5-6 5-6-5-6 5-6-5-6 5-6-5-6 5-6-5z" fill="var(--ilus-papel, #fff)"/>
+  <path d="M72 42h22" stroke-width="1.6"/>
+  <path d="M72 50h12" stroke-opacity=".5"/>
+  <g stroke-opacity=".6">
+    <path d="M72 64h22M104 64h8"/><path d="M72 74h18M104 74h8"/><path d="M72 84h26M104 84h8"/>
+  </g>
+  <path d="M72 96h40" stroke-dasharray="2 3" stroke-opacity=".6"/>
+  <path d="M72 106h12M98 106h14" stroke-width="1.6"/>
+  <g transform="rotate(-12 132 96)">
+    <circle cx="132" cy="96" r="17" fill="var(--ilus-papel, #fff)"/>
+    <circle cx="132" cy="96" r="17" fill="var(--ilus-acento, #6d63ff)" fill-opacity="0.14" stroke="var(--ilus-acento, #6d63ff)"/>
+    <circle cx="132" cy="96" r="12.5" stroke="var(--ilus-acento, #6d63ff)" stroke-dasharray="1.5 2.8" stroke-opacity=".7"/>
+    <path d="M135.4 91.3c-.8-1.2-2-1.8-3.4-1.8-2 0-3.4 1-3.4 2.6 0 3.6 7 2 7 5.6 0 1.6-1.5 2.6-3.6 2.6-1.6 0-3-.6-3.7-1.8M132 87.3v2.2M132 100.4v2.2" stroke="var(--ilus-acento, #6d63ff)" stroke-width="1.4"/>
+  </g>
+  <path d="M48 42.5v7M44.5 46h7"/><path d="M156 55v6M153 58h6" stroke-opacity=".7"/>
+  <circle cx="46" cy="100" r="1.3" fill="currentColor" stroke="none" opacity=".5"/><circle cx="150" cy="124" r="1.6" fill="var(--ilus-acento, #6d63ff)" stroke="none"/>
+</svg>

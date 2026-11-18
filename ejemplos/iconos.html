@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Íconos · diseno-sistemas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+/* Mismos tokens que tokens.css y componentes.html (acento y tinte de ejemplo) */
+:root{
+  --lienzo:#e8eaee; --marco:#f4f5f7; --superficie:#fff; --bandeja:#f4f5f7; --suave:#f0f1f4; --hover:#f7f8fa;
+  --borde:#e6e8ec; --borde-f:#d6d9df; --divisor:#eef0f3; --tinta:#16181d; --texto-2:#565b68; --texto-3:#6b7080;
+  --acento:#4f46e5; --verde:#15803d; --verde-f:#ebf8f0; --ambar:#b45309; --ambar-f:#fdf3e1; --rojo:#b91c1c; --rojo-f:#fdecec; --azul:#1d4ed8; --azul-f:#e9f1fd; --gris:#565b68; --gris-f:#f0f1f4;
+  --display:'Outfit',sans-serif; --ui:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --s-min:0 1px 2px rgb(22 24 29/.05); --s-hover:0 14px 30px -18px rgb(22 24 29/.3); --s-flot:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
+  --ease:cubic-bezier(.23,1,.32,1); --neg:#16181d; --neg-t:#fff; --tinte:12%; --glifo:0%;
+}
+[data-tema=oscuro]{
+  --lienzo:#050506; --marco:#0b0b0d; --superficie:#151518; --bandeja:#0f0f12; --suave:#1d1d21; --hover:#1a1a1e;
+  --borde:#26262b; --borde-f:#34343a; --divisor:#1f1f23; --tinta:#f4f4f5; --texto-2:#b4b4bd; --texto-3:#8f8f9a;
+  --verde:#4ade80; --verde-f:rgb(34 197 94/.13); --ambar:#fbbf24; --ambar-f:rgb(245 184 0/.13); --rojo:#f87171; --rojo-f:rgb(239 68 68/.13); --azul:#60a5fa; --azul-f:rgb(59 130 246/.13); --gris:#b4b4bd; --gris-f:#232327;
+  --s-min:none; --s-hover:0 14px 30px -18px rgb(0 0 0/.8); --neg:#f4f4f5; --neg-t:#16181d; --tinte:18%; --glifo:30%;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-padding-top:96px}
+body{font-family:var(--ui);background:var(--lienzo);color:var(--tinta);font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .3s}
+button,input{font:inherit;color:inherit}
+.ph,.ph-fill{font-size:17px;line-height:1}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--mono)}
+.pag{max-width:1280px;margin:0 auto;padding:40px 24px 96px}
+
+/* cabecera */
+.cabeza{display:flex;align-items:flex-end;gap:16px;margin-bottom:28px}
+.cabeza small{font:500 12px var(--mono);color:var(--texto-2)}
+.cabeza h1{font:300 44px/1.05 var(--display);letter-spacing:-.035em;margin-top:6px}
+.cabeza p{color:var(--texto-2);margin-top:8px}
+.cabeza p b{color:var(--tinta);font-weight:600}
+.cabeza .der{margin-left:auto;display:flex;gap:8px}
+
+/* controles */
+.seg{display:inline-flex;background:var(--bandeja);border:1px solid var(--borde);padding:3px;border-radius:12px;gap:2px;flex:none}
+.seg button{border:0;background:none;height:30px;padding:0 12px;border-radius:9px;font-weight:600;font-size:12.5px;color:var(--texto-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:color .15s}
+.seg button .ph,.seg button .ph-fill{font-size:15px}
+.seg button.on{background:var(--superficie);color:var(--tinta);box-shadow:0 1px 2px rgb(22 24 29/.1),0 0 0 1px var(--borde)}
+[data-tema=oscuro] .seg button.on{background:#f4f4f5;color:#16181d;box-shadow:none}
+.btn{height:36px;padding:0 13px;border-radius:12px;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:13px;border:1px solid var(--borde);background:var(--superficie);cursor:pointer;box-shadow:var(--s-min);transition:transform .15s var(--ease),background .15s}
+.btn:hover{background:var(--hover)}.btn:active{transform:scale(.97)}
+.btn.chico{height:28px;padding:0 10px;border-radius:9px;font-size:12px;gap:6px}.btn.chico .ph{font-size:14px}
+:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 45%,transparent);outline-offset:2px}
+
+.barra{position:sticky;top:0;z-index:5;margin:0 -24px;padding:12px 24px;background:color-mix(in oklch,var(--lienzo) 86%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;gap:10px;align-items:center;border-bottom:1px solid transparent;transition:border-color .2s}
+.barra.pegada{border-bottom-color:var(--borde)}
+.buscar{flex:0 1 320px;min-width:0;height:38px;display:flex;align-items:center;gap:8px;padding:0 10px 0 12px;border:1px solid var(--borde);border-radius:12px;background:var(--superficie);box-shadow:var(--s-min);transition:border-color .15s,box-shadow .15s}
+.buscar:focus-within{border-color:var(--acento);box-shadow:0 0 0 3px color-mix(in oklch,var(--acento) 18%,transparent)}
+.buscar .ph{color:var(--texto-3)}
+.buscar input{border:0;outline:0;background:none;flex:1;min-width:0;font-size:13.5px}
+.buscar input::placeholder{color:var(--texto-3)}
+.buscar kbd{font:500 12px var(--mono);color:var(--texto-3);border:1px solid var(--borde);padding:1px 6px;border-radius:5px}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;mask:linear-gradient(90deg,#000 92%,transparent)}
+.chips::-webkit-scrollbar{display:none}
+.chip-f{flex:none;height:30px;padding:0 11px;border-radius:99px;border:1px solid var(--borde);background:var(--superficie);display:inline-flex;align-items:center;gap:7px;font-weight:600;font-size:12.5px;color:var(--texto-2);cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s}
+.chip-f i.pt{width:8px;height:8px;border-radius:3px;background:var(--c)}
+.chip-f span{color:var(--texto-3);font-weight:500}
+.chip-f:hover{color:var(--tinta)}
+.chip-f.on{background:var(--neg);border-color:var(--neg);color:var(--neg-t)}
+.chip-f.on span{color:inherit;opacity:.6}
+
+/* reglas: héroe + bandejas */
+.reglas{display:grid;grid-template-columns:1.15fr 1fr 1fr 1fr;gap:14px;margin:20px 0 8px}
+.heroe{border-radius:20px;padding:20px;color:#fff;position:relative;overflow:hidden;min-height:228px;display:flex;flex-direction:column;
+  background:radial-gradient(120% 140% at 100% 0%,#7b72ff 0%,transparent 55%),linear-gradient(150deg,#3f36c9,#5a50f0 60%,#4b42dc);
+  box-shadow:0 18px 36px -18px rgb(79 70 229/.6),inset 0 1px 0 rgb(255 255 255/.18)}
+.heroe .mosaico{position:absolute;right:-14px;top:-10px;display:grid;grid-template-columns:repeat(5,34px);gap:6px;opacity:.95;mask:radial-gradient(120% 120% at 100% 0%,#000 30%,transparent 72%)}
+.heroe .mosaico i{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgb(255 255 255/.10);border:1px solid rgb(255 255 255/.14);font-size:16px;transition:background .4s,transform .4s var(--ease)}
+.heroe .mosaico i.vivo{background:rgb(255 255 255/.28);transform:scale(1.06)}
+.heroe .ico{width:38px;height:38px;border-radius:12px;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.22);display:grid;place-items:center;position:relative}
+.heroe small{display:block;margin-top:auto;opacity:.8;font-weight:500;position:relative}
+.heroe .n{font:500 40px/1.05 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-.03em;position:relative}
+.heroe .ctx{font-size:12.5px;opacity:.8;margin-top:4px;position:relative}
+.heroe .ok{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font:600 12px var(--ui);background:rgb(255 255 255/.16);border:1px solid rgb(255 255 255/.2);padding:3px 9px;border-radius:99px;position:relative;align-self:flex-start}
+.bandeja{background:var(--bandeja);border:1px solid var(--borde);border-radius:20px;padding:4px;display:flex;flex-direction:column;min-width:0}
+.bandeja .rot{display:flex;align-items:center;gap:8px;padding:9px 10px 8px;color:var(--texto-2);font-weight:600;font-size:12.5px}
+.bandeja .rot .ph{font-size:15px;color:var(--texto-3)}
+.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:14px 16px;box-shadow:var(--s-min);flex:1}
+.pie{display:flex;align-items:center;gap:6px;padding:9px 10px 7px;font-size:12px;font-weight:500;color:var(--texto-2)}
+.pie .ph{font-size:14px;color:var(--texto-3)}
+.medidas{display:grid;grid-template-columns:repeat(5,1fr);align-items:end;gap:4px;height:100%;min-height:96px;padding-bottom:2px}
+.medida{display:flex;flex-direction:column;align-items:center;gap:10px}
+.medida>.ph{height:40px;display:grid;place-items:center}
+.medida .cj{display:grid;place-items:center;border-radius:12px;background:var(--suave);color:var(--tinta)}
+.medida small{font:500 12px/1.35 var(--mono);color:var(--texto-3);text-align:center}
+.medida small b{display:block;color:var(--tinta);font-weight:500;font-size:12px}
+.menu-m{display:flex;flex-direction:column;gap:2px}
+.menu-m div{display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:10px;font-weight:500;font-size:13px;color:var(--texto-2)}
+.menu-m div .ph{color:var(--texto-3)}
+.menu-m div.on{background:var(--superficie);color:var(--tinta);box-shadow:var(--s-min);outline:1px solid var(--borde)}
+.menu-m div.on .ph-fill{color:var(--tinta)}
+.menu-m div .c{margin-left:auto;font-size:12px;color:var(--texto-3)}
+.adentro.gris{background:var(--bandeja);box-shadow:none;padding:6px}
+.act{display:flex;flex-direction:column}
+.act div{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--divisor)}
+.act div:first-child{border-top:0;padding-top:0}.act div:last-child{padding-bottom:0}
+.act b{font-weight:600;font-size:12.5px;display:block;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.act small{font-size:12px;color:var(--texto-3);display:block}
+.act .txt{flex:1;min-width:0}
+
+/* cuadros */
+.cj{--c:var(--texto-2);width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;
+  background:color-mix(in oklch,var(--c) var(--tinte),var(--superficie));color:color-mix(in oklch,var(--c),white var(--glifo))}
+.cj .ph,.cj .ph-fill{font-size:19px}
+.cj.chico{width:32px;height:32px;border-radius:10px}.cj.chico .ph,.cj.chico .ph-fill{font-size:16px}
+.cj.neutro{background:var(--superficie);border:1px solid var(--borde);box-shadow:var(--s-min);color:var(--tinta)}
+.cj.marca{background:#fff;border:1px solid var(--borde);box-shadow:var(--s-min);color:#25d366}
+.cj.solido{width:22px;height:22px;border-radius:7px;background:var(--c);color:#fff}
+.cj.solido .ph-fill{font-size:12px}
+.cj.e-verde{--c:var(--verde);background:var(--verde-f);color:var(--verde)}
+.cj.e-ambar{--c:var(--ambar);background:var(--ambar-f);color:var(--ambar)}
+.cj.e-rojo{--c:var(--rojo);background:var(--rojo-f);color:var(--rojo)}
+.cj.e-azul{--c:var(--azul);background:var(--azul-f);color:var(--azul)}
+.cj.e-gris{--c:var(--gris);background:var(--gris-f);color:var(--gris)}
+.pas{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:7px;font-weight:600;font-size:12px;white-space:nowrap}
+.pas::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pas.v{background:var(--verde-f);color:var(--verde)}.pas.ro{background:var(--rojo-f);color:var(--rojo)}.pas.am{background:var(--ambar-f);color:var(--ambar)}
+
+/* familias */
+.fam{margin-top:40px;scroll-margin-top:84px}
+.fam-cab{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.fam-cab h2{font:500 20px var(--display);letter-spacing:-.02em}
+.fam-cab .c{color:var(--texto-3);font-weight:500;font-size:14px}
+.fam-cab p{color:var(--texto-2);margin-left:auto;font-size:12.5px;text-align:right}
+.grilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:12px}
+.ic{position:relative;text-align:left;border:1px solid var(--borde);border-radius:16px;background:var(--superficie);padding:14px;display:flex;flex-direction:column;gap:10px;cursor:pointer;min-width:0;
+  transition:transform .25s var(--ease),box-shadow .25s,border-color .25s;animation:entra .5s var(--ease) both;animation-delay:calc(var(--i,0) * 18ms)}
+@keyframes entra{from{opacity:0;transform:translateY(8px)}}
+.ic:hover{transform:translateY(-2px);box-shadow:var(--s-hover);border-color:var(--borde-f)}
+.ic:active{transform:translateY(0) scale(.98)}
+.ic .tope{display:flex;align-items:flex-start;gap:8px}
+.ic .copiar{margin-left:auto;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;color:var(--texto-3);opacity:0;transition:opacity .15s,background .15s}
+.ic:hover .copiar,.ic:focus-visible .copiar{opacity:1}
+.ic .copiar .ph{font-size:15px}
+.ic.copiado .copiar{opacity:1;color:var(--verde);background:var(--verde-f)}
+.ic h3{font:600 13.5px/1.3 var(--ui)}
+.ic .nombre{font:500 12px var(--mono);color:var(--texto-3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ic .nota{font-size:12px;color:var(--texto-2);line-height:1.45}
+.ic .no{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto;padding-top:2px}
+.ic .no span{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 7px 0 6px;border-radius:7px;background:var(--bandeja);color:var(--texto-3);font:500 12px var(--mono);position:relative}
+.ic .no span .ph{font-size:13px;opacity:.7}
+.ic .no span::after{content:"";position:absolute;left:5px;top:50%;width:15px;height:1.5px;background:var(--rojo);transform:rotate(-40deg);opacity:.75}
+
+/* pares */
+.pares{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.par{border:1px solid var(--borde);border-radius:20px;background:var(--bandeja);padding:4px}
+.par .dos{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.par .lado{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:12px;box-shadow:var(--s-min);display:flex;align-items:center;gap:10px;min-width:0}
+.par .lado b{font-weight:600;font-size:13px;display:block;line-height:1.25}
+.par .lado small{font:500 12px var(--mono);color:var(--texto-3);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.par .lado>div{min-width:0}
+.par p{font-size:12px;color:var(--texto-2);padding:9px 10px 7px}
+
+/* vacío */
+.vacio{display:none;margin-top:28px;border:1px solid var(--borde);border-radius:20px;background:var(--superficie);padding:36px 22px;text-align:center;flex-direction:column;align-items:center;gap:8px}
+.vacio.ver{display:flex}
+.vacio h4{font:500 18px var(--display);margin-top:6px}
+.vacio p{color:var(--texto-2);font-size:12.5px;max-width:300px}
+
+.toast{position:fixed;right:28px;bottom:28px;background:#16181d;color:#fff;border-radius:16px;box-shadow:var(--s-flot);padding:12px 14px;display:flex;gap:12px;align-items:center;transform:translateY(16px) scale(.98);opacity:0;transition:transform .35s var(--ease),opacity .25s;pointer-events:none;min-width:320px;z-index:9}
+[data-tema=oscuro] .toast{background:#232327;border:1px solid #34343a}
+.toast.ver{transform:none;opacity:1}
+.toast .okc{width:30px;height:30px;border-radius:10px;background:rgb(31 157 92/.22);color:#4ade80;display:grid;place-items:center;flex:none}
+.toast b{font-weight:600;display:block;font-size:13px}.toast small{opacity:.6;font:500 12px var(--mono)}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:1100px){.reglas{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){
+  /* Toques de 44 px */
+  .seg button,.chip-f{min-height:44px;min-width:44px;justify-content:center}
+  .buscar{height:46px}.buscar input{height:44px}
+  .pag{padding:24px 16px 96px}
+  .cabeza{flex-direction:column;align-items:flex-start;margin-bottom:16px}.cabeza .der{margin-left:0}
+  .cabeza h1{font-size:34px}
+  .barra{margin:0 -16px;padding:10px 16px;flex-wrap:wrap}
+  .buscar{flex:1 1 100%}
+  .barra .seg{order:3}
+  .chips{order:2;flex:1 1 100%}
+  .reglas{grid-template-columns:1fr}
+  .fam-cab{flex-wrap:wrap}.fam-cab p{margin-left:0;text-align:left;flex:1 1 100%}
+  .grilla{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .ic{padding:12px;gap:8px}.ic .nota{display:none}
+  .ic .copiar{display:none}
+  .pares{grid-template-columns:1fr}
+  .toast{left:16px;right:16px;bottom:16px;min-width:0}
+}
+</style>
+</head>
+<body>
+<div class="pag">
+  <header class="cabeza">
+    <div>
+      <small>diseno-sistemas · guías/iconos.md</small>
+      <h1>Íconos</h1>
+      <p id="resumen"></p>
+    </div>
+    <div class="der"><div class="seg" id="tema" role="group" aria-label="Tema"><button class="on" data-t="claro" aria-label="Claro"><i class="ph ph-sun"></i></button><button data-t="oscuro" aria-label="Oscuro"><i class="ph ph-moon"></i></button></div></div>
+  </header>
+
+  <div class="barra" id="barra">
+    <label class="buscar"><i class="ph ph-magnifying-glass"></i><input id="q" type="search" placeholder="Buscar concepto o ícono" autocomplete="off" aria-label="Buscar concepto o ícono"><kbd>/</kbd></label>
+    <div class="chips" id="chips" role="group" aria-label="Familias"></div>
+    <div class="seg" id="peso" role="group" aria-label="Peso"><button class="on" data-p="ph">Regular</button><button data-p="ph-fill">Fill</button></div>
+  </div>
+
+  <section class="reglas" id="reglas">
+    <div class="heroe">
+      <div class="mosaico" id="mosaico" aria-hidden="true"></div>
+      <span class="ico"><i class="ph ph-shapes" style="font-size:19px"></i></span>
+      <small>Un concepto, un ícono</small>
+      <div class="n num" id="total">0</div>
+      <div class="ctx" id="heroeCtx"></div>
+      <span class="ok"><i class="ph ph-check" style="font-size:13px"></i>0 repetidos · todos verificados en 2.1.1</span>
+    </div>
+
+    <div class="bandeja">
+      <div class="rot"><i class="ph ph-ruler"></i>Tamaño</div>
+      <div class="adentro"><div class="medidas">
+        <div class="medida"><i class="ph ph-receipt" style="font-size:13px;color:var(--texto-3)"></i><small><b>13</b>texto</small></div>
+        <div class="medida"><i class="ph ph-receipt" style="font-size:15px;color:var(--texto-2)"></i><small><b>15</b>pie</small></div>
+        <div class="medida"><i class="ph ph-receipt" style="font-size:17px;color:var(--texto-2)"></i><small><b>17</b>menú</small></div>
+        <div class="medida"><span class="cj chico" style="--c:#25a866"><i class="ph ph-receipt"></i></span><small><b>16</b>en 32</small></div>
+        <div class="medida"><span class="cj" style="--c:#25a866"><i class="ph ph-receipt"></i></span><small><b>19</b>en 40</small></div>
+      </div></div>
+      <div class="pie"><i class="ph ph-info"></i>Nunca más de 22 px en la interfaz</div>
+    </div>
+
+    <div class="bandeja">
+      <div class="rot"><i class="ph ph-drop-half-bottom"></i>Peso</div>
+      <div class="adentro gris"><div class="menu-m">
+        <div class="on"><i class="ph-fill ph-hand-coins"></i>Cobranzas<span class="c">12</span></div>
+        <div><i class="ph ph-receipt"></i>Facturas<span class="c">48</span></div>
+        <div><i class="ph ph-cash-register"></i>Caja</div>
+        <div><span class="cj solido" style="--c:#c8692b"><i class="ph-fill ph-engine"></i></span>Generadores</div>
+      </div></div>
+      <div class="pie"><i class="ph ph-info"></i>Fill solo en el activo y sobre color sólido</div>
+    </div>
+
+    <div class="bandeja">
+      <div class="rot"><i class="ph ph-palette"></i>Color</div>
+      <div class="adentro"><div class="act">
+        <div><span class="cj chico" style="--c:#d6336c"><i class="ph ph-phone"></i></span><span class="txt"><b>Llamada a Mesa Fina</b><small>hace 12 min</small></span></div>
+        <div><span class="cj chico" style="--c:#0e9fb8"><i class="ph ph-hand-arrow-down"></i></span><span class="txt"><b>Entrega GEN-0412</b><small>Grupo Atlas · 15:00</small></span><span class="pas v">Hecha</span></div>
+        <div><span class="cj chico e-rojo"><i class="ph ph-warning-circle"></i></span><span class="txt"><b>FAC-01098 vencida</b><small>hace 6 días</small></span></div>
+      </div></div>
+      <div class="pie"><i class="ph ph-info"></i>El cuadro dice el tipo; la pastilla, el estado</div>
+    </div>
+  </section>
+
+  <div id="familias"></div>
+
+  <div class="vacio" id="vacio">
+    <svg width="120" height="76" viewBox="0 0 120 76" fill="none" stroke="#b9b3ff" stroke-width="1.2" aria-hidden="true"><rect x="14" y="16" width="30" height="30" rx="9" stroke-dasharray="3 4"/><rect x="50" y="16" width="30" height="30" rx="9" stroke-dasharray="3 4"/><rect x="86" y="16" width="20" height="30" rx="8" stroke-dasharray="3 4" opacity=".5"/><circle cx="66" cy="31" r="7" stroke="#8f86ff"/><path d="m71 36 6 6" stroke="#8f86ff" stroke-linecap="round"/><path d="M14 58h56M14 66h36" opacity=".6"/></svg>
+    <h4 id="vacioT">Ningún concepto con esa palabra</h4>
+    <p>Probá con el nombre del ícono (por ejemplo «receipt») o con otra forma de decirlo.</p>
+    <button class="btn chico" id="limpiar"><i class="ph ph-x"></i>Limpiar búsqueda</button>
+  </div>
+
+  <section class="fam" id="sec-pares">
+    <div class="fam-cab"><span class="cj chico neutro"><i class="ph ph-intersect"></i></span><h2>Pares que se confunden</h2><span class="c" id="paresN"></span><p>Uno de cada lado, nunca intercambiados.</p></div>
+    <div class="pares" id="pares"></div>
+  </section>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span class="okc"><i class="ph ph-check" style="font-size:16px"></i></span><div><b id="toastT"></b><small id="toastS"></small></div></div>
+
+<script>
+const FAMILIAS=[{"id": "nav", "nombre": "Navegación y vistas", "color": null, "regla": "Menú, migas, cambio de vista. Siempre gris; el activo pasa a fill."}, {"id": "acc", "nombre": "Acciones", "color": null, "regla": "Botones y menú ⋯. Gris, nunca en cuadro de color."}, {"id": "com", "nombre": "Comercial", "color": "#7c5ce0", "regla": "Pipeline, propuestas y lo vendido."}, {"id": "per", "nombre": "Personas y empresas", "color": "#3b6fe0", "regla": "Quién: clientes, contactos, equipo y accesos."}, {"id": "msg", "nombre": "Comunicación", "color": "#d6336c", "regla": "Cada contacto con alguien: correo, llamada, reunión, nota."}, {"id": "fin", "nombre": "Finanzas", "color": "#25a866", "regla": "Plata que entra, sale o se guarda."}, {"id": "ope", "nombre": "Operaciones", "color": "#c8692b", "regla": "Equipos, mantenimiento, stock y trabajo en campo."}, {"id": "log", "nombre": "Logística e importación", "color": "#0e9fb8", "regla": "Lo que se mueve: entregas, retiros, cargas y aduana."}, {"id": "doc", "nombre": "Documentos", "color": "#71717a", "regla": "Archivos sueltos. Cuadro neutro gris."}, {"id": "est", "nombre": "Estados y alertas", "color": "estado", "regla": "Toman el color del estado, no el de la familia."}];
+const MAPA=[{"f": "nav", "concepto": "Inicio", "icono": "house", "evitar": "", "nota": "Primer ítem del menú."}, {"f": "nav", "concepto": "Tablero / resumen", "icono": "squares-four", "evitar": "layout", "nota": "Raíz de las migas de pan."}, {"f": "nav", "concepto": "Tareas", "icono": "check-square", "evitar": "check-circle", "nota": "check-circle es «hecho», no la sección."}, {"f": "nav", "concepto": "Calendario", "icono": "calendar-blank", "evitar": "calendar, calendar-dots", "nota": "El de números se lee como fecha fija."}, {"f": "nav", "concepto": "Bandeja de entrada", "icono": "tray", "evitar": "envelope-simple", "nota": "La bandeja junta todo; el sobre es solo correo."}, {"f": "nav", "concepto": "Avisos", "icono": "bell", "evitar": "bell-simple", "nota": ""}, {"f": "nav", "concepto": "Reportes", "icono": "chart-line-up", "evitar": "chart-bar, presentation-chart", "nota": ""}, {"f": "nav", "concepto": "Búsqueda", "icono": "magnifying-glass", "evitar": "", "nota": "Con ⌘K al lado."}, {"f": "nav", "concepto": "Filtro", "icono": "funnel-simple", "evitar": "funnel", "nota": "El embudo con boca ancha se confunde con un pipeline."}, {"f": "nav", "concepto": "Ordenar", "icono": "sort-ascending", "evitar": "arrows-down-up", "nota": ""}, {"f": "nav", "concepto": "Vista lista", "icono": "rows", "evitar": "list", "nota": "Dentro del segmentado de vistas."}, {"f": "nav", "concepto": "Vista tabla", "icono": "table", "evitar": "grid-four", "nota": ""}, {"f": "nav", "concepto": "Vista columnas", "icono": "columns", "evitar": "kanban", "nota": "kanban queda para el pipeline."}, {"f": "nav", "concepto": "Historial de cambios", "icono": "clock-counter-clockwise", "evitar": "clock", "nota": ""}, {"f": "nav", "concepto": "Asistente IA", "icono": "sparkle", "evitar": "robot, magic-wand", "nota": ""}, {"f": "nav", "concepto": "Ajustes", "icono": "gear-six", "evitar": "gear, sliders", "nota": "Al pie del menú."}, {"f": "nav", "concepto": "Ayuda", "icono": "question", "evitar": "info", "nota": "info es un estado informativo."}, {"f": "acc", "concepto": "Agregar", "icono": "plus", "evitar": "plus-circle", "nota": "«+ Agregar …» al final de su lista."}, {"f": "acc", "concepto": "Editar", "icono": "pencil-simple", "evitar": "pencil, note-pencil", "nota": ""}, {"f": "acc", "concepto": "Duplicar", "icono": "copy", "evitar": "files", "nota": ""}, {"f": "acc", "concepto": "Borrar", "icono": "trash", "evitar": "trash-simple, x", "nota": "Siempre al final del menú ⋯."}, {"f": "acc", "concepto": "Más acciones", "icono": "dots-three", "evitar": "dots-three-vertical", "nota": ""}, {"f": "acc", "concepto": "Abrir la ficha", "icono": "arrow-up-right", "evitar": "caret-right", "nota": "Esquina de tarjetas clickeables."}, {"f": "acc", "concepto": "Abrir afuera", "icono": "arrow-square-out", "evitar": "link", "nota": "Solo si sale del sistema."}, {"f": "acc", "concepto": "Exportar", "icono": "export", "evitar": "download-simple", "nota": "Exportar arma un archivo con lo que ves."}, {"f": "acc", "concepto": "Descargar", "icono": "download-simple", "evitar": "cloud-arrow-down", "nota": "Bajar un archivo que ya existe."}, {"f": "acc", "concepto": "Subir archivo", "icono": "upload-simple", "evitar": "cloud-arrow-up", "nota": ""}, {"f": "acc", "concepto": "Imprimir", "icono": "printer", "evitar": "", "nota": ""}, {"f": "acc", "concepto": "Compartir", "icono": "share-network", "evitar": "share", "nota": ""}, {"f": "acc", "concepto": "Vincular", "icono": "link", "evitar": "link-simple", "nota": "Colgar un registro de otro."}, {"f": "acc", "concepto": "Enviar", "icono": "paper-plane-tilt", "evitar": "paper-plane", "nota": ""}, {"f": "acc", "concepto": "Reintentar", "icono": "arrow-clockwise", "evitar": "arrows-clockwise", "nota": "En el estado de error."}, {"f": "acc", "concepto": "Deshacer", "icono": "arrow-u-up-left", "evitar": "arrow-counter-clockwise", "nota": "Solo en el toast."}, {"f": "acc", "concepto": "Cerrar", "icono": "x", "evitar": "x-circle", "nota": "x-circle es «falló»."}, {"f": "acc", "concepto": "Fijar", "icono": "push-pin", "evitar": "", "nota": ""}, {"f": "acc", "concepto": "Favorito", "icono": "star", "evitar": "heart", "nota": ""}, {"f": "acc", "concepto": "Etiqueta", "icono": "tag-simple", "evitar": "tag", "nota": "tag queda para tarifas."}, {"f": "com", "concepto": "Pipeline", "icono": "kanban", "evitar": "funnel", "nota": ""}, {"f": "com", "concepto": "Valor del pipeline", "icono": "wallet", "evitar": "currency-circle-dollar", "nota": "Solo en el KPI del monto abierto."}, {"f": "com", "concepto": "Oportunidad", "icono": "handshake", "evitar": "target", "nota": ""}, {"f": "com", "concepto": "Seguimiento", "icono": "phone-call", "evitar": "alarm", "nota": "Lo que hay que llamar; la llamada hecha es phone."}, {"f": "com", "concepto": "Propuesta", "icono": "file-text", "evitar": "file", "nota": "file es el documento genérico."}, {"f": "com", "concepto": "Cotización", "icono": "calculator", "evitar": "", "nota": ""}, {"f": "com", "concepto": "Ganado", "icono": "seal-check", "evitar": "trophy", "nota": ""}, {"f": "com", "concepto": "Perdido", "icono": "thumbs-down", "evitar": "x-circle", "nota": ""}, {"f": "com", "concepto": "Tasa de cierre", "icono": "target", "evitar": "percent", "nota": ""}, {"f": "com", "concepto": "Meta", "icono": "flag-banner", "evitar": "flag", "nota": ""}, {"f": "com", "concepto": "Comisión", "icono": "seal-percent", "evitar": "percent", "nota": "percent queda para impuestos."}, {"f": "com", "concepto": "Tarifa / lista de precios", "icono": "tag", "evitar": "currency-dollar", "nota": ""}, {"f": "com", "concepto": "Producto", "icono": "cube", "evitar": "package", "nota": "package es stock físico."}, {"f": "com", "concepto": "Servicio vendido", "icono": "briefcase", "evitar": "wrench", "nota": ""}, {"f": "com", "concepto": "Proyecto", "icono": "stack", "evitar": "folder-simple", "nota": "folder-simple es una carpeta de archivos."}, {"f": "com", "concepto": "Contrato", "icono": "signature", "evitar": "file-text", "nota": ""}, {"f": "per", "concepto": "Cliente", "icono": "buildings", "evitar": "building", "nota": "Una cuenta: la empresa que compra."}, {"f": "per", "concepto": "Empresa propia", "icono": "building-office", "evitar": "buildings", "nota": "Selector de empresa o razón social."}, {"f": "per", "concepto": "Proveedor", "icono": "factory", "evitar": "storefront", "nota": "storefront se usa como ícono de entidad."}, {"f": "per", "concepto": "Contacto", "icono": "user", "evitar": "user-circle", "nota": "Una persona de un cliente o proveedor."}, {"f": "per", "concepto": "Agenda de contactos", "icono": "address-book", "evitar": "", "nota": ""}, {"f": "per", "concepto": "Usuarios del sistema", "icono": "users", "evitar": "users-three", "nota": "users-three es reunión."}, {"f": "per", "concepto": "Equipo de trabajo", "icono": "users-four", "evitar": "users", "nota": ""}, {"f": "per", "concepto": "Invitar", "icono": "user-plus", "evitar": "plus", "nota": ""}, {"f": "per", "concepto": "Rol", "icono": "user-gear", "evitar": "gear-six", "nota": ""}, {"f": "per", "concepto": "Permisos", "icono": "shield-check", "evitar": "lock", "nota": ""}, {"f": "per", "concepto": "Acceso / contraseña", "icono": "lock-key", "evitar": "key", "nota": ""}, {"f": "per", "concepto": "Personal / legajo", "icono": "identification-badge", "evitar": "identification-card", "nota": ""}, {"f": "per", "concepto": "Operario", "icono": "hard-hat", "evitar": "user", "nota": ""}, {"f": "per", "concepto": "Cerrar sesión", "icono": "sign-out", "evitar": "power", "nota": ""}, {"f": "msg", "concepto": "Correo", "icono": "envelope-simple", "evitar": "envelope, at", "nota": ""}, {"f": "msg", "concepto": "Llamada", "icono": "phone", "evitar": "phone-call", "nota": "La llamada registrada."}, {"f": "msg", "concepto": "Llamada perdida", "icono": "phone-x", "evitar": "phone-slash", "nota": ""}, {"f": "msg", "concepto": "Reunión", "icono": "users-three", "evitar": "calendar-blank", "nota": ""}, {"f": "msg", "concepto": "Videollamada", "icono": "video-camera", "evitar": "video, webcam", "nota": "Con Meet o Teams: logo en cuadro blanco."}, {"f": "msg", "concepto": "WhatsApp", "icono": "whatsapp-logo", "evitar": "chat-circle", "nota": "Logo de marca: verde #25D366 en cuadro blanco."}, {"f": "msg", "concepto": "Chat interno", "icono": "chat-circle-dots", "evitar": "chats", "nota": ""}, {"f": "msg", "concepto": "Comentario", "icono": "chat-circle-text", "evitar": "chat-text", "nota": ""}, {"f": "msg", "concepto": "Nota", "icono": "note", "evitar": "note-pencil, notepad", "nota": "notepad es el parte de trabajo."}, {"f": "msg", "concepto": "Mención", "icono": "at", "evitar": "", "nota": ""}, {"f": "msg", "concepto": "Recordatorio", "icono": "alarm", "evitar": "bell", "nota": "bell son los avisos del sistema."}, {"f": "fin", "concepto": "Factura", "icono": "receipt", "evitar": "invoice", "nota": "invoice es otro dibujo: no mezclar."}, {"f": "fin", "concepto": "Nota de crédito", "icono": "receipt-x", "evitar": "receipt", "nota": ""}, {"f": "fin", "concepto": "Cobro / cobranzas", "icono": "hand-coins", "evitar": "currency-circle-dollar", "nota": "Entra plata."}, {"f": "fin", "concepto": "Pago a proveedor", "icono": "money-wavy", "evitar": "credit-card", "nota": "Sale plata."}, {"f": "fin", "concepto": "Gasto", "icono": "shopping-bag", "evitar": "receipt", "nota": ""}, {"f": "fin", "concepto": "Viático", "icono": "suitcase-rolling", "evitar": "airplane-tilt", "nota": ""}, {"f": "fin", "concepto": "Combustible", "icono": "gas-pump", "evitar": "", "nota": ""}, {"f": "fin", "concepto": "Caja", "icono": "cash-register", "evitar": "vault, wallet", "nota": ""}, {"f": "fin", "concepto": "Banco", "icono": "bank", "evitar": "", "nota": ""}, {"f": "fin", "concepto": "Transferencia", "icono": "arrows-left-right", "evitar": "swap", "nota": ""}, {"f": "fin", "concepto": "Efectivo", "icono": "money", "evitar": "coins", "nota": ""}, {"f": "fin", "concepto": "Tipo de cambio", "icono": "swap", "evitar": "currency-dollar", "nota": ""}, {"f": "fin", "concepto": "Impuestos / IVA", "icono": "percent", "evitar": "", "nota": ""}, {"f": "fin", "concepto": "Cuenta corriente / saldo", "icono": "scales", "evitar": "", "nota": ""}, {"f": "fin", "concepto": "Orden de compra", "icono": "shopping-cart", "evitar": "basket", "nota": ""}, {"f": "ope", "concepto": "Equipo / máquina", "icono": "engine", "evitar": "gear", "nota": "«Equipo» acá es la máquina; las personas van con users-four."}, {"f": "ope", "concepto": "Mantenimiento", "icono": "wrench", "evitar": "hammer", "nota": ""}, {"f": "ope", "concepto": "Plan preventivo", "icono": "calendar-check", "evitar": "wrench", "nota": ""}, {"f": "ope", "concepto": "Avería", "icono": "lightning-slash", "evitar": "warning", "nota": "warning queda para alertas."}, {"f": "ope", "concepto": "Taller / repuestos", "icono": "toolbox", "evitar": "", "nota": ""}, {"f": "ope", "concepto": "Uso / horómetro", "icono": "gauge", "evitar": "speedometer", "nota": ""}, {"f": "ope", "concepto": "Horas trabajadas", "icono": "timer", "evitar": "clock", "nota": ""}, {"f": "ope", "concepto": "Inventario / stock", "icono": "package", "evitar": "cube", "nota": "cube es producto del catálogo."}, {"f": "ope", "concepto": "Depósito", "icono": "warehouse", "evitar": "", "nota": ""}, {"f": "ope", "concepto": "Parte de trabajo", "icono": "notepad", "evitar": "clipboard-text", "nota": "clipboard-text es el remito."}, {"f": "ope", "concepto": "Habilitación / certificado", "icono": "certificate", "evitar": "seal", "nota": ""}, {"f": "log", "concepto": "Logística", "icono": "path", "evitar": "truck", "nota": "truck es el vehículo."}, {"f": "log", "concepto": "Ruta / recorrido", "icono": "map-trifold", "evitar": "map-pin", "nota": ""}, {"f": "log", "concepto": "Ubicación / obra", "icono": "map-pin", "evitar": "map-pin-line", "nota": ""}, {"f": "log", "concepto": "Entrega", "icono": "hand-arrow-down", "evitar": "box-arrow-down", "nota": "Al cliente: el equipo baja."}, {"f": "log", "concepto": "Retiro", "icono": "hand-arrow-up", "evitar": "box-arrow-up", "nota": "Vuelve a nosotros: el equipo sube."}, {"f": "log", "concepto": "Camión / flota", "icono": "truck", "evitar": "truck-trailer", "nota": ""}, {"f": "log", "concepto": "Chofer", "icono": "steering-wheel", "evitar": "user", "nota": ""}, {"f": "log", "concepto": "Remito", "icono": "clipboard-text", "evitar": "file-text", "nota": ""}, {"f": "log", "concepto": "Importación", "icono": "globe-hemisphere-west", "evitar": "globe", "nota": ""}, {"f": "log", "concepto": "Embarque marítimo", "icono": "boat", "evitar": "sailboat", "nota": ""}, {"f": "log", "concepto": "Carga aérea", "icono": "airplane-tilt", "evitar": "airplane", "nota": ""}, {"f": "log", "concepto": "Contenedor", "icono": "shipping-container", "evitar": "package", "nota": ""}, {"f": "log", "concepto": "Puerto", "icono": "anchor", "evitar": "", "nota": ""}, {"f": "log", "concepto": "Aduana / despacho", "icono": "barricade", "evitar": "stamp", "nota": "stamp es aprobación."}, {"f": "doc", "concepto": "Documento", "icono": "file", "evitar": "file-text", "nota": ""}, {"f": "doc", "concepto": "Adjunto", "icono": "paperclip", "evitar": "", "nota": ""}, {"f": "doc", "concepto": "Carpeta", "icono": "folder-simple", "evitar": "folder", "nota": ""}, {"f": "doc", "concepto": "PDF", "icono": "file-pdf", "evitar": "", "nota": ""}, {"f": "doc", "concepto": "Planilla", "icono": "file-xls", "evitar": "microsoft-excel-logo, file-csv", "nota": ""}, {"f": "doc", "concepto": "Foto", "icono": "image", "evitar": "camera", "nota": "camera es la acción de sacar la foto."}, {"f": "doc", "concepto": "Sacar foto", "icono": "camera", "evitar": "", "nota": ""}, {"f": "doc", "concepto": "Código QR", "icono": "qr-code", "evitar": "barcode", "nota": ""}, {"f": "est", "concepto": "Hecho / cobrado", "icono": "check-circle", "evitar": "check", "estado": "verde", "nota": ""}, {"f": "est", "concepto": "Aprobación", "icono": "stamp", "evitar": "seal-check", "estado": "ambar", "nota": ""}, {"f": "est", "concepto": "Pendiente", "icono": "circle-dashed", "evitar": "clock", "estado": "ambar", "nota": ""}, {"f": "est", "concepto": "En curso", "icono": "circle-half", "evitar": "spinner", "estado": "azul", "nota": ""}, {"f": "est", "concepto": "Por vencer", "icono": "hourglass-high", "evitar": "hourglass", "estado": "ambar", "nota": ""}, {"f": "est", "concepto": "Vencido", "icono": "warning-circle", "evitar": "calendar-x", "estado": "rojo", "nota": ""}, {"f": "est", "concepto": "Alerta / riesgo", "icono": "warning", "evitar": "warning-octagon", "estado": "rojo", "nota": ""}, {"f": "est", "concepto": "Falló", "icono": "x-circle", "evitar": "x", "estado": "rojo", "nota": ""}, {"f": "est", "concepto": "Sin conexión", "icono": "wifi-slash", "evitar": "cloud-slash", "estado": "rojo", "nota": ""}, {"f": "est", "concepto": "Informativo", "icono": "info", "evitar": "question", "estado": "azul", "nota": ""}, {"f": "est", "concepto": "Borrador", "icono": "file-dashed", "evitar": "pencil-simple", "estado": "gris", "nota": ""}, {"f": "est", "concepto": "Anulado", "icono": "prohibit", "evitar": "trash", "estado": "gris", "nota": ""}, {"f": "est", "concepto": "Bloqueado", "icono": "lock", "evitar": "lock-key", "estado": "gris", "nota": ""}, {"f": "est", "concepto": "Variación que sube", "icono": "trend-up", "evitar": "arrow-up", "estado": "verde", "nota": "Verde o rojo según convenga al negocio, no según el signo."}, {"f": "est", "concepto": "Variación que baja", "icono": "trend-down", "evitar": "arrow-down", "estado": "rojo", "nota": "Si baja la mora, va en verde."}];
+const PARES=[
+  ['check-square','Tareas','check-circle','Hecho','La sección lleva el cuadrado; lo terminado, el círculo.'],
+  ['tray','Bandeja','envelope-simple','Correo','La bandeja junta todo; el sobre es solo correo.'],
+  ['kanban','Pipeline','funnel-simple','Filtro','Nunca un embudo para el pipeline.'],
+  ['phone-call','Seguimiento','phone','Llamada','Lo que hay que hacer contra lo que ya pasó.'],
+  ['users-three','Reunión','users-four','Equipo de trabajo','users solo, sin número, son los usuarios del sistema.'],
+  ['cube','Producto','package','Inventario','Catálogo contra stock físico.'],
+  ['tag','Tarifa','tag-simple','Etiqueta','El de agujero redondo es plata; el simple, clasificar.'],
+  ['stamp','Aprobación','seal-check','Ganado','El sello que se pone contra el sello que se gana.'],
+  ['hand-arrow-down','Entrega','hand-arrow-up','Retiro','Baja al cliente, vuelve a nosotros.'],
+  ['export','Exportar','download-simple','Descargar','Armar un archivo nuevo contra bajar uno que existe.'],
+  ['clipboard-text','Remito','notepad','Parte de trabajo','Lo que viaja con la carga contra lo que se anota en campo.'],
+  ['engine','Equipo / máquina','users-four','Equipo de trabajo','«Equipo» tiene dos sentidos: máquina o personas.'],
+];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const pascal=n=>n.split('-').map(p=>p[0].toUpperCase()+p.slice(1)).join('');
+let peso='ph',fam='todas',q='';
+
+// tema
+const tema=t=>{document.documentElement.dataset.tema=t;document.querySelectorAll('#tema button').forEach(x=>x.classList.toggle('on',x.dataset.t===t))};
+document.querySelectorAll('#tema button').forEach(b=>b.onclick=()=>tema(b.dataset.t));
+try{const pt=new URLSearchParams(location.search).get('tema');if(pt==='claro'||pt==='oscuro')tema(pt);else if(matchMedia('(prefers-color-scheme: dark)').matches)tema('oscuro')}catch(e){}
+
+// resumen con cifras reales
+const famCon=FAMILIAS.filter(f=>f.color&&f.color!=='estado').length;
+$('#resumen').innerHTML=`<b class="num">${MAPA.length}</b> conceptos · ${FAMILIAS.length} familias, ${famCon} con color propio · Phosphor 2.1.1, regular y fill`;
+$('#heroeCtx').textContent=`en ${FAMILIAS.length} familias · cada nombre existe en regular y fill`;
+
+// cuadro según familia
+function cuadro(m,extra=''){
+  const f=FAMILIAS.find(x=>x.id===m.f);
+  if(m.icono==='whatsapp-logo')return `<span class="cj marca ${extra}"><i class="${peso} ph-${m.icono}"></i></span>`;
+  if(m.f==='est')return `<span class="cj e-${m.estado} ${extra}"><i class="${peso} ph-${m.icono}"></i></span>`;
+  if(!f.color)return `<span class="cj neutro ${extra}"><i class="${peso} ph-${m.icono}"></i></span>`;
+  return `<span class="cj ${extra}" style="--c:${f.color}"><i class="${peso} ph-${m.icono}"></i></span>`;
+}
+
+// chips de familia
+function chips(){
+  const todas=`<button class="chip-f${fam==='todas'?' on':''}" data-f="todas">Todas <span class="num">${MAPA.length}</span></button>`;
+  $('#chips').innerHTML=todas+FAMILIAS.map(f=>{const col=f.color==='estado'?'var(--rojo)':(f.color||'var(--texto-3)');return `<button class="chip-f${fam===f.id?' on':''}" data-f="${f.id}" style="--c:${col}"><i class="pt"></i>${esc(f.nombre)} <span class="num">${MAPA.filter(m=>m.f===f.id).length}</span></button>`}).join('');
+  $('#chips').querySelectorAll('button').forEach(b=>b.onclick=()=>{fam=b.dataset.f;chips();pintar();window.scrollTo({top:$('#barra').offsetTop+1,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})});
+}
+
+// grilla
+function pintar(){
+  const nq=norm(q.trim());
+  let i=0,hay=0;
+  $('#familias').innerHTML=FAMILIAS.filter(f=>fam==='todas'||fam===f.id).map(f=>{
+    const items=MAPA.filter(m=>m.f===f.id&&(!nq||norm([m.concepto,m.icono,m.evitar,m.nota,f.nombre].join(' ')).includes(nq)));
+    if(!items.length)return '';
+    hay+=items.length;
+    const muestra=items[0];
+    const cab=f.color&&f.color!=='estado'?`<span class="cj solido" style="--c:${f.color};width:26px;height:26px;border-radius:8px"><i class="ph-fill ph-${muestra.icono}" style="font-size:14px"></i></span>`:cuadro({...muestra,icono:muestra.icono},'chico');
+    return `<section class="fam" id="f-${f.id}"><div class="fam-cab">${cab}<h2>${esc(f.nombre)}</h2><span class="c num">${items.length}</span><p>${esc(f.regla)}</p></div><div class="grilla">`+
+      items.map(m=>{const no=m.evitar?m.evitar.split(',').map(s=>s.trim()).filter(Boolean):[];
+        return `<button class="ic" style="--i:${Math.min(i++,40)}" data-icono="${m.icono}" aria-label="Copiar ${esc(m.concepto)}: ph-${m.icono}">
+          <div class="tope">${cuadro(m)}<span class="copiar" aria-hidden="true"><i class="ph ph-copy"></i></span></div>
+          <div><h3>${esc(m.concepto)}</h3><div class="nombre">ph-${m.icono}</div></div>
+          ${m.nota?`<div class="nota">${esc(m.nota)}</div>`:''}
+          ${no.length?`<div class="no" title="No usar">${no.map(n=>`<span><i class="ph ph-${n}"></i>${n}</span>`).join('')}</div>`:''}
+        </button>`}).join('')+`</div></section>`;
+  }).join('');
+  $('#vacio').classList.toggle('ver',!hay);
+  if(!hay)$('#vacioT').textContent=nq?`Ningún concepto con «${q.trim()}»`:'Esta familia está vacía';
+  $('#reglas').style.display=nq||fam!=='todas'?'none':'';
+  $('#sec-pares').style.display=nq||fam!=='todas'?'none':'';
+  document.querySelectorAll('.ic').forEach(b=>b.onclick=()=>copiar(b));
+}
+
+// copiar
+let tt;
+async function copiar(b){
+  const n=b.dataset.icono,html=`<i class="${peso} ph-${n}"></i>`;
+  try{await navigator.clipboard.writeText(html)}catch(e){const t=document.createElement('textarea');t.value=html;document.body.appendChild(t);t.select();try{document.execCommand('copy')}catch(_){}t.remove()}
+  document.querySelectorAll('.ic.copiado').forEach(x=>{x.classList.remove('copiado');x.querySelector('.copiar').innerHTML='<i class="ph ph-copy"></i>'});
+  b.classList.add('copiado');b.querySelector('.copiar').innerHTML='<i class="ph ph-check"></i>';
+  $('#toastT').textContent=`Copiado · ${b.querySelector('h3').textContent}`;
+  $('#toastS').textContent=`${html}  ·  React: <${pascal(n)}${peso==='ph-fill'?' weight="fill"':''} />`;
+  $('#toast').classList.add('ver');clearTimeout(tt);tt=setTimeout(()=>{$('#toast').classList.remove('ver');b.classList.remove('copiado');const c=b.querySelector('.copiar');if(c)c.innerHTML='<i class="ph ph-copy"></i>'},2600);
+}
+
+// peso
+document.querySelectorAll('#peso button').forEach(b=>b.onclick=()=>{peso=b.dataset.p;document.querySelectorAll('#peso button').forEach(x=>x.classList.toggle('on',x===b));pintar();pares()});
+
+// pares
+function pares(){
+  $('#paresN').textContent=PARES.length;
+  const lado=(ic,t)=>{const m=MAPA.find(x=>x.icono===ic);return `<div class="lado">${cuadro(m,'chico')}<div><b>${esc(t)}</b><small>ph-${ic}</small></div></div>`};
+  $('#pares').innerHTML=PARES.map(p=>`<div class="par"><div class="dos">${lado(p[0],p[1])}${lado(p[2],p[3])}</div><p>${esc(p[4])}</p></div>`).join('');
+}
+
+// búsqueda
+const inp=$('#q');
+inp.oninput=()=>{q=inp.value;pintar()};
+$('#limpiar').onclick=()=>{inp.value='';q='';fam='todas';chips();pintar();inp.focus()};
+addEventListener('keydown',e=>{
+  if(e.key==='/'&&document.activeElement!==inp){e.preventDefault();inp.focus()}
+  else if(e.key==='Escape'&&document.activeElement===inp){inp.value='';q='';pintar();inp.blur()}
+});
+
+// barra pegada
+const obs=new IntersectionObserver(([e])=>$('#barra').classList.toggle('pegada',e.intersectionRatio<1),{threshold:[1],rootMargin:'-1px 0px 0px 0px'});
+obs.observe($('#barra'));
+
+// héroe: cuenta y mosaico vivo
+(()=>{const el=$('#total'),fin=MAPA.length,red=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(red){el.textContent=fin}else{const t0=performance.now();const f=t=>{const p=Math.min(1,(t-t0)/700),e=1-Math.pow(1-p,3);el.textContent=Math.round(fin*e);if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
+  const muestra=['receipt','hand-coins','kanban','engine','truck','shipping-container','users-three','whatsapp-logo','wrench','calendar-blank','file-pdf','stamp','bank','map-pin','handshake'];
+  const mos=$('#mosaico');mos.innerHTML=muestra.map(n=>`<i class="ph ph-${n}"></i>`).join('');
+  if(!red){let k=0;setInterval(()=>{const c=mos.children;[...c].forEach(x=>x.classList.remove('vivo'));c[(k*7)%c.length].classList.add('vivo');k++},1400)}
+})();
+
+chips();pintar();pares();
+</script>
+</body>
+</html>
