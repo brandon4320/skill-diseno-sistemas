@@ -57,7 +57,7 @@ Rutas relativas a esta carpeta; los números sueltos (`06`, `07`…) son las cap
 3. Abrí la referencia y el ejemplo de ese tipo de pantalla.
 4. Definí acento y tinte (`tokens.css`, `marcas.local.md`).
 5. Marco: barra lateral sobre el lienzo, panel con migas (§1).
-6. Cabecera: título display liviano, subtítulo con cifras reales, un solo botón relleno.
+6. Cabecera: título grande y firme (Geist 500), subtítulo con cifras reales, un solo botón relleno.
 7. Fila de 3–6 KPIs: uno protagonista, el resto en bandeja con tarjeta adentro, cada uno con su dibujo.
 8. Cuerpo: tarjetas de entidad para lo que está en curso, tabla o lista para el resto, panel de contexto a la derecha.
 9. Espacios con la tabla de §4a; escalera tipográfica de 5 niveles (§4e).
@@ -133,11 +133,11 @@ Sacadas de `guias/patrones-de-referencia.md`; el cómo con medidas está ahí, e
 10. **El oscuro es el mismo layout con otros tokens.** El botón principal pasa a blanco, los estados van como ícono + palabra sin pastilla y las capas se separan por luminosidad, sin sombras (§5 Oscuro).
 
 ## 2. Tipografía (análisis 02)
-- **Dos voces y una mono:** display (Outfit, General Sans, Satoshi) para títulos y cifras; interfaz (Plus Jakarta Sans, Manrope, Inter) para el resto; mono (JetBrains Mono, Geist Mono) para códigos (FAC-01101, CUIT) y, en monitoreo, cifras. Una sola familia, o tres o más, no va.
+- **Geist en todo y Geist Mono para códigos.** Una sola familia con dos papeles: **interfaz** (400–500 a 13–14 px) y **títulos y cifras** (500–600, tracking cerrado). Geist Mono para códigos (FAC-01101, CUIT, B/L) y, en monitoreo, cifras. Se eligió el 18/11/2026 comparando contra Outfit + Plus Jakarta, Manrope + Inter y Space Grotesk + IBM Plex sobre la misma pantalla: las letras de trazo fino o en 300 se pierden en un sistema denso; Geist se lee firme a 13 px y sus cifras quedan compactas. Otra familia solo si la marca la exige (y entonces una sola, con su mono). Cargá Geist con `next/font/google` (`Geist`, `Geist_Mono`) o Google Fonts (`family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500`).
 - **Escala única:** 11 / 12 / 13 / 14 / 16 / 20 / 24 / 32 / 40, y 36–44 para títulos display grandes (48 solo para el monto de un formulario en celular). Si una guía o ejemplo usa 15, 17 o 28, usá el escalón vecino de la escala.
-- **Pesos:** 300–400 en títulos display de 36 o más; 400 texto; 500 nombres, rótulos, acciones y cifras; 600 solo en cifras (opcional). Nada de 700. Por tarjeta, ≤ 3 tamaños y ≤ 2 pesos (más el 600 de la cifra).
-- **Tracking:** −0,02 a −0,03 em en display de 20 o más; `tracking-wider` solo en el rótulo de grupo del menú.
-- **Títulos grandes y livianos:** saludo o título de inicio 36–44/300–400; título de página 24–32/400–500; título de sección 16–20/500 display con conteo gris; nombre de tarjeta 16–20/500.
+- **Pesos:** 500 en títulos de página y de 36 o más (nunca 300: se pierde), 600 en lo destacado del título (el nombre del saludo); 400 texto; 500 nombres, rótulos y acciones; 600 en cifras protagonistas. Nada de 700. Por tarjeta, ≤ 3 tamaños y ≤ 2 pesos (más el 600 de la cifra).
+- **Tracking:** −0,025 a −0,035 em en títulos y cifras de 20 o más (Geist abre de más en tamaños grandes); `tracking-wider` solo en el rótulo de grupo del menú.
+- **Títulos grandes y firmes:** saludo o título de inicio 36–44/500 (el nombre en 600); título de página 24–32/500; título de sección 16–20/500 con conteo gris; nombre de tarjeta 16–20/500.
 - **Dato = rótulo arriba y valor abajo** (§4e). Nunca "Rótulo: valor" en la misma línea dentro de una ficha (sí en leyendas y metadatos).
 - **Cifras:** `tabular-nums`, a la derecha en tablas (encabezado incluido). Moneda, centavos y unidad en `texto-3`, un paso más chicos (la moneda al 60–65 % de la cifra): `US$ 24.957`<span>,81</span>. En tablas, centavos completos pero igual en gris; en celular, sin centavos.
 - **Mayúscula** solo en el rótulo de grupo del menú. Encabezados de tabla, botones y pestañas en tipo oración.
@@ -222,7 +222,7 @@ Solo valores de `--espacio-*` (`tokens.css`). La única excepción literal es el
 
 | Nivel | Qué | Letra | Peso | Color |
 |---|---|---|---|---|
-| 1. Protagonista | La cifra o el título que contesta el bloque | 32–40 display (24 en KPI denso) | 500 (300–400 en títulos de 36+) | `tinta` |
+| 1. Protagonista | La cifra o el título que contesta el bloque | 32–40 (24 en KPI denso) | 500–600 | `tinta` |
 | 2. Nombre | Título de tarjeta, entidad, título de fila | 16–20 display / 13–14 en fila | 500 | `tinta` |
 | 3. Texto | La frase de un aviso, un paso | 13–14 | 400 | `tinta` (descripción: `texto-2`) |
 | 4. Rótulo | Rótulo de KPI y de campo, encabezado de tabla | 12–13 | 500 | `texto-2` |
@@ -505,7 +505,7 @@ Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una 
 - Filas pintadas por estado o pastillas saturadas con texto blanco; estado solo con color.
 - Encabezados en MAYÚSCULA negrita, líneas verticales fuera de la grilla tipo planilla, tarjetas dentro de tarjetas con borde.
 - KPI sin contexto, porcentaje sin período, número coloreado, delta coloreado por el signo; torta para avance.
-- Una sola familia tipográfica o tres; 700; tamaños fuera de la escala; texto de menos de 12 px.
+- Dos familias de texto o más (además de la mono), letras de trazo fino o en 300 que se pierden; 700; tamaños fuera de la escala; texto de menos de 12 px.
 - Espacios simétricos o iguales para todo; separar con tarjeta + borde + título + divisor + fondo a la vez; achicar letra para que entre.
 - Todo en `tinta` 500; rótulo más fuerte que su valor; títulos que solo nombran sin subtítulo con cifras; lo urgente al fondo.
 - Íconos de juegos mezclados, de color sueltos, o sin el activo en fill.
@@ -525,7 +525,7 @@ Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una 
 5. **Jerarquía:** prueba de 5 segundos, desenfoque (una mancha por bloque), escala de grises, ≤ 3 textos en `tinta` 500 por tarjeta, ≤ 3 tamaños y ≤ 2 pesos.
 6. **Espacios:** todos de §4a; adentro ≤ la mitad de afuera; título de sección 40/12; un borde izquierdo por columna.
 7. **Legibilidad:** nada < 12 px, contraste AA, interlineado por tamaño, texto corrido ≤ 72 caracteres, truncado al final.
-8. **Vida:** color por entidad, cifras con dibujo, un protagonista, caras, movimiento al cargar; letra display con títulos grandes y livianos.
+8. **Vida:** color por entidad, cifras con dibujo, un protagonista, caras, movimiento al cargar; Geist con títulos grandes y firmes.
 9. **Cabecera y KPIs:** subtítulo con cifras reales; cada KPI con contexto, delta por sentido y link a su lista.
 10. **Color:** 1 acento, estados con palabra, datos ≤ 6, lo normal neutro con el tinte del sistema; nada escrito a mano que no cambie en oscuro.
 11. **Radios, sombras e íconos:** radios en capas de `tokens.css`; sombras suaves en sus niveles; Phosphor regular + fill activo, cada concepto con su ícono del mapa.

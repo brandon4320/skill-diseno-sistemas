@@ -154,7 +154,7 @@ export function Cabecera({ antetitulo, titulo, nombre, tamano, cifras, subtitulo
             'font-display text-balance text-tinta',
             !!antetitulo && 'mt-1.5',
             t === 'saludo'
-              ? 'text-[32px] leading-[1.08] font-light tracking-[-.035em] md:text-[40px]'
+              ? 'text-[32px] leading-[1.08] font-medium tracking-[-.035em] md:text-[40px]'
               : 'text-2xl leading-[1.12] font-normal tracking-[-.03em] md:text-[32px]',
           )}
         >

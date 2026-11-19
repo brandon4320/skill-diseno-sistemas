@@ -308,7 +308,7 @@ module.exports = {
     },
     borderRadius: { app: '26px', marco: '20px', tarjeta: '20px', interno: '16px', control: '12px', chip: '8px' },
     boxShadow: { min: 'var(--shadow-min)', hover: 'var(--shadow-hover)', flotante: 'var(--shadow-flotante)' },
-    fontFamily: { display: ['Outfit', 'sans-serif'], sans: ['"Plus Jakarta Sans"', 'sans-serif'], mono: ['"JetBrains Mono"', 'monospace'] },
+    fontFamily: { display: ['Geist', 'sans-serif'], sans: ['Geist', 'sans-serif'], mono: ['"Geist Mono"', 'monospace'] },
   } },
 }
 ```
@@ -581,7 +581,7 @@ A 390 px: sin barra lateral; arriba "Cobranzas" y la cifra protagonista "US$ 64.
 
 | Tanda | Qué entra | Archivos | Alcance |
 |---|---|---|---|
-| **1. Tokens** | `tokens.css` con acento grafito y tinte azulado (H ≈ 265); alias de `--brand-*` y `--gray-*` viejos; Outfit + Plus Jakarta Sans + JetBrains Mono con `next/font` (`--fuente-*`); Phosphor instalado | `app/globals.css`, `tailwind.config.js`, `app/layout.tsx` | Todo el sistema |
+| **1. Tokens** | `tokens.css` con acento grafito y tinte azulado (H ≈ 265); alias de `--brand-*` y `--gray-*` viejos; Geist + Geist Mono con `next/font` (`--fuente-*`); Phosphor instalado | `app/globals.css`, `tailwind.config.js`, `app/layout.tsx` | Todo el sistema |
 | **2. Marco** | `MarcoApp` + `BarraLateral` en lugar de la barra azul; barra inferior en celular; migas | `app/(app)/layout.tsx`, `components/Nav.tsx` → se borra | Todo el sistema |
 | **3. Cabecera** | Título y subtítulo con cifras (del mismo `/resumen`), botones reordenados, segmentado y chips que escriben los mismos parámetros, filtrar sin "Buscar" | `app/(app)/cobranzas/page.tsx`, `Filtros.tsx` | Cobranzas |
 | **4. Piezas** | KPIs en bandeja, se saca el TOTAL (con OK), tabla agrupada de 5 columnas, pastillas, "Cobrar" + ⋯, hoja de cobro, toast con Deshacer, modal solo para borrar, esqueleto, vacío y error, formato de fechas y montos | `cobranzas/*`, `components/ui/*` | Cobranzas |

@@ -15,9 +15,9 @@
  */
 @theme {
   /* Dos voces + mono: display para títulos y cifras, interfaz para el resto */
-  --font-display: 'Outfit', 'General Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-sans: 'Plus Jakarta Sans', 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Geist Mono', ui-monospace, monospace;
+  --font-display: 'Geist', ui-sans-serif, system-ui, sans-serif; /* misma familia: títulos y cifras a 500–600 con tracking −0,03 */
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
 
   /* Tres planos: lienzo con tono → panel → tarjeta (diferencia de 2-4 % de luz, sin sombra) */
   --color-fondo: #f4f4f5;        /* lienzo de la app y barra lateral */

@@ -217,7 +217,7 @@ Rótulos, unidades, monedas, centavos, separadores, conteos, fechas que no apura
 
 | Nivel | Qué es | Letra | Peso | Color | Ejemplo |
 |---|---|---|---|---|---|
-| **1. Protagonista** | La cifra o el título que contesta la pregunta del bloque | 24 / 32 / 40 display | 500 (300–400 si es un saludo o título de página de 36+) | `tinta` | "US$ 41.600", "Buenas tardes, Ana" |
+| **1. Protagonista** | La cifra o el título que contesta la pregunta del bloque | 24 / 32 / 40 display | 500–600 (nunca 300) | `tinta` | "US$ 41.600", "Buenas tardes, Ana" |
 | **2. Nombre** | Título de tarjeta, nombre de entidad, título de fila | 15–20 display (tarjeta) / 13–14 interfaz (fila) | 500 | `tinta` | "Identidad Orbe Retail", "Casa Lumen" |
 | **3. Texto** | Contenido que se lee: la frase de un aviso, el paso, una descripción corta | 13–14 interfaz | 400 | `tinta` (descripción de 2 líneas: `texto-2`) | "Cerrar paleta con Sofía" |
 | **4. Rótulo** | Lo que dice qué es el dato: rótulo de KPI, rótulo de campo, encabezado de tabla | 12–13 interfaz | 500 | `texto-2` | "Ganado en noviembre", "Vence" |
@@ -371,7 +371,7 @@ El peso visual no sirve si el texto está mal ordenado.
 
 | Bloque | Lleva el peso (nivel 1–2, `tinta`) | Va en gris | Color solo en | Ejemplo Estudio Faro |
 |---|---|---|---|---|
-| **Cabecera de página** | Título (36–44/300–400 en inicio; 22–24/500 en el resto) | Fecha o ceja arriba; subtítulo con cifras | La pieza del subtítulo que exige actuar | "Cobranzas" · "US$ 18.420 por cobrar · **3 vencidas**" |
+| **Cabecera de página** | Título (36–44/500 en inicio; 24–32/500 en el resto) | Fecha o ceja arriba; subtítulo con cifras | La pieza del subtítulo que exige actuar | "Cobranzas" · "US$ 18.420 por cobrar · **3 vencidas**" |
 | **Migas de pan** | La página actual (500 `tinta`) | Las secciones de arriba | — | Estudio Faro / **Cobranzas** |
 | **KPI en bandeja** | La cifra (24 o 32/500 display) | Rótulo con ícono (sobre la bandeja), contexto, unidad, moneda | Delta del pie (número + flecha) | "Ganado en noviembre" → **US$ 41.600** → "69 % de la meta" · ↗ +3 cierres |
 | **KPI protagonista (relleno)** | La cifra en blanco (34–40) | Rótulo y contexto en blanco al 70–80 % | — (el relleno ya es el color) | "Pipeline abierto" **US$ 184,2 mil** |

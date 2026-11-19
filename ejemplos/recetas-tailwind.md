@@ -4,7 +4,7 @@ Usan los tokens de `tokens.css`: `bg-superficie`, `text-tinta`, `border-borde`, 
 
 **Íconos:** `npm i @phosphor-icons/react`. Usá el peso `regular` en general y `fill` para lo activo o lo que va dentro de un cuadro de color.
 
-**Fuentes:** Outfit (display), Plus Jakarta Sans (interfaz) y JetBrains Mono (mono). Cargalas con `@fontsource-variable/*` o `next/font`.
+**Fuentes:** Geist (interfaz, títulos y cifras) y Geist Mono. Cargalas con `next/font/google` o `@fontsource-variable/geist`.
 
 Con `--font-display` en el `@theme` de `tokens.css`, Tailwind v4 crea la clase `font-display` solo.
 

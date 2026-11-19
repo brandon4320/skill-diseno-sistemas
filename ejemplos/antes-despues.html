@@ -14,7 +14,7 @@
 <title>Antes y después · diseno-sistemas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <style>
@@ -28,7 +28,7 @@
   --verde:#15803d; --verde-f:#e8f7ee; --ambar:#b45309; --ambar-f:#fef3e2; --rojo:#b91c1c; --rojo-f:#fdecec; --azul:#1d4ed8; --azul-f:#eaf2fe; --gris-f:#eef0f3;
   /* color fijo por entidad (paleta de datos) */
   --ent-1:#3b6fe0; --ent-2:#d6336c; --ent-3:#c8692b; --ent-4:#25a866; --ent-5:#7c5ce0;
-  --display:'Outfit',sans-serif; --ui:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --display:'Geist',sans-serif; --ui:'Geist',sans-serif; --mono:'Geist Mono',monospace;
   --espacio-1:2px; --espacio-2:4px; --espacio-3:6px; --espacio-4:8px; --espacio-5:12px; --espacio-6:16px;
   --espacio-7:20px; --espacio-8:24px; --espacio-9:28px; --espacio-10:40px; --gap-tarjetas:14px;
   --s-min:0 1px 2px rgb(22 24 29/.05); --s-hover:0 14px 30px -18px rgb(22 24 29/.3); --s-flot:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
@@ -69,7 +69,7 @@ a{color:inherit}
 /* ── Cabecera de la página ── */
 .pag-cab{display:flex;align-items:flex-end;gap:var(--espacio-8);flex-wrap:wrap}
 .pag-cab small{font-family:var(--mono);font-weight:500;font-size:12px;color:var(--texto-2)}
-.pag-cab h1{font-family:var(--display);font-weight:300;font-size:44px;line-height:1.1;letter-spacing:-.03em;margin-top:var(--espacio-4)}
+.pag-cab h1{font-family:var(--display);font-weight:500;font-size:44px;line-height:1.1;letter-spacing:-.03em;margin-top:var(--espacio-4)}
 .pag-cab h1 b{font-weight:500}
 .pag-cab .sub{color:var(--texto-2);font-size:14px;margin-top:var(--espacio-2);display:flex;gap:var(--espacio-3);flex-wrap:wrap;align-items:center}
 .pag-cab .sub b{color:var(--tinta);font-weight:500}
@@ -121,7 +121,7 @@ a{color:inherit}
 /* ── Un par ── */
 .par{margin-top:calc(var(--espacio-10) * 2);scroll-margin-top:var(--espacio-8)}
 .par-cab{display:flex;align-items:flex-end;gap:var(--espacio-7);margin-bottom:var(--espacio-7);flex-wrap:wrap}
-.par-cab .nro-par{font-family:var(--display);font-weight:300;font-size:40px;line-height:1;color:var(--texto-3);letter-spacing:-.03em;min-width:56px}
+.par-cab .nro-par{font-family:var(--display);font-weight:500;font-size:40px;line-height:1;color:var(--texto-3);letter-spacing:-.03em;min-width:56px}
 .par-cab h2{font-family:var(--display);font-weight:500;font-size:24px;line-height:1.2;letter-spacing:-.02em}
 .par-cab p{color:var(--texto-2);font-size:14px;line-height:1.5;margin-top:var(--espacio-2);max-width:68ch}
 .par-cab .seg{margin-left:auto}
@@ -310,7 +310,7 @@ textarea.ctrl{height:80px;padding:var(--espacio-4) var(--espacio-5);resize:verti
 .buscar kbd{margin-left:auto;font-family:var(--mono);font-weight:500;font-size:11px;color:var(--texto-2);border:1px solid var(--borde);background:var(--bandeja);padding:var(--espacio-1) var(--espacio-3);border-radius:6px}
 .cabx-cuerpo{position:relative;padding:var(--espacio-9) var(--espacio-8) var(--espacio-8)}
 .cabx-fila{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"tit acc" "sub sub";align-items:end;column-gap:var(--espacio-6)}
-.cabx h1{grid-area:tit;justify-self:start;font-family:var(--display);font-weight:300;font-size:40px;line-height:1.15;letter-spacing:-.03em}
+.cabx h1{grid-area:tit;justify-self:start;font-family:var(--display);font-weight:500;font-size:40px;line-height:1.15;letter-spacing:-.03em}
 .cabx .sub{grid-area:sub;color:var(--texto-2);font-size:14px;margin-top:var(--espacio-2);display:flex;align-items:center;gap:var(--espacio-3);flex-wrap:wrap}
 .cabx .sub b{color:var(--tinta);font-weight:500}
 .cabx .sub .sep{color:var(--texto-3)}
@@ -332,7 +332,7 @@ textarea.ctrl{height:80px;padding:var(--espacio-4) var(--espacio-5);resize:verti
 .tab-in{position:relative;padding:var(--espacio-9);display:flex;flex-direction:column;gap:var(--espacio-9)}
 .tab-cab{display:flex;align-items:flex-end;gap:var(--espacio-6);flex-wrap:wrap}
 .tab-cab small{color:var(--texto-2);font-size:13px;font-weight:500}
-.tab-cab h1{font-family:var(--display);font-weight:300;font-size:40px;line-height:1.15;letter-spacing:-.03em;margin-top:var(--espacio-2)}
+.tab-cab h1{font-family:var(--display);font-weight:500;font-size:40px;line-height:1.15;letter-spacing:-.03em;margin-top:var(--espacio-2)}
 .tab-cab h1 b{font-weight:500}
 .tab-cab .sub{color:var(--texto-2);font-size:14px;margin-top:var(--espacio-2);display:flex;gap:var(--espacio-3);flex-wrap:wrap;align-items:center}
 .tab-cab .sub b{color:var(--tinta);font-weight:500}

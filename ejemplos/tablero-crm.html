@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Estudio Faro · CRM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <style>
@@ -21,7 +21,7 @@
   /* serie del gráfico: un tono escalonado */
   --b1:#6d4fe0; --b2:#a693f2; --b3:#d9d1fb; --b-ray:#c9bff7; --b-ray-f:#f3f1fe;
   --tip:#16181d; --tip-t:#fff; --tip-2:#b4b4bd;
-  --display:'Outfit',sans-serif; --ui:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --display:'Geist',sans-serif; --ui:'Geist',sans-serif; --mono:'Geist Mono',monospace;
   --e-1:2px; --e-2:4px; --e-3:6px; --e-4:8px; --e-5:12px; --e-6:16px; --e-7:20px; --e-8:24px; --e-9:28px; --e-10:40px; --gap:14px;
   --s-min:0 1px 2px rgb(22 24 29/.05); --s-hover:0 14px 30px -18px rgb(22 24 29/.3);
   --s-flot:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
@@ -114,7 +114,7 @@ a{color:inherit;text-decoration:none}
 /* ── Cabecera ── */
 .cab{display:flex;align-items:flex-end;gap:var(--e-6)}
 .cab .fecha{color:var(--texto-3);font-size:13px;font-weight:500}
-.cab h1{font-family:var(--display);font-size:40px;font-weight:300;line-height:1.15;letter-spacing:-.03em;margin-top:var(--e-2)}
+.cab h1{font-family:var(--display);font-size:40px;font-weight:500;line-height:1.15;letter-spacing:-.03em;margin-top:var(--e-2)}
 .cab h1 b{font-weight:400}
 .cab .sub{margin-top:var(--e-2);color:var(--texto-2);display:flex;flex-wrap:wrap;gap:var(--e-2) var(--e-4);align-items:center}
 .cab .sub a{display:inline-flex;align-items:center;gap:var(--e-2);border-radius:6px}
@@ -613,14 +613,14 @@ function cabeceraFact(){const D=DATOS[anio],total=D.reduce((a,d)=>a+suma(d),0);$
  $('#tablaFact').innerHTML=`<caption>Facturación ${anio} en miles de US$</caption><tr><th>Mes</th><th>Identidad</th><th>Web</th><th>Packaging</th><th>Total</th></tr>`+D.map((d,i)=>`<tr><td>${M[i]}</td><td>${d[0]}</td><td>${d[1]}</td><td>${d[2]}</td><td>${suma(d)}</td></tr>`).join('')}
 function barras(animar=true){const D=DATOS[anio],enCurso=anio===HOY.anio?HOY.mes+1:-1,destacado=anio===HOY.anio?HOY.mes:-1;
  const s=$('#barras'),W=s.clientWidth||600,H=232,top=8,base=H-28,mx=60,esc=v=>v/mx*(base-top),izq=40,paso=(W-izq)/12,b=Math.min(28,Math.max(12,paso*.56));let g='';
- [0,20,40,60].forEach(v=>{const y=base-esc(v);g+=`<line x1="${izq-6}" x2="${W}" y1="${y}" y2="${y}" style="stroke:var(--divisor)" ${v?'stroke-dasharray="3 4"':''}/><text x="0" y="${y+4}" font-size="12" style="fill:var(--texto-3)" font-family="Plus Jakarta Sans">${v?v+'k':'0'}</text>`});
+ [0,20,40,60].forEach(v=>{const y=base-esc(v);g+=`<line x1="${izq-6}" x2="${W}" y1="${y}" y2="${y}" style="stroke:var(--divisor)" ${v?'stroke-dasharray="3 4"':''}/><text x="0" y="${y+4}" font-size="12" style="fill:var(--texto-3)" font-family="Geist">${v?v+'k':'0'}</text>`});
  g+=`<defs><pattern id="ray" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" style="fill:var(--b-ray-f)"/><line x1="0" y1="0" x2="0" y2="5" style="stroke:var(--b-ray)" stroke-width="2"/></pattern></defs>`;
  const col=['var(--b1)','var(--b2)','var(--b3)'];
  D.forEach((d,i)=>{const x=izq+i*paso+(paso-b)/2;let y=base;const mtd=i===enCurso,t=suma(d);
   g+=`<g class="col" data-i="${i}" tabindex="${i===(destacado>=0?destacado:11)?0:-1}" role="img" aria-label="${M[i]} ${anio}: US$ ${t} mil${mtd?', mes en curso, sin cerrar':''}">`;
   d.forEach((v,j)=>{const h=esc(v)-2;y-=h+2;g+=`<rect x="${x}" y="${y}" width="${b}" height="${h}" rx="${Math.min(6,b/4)}" style="fill:${mtd?'url(#ray)':col[j]};${mtd?'stroke:var(--b-ray);stroke-dasharray:3 2;':''}transform-origin:${x}px ${base}px;transform:scaleY(${animar&&!quieto?0:1});transition:transform .8s cubic-bezier(.23,1,.32,1) ${i*35}ms"/>`});
-  g+=`<rect class="marco" x="${x-6}" y="${top}" width="${b+12}" height="${base-top}" rx="8" fill="transparent"/></g><text x="${x+b/2}" y="${H-8}" text-anchor="middle" font-size="12" style="fill:${i===destacado?'var(--tinta)':'var(--texto-3)'}" font-weight="${i===destacado?500:400}" font-family="Plus Jakarta Sans">${paso<34?M[i][0]:M[i]}</text>`;
-  if(mtd){const tx=Math.min(x+b/2,W-30),ty=base-esc(t)-(paso<34?esc(D[i-1]?suma(D[i-1]):t)-esc(t)+32:28);g+=`<g transform="translate(${tx-30},${ty})"><rect width="60" height="20" rx="7" style="fill:var(--superficie);stroke:var(--borde)"/><text x="30" y="14" text-anchor="middle" font-size="11" font-weight="500" style="fill:var(--texto-2)" font-family="Plus Jakarta Sans">En curso</text></g>`}});
+  g+=`<rect class="marco" x="${x-6}" y="${top}" width="${b+12}" height="${base-top}" rx="8" fill="transparent"/></g><text x="${x+b/2}" y="${H-8}" text-anchor="middle" font-size="12" style="fill:${i===destacado?'var(--tinta)':'var(--texto-3)'}" font-weight="${i===destacado?500:400}" font-family="Geist">${paso<34?M[i][0]:M[i]}</text>`;
+  if(mtd){const tx=Math.min(x+b/2,W-30),ty=base-esc(t)-(paso<34?esc(D[i-1]?suma(D[i-1]):t)-esc(t)+32:28);g+=`<g transform="translate(${tx-30},${ty})"><rect width="60" height="20" rx="7" style="fill:var(--superficie);stroke:var(--borde)"/><text x="30" y="14" text-anchor="middle" font-size="11" font-weight="500" style="fill:var(--texto-2)" font-family="Geist">En curso</text></g>`}});
  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.innerHTML=g;
  if(animar&&!quieto)requestAnimationFrame(()=>setTimeout(()=>s.querySelectorAll('.col rect[style]').forEach(r=>r.style.transform='scaleY(1)'),80));
  const tip=$('#tip'),cols=[...s.querySelectorAll('.col')];

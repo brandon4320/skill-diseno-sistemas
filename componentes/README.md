@@ -58,7 +58,7 @@ En la hoja global de Tailwind (por ejemplo `app/globals.css`):
 ```
 
 - Tailwind v4 escanea solo lo que no está en `.gitignore`. Si copiaste las piezas fuera del proyecto o en una carpeta ignorada, sumá `@source "../ruta/a/ds";`.
-- Fuentes: Outfit (display), Plus Jakarta Sans (interfaz) y JetBrains Mono. Con `next/font`, cargalas y apuntá `--font-display`, `--font-sans` y `--font-mono` a sus variables.
+- Fuentes: Geist (interfaz, títulos y cifras) y Geist Mono. Con `next/font/google` (`Geist`, `Geist_Mono`), cargalas y apuntá `--font-sans` y `--font-display` a Geist y `--font-mono` a Geist Mono.
 - Oscuro: `data-tema="oscuro"` en `<html>`. Nunca `dark:`.
 
 ## 4. Importar

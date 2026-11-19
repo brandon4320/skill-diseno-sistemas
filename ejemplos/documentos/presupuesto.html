@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Presupuesto PRE-0241 · Estudio Faro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <style>
@@ -17,7 +17,7 @@
   --acento:#4f46e5;
   --verde:#15803d; --verde-f:#ebf8f0; --ambar:#b45309; --ambar-f:#fdf3e1; --rojo:#b91c1c; --rojo-f:#fdecec; --azul:#1d4ed8; --azul-f:#e9f1fd; --gris-f:#f0f1f4;
   --e1:#3b6fe0; --e2:#d6336c; --e3:#b4561c; --e4:#25a866; --e5:#7c5ce0;
-  --display:'Outfit',sans-serif; --ui:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --display:'Geist',sans-serif; --ui:'Geist',sans-serif; --mono:'Geist Mono',monospace;
   --s-min:0 1px 2px rgb(22 24 29/.05); --s-hoja:0 1px 2px rgb(22 24 29/.04),0 40px 80px -40px rgb(22 24 29/.28);
   --s-flot:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
   --ease:cubic-bezier(.23,1,.32,1); --neg:#16181d; --neg-t:#fff;
@@ -76,7 +76,7 @@ button{font:inherit;color:inherit}
 .emisor span{color:var(--texto-3)}
 .doc{text-align:right}
 .doc small{font-size:12px;color:var(--texto-2);font-weight:500;display:flex;justify-content:flex-end;gap:6px;align-items:center}
-.doc h1{font:300 44px/1 var(--display);letter-spacing:-.035em;margin-top:6px}
+.doc h1{font:500 44px/1 var(--display);letter-spacing:-.035em;margin-top:6px}
 .doc .nro{font:500 14px var(--mono);margin-top:8px;letter-spacing:-.01em}
 .chip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:8px;font-weight:600;font-size:12px;white-space:nowrap;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
@@ -133,7 +133,7 @@ td .un{color:var(--texto-3);font-size:12px;font-weight:400}
 
 .para{margin-top:32px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
 .para small{font-size:12px;color:var(--texto-2);font-weight:500;display:flex;gap:8px;align-items:center}
-.para h2{font:300 30px/1.12 var(--display);letter-spacing:-.03em;margin-top:8px}
+.para h2{font:500 30px/1.12 var(--display);letter-spacing:-.03em;margin-top:8px}
 .para h2 b{font-weight:500}
 .para p{color:var(--texto-2);margin-top:8px;max-width:440px;font-size:13px}
 .contacto{display:flex;gap:10px;align-items:center;justify-content:flex-end}
@@ -242,8 +242,8 @@ td.det{display:none}
 }
 
 @page{size:A4;margin:12mm 14mm 14mm;
-  @bottom-left{content:"Estudio Faro S.R.L. · Presupuesto PRE-0241 · válido hasta el 2 dic 2026";font:400 9pt 'Plus Jakarta Sans',sans-serif;color:#6b7080}
-  @bottom-right{content:"Hoja " counter(page) " de " counter(pages);font:400 9pt 'Plus Jakarta Sans',sans-serif;color:#6b7080}
+  @bottom-left{content:"Estudio Faro S.R.L. · Presupuesto PRE-0241 · válido hasta el 2 dic 2026";font:400 9pt 'Geist',sans-serif;color:#6b7080}
+  @bottom-right{content:"Hoja " counter(page) " de " counter(pages);font:400 9pt 'Geist',sans-serif;color:#6b7080}
 }
 @media print{
   body{background:#fff;font-size:10pt}

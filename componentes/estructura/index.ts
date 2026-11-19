@@ -1,7 +1,7 @@
 /**
  * Piezas de estructura de diseno-sistemas (React 19 + TS + Tailwind v4 + @phosphor-icons/react).
  * Requisitos: los tokens de ../../tokens.css en tu CSS de Tailwind (`@import "tailwindcss"; @import "./tokens.css";`)
- * y las fuentes Outfit, Plus Jakarta Sans y JetBrains Mono cargadas.
+ * y las fuentes Geist, Geist y Geist Mono cargadas.
  */
 export { MarcoApp, Contenido, useMarco } from './MarcoApp'
 export type { MarcoAppProps, ItemInferior, AccionMovil, Enlace, EnlaceProps } from './MarcoApp'

@@ -91,14 +91,14 @@ Un documento también puede verse premium sin dejar de ser papel:
 
 ## 8. Correos transaccionales
 
-**Estructura (de arriba abajo):** preencabezado oculto → marca → tarjeta con número del documento en mono, título display liviano, bajada con nombre y motivo → bandeja con el monto y la pastilla de estado → datos en pares rótulo/valor → **un solo botón** → frase de qué hacer si algo no coincide → pie legal chico fuera de la tarjeta.
+**Estructura (de arriba abajo):** preencabezado oculto → marca → tarjeta con número del documento en mono, título grande y firme, bajada con nombre y motivo → bandeja con el monto y la pastilla de estado → datos en pares rótulo/valor → **un solo botón** → frase de qué hacer si algo no coincide → pie legal chico fuera de la tarjeta.
 
 **Compatibilidad:**
 1. Maquetá con `<table role="presentation">`, estilos **en línea** en cada celda y ancho fijo de 600 px dentro de un contenedor de Outlook (`<!--[if mso]>`). El `<style>` del `<head>` es solo mejora progresiva: el correo tiene que verse bien sin él.
 2. **Nada de íconos de fuente, SVG, flex, grid ni variables CSS.** Gmail los descarta. Los puntos de estado van con el carácter `&#9679;`; la marca, con una celda de color y una letra.
 3. **Botón a prueba de Outlook:** celda con fondo + `<a>` en bloque, y `v:roundrect` en VML dentro de `<!--[if mso]>`. Toda la celda es clickeable.
 4. Los bordes redondeados en celdas necesitan `border-collapse:separate` en la tabla que las contiene; con `collapse` las esquinas salen cuadradas.
-5. Fuentes de Google con `<link>` y siempre su respaldo en línea: `'Outfit',Helvetica,Arial,sans-serif`. Mono con `Menlo,Consolas,monospace`.
+5. Fuentes de Google con `<link>` y siempre su respaldo en línea: `'Geist',Helvetica,Arial,sans-serif`. Mono con `Menlo,Consolas,monospace`.
 6. Preencabezado: un `div` oculto con el dato que importa ("Total $ 3.146.000,00 · vence el 2 dic") y relleno de `&#847;&zwnj;&nbsp;` para que no se cuele el texto del cuerpo.
 7. Celular con `@media (max-width:620px)`: ancho al 100 %, padding lateral de 20, monto a 32 px y columnas apiladas (`.em-col{display:block}`).
 

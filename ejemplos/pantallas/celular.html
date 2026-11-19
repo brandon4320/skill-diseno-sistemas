@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Estudio Faro · App de campo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <style>
@@ -18,7 +18,7 @@
   --verde:#15803d; --verde-f:#e8f7ee; --ambar:#b45309; --ambar-f:#fef3e2; --rojo:#b91c1c; --rojo-f:#fdecec; --azul:#1d4ed8; --azul-f:#eaf2fe; --gris-f:#eef0f3;
   --sobre-verde:#fff; --aviso-rojo:#dc2626;
   --e1:#3b6fe0; --e2:#d6336c; --e3:#c8692b; --e4:#25a866; --e5:#7c5ce0;
-  --display:'Outfit',sans-serif; --ui:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --display:'Geist',sans-serif; --ui:'Geist',sans-serif; --mono:'Geist Mono',monospace;
   --espacio-1:2px; --espacio-2:4px; --espacio-3:6px; --espacio-4:8px; --espacio-5:12px;
   --espacio-6:16px; --espacio-7:20px; --espacio-8:24px; --espacio-9:28px; --espacio-10:40px;
   --s-min:0 1px 2px rgb(22 24 29/.05); --s-hover:0 14px 30px -18px rgb(22 24 29/.3);
@@ -53,7 +53,7 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .pag{max-width:1440px;margin:0 auto;padding:var(--espacio-10) var(--espacio-9) 64px}
 .pag-cab{display:flex;align-items:flex-end;gap:var(--espacio-6);margin-bottom:var(--espacio-10)}
 .pag-cab small{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--texto-2)}
-.pag-cab h1{font-family:var(--display);font-size:44px;font-weight:300;line-height:1.05;letter-spacing:-.035em;margin-top:var(--espacio-3)}
+.pag-cab h1{font-family:var(--display);font-size:44px;font-weight:500;line-height:1.05;letter-spacing:-.035em;margin-top:var(--espacio-3)}
 .pag-cab h1 b{font-weight:500}
 .pag-cab p{color:var(--texto-2);margin-top:var(--espacio-4);font-size:14px}
 .pag-cab .der{margin-left:auto}
@@ -157,7 +157,7 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 @keyframes pop{40%{transform:scale(1.15)}}
 
 /* ── 1 · Inicio ── */
-.saludo{font-family:var(--display);font-size:32px;font-weight:300;line-height:1.1;letter-spacing:-.035em;margin-top:var(--espacio-7)}
+.saludo{font-family:var(--display);font-size:32px;font-weight:500;line-height:1.1;letter-spacing:-.035em;margin-top:var(--espacio-7)}
 .saludo b{font-weight:500}
 .bajada{color:var(--texto-2);margin-top:var(--espacio-4);font-size:14px}
 .bajada b{color:var(--tinta);font-weight:500}
@@ -235,7 +235,7 @@ button.fila:active{transform:scale(.985)}
 .m-btn{position:absolute;right:var(--espacio-5);bottom:var(--espacio-5);height:44px;padding:0 var(--espacio-6);border-radius:99px;display:flex;align-items:center;gap:var(--espacio-4);font-weight:500;font-size:13px;background:var(--superficie);border:1px solid var(--borde);box-shadow:var(--s-flot)}
 .ficha{margin-top:var(--espacio-7)}
 .ficha .chips{display:flex;gap:var(--espacio-3);flex-wrap:wrap}
-.ficha h2{font-family:var(--display);font-size:32px;font-weight:300;line-height:1.1;letter-spacing:-.03em;margin-top:var(--espacio-5)}
+.ficha h2{font-family:var(--display);font-size:32px;font-weight:500;line-height:1.1;letter-spacing:-.03em;margin-top:var(--espacio-5)}
 .ficha h2 b{font-weight:500}
 .ficha .dir{display:flex;gap:var(--espacio-3);align-items:center;color:var(--texto-2);font-size:13px;margin-top:var(--espacio-2)}
 .ficha .dir .ph{font-size:14px;color:var(--texto-3)}
@@ -321,7 +321,7 @@ button.fila:active{transform:scale(.985)}
 
 /* ── 4 · Avisos ── */
 .av-cab{display:flex;align-items:flex-start;gap:var(--espacio-5);margin-top:var(--espacio-4)}
-.av-cab h1{font-family:var(--display);font-size:32px;font-weight:300;line-height:1.1;letter-spacing:-.035em}
+.av-cab h1{font-family:var(--display);font-size:32px;font-weight:500;line-height:1.1;letter-spacing:-.035em}
 .av-cab p{color:var(--texto-2);font-size:13px;margin-top:var(--espacio-1);display:flex;align-items:center;gap:var(--espacio-2)}
 .av-cab p b{color:var(--tinta);font-weight:500}
 .filtros{display:flex;gap:var(--espacio-4);margin-top:var(--espacio-6);overflow-x:auto;scrollbar-width:none}
@@ -711,7 +711,7 @@ function fotoSVG(k){
   <path d="M18 44l20 50" stroke="#fff" stroke-opacity=".12" stroke-width="6"/>`;
   if(k===0)s+=`<rect x="22" y="54" width="56" height="12" rx="2" fill="#e6d9a8" opacity=".45"/><rect x="30" y="70" width="40" height="6" rx="2" fill="#e6d9a8" opacity=".3"/>`;
   if(k===1)s+=`<path d="M70 104 L80 50 M86 104 L94 50 M72 92h17 M74 80h17 M76 68h17 M78 58h16" stroke="#d9b54a" stroke-width="2.2"/>`;
-  if(k===2)s+=`<path d="M12 98h76" stroke="#f2c230" stroke-width="5"/>${Array.from({length:15},(_,i)=>`<path d="M${14+i*5} 96v4" stroke="#7a5b00" stroke-width="1"/>`).join('')}<rect x="34" y="78" width="32" height="13" rx="3" fill="#fff"/><text x="50" y="87.5" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#16181d">2,40 m</text>`;
+  if(k===2)s+=`<path d="M12 98h76" stroke="#f2c230" stroke-width="5"/>${Array.from({length:15},(_,i)=>`<path d="M${14+i*5} 96v4" stroke="#7a5b00" stroke-width="1"/>`).join('')}<rect x="34" y="78" width="32" height="13" rx="3" fill="#fff"/><text x="50" y="87.5" text-anchor="middle" font-family="Geist Mono" font-size="7.5" fill="#16181d">2,40 m</text>`;
   return s+'</svg>';
 }
 const FOTOS=[{k:0,h:'15:06',sube:false},{k:2,h:'15:09',sube:false},{k:1,h:'15:33',sube:true}];
@@ -765,7 +765,7 @@ const CATS=[['Combustible','gas-pump'],['Comida','fork-knife'],['Peaje','road-ho
 let cat=0,moneda='ARS';
 $('#cats').innerHTML=CATS.map(([n,ic],i)=>`<button class="cat${i===cat?' on':''}" data-i="${i}" aria-pressed="${i===cat}"><i class="${i===cat?'ph-fill':'ph'} ph-${ic}"></i>${n}</button>`).join('');
 $('#cats').addEventListener('click',e=>{const b=e.target.closest('.cat');if(!b)return;cat=+b.dataset.i;$$('.cat').forEach((x,i)=>{x.classList.toggle('on',i===cat);x.setAttribute('aria-pressed',i===cat);const ic=$('i',x);ic.className=`${i===cat?'ph-fill':'ph'} ph-${CATS[i][1]}`})});
-$('#ticketFoto').innerHTML=`<svg viewBox="0 0 76 96" preserveAspectRatio="xMidYMid slice"><rect width="76" height="96" fill="#6e5b47"/><g transform="rotate(-6 38 48)"><path d="M14 8h48v78l-4-3-4 3-4-3-4 3-4-3-4 3-4-3-4 3-4-3-4 3-4-3z" fill="#fbfaf6"/><text x="38" y="19" text-anchor="middle" font-family="JetBrains Mono" font-size="5" font-weight="500" fill="#2b2b2b">ESTACIÓN RUTA 8</text>${[26,31,36,41,46].map((y,i)=>`<rect x="19" y="${y}" width="${[30,24,34,20,28][i]}" height="2" rx="1" fill="#c9c6bd"/>`).join('')}<path d="M19 54h38" stroke="#bdb9ae" stroke-dasharray="2 2"/><text x="19" y="63" font-family="JetBrains Mono" font-size="5.2" fill="#2b2b2b">TOTAL</text><text x="57" y="63" text-anchor="end" font-family="JetBrains Mono" font-size="5.2" font-weight="500" fill="#2b2b2b">$38.500</text>${Array.from({length:16},(_,i)=>`<rect x="${22+i*2}" y="70" width="${i%3?1:1.6}" height="7" fill="#2b2b2b"/>`).join('')}</g></svg>`;
+$('#ticketFoto').innerHTML=`<svg viewBox="0 0 76 96" preserveAspectRatio="xMidYMid slice"><rect width="76" height="96" fill="#6e5b47"/><g transform="rotate(-6 38 48)"><path d="M14 8h48v78l-4-3-4 3-4-3-4 3-4-3-4 3-4-3-4 3-4-3-4 3-4-3z" fill="#fbfaf6"/><text x="38" y="19" text-anchor="middle" font-family="Geist Mono" font-size="5" font-weight="500" fill="#2b2b2b">ESTACIÓN RUTA 8</text>${[26,31,36,41,46].map((y,i)=>`<rect x="19" y="${y}" width="${[30,24,34,20,28][i]}" height="2" rx="1" fill="#c9c6bd"/>`).join('')}<path d="M19 54h38" stroke="#bdb9ae" stroke-dasharray="2 2"/><text x="19" y="63" font-family="Geist Mono" font-size="5.2" fill="#2b2b2b">TOTAL</text><text x="57" y="63" text-anchor="end" font-family="Geist Mono" font-size="5.2" font-weight="500" fill="#2b2b2b">$38.500</text>${Array.from({length:16},(_,i)=>`<rect x="${22+i*2}" y="70" width="${i%3?1:1.6}" height="7" fill="#2b2b2b"/>`).join('')}</g></svg>`;
 const mIn=$('#montoIn');
 function valorMonto(){return +(mIn.value.replace(/\D/g,''))||0}
 function ajustarMonto(){const m=$('#medidor');m.textContent=mIn.value||'0';mIn.style.width=(m.offsetWidth+4)+'px'}

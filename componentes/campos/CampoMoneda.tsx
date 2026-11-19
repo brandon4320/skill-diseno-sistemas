@@ -75,7 +75,7 @@ export function CampoMoneda({
           onBlur={() => setTexto(null)}
           aria-invalid={mensaje?.tipo === 'error' || undefined}
           aria-describedby={describedBy(id, mensaje, ayuda ?? equivalencia)}
-          className={cx(INPUT, 'text-right font-mono tabular-nums', grande && 'text-2xl font-light max-sm:text-2xl')}
+          className={cx(INPUT, 'text-right font-mono tabular-nums', grande && 'text-2xl font-medium max-sm:text-2xl')}
         />
         {maximo && (
           <button

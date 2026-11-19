@@ -11,7 +11,7 @@ if(t==='sistema')t=matchMedia('(prefers-color-scheme: dark)').matches?'oscuro':'
 document.documentElement.dataset.tema=t})();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <style>
@@ -23,7 +23,7 @@ document.documentElement.dataset.tema=t})();
   --verde:#15803d; --verde-f:#e8f7ee; --ambar:#b45309; --ambar-f:#fef3e2; --rojo:#b91c1c; --rojo-f:#fdecec; --azul:#1d4ed8; --azul-f:#eaf2fe; --gris-f:#f0f1f4;
   --e1:#3b6fe0; --e2:#d6336c; --e3:#c8692b; --e4:#25a866; --e5:#7c5ce0; --e6:#0f9fb0;
   --d1:#7c5ce0; --d2:#22b8e8; --d3:#4cb862; --d4:#f2c230; --d5:#f0634f; --d6:#c9ccd3; --resto:#e6e8ec;
-  --display:'Outfit',sans-serif; --ui:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --display:'Geist',sans-serif; --ui:'Geist',sans-serif; --mono:'Geist Mono',monospace;
   --s-min:0 1px 2px rgb(22 24 29/.05); --s-hover:0 14px 30px -18px rgb(22 24 29/.3);
   --s-flot:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
   --ease:cubic-bezier(.23,1,.32,1);
@@ -203,7 +203,7 @@ body.sucio .scab .btn.neg{background:var(--superficie);color:var(--tinta);border
 @keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .scab{display:flex;align-items:flex-end;gap:16px;padding:4px 0 0}
 .scab small.ceja{display:flex;align-items:center;gap:6px;color:var(--texto-3);font-weight:500;font-size:13px}
-.scab h1{font:300 40px/1.1 var(--display);letter-spacing:-.03em;margin-top:4px}
+.scab h1{font:500 40px/1.1 var(--display);letter-spacing:-.03em;margin-top:4px}
 .scab .sub{color:var(--texto-2);margin-top:4px}
 .scab .sub b{color:var(--tinta);font-weight:500}
 .scab>div:first-child{min-width:0}
@@ -1513,13 +1513,13 @@ function heroeUso(){
   s.setAttribute('viewBox',`0 0 ${W} ${H}`);
   s.innerHTML=`<defs><linearGradient id="gU" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
    <line x1="12" x2="${W-12}" y1="${yl}" y2="${yl}" stroke="#fff" stroke-opacity=".35" stroke-dasharray="3 4"/>
-    <text x="14" y="${yl+13}" text-anchor="start" font-size="12" font-weight="600" fill="#fff" fill-opacity=".7" font-family="Plus Jakarta Sans">límite 25 GB</text>
+    <text x="14" y="${yl+13}" text-anchor="start" font-size="12" font-weight="600" fill="#fff" fill-opacity=".7" font-family="Geist">límite 25 GB</text>
    <path d="${dr} L${u[0]},${H} L${pr[0][0]},${H}Z" fill="url(#gU)"/>
    <path class="linea" d="${dr}" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
    <path d="${dp}" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-dasharray="4 5" stroke-linecap="round"/>
    <line x1="${u[0]}" x2="${u[0]}" y1="${u[1]}" y2="${H}" stroke="#fff" stroke-opacity=".35" stroke-dasharray="2 3"/>
    <circle cx="${u[0]}" cy="${u[1]}" r="5" fill="#fff" stroke="#5a50f0" stroke-width="3"/>
-   ${meses.map((m,i)=>[0,3,5,9].includes(i)?`<text x="${x(i)}" y="${H-1}" text-anchor="${i===0?'start':i===9?'end':'middle'}" font-size="12" fill="#fff" fill-opacity="${i===5?.95:.55}" font-weight="${i===5?600:400}" font-family="Plus Jakarta Sans">${m}</text>`:'').join('')}`;
+   ${meses.map((m,i)=>[0,3,5,9].includes(i)?`<text x="${x(i)}" y="${H-1}" text-anchor="${i===0?'start':i===9?'end':'middle'}" font-size="12" fill="#fff" fill-opacity="${i===5?.95:.55}" font-weight="${i===5?600:400}" font-family="Geist">${m}</text>`:'').join('')}`;
   dibujar(s.querySelector('.linea'));
 }
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if($('#uso').classList.contains('on')&&!$('#usoReal').classList.contains('oculto'))heroeUso()},150)});

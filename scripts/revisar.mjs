@@ -631,9 +631,9 @@ if (principal.rellenosChicos.length > 2 && !GALERIA) {
 
 // 2. fuentes
 const F = principal.fuentes;
-if (F.familiasTexto.length <= 1) add('falla', 'Dos voces tipográficas', 8, `Toda la página usa una sola familia: ${F.cuerpo || '—'}.`, 'Sumá una display (Outfit, General Sans, Satoshi) para títulos y cifras, y dejá Plus Jakarta Sans o Manrope para la interfaz.');
-else if (!F.display) add('falla', 'Letra display', 6, `Los títulos y cifras grandes usan la misma familia que el texto (${F.cuerpo}).`, 'Títulos de página a 36–44 px en peso 400 y cifras de KPI en la display (Outfit).');
-if (F.familiasTexto.length >= 3) add('aviso', 'Tres o más familias', 5, `Familias de texto: ${F.familiasTexto.join(', ')}.`, 'Quedate con display + interfaz + una mono.');
+// Una sola familia de texto (Geist) en dos papeles, más la mono. Ver SKILL.md §2.
+if (F.familiasTexto.length >= 2) add('aviso', 'Más de una familia de texto', 5, `Familias de texto: ${F.familiasTexto.join(', ')}.`, 'Geist para interfaz, títulos y cifras (con peso y tracking distintos) y Geist Mono para códigos.');
+if (F.cuerpo && !/geist/i.test(F.cuerpo)) add('aviso', 'Letra del sistema', 3, `El texto usa ${F.cuerpo}.`, 'La letra de la skill es Geist (y Geist Mono para códigos), salvo que la marca exija otra.');
 if (F.noCargadas.length) add('aviso', 'Fuente sin cargar', 4, `Declaradas pero no cargadas: ${F.noCargadas.join(', ')} (se ve la de respaldo).`, 'Revisá el <link> de Google Fonts y los pesos pedidos.');
 
 // 3. radios

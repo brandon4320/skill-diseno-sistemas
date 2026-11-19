@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Informe de octubre 2026 · Estudio Faro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <style>
@@ -17,7 +17,7 @@
   --acento:#4f46e5;
   --verde:#15803d; --verde-f:#ebf8f0; --ambar:#b45309; --ambar-f:#fdf3e1; --rojo:#b91c1c; --rojo-f:#fdecec; --azul:#1d4ed8; --azul-f:#e9f1fd; --gris-f:#f0f1f4;
   --e1:#3b6fe0; --e2:#d6336c; --e3:#b4561c; --e4:#25a866; --e5:#7c5ce0;
-  --display:'Outfit',sans-serif; --ui:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --display:'Geist',sans-serif; --ui:'Geist',sans-serif; --mono:'Geist Mono',monospace;
   --s-min:0 1px 2px rgb(22 24 29/.05); --s-hoja:0 1px 2px rgb(22 24 29/.04),0 40px 80px -40px rgb(22 24 29/.28);
   --s-flot:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
   --ease:cubic-bezier(.23,1,.32,1); --neg:#16181d; --neg-t:#fff;
@@ -76,7 +76,7 @@ button{font:inherit;color:inherit}
 .emisor span{color:var(--texto-3)}
 .doc{text-align:right}
 .doc small{font-size:12px;color:var(--texto-2);font-weight:500;display:flex;justify-content:flex-end;gap:6px;align-items:center}
-.doc h1{font:300 44px/1 var(--display);letter-spacing:-.035em;margin-top:6px}
+.doc h1{font:500 44px/1 var(--display);letter-spacing:-.035em;margin-top:6px}
 .doc .nro{font:500 14px var(--mono);margin-top:8px;letter-spacing:-.01em}
 .chip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:8px;font-weight:600;font-size:12px;white-space:nowrap;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
@@ -135,7 +135,7 @@ td .un{color:var(--texto-3);font-size:12px;font-weight:400}
 .cab .pag{font:500 12px var(--mono);color:var(--texto-3);display:flex;gap:8px;align-items:center}
 .titulo{margin-top:32px}
 .titulo small{font-size:12px;color:var(--texto-2);font-weight:500;display:flex;gap:8px;align-items:center}
-.titulo h1{font:300 42px/1.06 var(--display);letter-spacing:-.035em;margin-top:8px;max-width:620px}
+.titulo h1{font:500 42px/1.06 var(--display);letter-spacing:-.035em;margin-top:8px;max-width:620px}
 .titulo h1 b{font-weight:500}
 .titulo p{color:var(--texto-2);margin-top:10px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:4px 14px}
 .titulo p span{display:inline-flex;gap:6px;align-items:center}
@@ -270,8 +270,8 @@ td.est{text-align:right}
 }
 
 @page{size:A4;margin:12mm 14mm 14mm;
-  @bottom-left{content:"Estudio Faro · Informe de octubre 2026 · uso interno";font:400 9pt 'Plus Jakarta Sans',sans-serif;color:#6b7080}
-  @bottom-right{content:"Hoja " counter(page) " de " counter(pages);font:400 9pt 'Plus Jakarta Sans',sans-serif;color:#6b7080}
+  @bottom-left{content:"Estudio Faro · Informe de octubre 2026 · uso interno";font:400 9pt 'Geist',sans-serif;color:#6b7080}
+  @bottom-right{content:"Hoja " counter(page) " de " counter(pages);font:400 9pt 'Geist',sans-serif;color:#6b7080}
 }
 @media print{
   body{background:#fff;font-size:10pt}
@@ -450,11 +450,11 @@ $('#horas').innerHTML=Array.from({length:10},(_,i)=>`<i style="background:${i<9?
 
 // Barras apiladas: octubre sólido, el resto tenue
 (()=>{const W=640,H=200,base=176,top=14,mx=20,esc=v=>v/mx*(base-top),paso=(W-40)/10,b=30;let g='';
- [0,5,10,15,20].forEach(v=>{const y=base-esc(v);g+=`<line x1="30" x2="${W}" y1="${y}" y2="${y}" stroke="#eef0f3" ${v?'stroke-dasharray="3 4"':''}/><text x="0" y="${y+4}" font-size="12" fill="#6b7080" font-family="Plus Jakarta Sans">${v}</text>`});
+ [0,5,10,15,20].forEach(v=>{const y=base-esc(v);g+=`<line x1="30" x2="${W}" y1="${y}" y2="${y}" stroke="#eef0f3" ${v?'stroke-dasharray="3 4"':''}/><text x="0" y="${y+4}" font-size="12" fill="#6b7080" font-family="Geist">${v}</text>`});
  D.forEach((d,i)=>{const x=40+i*paso+(paso-b)/2,act=i===9;let y=base;
   d.forEach((v,j)=>{const h=esc(v)-2;y-=h+2;g+=`<rect class="b" x="${x}" y="${y}" width="${b}" height="${h}" rx="5" fill="${SERIES[j][1]}" opacity="${act?1:.32}" style="animation-delay:${i*45}ms"/>`});
-  g+=`<text x="${x+b/2}" y="${H-6}" text-anchor="middle" font-size="12" fill="${act?'#16181d':'#6b7080'}" font-weight="${act?600:400}" font-family="Plus Jakarta Sans">${MESES[i]}</text>`;
-  if(act)g+=`<g transform="translate(${x+b/2-29},${base-esc(TOT[i])-27})"><rect width="58" height="22" rx="7" fill="#16181d"/><text x="29" y="15" text-anchor="middle" font-size="12" font-weight="600" fill="#fff" font-family="Plus Jakarta Sans">18,6 M</text></g>`});
+  g+=`<text x="${x+b/2}" y="${H-6}" text-anchor="middle" font-size="12" fill="${act?'#16181d':'#6b7080'}" font-weight="${act?600:400}" font-family="Geist">${MESES[i]}</text>`;
+  if(act)g+=`<g transform="translate(${x+b/2-29},${base-esc(TOT[i])-27})"><rect width="58" height="22" rx="7" fill="#16181d"/><text x="29" y="15" text-anchor="middle" font-size="12" font-weight="600" fill="#fff" font-family="Geist">18,6 M</text></g>`});
  $('#barras').innerHTML=g;
  $('#leyenda').innerHTML=SERIES.map(([n,c],j)=>`<span class="ley"><i style="background:${c}"></i>${n} · ${nf.format(D[9][j])} M</span>`).join('');
 })();

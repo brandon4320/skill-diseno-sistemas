@@ -2437,7 +2437,7 @@ const hojas = (function () {
     c.fillStyle = '#e8e0d2'; c.fillRect(-20, h * 0.16, w + 40, h * 0.7);
     c.fillStyle = '#cfc4b1'; c.fillRect(-20, h * 0.16, w + 40, h * 0.035);
     c.fillStyle = '#3d3a36'; c.fillRect(w * 0.08, h * 0.24, w * 0.84, h * 0.055);
-    c.fillStyle = '#f4efe6'; c.font = `600 ${Math.round(h * 0.03)}px Outfit, sans-serif`; c.textAlign = 'center'; c.fillText('ORBE · RETAIL', w / 2, h * 0.278);
+    c.fillStyle = '#f4efe6'; c.font = `600 ${Math.round(h * 0.03)}px Geist, sans-serif`; c.textAlign = 'center'; c.fillText('ORBE · RETAIL', w / 2, h * 0.278);
     const gx = w * 0.1, gy = h * 0.33, gw = w * 0.8, gh = h * 0.44;
     g = c.createLinearGradient(gx, gy, gx + gw, gy + gh); g.addColorStop(0, '#2c3d4f'); g.addColorStop(1, '#4b6a82'); c.fillStyle = g; c.fillRect(gx, gy, gw, gh);
     c.strokeStyle = '#5b5650'; c.lineWidth = w * 0.012; c.strokeRect(gx, gy, gw, gh);
@@ -2445,8 +2445,8 @@ const hojas = (function () {
     for (let i = 0; i < 3; i++) { c.beginPath(); const sx = gx + gw * (0.15 + i * 0.3); c.moveTo(sx, gy); c.lineTo(sx + gw * 0.12, gy); c.lineTo(sx - gw * 0.12, gy + gh); c.lineTo(sx - gw * 0.24, gy + gh); c.fill(); }
     if (!antes) {
       c.fillStyle = 'rgba(79,70,229,.92)'; rr(c, gx + gw * 0.12, gy + gh * 0.16, gw * 0.76, gh * 0.5, w * 0.02); c.fill();
-      c.fillStyle = '#fff'; c.font = `600 ${Math.round(h * 0.07)}px Outfit, sans-serif`; c.fillText('ORBE', w / 2, gy + gh * 0.44);
-      c.font = `500 ${Math.round(h * 0.022)}px "Plus Jakarta Sans", sans-serif`; c.fillText('ABIERTO DE 9 A 20', w / 2, gy + gh * 0.56);
+      c.fillStyle = '#fff'; c.font = `600 ${Math.round(h * 0.07)}px Geist, sans-serif`; c.fillText('ORBE', w / 2, gy + gh * 0.44);
+      c.font = `500 ${Math.round(h * 0.022)}px "Geist", sans-serif`; c.fillText('ABIERTO DE 9 A 20', w / 2, gy + gh * 0.56);
     } else { c.strokeStyle = 'rgba(255,255,255,.35)'; c.setLineDash([w * 0.02, w * 0.015]); c.lineWidth = w * 0.004; c.strokeRect(gx + gw * 0.12, gy + gh * 0.16, gw * 0.76, gh * 0.5); c.setLineDash([]); }
     c.restore();
     c.fillStyle = '#bdb6aa'; c.fillRect(-20, h * 0.8, w + 40, h * 0.25);
@@ -2455,7 +2455,7 @@ const hojas = (function () {
   }
   function sellar(c, w, h, cuando, lugar) {
     const g = c.createLinearGradient(0, h * 0.78, 0, h); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.72)'); c.fillStyle = g; c.fillRect(0, h * 0.78, w, h * 0.22);
-    const fs = Math.round(w * 0.04); c.font = `500 ${fs}px "JetBrains Mono", monospace`; c.fillStyle = '#fff'; c.textAlign = 'left';
+    const fs = Math.round(w * 0.04); c.font = `500 ${fs}px "Geist Mono", monospace`; c.fillStyle = '#fff'; c.textAlign = 'left';
     const d = cuando, hh = String(d.getHours()).padStart(2, '0');
     const txt = `${fmt.fecha(d)} 2026 · ${fmt.hora(d)}:${String(d.getSeconds()).padStart(2, '0')}`;
     c.fillText(txt, w * 0.05, h - fs * 2.6); c.fillStyle = 'rgba(255,255,255,.85)'; c.fillText(lugar, w * 0.05, h - fs * 1.2);
@@ -2538,7 +2538,7 @@ const hojas = (function () {
   function dibujar() {
     const r = cv.getBoundingClientRect(); ctx.clearRect(0, 0, r.width, r.height);
     ctx.strokeStyle = ctx.fillStyle = tinta(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    if (texto) { ctx.font = 'italic 300 40px Outfit, sans-serif'; ctx.textBaseline = 'alphabetic'; ctx.fillText(texto, 28, r.height - 56); }
+    if (texto) { ctx.font = 'italic 300 40px Geist, sans-serif'; ctx.textBaseline = 'alphabetic'; ctx.fillText(texto, 28, r.height - 56); }
     trazos.forEach(dibujarTrazo);
   }
   const estado = () => {
