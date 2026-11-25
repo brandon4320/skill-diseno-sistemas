@@ -363,6 +363,9 @@
   .c-hoja{position:absolute;inset:0;border-left:0;transform:translateX(100%);transition:transform var(--t-4) var(--ease),visibility 0s;z-index:2}
   .c-app.abierta .c-hoja{transform:none}
   .c-hoja-in{width:100%}
+  /* en el celular no hay teclado físico: fuera las pistas de atajos, y los pies se acomodan en líneas (nada cortado en el borde) */
+  .c-hoja-pie{flex-wrap:wrap}.c-hoja-pie .c-kbds,.pc-pie>span:has(kbd){display:none}
+  .pieh{flex-wrap:wrap;row-gap:var(--espacio-4)}
   .c-hoja-top{padding-left:var(--espacio-5)}
   .c-modos{height:540px}
   .c-panel{width:88%}

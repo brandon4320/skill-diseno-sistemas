@@ -489,6 +489,8 @@ kbd{font:500 11px var(--mono);color:var(--texto-3);border:1px solid var(--borde)
   .seg button{height:44px;width:44px;border-radius:12px}
   .vtab{height:44px}
   .vind{height:44px}
+  .vtabs-wrap{overflow-x:visible}
+  .vtabs{flex-wrap:wrap;width:auto;row-gap:4px} /* vistas en líneas: nada de deslizar de costado */
   .herr .btn.chico{height:44px;width:44px}
   .busca{height:46px}
   .busca input{height:44px;font-size:16px}
@@ -887,10 +889,10 @@ function pintarTabs(animar){
 }
 function moverIndicador(desde){
   const on=$('#tabs .vtab.on'),ind=$('#vind');if(!on||!ind)return;
-  const x=on.offsetLeft,w=on.offsetWidth;
-  ind.style.width=w+'px';ind.style.transform=`translateX(${x}px)`;
-  if(desde&&!reducido.matches&&(desde.x!==x||desde.w!==w))ind.animate([{transform:`translateX(${desde.x}px)`,width:desde.w+'px'},{transform:`translateX(${x}px)`,width:w+'px'}],{duration:380,easing:EASE});
-  moverIndicador.pos={x,w};
+  const x=on.offsetLeft,y=on.offsetTop,w=on.offsetWidth;
+  ind.style.width=w+'px';ind.style.transform=`translate(${x}px,${y}px)`;
+  if(desde&&!reducido.matches&&(desde.x!==x||desde.w!==w||(desde.y||0)!==y))ind.animate([{transform:`translate(${desde.x}px,${desde.y||0}px)`,width:desde.w+'px'},{transform:`translate(${x}px,${y}px)`,width:w+'px'}],{duration:380,easing:EASE});
+  moverIndicador.pos={x,y,w};
 }
 function textoValores(f,vals){const ops=FILTROS[f].ops(),nom=k=>(ops.find(o=>o.k===k)||{n:k}).n;return vals.length===1?nom(vals[0]):vals.length===2?`${nom(vals[0])} o ${nom(vals[1])}`:`cualquiera de ${vals.length}`}
 function pintarChips(nVis){

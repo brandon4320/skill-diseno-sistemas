@@ -540,7 +540,7 @@ body.sucio .scab .btn.neg{background:var(--superficie);color:var(--tinta);border
 @media (max-width:900px){
   html{scroll-padding-top:72px}
   .aj{grid-template-columns:minmax(0,1fr);gap:16px;padding:0 20px 150px}
-  .ajnav{position:sticky;top:0;z-index:20;flex-direction:row;gap:6px;overflow-x:auto;background:color-mix(in oklch,var(--superficie) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:0;border-bottom:1px solid var(--divisor);border-radius:0;margin:0 -20px;padding:10px 20px;scrollbar-width:none}
+  .ajnav{position:relative;top:0;z-index:20;flex-direction:row;flex-wrap:wrap;gap:6px;overflow-x:visible;background:color-mix(in oklch,var(--superficie) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:0;border-bottom:1px solid var(--divisor);border-radius:0;margin:0 -20px;padding:10px 20px;scrollbar-width:none}
   .ajnav::-webkit-scrollbar{display:none}
   .ajnav-cab,.ajg h6,.plan,.vacio-nav{display:none}
   .ajg{display:contents}

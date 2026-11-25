@@ -155,9 +155,9 @@ a{color:inherit}
 /* ── Centro: pestañas ── */
 .centro{overflow:hidden}
 .pest-wrap{padding:8px 8px 0}
-.pest{position:relative;display:flex;gap:0;background:var(--bandeja);border:1px solid var(--borde);border-radius:16px;padding:3px;overflow-x:auto;scrollbar-width:none}
+.pest{position:relative;display:flex;gap:0;background:var(--bandeja);border:1px solid var(--borde);border-radius:16px;padding:3px}
 .pest::-webkit-scrollbar{display:none}
-.pest .ind{position:absolute;top:3px;bottom:3px;left:0;width:0;border-radius:12px;background:var(--superficie);box-shadow:0 1px 2px rgb(22 24 29/.1),0 0 0 1px var(--borde);transition:transform .35s var(--ease),width .35s var(--ease);z-index:0}
+.pest .ind{position:absolute;top:3px;left:0;width:0;border-radius:12px;background:var(--superficie);box-shadow:0 1px 2px rgb(22 24 29/.1),0 0 0 1px var(--borde);transition:transform .35s var(--ease),width .35s var(--ease);z-index:0}
 .pest button{position:relative;z-index:1;flex:1 0 auto;border:0;background:none;height:32px;padding:0 6px;border-radius:12px;font-weight:500;font-size:13px;color:var(--texto-2);display:inline-flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:color .2s}
 .pest button.on{color:var(--tinta)}
 .pest button i{font-style:normal;font:500 12px var(--ui);font-variant-numeric:tabular-nums;min-width:18px;height:18px;padding:0 4px;border-radius:6px;background:var(--suave);color:var(--texto-3);display:inline-grid;place-items:center;transition:background .2s,color .2s}
@@ -182,7 +182,7 @@ a{color:inherit}
 .comp .tipos button.on{background:var(--superficie);border-color:var(--borde);color:var(--tinta);box-shadow:var(--s-min)}
 .comp .tipos kbd{margin-left:auto;margin-right:4px;font:500 11px var(--mono);color:var(--texto-3)}
 
-.filtros{display:flex;gap:6px;padding:16px 20px 4px;overflow-x:auto;scrollbar-width:none}
+.filtros{display:flex;flex-wrap:wrap;gap:6px;padding:16px 20px 4px}
 .filtros button{height:28px;padding:0 12px;border-radius:99px;border:1px solid var(--borde);background:var(--superficie);font-size:12px;font-weight:500;color:var(--texto-2);white-space:nowrap;transition:background .15s,color .15s}
 .filtros button.on{background:var(--neg);border-color:var(--neg);color:var(--neg-t)}
 
@@ -404,6 +404,8 @@ a{color:inherit}
   .toast{left:16px;right:16px;min-width:0;bottom:calc(136px + env(safe-area-inset-bottom))}
   /* toques de 44 px en el dedo */
   .top .seg button,.tabs-movil button,.pest button{height:44px}
+  .pest{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))} /* 5 pestañas: dos filas, nunca de costado */
+  .pest button{min-width:0}
   .top .seg button{width:44px;justify-content:center;padding:0}
   .top .btn.ic{width:44px;height:44px}
   .filtros button,.comp .tipos button,.btn.chico{height:44px;padding:0 16px;border-radius:12px}
@@ -786,7 +788,7 @@ const AR=[['PDF','#dc2626','PR-0262 Señalética.pdf','2,4 MB · Ana · 15 nov']
 $('#archs').innerHTML=AR.map(a=>`<div class="arch"><span class="ft" style="background:${a[1]}">${a[0]}</span><div><b>${a[2]}</b><small>${a[3]}</small></div></div>`).join('');
 
 /* pestañas con indicador que se desliza */
-function moverInd(){const b=$('#pest button.on'),ind=$('#ind');if(!b||!b.offsetWidth)return;ind.style.width=b.offsetWidth+'px';ind.style.transform=`translateX(${b.offsetLeft}px)`}
+function moverInd(){const b=$('#pest button.on'),ind=$('#ind');if(!b||!b.offsetWidth)return;ind.style.width=b.offsetWidth+'px';ind.style.height=b.offsetHeight+'px';ind.style.transform=`translate(${b.offsetLeft}px,${b.offsetTop-3}px)`}
 function irA(p){
   $$('#pest button').forEach(b=>{const on=b.dataset.p===p;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
   $$('.vista').forEach(v=>v.classList.toggle('on',v.dataset.vista===p));

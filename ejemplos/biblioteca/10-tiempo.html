@@ -593,7 +593,20 @@ div.agf:hover{background:none}
   .hu-libre{left:calc(88px + (100% - 88px)*var(--a));width:calc((100% - 88px)*var(--w))}
   .hu-fil .q .av{display:none}
   .hu-gente button{height:44px}
-  .semana-c{grid-template-columns:repeat(7,minmax(44px,1fr));overflow-x:auto}
+  .semana-c{grid-template-columns:repeat(7,minmax(0,1fr));overflow-x:visible} /* los 7 días entran: nada de costado */
+  .semana-c button{padding:var(--espacio-3) var(--espacio-1);min-width:0}
+  /* Gantt en celular: lista de tareas agrupada por proyecto con su avance y fechas; la pista de días se esconde */
+  .gn-sc{overflow-x:visible}
+  .gn-in{width:auto}
+  .gn-f.cab1,.gn-f.cab2,.gn-f.hitos{display:none}
+  .gn-pista{display:none}
+  .gn-izq,.gn-izq.boton{position:static;width:100%;border-right:0;min-height:var(--fil)}
+  .gn-f{height:auto}
+  .gn-izq.boton[data-fechas]::after{content:attr(data-fechas);font-size:12px;color:var(--texto-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+  /* zoom semántico: las columnas se apilan */
+  .zm-sc{overflow-x:visible}
+  .zm-in{grid-auto-flow:row}
+  .zm-dia,.zm-sem,.zm-mes{width:auto}
   .semana-c .segs{display:none}
   .tira button{min-height:60px}
   .mas-d,.pil{min-height:44px}
@@ -2025,7 +2038,7 @@ function forma(est) {
       filas.push(`<div class="gn-f grupo"><div class="gn-izq">${logo(cid)}<span class="nom">${nom}</span><span class="c">${ts.filter(t => t.est === 'hecha').length}/${ts.length}</span></div><div class="gn-pista"></div></div>`);
       for (const t of ts) {
         const a = difD(t.a, z.ini), w = difD(t.f, t.a) + 1, corta = w * col < 120;
-        filas.push(`<div class="gn-f${t.est === 'hecha' ? ' hecha' : ''}" data-t="${t.id}"><button class="gn-izq boton" data-t="${t.id}" aria-label="${t.t}, ${EST[t.est][0]}, ${fechaC(t.a)} a ${fechaC(t.f)}, ${GENTE[t.q]}. Alt y flechas para mover">${forma(t.est)}<span class="nom">${t.t}</span>${t.sub ? `<span class="sub">${t.sub}</span>` : ''}${av(t.q)}</button>
+        filas.push(`<div class="gn-f${t.est === 'hecha' ? ' hecha' : ''}" data-t="${t.id}"><button class="gn-izq boton" data-t="${t.id}" data-fechas="${fechaC(t.a)} – ${fechaC(t.f)}" aria-label="${t.t}, ${EST[t.est][0]}, ${fechaC(t.a)} a ${fechaC(t.f)}, ${GENTE[t.q]}. Alt y flechas para mover">${forma(t.est)}<span class="nom">${t.t}</span>${t.sub ? `<span class="sub">${t.sub}</span>` : ''}${av(t.q)}</button>
           <div class="gn-pista"><div class="gb${corta ? ' corta' : ''}${t.est === 'borrador' ? ' borrador' : ''}${lejos(t) ? ' lejos' : ''}" data-t="${t.id}" style="--a:${a};--w:${w};--p:${t.p}%;--t:${EST[t.est][1]}" title="${t.t} · ${fechaC(t.a)} → ${fechaC(t.f)}${t.p ? ' · ' + t.p + ' %' : ''}">${av(t.q)}<span class="tt">${t.t}</span></div>${corta ? `<span class="gb-fuera" style="left:calc(${a + w}*var(--col) + 8px)">${t.t}</span>` : ''}</div></div>`);
       }
     }

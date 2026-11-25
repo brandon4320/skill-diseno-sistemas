@@ -81,15 +81,37 @@
   --ease: cubic-bezier(.23, 1, .32, 1);
 }
 
-/* Oscuro: subir luz por capa, sin sombras, selección invertida (pastilla blanca) */
+/* Oscuro (analisis/17-claro-oscuro.md): el mismo layout con otros tokens.
+ * Escalera de ~7 de luz por capa: lo de arriba es más claro y la tarjeta queda siempre por encima
+ * de su bandeja (en claro la bandeja #f4f4f5 es más oscura que la tarjeta blanca: la relación se mantiene).
+ * Sin sombras: separan la luminosidad y el borde de 1 px. Se invierte solo lo único y fuerte (botón
+ * principal, tooltip, insignia: bg-tinta text-superficie); lo elegido dentro de un grupo sube un escalón.
+ * Estados: versión más clara y menos saturada (≥ 5:1 sobre superficie y sobre su pastilla). */
 .dark, [data-tema='oscuro'] {
-  --color-fondo: #0a0a0a; --color-panel: #111113; --color-superficie: #18181b;
-  --color-suave: #232326; --color-hover: #1f1f22; --color-borde: #27272a;
-  --color-borde-fuerte: #3f3f46; --color-divisor: #202023;
-  --color-tinta: #fafafa; --color-texto-2: #b4b4bd; --color-texto-3: #8f8f9a;
-  --color-verde-fondo: #22c55e1f; --color-verde-texto: #4ade80;
-  --color-ambar-fondo: #f5b8001f; --color-ambar-texto: #fbbf24;
-  --color-rojo-fondo: #ef44441f;  --color-rojo-texto: #f87171;
-  --color-azul-fondo: #3b82f61f;  --color-azul-texto: #60a5fa;
-  --color-gris-fondo: #27272a;    --color-gris-texto: #a1a1aa;
+  --color-fondo: #0a0a0b;       /* lienzo: nunca #000 */
+  --color-panel: #111113;       /* área principal */
+  --color-suave: #18181b;       /* bandeja, riel del segmentado, encabezado de tabla (debajo de la tarjeta) */
+  --color-superficie: #1f1f22;  /* tarjeta, tabla, hoja, campo */
+  --color-hover: #26262a;       /* hover y capa flotante (menú, hoja, modal) */
+  --color-borde: #2a2a2e;       /* +11 sobre la tarjeta: el borde es lo que separa */
+  --color-borde-fuerte: #3a3a40;
+  --color-divisor: #27272b;
+  --color-tinta: #fafafa;       /* 15,8:1 sobre superficie; nunca #fff sobre #000 */
+  --color-texto-2: #b4b4bd;     /* 8:1 */
+  --color-texto-3: #8f8f9a;     /* 5,1:1 sobre superficie, 5,5:1 sobre bandeja */
+  --color-deshabilitado: #52525b;
+  --color-acento-suave: color-mix(in oklch, var(--acento, #fafafa) 18%, #1f1f22);
+  --color-verde-fondo: #22c55e1f; --color-verde-texto: #4ade80;   /* 9,4:1 · 7,7:1 sobre su pastilla */
+  --color-ambar-fondo: #f5b8001f; --color-ambar-texto: #fbbf24;   /* 9,9:1 */
+  --color-rojo-fondo: #ef44441f;  --color-rojo-texto: #f87171;    /* 5,9:1 · 5,3:1 sobre su pastilla */
+  --color-azul-fondo: #3b82f61f;  --color-azul-texto: #60a5fa;    /* 6,5:1 */
+  --color-gris-fondo: #2a2a2e;    --color-gris-texto: #a1a1aa;
+  /* Datos: conservan el tono (≥ 3:1 sobre la tarjeta); el gris "resto" baja para no brillar */
+  --color-dato-6: #3f3f46;
+  /* Sombras apagadas: separa el borde. Capas flotantes: borde fuerte + sombra negra larga */
+  --shadow-min: none;
+  --shadow-hover: 0 0 0 1px var(--color-borde-fuerte);
+  --shadow-flotante: 0 0 0 1px var(--color-borde-fuerte), 0 24px 48px -12px rgb(0 0 0 / 0.7);
+  --shadow-principal: none;
+  --shadow-heroe: none;
 }

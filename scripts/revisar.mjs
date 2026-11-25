@@ -285,6 +285,94 @@ function analizar(o) {
     const bodyOculta = ['hidden', 'clip'].includes(getComputedStyle(document.body).overflowX) || ['hidden', 'clip'].includes(getComputedStyle(de).overflowX);
     res.desborde = { anchoPagina: ancho, ventana: vw, hay: ancho > vw + 1, tapado: ancho <= vw + 1 && bodyOculta && externos.length > 0,
       culpables: externos.slice(0, 8).map(el => { const r = el.getBoundingClientRect(); return { selector: sel(el), sobra: Math.round(Math.max(r.right - vw, -r.left)) }; }) };
+
+    /* ── 11b. scroll horizontal interno (tabla, kanban, Gantt que se deslizan de costado) ── */
+    // Un contenedor que scrollea de costado solo vale si es un carrusel a propósito: con encastre
+    // (scroll-snap-type) o marcado con data-carrusel (y entonces tiene que tener indicador).
+    const esCarrusel = el => el.hasAttribute('data-carrusel') || el.closest('[data-lienzo]') || (getComputedStyle(el).scrollSnapType || 'none') !== 'none';
+    // plegado: dentro de un padre que recorta y mide 0 (panel "Ver código" cerrado, acordeón): no se ve
+    const plegado = el => { for (let e = el.parentElement; e && e !== document.body && e !== de; e = e.parentElement) { const s = getComputedStyle(e); if (s.overflowX !== 'visible' || s.overflowY !== 'visible') { const r = e.getBoundingClientRect(); if (r.width < 1 || r.height < 1) return true; } } return false; };
+    const scrollers = vis.filter(el => {
+      if (el === document.body || el === de) return false;
+      const s = getComputedStyle(el);
+      if (!['auto', 'scroll'].includes(s.overflowX)) return false;
+      return el.scrollWidth > el.clientWidth + 1 && !plegado(el);
+    });
+    const scrollerSinCarrusel = scrollers.filter(el => !esCarrusel(el));
+    res.scrollInterno = scrollerSinCarrusel.filter(el => !scrollerSinCarrusel.some(p => p !== el && p.contains(el))).slice(0, 8)
+      .map(el => ({ selector: sel(el), ancho: Math.round(el.clientWidth), contenido: Math.round(el.scrollWidth) }));
+    res.carruseles = scrollers.length - scrollerSinCarrusel.length;
+
+    /* ── 11c. contenido que se sale de la pantalla (cortado, sin scroll que lo muestre) ── */
+    const dentroDeScroll = el => { for (let e = el.parentElement; e && e !== document.body && e !== de; e = e.parentElement) { if (['auto', 'scroll'].includes(getComputedStyle(e).overflowX)) return true; } return false; };
+    const fijo = el => { for (let e = el; e && e !== de; e = e.parentElement) { if (getComputedStyle(e).position === 'fixed') return true; } return false; };
+    const cortados = [...new Set([...conTexto, ...clickeables])].filter(el => {
+      if (el.closest('[aria-hidden=true],[inert],[data-lienzo]')) return false; // lienzo con paneo a propósito (flujo de nodos, mapa)
+      const r = el.getBoundingClientRect();
+      const parcial = (r.right > vw + 1 && r.left < vw - 1) || (r.left < -1 && r.right > 1);
+      if (!parcial) return false;        // del todo afuera = hoja o menú cerrado fuera de pantalla
+      if (dentroDeScroll(el)) return false; // lo cubre 11b
+      // truncado a propósito ("…" o line-clamp) por un padre que entra en la pantalla: no se sale.
+      // Recortado por un overflow:hidden sin "…": sí está cortado, aunque el padre entre.
+      let izq = r.left, der = r.right, elipsis = false;
+      for (let e = el; e && e !== document.body && e !== de; e = e.parentElement) {
+        const s = getComputedStyle(e);
+        if (s.textOverflow === 'ellipsis' || (s.webkitLineClamp && s.webkitLineClamp !== 'none')) elipsis = true;
+        if (e === el || s.overflowX === 'visible') continue;
+        const pr = e.getBoundingClientRect(); izq = Math.max(izq, pr.left); der = Math.min(der, pr.right);
+        if (elipsis) break;
+      }
+      if (elipsis && der <= vw + 1 && izq >= -1) return false;
+      return !fijo(el);
+    });
+    res.cortados = cortados.filter(el => !cortados.some(p => p !== el && p.contains(el))).slice(0, 8)
+      .map(el => { const r = el.getBoundingClientRect(); return { selector: sel(el), sobra: Math.round(Math.max(r.right - vw, -r.left)), texto: recorte(textoPropio(el) || el.getAttribute('aria-label') || '') }; });
+  }
+
+  /* ── 13. oscuro: blanco puro sobre negro puro, estados sin versión oscura, sombras como única separación ── */
+  if (o.pasada === 'principal' && o.oscuro && lum(fondo(document.body).c) > 0.4) {
+    res.oscuro = { sinTema: true, fondo: hex(fondo(document.body).c) }; // la página no tiene oscuro: no sigue midiendo
+  } else if (o.pasada === 'principal' && o.oscuro) {
+    const puro = new Map(), sinVersion = new Map(), sombras = [];
+    for (const el of conTexto) {
+      const s = getComputedStyle(el), f = fondo(el);
+      if (f.imagen) continue;
+      const tc = color(s.color);
+      if (!tc[3]) continue;
+      const texto = sobre([...tc.slice(0, 3), tc[3] * opacidad(el)], f.c);
+      // #fff sobre #000: vibra y cansa; tinta #fafafa sobre lienzo #0a0a0b
+      if (Math.min(...texto.slice(0, 3)) >= 253 && Math.max(...f.c.slice(0, 3)) <= 3) {
+        const k = firma(el); if (!puro.has(k)) puro.set(k, { firma: k, cantidad: 0, ejemplos: [] });
+        const g = puro.get(k); g.cantidad++; if (g.ejemplos.length < 2) g.ejemplos.push(sel(el));
+      }
+      // color de estado o de dato igual al del claro y con contraste bajo en oscuro
+      const claro = el.__rvClaro;
+      if (claro && satur(texto) > 0.3 && hex(tc) === claro) {
+        const r = ratio(texto, f.c), fs = parseFloat(s.fontSize);
+        const pide = fs >= 24 ? 3 : 4.5;
+        if (r < pide) {
+          const k = `${claro}|${hex(f.c)}`;
+          if (!sinVersion.has(k)) sinVersion.set(k, { color: claro, fondo: hex(f.c), ratio: Math.round(r * 100) / 100, cantidad: 0, ejemplos: [] });
+          const g = sinVersion.get(k); g.cantidad++; if (g.ejemplos.length < 2) g.ejemplos.push(`${sel(el)}  «${recorte(textoPropio(el))}»`);
+        }
+      }
+    }
+    // tarjetas separadas solo por sombra: en oscuro la sombra no se ve
+    for (const el of vis) {
+      const s = getComputedStyle(el), r = el.getBoundingClientRect();
+      if (r.width < 120 || r.height < 56 || s.position === 'fixed') continue;
+      if (!s.boxShadow || s.boxShadow === 'none') continue;
+      const capas = [...s.boxShadow.matchAll(/(rgba?\([^)]*\)|#[0-9a-f]+)\s+(-?[\d.]+)px\s+(-?[\d.]+)px\s+([\d.]+)px(?:\s+(-?[\d.]+)px)?(\s+inset)?/gi)]
+        .map(m => ({ c: color(m[1]), blur: +m[4], spread: +(m[5] || 0), inset: !!m[6] }));
+      if (!capas.some(c => c.blur > 0 && !c.inset && c.c[3] > 0.02)) continue;
+      const borde = ['Top', 'Right', 'Bottom', 'Left'].some(l => parseFloat(s[`border${l}Width`]) >= 1 && color(s[`border${l}Color`])[3] > 0.1)
+        || capas.some(c => c.blur === 0 && c.spread >= 1 && c.c[3] > 0.1); // anillo de 1 px hecho con sombra
+      if (borde) continue;
+      const propio = fondo(el).c, debajo = el.parentElement ? fondo(el.parentElement).c : [0, 0, 0, 1];
+      if (ratio(propio, debajo) >= 1.12) continue; // ya se separa por luminosidad
+      sombras.push({ selector: sel(el), medida: `${Math.round(r.width)}×${Math.round(r.height)}`, fondo: hex(propio), debajo: hex(debajo) });
+    }
+    res.oscuro = { puro: [...puro.values()], sinVersion: [...sinVersion.values()], sombras: sombras.slice(0, 8), totalSombras: sombras.length };
   }
 
   /* ── 6. estado solo con color ── */
@@ -589,7 +677,9 @@ catch (e1) {
 async function pasada(tipo, ancho, alto, movil) {
   const ctx = await navegador.newContext({
     viewport: { width: ancho, height: alto }, deviceScaleFactor: movil ? 2 : 1, isMobile: movil, hasTouch: movil,
-    colorScheme: OSCURO ? 'dark' : 'light', locale: 'es-AR',
+    // La pasada principal en oscuro arranca en claro para anotar el color de cada texto de color
+    // (estados, deltas, datos) y después pasa a oscuro: así ve los que no tienen versión oscura.
+    colorScheme: OSCURO && tipo !== 'principal' ? 'dark' : 'light', locale: 'es-AR',
   });
   const page = await ctx.newPage();
   const errores = [];
@@ -597,10 +687,21 @@ async function pasada(tipo, ancho, alto, movil) {
   page.on('console', m => { if (m.type() === 'error') errores.push(m.text().split('\n')[0]); });
   await page.goto(url, { waitUntil: 'load', timeout: 45000 });
   await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
-  if (OSCURO) await page.evaluate(() => { document.documentElement.dataset.tema = 'oscuro'; document.documentElement.classList.add('dark'); });
   await page.evaluate(() => document.fonts.ready);
-  await page.waitForTimeout(1600); // cuentas, barras y líneas que se dibujan al cargar
-  const datos = await page.evaluate(analizar, { pasada: tipo });
+  if (OSCURO && tipo === 'principal') {
+    await page.waitForTimeout(1600);
+    await page.evaluate(() => {
+      const cv = Object.assign(document.createElement('canvas'), { width: 1, height: 1 }), cx = cv.getContext('2d', { willReadFrequently: true });
+      const hex = str => { cx.clearRect(0, 0, 1, 1); cx.fillStyle = '#000'; cx.fillStyle = str; cx.fillRect(0, 0, 1, 1); const d = cx.getImageData(0, 0, 1, 1).data; return '#' + [d[0], d[1], d[2]].map(v => v.toString(16).padStart(2, '0')).join(''); };
+      for (const el of document.body.querySelectorAll('*')) {
+        if ([...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) el.__rvClaro = hex(getComputedStyle(el).color);
+      }
+    });
+    await page.emulateMedia({ colorScheme: 'dark' });
+  }
+  if (OSCURO) await page.evaluate(() => { document.documentElement.dataset.tema = 'oscuro'; document.documentElement.classList.add('dark'); });
+  await page.waitForTimeout(1600); // cuentas, barras y líneas que se dibujan al cargar (y la transición de tema)
+  const datos = await page.evaluate(analizar, { pasada: tipo, oscuro: OSCURO });
   const captura = `/tmp/revisar-${nombre}-${ancho}${OSCURO ? '-oscuro' : ''}.png`;
   await page.screenshot({ path: captura, fullPage: true }).catch(() => {});
   await ctx.close();
@@ -701,9 +802,39 @@ if (D.hay) add('falla', 'Desborde horizontal a 390 px', 15,
   `La página mide ${D.anchoPagina} px de ancho en una ventana de ${D.ventana}: aparece scroll de costado.`,
   'A menos de 768 px: una columna, márgenes de 16, grillas a 1fr, textos largos con truncate o min-width:0 en los hijos de flex/grid, tablas pasadas a tarjetas.',
   D.culpables.map(c => `${c.selector} (sobra ${c.sobra} px)`));
+else if (cel.cortados.length) add('falla', 'Se sale de la pantalla a 390 px', tope(cel.cortados.length, 3, 12),
+  `${cel.cortados.length === 1 ? 'Un texto o control queda cortado' : `${cel.cortados.length} textos o controles quedan cortados`} en el borde de la pantalla${D.tapado ? ' (body/html esconde el desborde)' : ''}.`,
+  'Nada con ancho fijo sin max-w-full; hijos de flex y grid con min-w-0; grillas con minmax(0,1fr); textos largos con truncate o break-words. No escondas el desborde con overflow:hidden.',
+  cel.cortados.map(c => `${c.selector} (sobra ${c.sobra} px)${c.texto ? ` «${c.texto}»` : ''}`));
 else if (D.tapado) add('aviso', 'Contenido cortado a 390 px', 5,
   'No hay scroll de costado porque body/html lo esconde, pero hay elementos que se salen y quedan cortados.',
   'Arreglá el ancho de esos elementos en vez de esconder el desborde.', D.culpables.map(c => `${c.selector} (sobra ${c.sobra} px)`));
+
+// 11b. scroll horizontal dentro de un componente (SKILL.md §6e)
+if (cel.scrollInterno.length) add('falla', 'Scroll de costado dentro de un componente a 390 px', tope(cel.scrollInterno.length, 4, 15),
+  cel.scrollInterno.map(s => `${s.contenido} px de contenido en ${s.ancho} px`).join(' · ') + ': hay que deslizar de costado para ver el componente entero.',
+  'En celular nada se desliza de costado: tabla → tarjetas, kanban → una etapa a la vez con segmentado, timeline/Gantt → lista por día, KPIs → 1–2 columnas. Si es un carrusel a propósito, scroll-snap-type: x mandatory + indicador (puntos o "2 de 5") y data-carrusel en el contenedor.',
+  cel.scrollInterno.map(s => s.selector));
+
+// 13. oscuro
+if (OSCURO && principal.oscuro?.sinTema) add('aviso', 'Oscuro · la página no cambia', 6,
+  `Con data-tema="oscuro" y prefers-color-scheme: dark el fondo sigue claro (${principal.oscuro.fondo}).`,
+  'Sumá el bloque oscuro de tokens.css (.dark, [data-tema=\'oscuro\']) y sacá los colores escritos a mano: todo sale de variables.');
+else if (OSCURO && principal.oscuro) {
+  const O = principal.oscuro;
+  if (O.puro.length) add('aviso', 'Oscuro · blanco puro sobre negro puro', tope(O.puro.reduce((a, p) => a + p.cantidad, 0), 0.5, 4),
+    O.puro.map(p => `${p.firma} ×${p.cantidad}`).join(' · ') + ': #fff sobre #000 vibra y cansa la vista.',
+    'Tinta #fafafa sobre lienzo #0a0a0b y superficies que suben de luz (#111113 → #18181b → #1f1f22). Ver tokens.css, bloque oscuro.',
+    O.puro.flatMap(p => p.ejemplos.slice(0, 1)));
+  if (O.sinVersion.length) add('aviso', 'Oscuro · color sin versión oscura', tope(O.sinVersion.reduce((a, p) => a + p.cantidad, 0), 1, 8),
+    O.sinVersion.map(p => `${p.color} sobre ${p.fondo} = ${p.ratio}:1 ×${p.cantidad}`).join(' · ') + ': el mismo color que en claro y no llega a AA.',
+    'Estados y deltas con su versión oscura, más clara y menos saturada (verde #4ade80, rojo #f87171, ámbar #fbbf24, azul #60a5fa): salen de variables que cambian con [data-tema=oscuro], nunca escritos a mano.',
+    O.sinVersion.flatMap(p => p.ejemplos.slice(0, 1)));
+  if (O.totalSombras) add('aviso', 'Oscuro · sombra como única separación', tope(O.totalSombras, 1, 5),
+    `${O.totalSombras === 1 ? 'Una tarjeta o panel se separa' : `${O.totalSombras} tarjetas o paneles se separan`} del fondo solo con sombra (en oscuro no se ve).`,
+    'En oscuro la capa de arriba es más clara (escalera de superficies) y lleva borde de 1 px (#2a2a2e); la sombra se apaga.',
+    O.sombras.map(s => `${s.selector} (${s.medida}, ${s.fondo} sobre ${s.debajo})`));
+}
 
 // 12. simetría y alineación (aviso; descuento proporcional con tope total de 10)
 {
@@ -756,7 +887,7 @@ const salida = {
   url, nota, ancho: ANCHO, oscuro: OSCURO,
   resumen: { fallas: problemas.filter(p => p.nivel === 'falla').length, avisos: problemas.filter(p => p.nivel === 'aviso').length,
     textosRevisados: principal.totalTextos, contrasteSobreImagen: principal.contraste.sobreImagen,
-    fuentes: F.uso.map(u => u.familia), display: F.display, cuerpo: F.cuerpo, botonesRellenos: principal.rellenos.length },
+    fuentes: F.uso.map(u => u.familia), display: F.display, cuerpo: F.cuerpo, botonesRellenos: principal.rellenos.length, carruselesCelular: cel.carruseles },
   problemas, capturas: [principal.captura, cel.captura],
 };
 

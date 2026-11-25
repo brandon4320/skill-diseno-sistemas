@@ -1,6 +1,6 @@
-# Patrones de referencia (65 tweets de diseñadores)
+# Patrones de referencia (69 tweets de diseñadores)
 
-Catálogo de lo mejor de las 65 referencias analizadas en `analisis/tweets/*.md`. Acá va solo lo que suma a `SKILL.md`; lo que ya está ahí (tabla sin verticales, pastilla de estado, un solo relleno, Deshacer, bandeja con tarjeta, segmentado, hoja lateral básica) no se repite.
+Catálogo de lo mejor de las 69 referencias analizadas en `analisis/tweets/*.md` (01–65) y `analisis/18-tweets-66-69.md` (66–69). Acá va solo lo que suma a `SKILL.md`; lo que ya está ahí (tabla sin verticales, pastilla de estado, un solo relleno, Deshacer, bandeja con tarjeta, segmentado, hoja lateral básica) no se repite.
 
 Cómo leer cada patrón:
 - **Resuelve:** el problema.
@@ -8,7 +8,7 @@ Cómo leer cada patrón:
 - **Ref:** número de tweet y @autor. Los cuadros originales están en `scratchpad/tweets/NN/` de la sesión que los bajó; si ya no existen, vale el análisis.
 - **Regla:** lo que se hace, en imperativo.
 
-Autores: 01–09, 14–19, 36, 43–46 @louisnstudio · 10, 20–22, 31–34, 37–40, 47–49, 56 @zahragr8r · 11, 23–25, 28–30, 41–42, 50–51, 57–60 @Tanjim38 · 12 @soluna_stensale · 13 @orevbajohn_ · 26, 52–55 @saurra3h · 27 @alidalton · 35 @raunofreiberg · 61–65 @jsngr.
+Autores: 01–09, 14–19, 36, 43–46 @louisnstudio · 10, 20–22, 31–34, 37–40, 47–49, 56 @zahragr8r · 11, 23–25, 28–30, 41–42, 50–51, 57–60 @Tanjim38 · 12 @soluna_stensale · 13 @orevbajohn_ · 26, 52–55 @saurra3h · 27 @alidalton · 35 @raunofreiberg · 61–65 @jsngr · 66 @x6sense · 67 @jaimintf · 68 @suryansh777777 · 69 @murad_ux.
 
 ---
 
@@ -960,6 +960,15 @@ Autores: 01–09, 14–19, 36, 43–46 @louisnstudio · 10, 20–22, 31–34, 37
 | Buscador, orden y vistas en la pantalla de Ajustes | 47 | Controles de lista donde no hay lista. |
 
 ---
+
+## 19. Tweets 66–69 (detalle en `analisis/18-tweets-66-69.md`)
+
+| # | Autor | Qué muestra | Qué entra a la skill | Dónde |
+|---|---|---|---|---|
+| 66 | @x6sense | 5 pantallas de acceso | Una columna de formulario de 360–440 con orden fijo; el panel de al lado elige el diseño (marca, imagen, pasos, centrado, puntos); 7 estados en el lugar | `guias/acceso.md`, `ejemplos/pantallas/login-variantes.html`, SKILL.md §5 Acceso |
+| 67 | @jaimintf | 10 reglas de app nativa | Código de un toque (`one-time-code`), optimista con reversión, foto con vista borrosa, tarjeta que crece a ficha, títulos con `text-wrap: balance` | SKILL.md §2, §5 Acciones, §5 Celular, §6f |
+| 68 | @suryansh777777 | Mover una tarjeta muestra cómo cambia la fecha de entrega | La consecuencia se ve antes de soltar: pastilla con antes → después y delta; conteos −1/+1; "Define la fecha" | `ejemplos/arrastre-con-impacto.html`, SKILL.md §1c.5, §5 Pipeline |
+| 69 | @murad_ux | Tablero de corridas de agentes con traza y error | El límite como raya rotulada; el paso fallido con código, mensaje y la línea culpable; reintentar = corrida nueva | SKILL.md §1c.4 |
 
 ## Top 25 para aplicar ya en sistemas de gestión
 

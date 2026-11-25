@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="es" data-tema="claro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Acceso · 5 variantes</title>
+<meta name="description" content="Cinco diseños de pantalla de acceso (marca, imagen, pasos, centrado, puntos) con los siete estados de guias/acceso.md: entrar, error, bloqueo, código, empresa, invitación y sesión vencida.">
+<script>try{var t=localStorage.getItem('acceso-tema');if(t)document.documentElement.dataset.tema=t;else if(matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.dataset.tema='oscuro'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+/* ── Tokens: los de tokens.css (mismos nombres), acento índigo de ejemplo ── */
+:root{
+  --acento:#4338ca; --acento-texto:#4338ca; --acento-suave:color-mix(in oklch,var(--acento) 10%,white);
+  --color-fondo:#f4f4f5; --color-panel:#fafafa; --color-superficie:#fff; --color-suave:#f4f4f5; --color-hover:#f8f8f9;
+  --color-borde:#e4e4e7; --color-borde-fuerte:#d4d4d8; --color-divisor:#f0f0f2;
+  --color-tinta:#18181b; --color-texto-2:#565b68; --color-texto-3:#646979; --color-deshabilitado:#a1a1aa;
+  --color-verde-fondo:#e8f7ee; --color-verde-texto:#15803d; --color-ambar-fondo:#fef3e2; --color-ambar-texto:#b45309;
+  --color-rojo-fondo:#fdecec; --color-rojo-texto:#b91c1c; --color-azul-fondo:#eaf2fe; --color-azul-texto:#1d4ed8;
+  --color-dato-1:#6366f1; --color-dato-2:#22b8e8; --color-dato-3:#4cb862; --color-dato-4:#f2c230; --color-dato-5:#f0634f;
+  --radius-app:26px; --radius-marco:20px; --radius-interno:16px; --radius-control:12px; --radius-chip:8px;
+  --espacio-1:2px; --espacio-2:4px; --espacio-3:6px; --espacio-4:8px; --espacio-5:12px; --espacio-6:16px; --espacio-7:20px; --espacio-8:24px; --espacio-9:28px; --espacio-10:40px;
+  --shadow-min:0 1px 2px rgb(22 24 29/.05); --shadow-hover:0 14px 30px -18px rgb(22 24 29/.3);
+  --shadow-flotante:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
+  --shadow-principal:inset 0 1px 0 rgb(255 255 255/.12),0 4px 10px -2px rgb(22 24 29/.35);
+  --ease:cubic-bezier(.23,1,.32,1);
+  --font:'Geist',ui-sans-serif,system-ui,sans-serif; --mono:'Geist Mono',ui-monospace,monospace;
+  /* propios de esta pantalla */
+  --principal:var(--color-tinta); --principal-texto:#fff;
+  --marca-fondo:#111113; --marca-raya:rgb(255 255 255/.07);
+  --pasos-fondo:radial-gradient(90% 60% at 18% 0%,rgb(129 140 248/.55),transparent 62%),radial-gradient(70% 50% at 100% 100%,rgb(17 15 60/.9),transparent 70%),linear-gradient(165deg,#3730a3 0%,#272480 50%,#16154a 100%);
+  --puntos-fondo:var(--color-suave); --punto:#8a8f9c; --punto-2:#b9bcc6;
+  --ent-1:var(--acento); --ent-2:#0e7490; --ent-3:#b45309;
+  --img-velo:linear-gradient(180deg,transparent 45%,rgb(12 12 24/.78) 100%);
+  color-scheme:light;
+}
+[data-tema=oscuro]{
+  --acento:#6366f1; --acento-texto:#a5b4fc; --acento-suave:rgb(99 102 241/.16);
+  --color-fondo:#0a0a0a; --color-panel:#111113; --color-superficie:#18181b; --color-suave:#232326; --color-hover:#1f1f22;
+  --color-borde:#27272a; --color-borde-fuerte:#3f3f46; --color-divisor:#202023;
+  --color-tinta:#fafafa; --color-texto-2:#b4b4bd; --color-texto-3:#8f8f9a;
+  --color-verde-fondo:#22c55e1f; --color-verde-texto:#4ade80; --color-ambar-fondo:#f5b8001f; --color-ambar-texto:#fbbf24;
+  --color-rojo-fondo:#ef44441f; --color-rojo-texto:#f87171; --color-azul-fondo:#3b82f61f; --color-azul-texto:#60a5fa;
+  --shadow-min:none; --shadow-hover:0 14px 30px -18px rgb(0 0 0/.8); --shadow-flotante:0 24px 48px -16px rgb(0 0 0/.7); --shadow-principal:none;
+  --principal:#fafafa; --principal-texto:#18181b;
+  --marca-fondo:#0d0d0f; --marca-raya:rgb(255 255 255/.06);
+  --pasos-fondo:radial-gradient(90% 60% at 18% 0%,rgb(99 102 241/.35),transparent 62%),linear-gradient(165deg,#1e1b6b 0%,#17164f 50%,#0c0b2a 100%);
+  --ent-2:#0e7490; --ent-3:#b45309;
+  --puntos-fondo:#111113; --punto:#71717a; --punto-2:#3f3f46;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--color-fondo);color:var(--color-tinta);font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased;min-height:100dvh;padding:var(--espacio-5) var(--espacio-7) var(--espacio-7)}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+a{color:inherit}
+.ph,.ph-fill{line-height:1}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:2px}
+[hidden]{display:none!important}
+
+/* ── Barra de la galería: diseño + estado + tema ── */
+.barra{max-width:1280px;margin:0 auto var(--espacio-5);display:flex;align-items:center;gap:var(--espacio-5);flex-wrap:wrap}
+.barra h1{font-size:14px;font-weight:500;margin-right:auto;display:flex;gap:var(--espacio-4);align-items:center}
+.barra h1 span{color:var(--color-texto-3);font-weight:400}
+.riel{max-width:100%;overflow-x:auto;scrollbar-width:none}
+.riel::-webkit-scrollbar{display:none}
+.seg{display:inline-flex;background:var(--color-suave);border:1px solid var(--color-borde);border-radius:var(--radius-control);padding:3px;gap:var(--espacio-1)}
+.seg button{border:0;background:none;height:30px;padding:0 var(--espacio-5);border-radius:var(--radius-chip);color:var(--color-texto-2);font-size:13px;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;gap:var(--espacio-3);transition:background .18s,color .18s}
+.seg button .ph{font-size:16px}
+.seg button[aria-pressed=true]{background:var(--color-superficie);color:var(--color-tinta);box-shadow:0 1px 2px rgb(22 24 29/.1),0 0 0 1px var(--color-borde)}
+[data-tema=oscuro] .seg button[aria-pressed=true]{background:var(--color-tinta);color:var(--color-superficie);box-shadow:none}
+.seg.icono button{width:36px;padding:0;justify-content:center}
+
+/* ── Marco: la caja de 26 con dos mitades (o una) ── */
+.marco{max-width:1280px;margin:0 auto;min-height:calc(100dvh - 96px);display:grid;gap:var(--espacio-4);padding:var(--espacio-4);background:var(--color-panel);border:1px solid var(--color-borde);border-radius:var(--radius-app);box-shadow:0 30px 60px -30px rgb(22 24 29/.22);position:relative;isolation:isolate;overflow:hidden}
+[data-tema=oscuro] .marco{box-shadow:none}
+.marco[data-diseno=marca],.marco[data-diseno=pasos]{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.marco[data-diseno=imagen]{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+.marco[data-diseno=puntos]{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}
+.marco[data-diseno=puntos] .lado{order:-1}
+.marco[data-diseno=centrado]{grid-template-columns:minmax(0,1fr);place-items:center}
+.marco[data-diseno=centrado] .vis{display:none}
+.marco[data-diseno=centrado]::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(color-mix(in oklch,var(--color-texto-3) 26%,transparent) 1px,transparent 1.3px);background-size:20px 20px;-webkit-mask:radial-gradient(60% 55% at 50% 45%,transparent 30%,#000 90%);mask:radial-gradient(60% 55% at 50% 45%,transparent 30%,#000 90%)}
+.marco[data-diseno=centrado] .lado{width:100%;max-width:476px;border-radius:var(--radius-marco);box-shadow:var(--shadow-flotante)}
+
+/* ── Lado del formulario ── */
+.lado{background:var(--color-superficie);border:1px solid var(--color-borde);border-radius:var(--radius-marco);display:flex;flex-direction:column;padding:var(--espacio-8) var(--espacio-9) var(--espacio-7);min-width:0}
+.cabeza{display:flex;align-items:center;gap:var(--espacio-5)}
+.logo{width:32px;height:32px;border-radius:10px;background:var(--color-tinta);color:var(--color-superficie);display:grid;place-items:center;flex:none}
+.logo svg{width:18px;height:18px}
+.logo.blanco{background:#fff;color:#111113}
+.marca{font-size:14px;font-weight:500;line-height:1.25}
+.marca small{display:block;font-size:12px;color:var(--color-texto-3);font-weight:400}
+.cabeza .enl{margin-left:auto}
+.centro{flex:1;display:grid;place-items:center;padding:var(--espacio-10) 0 var(--espacio-9)}
+.marco[data-diseno=centrado] .centro{padding:var(--espacio-9) 0}
+.caja{width:100%;max-width:384px}
+.marco[data-diseno=centrado] .cabeza{justify-content:center}
+.marco[data-diseno=centrado] .cabeza .enl{display:none}
+
+.vista>*{animation:entra .32s var(--ease) both}
+.vista>*:nth-child(2){animation-delay:35ms}.vista>*:nth-child(3){animation-delay:70ms}.vista>*:nth-child(4){animation-delay:105ms}.vista>*:nth-child(n+5){animation-delay:140ms}
+@keyframes entra{from{opacity:0;transform:translateY(6px)}}
+
+.paso-movil{display:none}
+h2.titulo{font-size:32px;font-weight:500;line-height:1.1;letter-spacing:-.03em;outline:0;text-wrap:balance}
+.bajada{color:var(--color-texto-2);font-size:14px;line-height:1.5;margin-top:var(--espacio-4);text-wrap:pretty}
+.bajada b{color:var(--color-tinta);font-weight:500}
+
+/* aviso en el lugar */
+.aviso{display:flex;gap:var(--espacio-5);align-items:flex-start;margin-top:var(--espacio-7);padding:var(--espacio-5) var(--espacio-6);border-radius:var(--radius-interno);border:1px solid}
+.aviso.rojo{background:var(--color-rojo-fondo);border-color:color-mix(in oklch,var(--color-rojo-texto) 22%,transparent)}
+.aviso.ambar{background:var(--color-ambar-fondo);border-color:color-mix(in oklch,var(--color-ambar-texto) 24%,transparent)}
+.aviso .tile{width:32px;height:32px;border-radius:10px;background:var(--color-superficie);display:grid;place-items:center;flex:none;box-shadow:var(--shadow-min)}
+.aviso.rojo .tile{color:var(--color-rojo-texto)}.aviso.ambar .tile{color:var(--color-ambar-texto)}
+.aviso .tile .ph{font-size:16px}
+.aviso b{display:block;font-weight:500;font-size:14px;line-height:1.35}
+.aviso p{color:var(--color-texto-2);font-size:13px;line-height:1.45;margin-top:var(--espacio-1)}
+.aviso .enl{margin-top:var(--espacio-3)}
+.aviso.rojo .enl{color:var(--color-rojo-texto)}.aviso.ambar .enl{color:var(--color-ambar-texto)}
+
+/* campos */
+form{display:flex;flex-direction:column}
+.campo{display:flex;flex-direction:column;gap:var(--espacio-3);margin-top:var(--espacio-7)}
+.campo.primero{margin-top:var(--espacio-8)}
+.fila-rot{display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-4)}
+.campo label,.rot{font-size:13px;font-weight:500;color:var(--color-texto-2)}
+.in{height:44px;border:1px solid var(--color-borde-fuerte);border-radius:var(--radius-control);background:var(--color-superficie);display:flex;align-items:center;gap:var(--espacio-4);padding:0 var(--espacio-2) 0 var(--espacio-5);box-shadow:var(--shadow-min);transition:border-color .18s,box-shadow .18s}
+.in>.ph{color:var(--color-texto-3);font-size:16px;flex:none;transition:color .18s}
+.in input{flex:1;min-width:0;height:100%;border:0;background:none;outline:0;font-size:14px;color:var(--color-tinta)}
+.in input::placeholder{color:var(--color-texto-3)}
+.in input[readonly]{color:var(--color-texto-2)}
+.in.fijo{background:var(--color-suave);box-shadow:none}
+.in:focus-within{border-color:var(--acento);box-shadow:0 0 0 4px color-mix(in oklch,var(--acento) 16%,transparent)}
+.in:focus-within>.ph{color:var(--acento-texto)}
+.campo.mal .in{border-color:var(--color-rojo-texto);box-shadow:0 0 0 4px color-mix(in oklch,var(--color-rojo-texto) 12%,transparent)}
+.campo.mal .in>.ph{color:var(--color-rojo-texto)}
+.msj{display:flex;gap:var(--espacio-3);align-items:center;font-size:13px;font-weight:500;color:var(--color-rojo-texto)}
+.msj:empty{display:none}
+.ojo{width:36px;height:36px;border:0;background:none;border-radius:var(--radius-chip);display:grid;place-items:center;color:var(--color-texto-3);flex:none}
+.ojo .ph{font-size:16px}
+.mayus{display:none;align-items:center;gap:var(--espacio-2);height:24px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);background:var(--color-ambar-fondo);color:var(--color-ambar-texto);font-weight:500;font-size:12px;white-space:nowrap}
+.mayus.ver{display:inline-flex}
+input:-webkit-autofill{-webkit-text-fill-color:var(--color-tinta);transition:background-color 9999s}
+.dos-campos{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--espacio-5)}
+.dos-campos .campo{margin-top:var(--espacio-8)}
+.reglas{display:flex;gap:var(--espacio-6);flex-wrap:wrap;font-size:12px;color:var(--color-texto-3)}
+.reglas span{display:inline-flex;align-items:center;gap:var(--espacio-2);transition:color .18s}
+.reglas span .ph{font-size:14px}
+.reglas span.ok{color:var(--color-verde-texto)}
+
+/* casilla */
+.recordar{display:inline-flex;align-items:center;gap:var(--espacio-4);margin-top:var(--espacio-6);border:0;background:none;padding:0;font-size:13px;font-weight:500;color:var(--color-texto-2);width:max-content;border-radius:var(--radius-chip);min-height:24px}
+.chk{width:18px;height:18px;border:1.5px solid var(--color-borde-fuerte);border-radius:6px;background:var(--color-superficie);display:grid;place-items:center;flex:none;transition:background .12s,border-color .12s}
+.chk::after{content:"";width:8px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px) scale(0);transition:transform .18s var(--ease)}
+.recordar[aria-checked=true] .chk{background:var(--acento);border-color:var(--acento)}
+.recordar[aria-checked=true] .chk::after{transform:rotate(-45deg) translate(1px,-1px) scale(1)}
+
+/* botones */
+.btn{height:44px;padding:0 var(--espacio-7);border-radius:var(--radius-control);display:inline-flex;align-items:center;justify-content:center;gap:var(--espacio-4);font-weight:500;font-size:14px;border:1px solid var(--color-borde);background:var(--color-superficie);color:var(--color-tinta);box-shadow:var(--shadow-min);transition:transform .12s var(--ease),box-shadow .18s,background .18s,border-color .18s;white-space:nowrap;text-decoration:none}
+.btn:active{transform:scale(.98)}
+.btn .ph{font-size:16px}
+.btn.ancho{width:100%}
+.btn.principal{background:var(--principal);border-color:var(--principal);color:var(--principal-texto);box-shadow:var(--shadow-principal)}
+.btn.principal[aria-disabled=true]{background:var(--color-suave);border-color:var(--color-borde);color:var(--color-texto-2);box-shadow:none;cursor:default}
+.btn[aria-busy=true]{pointer-events:none}
+.btn .flecha{transition:transform .24s var(--ease)}
+.enviar{margin-top:var(--espacio-8)}
+.giro{width:16px;height:16px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;opacity:.85;animation:gira .7s linear infinite;flex:none}
+@keyframes gira{to{transform:rotate(1turn)}}
+.o{display:flex;align-items:center;gap:var(--espacio-5);color:var(--color-texto-3);font-size:12px;margin:var(--espacio-7) 0}
+.o::before,.o::after{content:"";flex:1;height:1px;background:var(--color-borde)}
+.sso{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--espacio-4)}
+.sso svg{width:18px;height:18px;flex:none}
+.enl{border:0;background:none;padding:0;color:var(--acento-texto);font-weight:500;font-size:13px;border-radius:var(--radius-chip);display:inline-flex;align-items:center;gap:var(--espacio-2);text-decoration:none;min-height:24px}
+.enl .ph{font-size:14px}
+.enl.gris{color:var(--color-texto-2)}
+.alt{display:flex;justify-content:center;margin-top:var(--espacio-6)}
+.legal{font-size:12px;color:var(--color-texto-3);margin-top:var(--espacio-6);text-align:center;text-wrap:balance}
+.legal a{color:var(--color-texto-2);font-weight:500;text-underline-offset:3px}
+
+/* código por correo: un solo input que se dibuja como 6 casillas (3 – 3) */
+.otp{position:relative;margin-top:var(--espacio-8);display:flex;align-items:center;gap:var(--espacio-4)}
+.otp .grupo{display:flex;gap:var(--espacio-3)}
+.otp .d{width:48px;height:56px;border:1px solid var(--color-borde-fuerte);border-radius:var(--radius-control);background:var(--color-superficie);display:grid;place-items:center;font-size:24px;font-weight:500;font-variant-numeric:tabular-nums;box-shadow:var(--shadow-min);transition:border-color .18s,box-shadow .18s,background .24s,color .24s}
+.otp .d.on{border-color:var(--acento);box-shadow:0 0 0 4px color-mix(in oklch,var(--acento) 16%,transparent)}
+.otp .d.on:empty::after{content:"";width:2px;height:24px;background:var(--acento);animation:titila 1s steps(1) infinite}
+@keyframes titila{50%{opacity:0}}
+.otp .guion{width:12px;height:2px;border-radius:2px;background:var(--color-borde-fuerte);flex:none}
+.otp input{position:absolute;inset:0;width:100%;height:100%;opacity:0;font-size:16px;border:0;cursor:text}
+.otp.bien .d{border-color:var(--color-verde-texto);background:var(--color-verde-fondo);color:var(--color-verde-texto);box-shadow:none}
+.otp.mal .d{border-color:var(--color-rojo-texto)}
+.otp-pie{display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-4);margin-top:var(--espacio-5);font-size:13px;color:var(--color-texto-2);min-height:24px}
+.otp-pie .ok{color:var(--color-verde-texto);font-weight:500;display:inline-flex;gap:var(--espacio-3);align-items:center}
+.otp-pie .ok .ph-fill{font-size:16px}
+
+/* elegir empresa */
+.espacios{margin-top:var(--espacio-8);background:var(--color-suave);border:1px solid var(--color-borde);border-radius:var(--radius-marco);padding:var(--espacio-2);display:flex;flex-direction:column;gap:var(--espacio-2)}
+.esp{width:100%;display:flex;align-items:center;gap:var(--espacio-5);text-align:left;background:var(--color-superficie);border:1px solid var(--color-borde);border-radius:var(--radius-interno);padding:var(--espacio-5);min-height:64px;transition:border-color .18s,box-shadow .18s,transform .18s var(--ease)}
+.esp .cuadro{width:36px;height:36px;border-radius:var(--radius-control);display:grid;place-items:center;color:#fff;flex:none;background:var(--c)}
+.esp .cuadro .ph-fill{font-size:18px}
+.esp .tx{flex:1;min-width:0}
+.esp b{display:flex;align-items:center;gap:var(--espacio-4);font-weight:500;font-size:14px;line-height:1.3}
+.esp small{display:block;color:var(--color-texto-3);font-size:12px;margin-top:var(--espacio-1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.esp small em{font-style:normal;color:var(--color-ambar-texto);font-weight:500}
+.esp>.ph{color:var(--color-texto-3);font-size:16px;transition:transform .18s var(--ease)}
+.esp .chip{display:inline-flex;align-items:center;height:20px;padding:0 var(--espacio-3);border-radius:6px;background:var(--color-suave);color:var(--color-texto-2);font-size:12px;font-weight:500}
+.esp[aria-busy=true]>.ph{display:none}
+
+/* sesión vencida */
+.quien{margin-top:var(--espacio-8);display:flex;align-items:center;gap:var(--espacio-5);padding:var(--espacio-5);border:1px solid var(--color-borde);border-radius:var(--radius-interno);background:var(--color-suave)}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:500;flex:none;background:color-mix(in oklch,var(--color-dato-1) 16%,var(--color-superficie));color:var(--acento-texto)}
+.quien b{display:block;font-weight:500;font-size:14px}
+.quien small{display:block;font-size:12px;color:var(--color-texto-3);font-family:var(--mono)}
+.quien .tx{min-width:0;flex:1}
+.invita{margin-top:var(--espacio-7);display:flex;align-items:center;gap:var(--espacio-5);font-size:13px;color:var(--color-texto-2)}
+.invita .av{width:32px;height:32px;font-size:12px;background:color-mix(in oklch,var(--color-dato-5) 18%,var(--color-superficie));color:#b4402e}
+[data-tema=oscuro] .invita .av{color:#fca5a5}
+.invita b{color:var(--color-tinta);font-weight:500}
+
+.pie{display:flex;align-items:center;gap:var(--espacio-6);color:var(--color-texto-3);font-size:12px;flex-wrap:wrap}
+.pie a{text-decoration:none;font-weight:500;color:var(--color-texto-2)}
+.pie .vivo{margin-left:auto;display:inline-flex;align-items:center;gap:var(--espacio-3)}
+.pie .vivo i{width:6px;height:6px;border-radius:50%;background:var(--color-verde-texto)}
+.marco[data-diseno=centrado] .pie{justify-content:center}
+.marco[data-diseno=centrado] .pie .vivo{margin-left:0}
+
+@media (hover:hover){
+  .btn:hover{background:var(--color-hover);border-color:var(--color-borde-fuerte)}
+  .btn.principal:hover{background:var(--principal);border-color:var(--principal);transform:translateY(-1px)}
+  .btn.principal[aria-disabled=true]:hover{background:var(--color-suave);transform:none}
+  .btn:hover .flecha{transform:translateX(3px)}
+  .enl:hover{text-decoration:underline;text-underline-offset:3px}
+  .ojo:hover{background:var(--color-hover);color:var(--color-tinta)}
+  .in:hover:not(:focus-within){border-color:color-mix(in oklch,var(--color-texto-3) 55%,var(--color-borde-fuerte))}
+  .esp:hover{border-color:var(--color-borde-fuerte);box-shadow:var(--shadow-hover);transform:translateY(-2px)}
+  .esp:hover>.ph{transform:translateX(3px);color:var(--color-tinta)}
+  .seg button:not([aria-pressed=true]):hover{color:var(--color-tinta)}
+  .pie a:hover{color:var(--color-tinta)}
+}
+
+/* ── Paneles visuales ── */
+.vis{position:relative;border-radius:var(--radius-marco);overflow:hidden;min-width:0;isolation:isolate;display:none}
+.marco[data-diseno=marca] .vis-marca,.marco[data-diseno=imagen] .vis-imagen,.marco[data-diseno=pasos] .vis-pasos,.marco[data-diseno=puntos] .vis-puntos{display:flex}
+
+/* 1 · Marca (66-1): panel oscuro con el signo de la marca y rayas finas */
+.vis-marca{background:var(--marca-fondo);color:#fff;flex-direction:column;justify-content:space-between;padding:var(--espacio-8) var(--espacio-9)}
+.vis-marca .rayas{position:absolute;inset:0;z-index:-1;width:100%;height:100%}
+.vis-marca .rayas line{stroke:var(--marca-raya);stroke-width:1;vector-effect:non-scaling-stroke}
+.vis-marca .signo{position:absolute;left:50%;top:50%;width:min(200px,36%);translate:-50% -50%}
+.vis-marca .signo line{stroke:#fff;stroke-width:7;stroke-linecap:butt;stroke-dasharray:120;stroke-dashoffset:120;animation:traza .9s var(--ease) forwards}
+.vis-marca .signo line:nth-child(2){animation-delay:60ms}.vis-marca .signo line:nth-child(3){animation-delay:120ms}.vis-marca .signo line:nth-child(4){animation-delay:180ms}
+@keyframes traza{to{stroke-dashoffset:0}}
+.vis-marca .arriba{display:flex;align-items:center;gap:var(--espacio-4);font-weight:500;font-size:14px}
+.vis-marca .abajo{display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-5);font-size:12px;color:rgb(255 255 255/.72)}
+.pastilla-v{display:inline-flex;align-items:center;gap:var(--espacio-3);height:28px;padding:0 var(--espacio-5);border-radius:99px;background:rgb(255 255 255/.1);border:1px solid rgb(255 255 255/.16);color:#fff;font-size:12px;font-weight:500}
+.pastilla-v i{width:6px;height:6px;border-radius:50%;background:#4ade80}
+
+/* 2 · Imagen (66-2): la operación real, con velo y un dato encima */
+.vis-imagen{flex-direction:column;justify-content:flex-end;padding:var(--espacio-9);color:#fff;background:#2a2c3d}
+.vis-imagen svg.escena{position:absolute;inset:0;width:100%;height:100%;z-index:-2}
+.vis-imagen::after{content:"";position:absolute;inset:0;z-index:-1;background:var(--img-velo)}
+[data-tema=oscuro] .vis-imagen svg.escena{filter:brightness(.72) saturate(.85)}
+.dato-img{display:flex;gap:var(--espacio-4);flex-wrap:wrap}
+.dato-img .pastilla-v{background:rgb(255 255 255/.14);border-color:rgb(255 255 255/.24);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.vis-imagen h3{font-size:24px;font-weight:500;line-height:1.25;letter-spacing:-.02em;margin-top:var(--espacio-5);max-width:440px;text-wrap:balance}
+.vis-imagen p{font-size:13px;color:rgb(255 255 255/.85);margin-top:var(--espacio-4)}
+
+/* 3 · Pasos (66-3, 66-4): degradé del acento y los pasos del alta */
+.vis-pasos{background:var(--pasos-fondo);color:#fff;flex-direction:column;justify-content:flex-end;padding:var(--espacio-10)}
+.vis-pasos::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.12;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+.vis-pasos h3{font-size:32px;font-weight:500;line-height:1.1;letter-spacing:-.03em;max-width:380px;text-wrap:balance}
+.vis-pasos p{font-size:14px;color:rgb(255 255 255/.86);margin-top:var(--espacio-4);max-width:380px}
+.pasos{list-style:none;margin-top:var(--espacio-8);display:flex;flex-direction:column;gap:var(--espacio-4);max-width:380px}
+.pasos li{display:flex;align-items:center;gap:var(--espacio-5);height:52px;padding:0 var(--espacio-6);border-radius:var(--radius-control);background:rgb(255 255 255/.1);border:1px solid rgb(255 255 255/.16);font-size:14px;font-weight:500;color:#fff;transition:background .32s var(--ease),color .32s}
+.pasos .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:500;background:rgb(255 255 255/.16);flex:none}
+.pasos li.hecho .n{background:#4ade80;color:#0b2e17}
+.pasos li.hecho .n span{display:none}
+.pasos li:not(.hecho) .n .ph{display:none}
+.pasos li[aria-current=step]{background:#fff;color:#18181b;border-color:#fff}
+.pasos li[aria-current=step] .n{background:#18181b;color:#fff}
+.pasos li small{margin-left:auto;font-size:12px;font-weight:400;opacity:.85}
+
+/* 5 · Puntos (66-5): dibujo de puntos de la operación */
+.vis-puntos{background:var(--puntos-fondo);border:1px solid var(--color-borde)}
+.vis-puntos svg{position:absolute;inset:0;width:100%;height:100%}
+.vis-puntos .revela{animation:revela 1.1s var(--ease) .1s both}
+@keyframes revela{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+.vis-puntos .rotulo{position:absolute;left:var(--espacio-9);bottom:var(--espacio-9);display:flex;flex-direction:column;gap:var(--espacio-2)}
+.vis-puntos .rotulo b{font-size:20px;font-weight:500;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.vis-puntos .rotulo span{font-size:12px;color:var(--color-texto-3);font-family:var(--mono)}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:var(--espacio-9);translate:-50% 0;background:#18181b;color:#fff;border-radius:var(--radius-interno);box-shadow:var(--shadow-flotante);padding:var(--espacio-5) var(--espacio-5) var(--espacio-5) var(--espacio-6);display:flex;gap:var(--espacio-5);align-items:center;transform:translateY(16px);opacity:0;transition:transform .32s var(--ease),opacity .24s;pointer-events:none;max-width:calc(100vw - 32px);z-index:9;font-size:13px}
+.toast.ver{transform:none;opacity:1;pointer-events:auto}
+.toast .ok{width:28px;height:28px;border-radius:8px;background:rgb(74 222 128/.18);color:#4ade80;display:grid;place-items:center;flex:none}
+.toast .ok .ph{font-size:16px}
+.toast small{display:block;color:rgb(255 255 255/.72);font-size:12px}
+[data-tema=oscuro] .toast{background:#232327;border:1px solid #2f2f35}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}.vis-marca .signo line{stroke-dashoffset:0}}
+@media (max-width:1100px){.vis-pasos{padding:var(--espacio-9)}.vis-imagen h3{font-size:20px}}
+@media (max-width:899px){
+  .marco[data-diseno]{grid-template-columns:minmax(0,1fr)}
+  .marco .vis{display:none!important}
+}
+@media (max-width:767px){
+  body{padding:0;background:var(--color-superficie)}
+  .barra{padding:var(--espacio-5) var(--espacio-6) var(--espacio-4);margin:0;border-bottom:1px solid var(--color-borde);background:var(--color-panel);gap:var(--espacio-4)}
+  .barra h1{flex:1;min-width:0}
+  .seg.icono{order:1}
+  .barra .riel{order:2}
+  .riel{width:100%;overflow:visible}
+  .riel .seg{display:flex;flex-wrap:wrap;width:100%}
+  .seg button{height:44px;padding:0 var(--espacio-5);flex:1 0 auto;justify-content:center}
+  .seg.icono button{width:44px}
+  .marco{border:0;border-radius:0;padding:0;box-shadow:none;background:var(--color-superficie);min-height:auto}
+  .marco[data-diseno=centrado]::before{display:none}
+  .marco[data-diseno=centrado] .lado{box-shadow:none;max-width:none}
+  .lado{border:0;border-radius:0;padding:var(--espacio-6) var(--espacio-6) calc(var(--espacio-6) + env(safe-area-inset-bottom))}
+  .centro{place-items:start center;padding:var(--espacio-9) 0}
+  .paso-movil{display:inline-flex;align-items:center;gap:var(--espacio-3);font-size:12px;font-weight:500;color:var(--acento-texto);margin-bottom:var(--espacio-5)}
+  .in{height:52px}
+  .in input{font-size:16px}
+  .ojo{width:44px;height:44px}
+  .btn{height:52px}
+  .enl,.recordar{min-height:44px}
+  .pie a{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}
+  .dos-campos{grid-template-columns:minmax(0,1fr);gap:0}
+  .dos-campos .campo{margin-top:var(--espacio-7)}
+  .dos-campos .campo:first-child{margin-top:var(--espacio-8)}
+  .otp .d{width:44px;height:52px}
+  .otp .grupo{gap:var(--espacio-2)}
+  .pie{gap:0 var(--espacio-6)}
+  .toast{bottom:var(--espacio-6)}
+}
+@media (max-width:359px){.otp .d{width:40px}}
+</style>
+</head>
+<body>
+<header class="barra">
+  <h1>Acceso <span>· 5 diseños × 7 estados</span></h1>
+  <div class="riel"><div class="seg" id="sel-diseno" role="group" aria-label="Diseño">
+    <button type="button" data-d="marca" aria-pressed="true">Marca</button>
+    <button type="button" data-d="imagen" aria-pressed="false">Imagen</button>
+    <button type="button" data-d="pasos" aria-pressed="false">Pasos</button>
+    <button type="button" data-d="centrado" aria-pressed="false">Centrado</button>
+    <button type="button" data-d="puntos" aria-pressed="false">Puntos</button>
+  </div></div>
+  <div class="riel"><div class="seg" id="sel-estado" role="group" aria-label="Estado">
+    <button type="button" data-e="entrar" aria-pressed="true">Entrar</button>
+    <button type="button" data-e="error" aria-pressed="false">Error</button>
+    <button type="button" data-e="bloqueo" aria-pressed="false">Bloqueo</button>
+    <button type="button" data-e="codigo" aria-pressed="false">Código</button>
+    <button type="button" data-e="empresa" aria-pressed="false">Empresa</button>
+    <button type="button" data-e="invitacion" aria-pressed="false">Invitación</button>
+    <button type="button" data-e="vencida" aria-pressed="false">Sesión vencida</button>
+  </div></div>
+  <div class="seg icono" role="group" aria-label="Tema">
+    <button type="button" data-t="claro" aria-pressed="true" aria-label="Tema claro"><i class="ph ph-sun"></i></button>
+    <button type="button" data-t="oscuro" aria-pressed="false" aria-label="Tema oscuro"><i class="ph ph-moon"></i></button>
+  </div>
+</header>
+
+<div class="marco" id="marco" data-diseno="marca">
+  <!-- ── Formulario: el mismo en los 5 diseños ── -->
+  <main class="lado">
+    <div class="cabeza">
+      <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg></span>
+      <span class="marca">Orbe Servicios<small>Gestión</small></span>
+      <a class="enl gris" id="enl-cab" href="#pedir">Pedir acceso</a>
+    </div>
+
+    <div class="centro"><div class="caja">
+
+      <!-- Entrar (también Error y Bloqueo) -->
+      <section class="vista" data-vista="entrar" aria-labelledby="t-entrar">
+        <h2 class="titulo" id="t-entrar" tabindex="-1">Entrar</h2>
+        <div class="aviso rojo" id="av-error" role="alert" hidden>
+          <span class="tile"><i class="ph ph-lock-key"></i></span>
+          <div><b>La contraseña no coincide con ana.ruiz@orbe.com.ar</b><p>Te quedan 2 intentos antes de una pausa de 5 minutos.</p><a class="enl" href="#recuperar">Recuperar contraseña<i class="ph ph-arrow-right"></i></a></div>
+        </div>
+        <div class="aviso ambar" id="av-bloqueo" role="status" hidden>
+          <span class="tile"><i class="ph ph-hourglass-medium"></i></span>
+          <div><b>Pausamos los intentos 5 minutos</b><p>Hubo 5 intentos fallidos desde este equipo. Podés entrar ya con un código por correo.</p><button type="button" class="enl" data-ir="codigo">Mandarme un código<i class="ph ph-arrow-right"></i></button></div>
+        </div>
+        <form id="f-entrar" novalidate>
+          <div class="campo primero" id="c-correo">
+            <label for="correo">Correo</label>
+            <div class="in"><i class="ph ph-envelope-simple"></i><input id="correo" name="correo" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="nombre@orbe.com.ar" aria-describedby="m-correo"></div>
+            <div class="msj" id="m-correo" aria-live="polite"></div>
+          </div>
+          <div class="campo" id="c-clave">
+            <div class="fila-rot"><label for="clave">Contraseña</label><span class="mayus" id="mayus"><i class="ph ph-arrow-fat-up"></i>Mayúsculas activadas</span><a class="enl" href="#recuperar" id="enl-olvide">¿La olvidaste?</a></div>
+            <div class="in"><i class="ph ph-lock-simple"></i><input id="clave" name="clave" type="password" autocomplete="current-password" placeholder="Tu contraseña" aria-describedby="m-clave"><button type="button" class="ojo" id="ojo" aria-label="Mostrar contraseña" aria-pressed="false"><i class="ph ph-eye"></i></button></div>
+            <div class="msj" id="m-clave" aria-live="polite"></div>
+          </div>
+          <button type="button" class="recordar" id="recordar" role="checkbox" aria-checked="true"><span class="chk" aria-hidden="true"></span>Recordarme en este equipo</button>
+          <button type="submit" class="btn principal ancho enviar" id="b-entrar">Entrar<i class="ph ph-arrow-right flecha"></i></button>
+        </form>
+        <div class="o">o</div>
+        <div class="sso">
+          <button type="button" class="btn" aria-label="Entrar con Google"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Google</button>
+          <button type="button" class="btn" aria-label="Entrar con Microsoft"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="9.5" height="9.5" fill="#F25022"/><rect x="12.5" y="2" width="9.5" height="9.5" fill="#7FBA00"/><rect x="2" y="12.5" width="9.5" height="9.5" fill="#00A4EF"/><rect x="12.5" y="12.5" width="9.5" height="9.5" fill="#FFB900"/></svg>Microsoft</button>
+        </div>
+        <div class="alt"><button type="button" class="enl gris" data-ir="codigo"><i class="ph ph-envelope-open"></i>Entrar con un código por correo</button></div>
+      </section>
+
+      <!-- Código por correo -->
+      <section class="vista" data-vista="codigo" aria-labelledby="t-codigo" hidden>
+        <span class="paso-movil"><i class="ph ph-list-numbers"></i>Paso 2 de 3</span>
+        <h2 class="titulo" id="t-codigo" tabindex="-1">Revisá tu correo</h2>
+        <p class="bajada">Mandamos un código de 6 cifras a <b>ana.ruiz@orbe.com.ar</b>. Vence en 10 minutos.</p>
+        <div class="otp" id="otp">
+          <span class="grupo" aria-hidden="true"><span class="d"></span><span class="d"></span><span class="d"></span></span>
+          <span class="guion" aria-hidden="true"></span>
+          <span class="grupo" aria-hidden="true"><span class="d"></span><span class="d"></span><span class="d"></span></span>
+          <input id="codigo" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" aria-label="Código de 6 cifras" aria-describedby="otp-pie">
+        </div>
+        <div class="otp-pie" id="otp-pie" aria-live="polite"><span id="otp-txt">Podés pedir otro en <b class="num" id="otp-cuenta">0:24</b></span><button type="button" class="enl" id="b-reenviar" hidden>Mandar otro</button></div>
+        <button type="button" class="btn principal ancho enviar" id="b-codigo">Seguir<i class="ph ph-arrow-right flecha"></i></button>
+        <div class="alt"><button type="button" class="enl gris" data-ir="entrar"><i class="ph ph-arrow-left"></i>Usar contraseña</button></div>
+      </section>
+
+      <!-- Elegir empresa -->
+      <section class="vista" data-vista="empresa" aria-labelledby="t-empresa" hidden>
+        <span class="paso-movil"><i class="ph ph-list-numbers"></i>Paso 3 de 3</span>
+        <h2 class="titulo" id="t-empresa" tabindex="-1">¿Dónde entrás?</h2>
+        <p class="bajada">Tenés acceso a <b>3 empresas</b>. Podés cambiar desde el menú sin volver a entrar.</p>
+        <div class="espacios" role="list">
+          <button type="button" class="esp" role="listitem" style="--c:var(--ent-1)"><span class="cuadro"><i class="ph-fill ph-buildings"></i></span><span class="tx"><b>Orbe Servicios<span class="chip">Última</span></b><small>Dirección · <em>4 te necesitan</em></small></span><i class="ph ph-caret-right"></i></button>
+          <button type="button" class="esp" role="listitem" style="--c:var(--ent-2)"><span class="cuadro"><i class="ph-fill ph-truck"></i></span><span class="tx"><b>Orbe Logística</b><small>Comercial · 12 cargas en curso</small></span><i class="ph ph-caret-right"></i></button>
+          <button type="button" class="esp" role="listitem" style="--c:var(--ent-3)"><span class="cuadro"><i class="ph-fill ph-factory"></i></span><span class="tx"><b>Orbe Industrial</b><small>Solo lectura · al día</small></span><i class="ph ph-caret-right"></i></button>
+        </div>
+        <button type="button" class="recordar" id="recordar-esp" role="checkbox" aria-checked="false"><span class="chk" aria-hidden="true"></span>Entrar siempre a la última</button>
+      </section>
+
+      <!-- Invitación al equipo -->
+      <section class="vista" data-vista="invitacion" aria-labelledby="t-invitacion" hidden>
+        <span class="paso-movil"><i class="ph ph-list-numbers"></i>Paso 1 de 3</span>
+        <h2 class="titulo" id="t-invitacion" tabindex="-1">Sumate a Orbe Servicios</h2>
+        <div class="invita"><span class="av" aria-hidden="true">LG</span><span><b>Lucía Gómez</b> te sumó como <b>Comercial</b> · hace 2 h</span></div>
+        <form id="f-invitacion" novalidate>
+          <div class="campo primero">
+            <label for="inv-correo">Correo</label>
+            <div class="in fijo"><i class="ph ph-envelope-simple"></i><input id="inv-correo" type="email" autocomplete="username" value="tomas.rey@orbe.com.ar" readonly></div>
+          </div>
+          <div class="dos-campos">
+            <div class="campo"><label for="nombre">Nombre</label><div class="in"><input id="nombre" autocomplete="given-name" placeholder="Tomás"></div></div>
+            <div class="campo"><label for="apellido">Apellido</label><div class="in"><input id="apellido" autocomplete="family-name" placeholder="Rey"></div></div>
+          </div>
+          <div class="campo">
+            <label for="nueva">Creá tu contraseña</label>
+            <div class="in"><i class="ph ph-lock-simple"></i><input id="nueva" type="password" autocomplete="new-password" placeholder="Mínimo 8 caracteres" aria-describedby="reglas"></div>
+            <div class="reglas" id="reglas" aria-live="polite"><span id="r-largo"><i class="ph ph-circle"></i>8 caracteres</span><span id="r-num"><i class="ph ph-circle"></i>Un número</span><span id="r-dist"><i class="ph ph-circle"></i>Distinta al correo</span></div>
+          </div>
+          <button type="submit" class="btn principal ancho enviar" id="b-crear">Crear cuenta y seguir<i class="ph ph-arrow-right flecha"></i></button>
+        </form>
+        <p class="legal">Al seguir aceptás las <a href="#condiciones">condiciones de uso</a> de Orbe Servicios.</p>
+      </section>
+
+      <!-- Sesión vencida -->
+      <section class="vista" data-vista="vencida" aria-labelledby="t-vencida" hidden>
+        <h2 class="titulo" id="t-vencida" tabindex="-1">Tu sesión venció</h2>
+        <p class="bajada">Pasaron 8 horas sin uso. <b>Lo que estabas cargando quedó guardado</b> como borrador.</p>
+        <div class="quien"><span class="av" aria-hidden="true">AR</span><span class="tx"><b>Ana Ruiz</b><small>ana.ruiz@orbe.com.ar</small></span></div>
+        <form id="f-vencida" novalidate>
+          <input type="email" autocomplete="username" value="ana.ruiz@orbe.com.ar" hidden>
+          <div class="campo">
+            <label for="clave2">Contraseña</label>
+            <div class="in"><i class="ph ph-lock-simple"></i><input id="clave2" type="password" autocomplete="current-password" placeholder="Tu contraseña"></div>
+          </div>
+          <button type="submit" class="btn principal ancho enviar">Volver a Cobranzas<i class="ph ph-arrow-right flecha"></i></button>
+        </form>
+        <div class="alt"><button type="button" class="enl gris" data-ir="entrar">No soy Ana</button></div>
+      </section>
+
+    </div></div>
+
+    <footer class="pie">
+      <span>© 2026 Orbe Servicios</span><a href="#privacidad">Privacidad</a><a href="#ayuda">Ayuda</a>
+      <span class="vivo"><i aria-hidden="true"></i>Todo en línea</span>
+    </footer>
+  </main>
+
+  <!-- ── 1 · Marca ── -->
+  <aside class="vis vis-marca" aria-hidden="true">
+    <svg class="rayas" preserveAspectRatio="none" viewBox="0 0 100 100"><line x1="50" y1="0" x2="50" y2="100"/><line x1="0" y1="50" x2="100" y2="50"/><line x1="0" y1="0" x2="100" y2="100"/><line x1="100" y1="0" x2="0" y2="100"/><line x1="25" y1="0" x2="25" y2="100"/><line x1="75" y1="0" x2="75" y2="100"/></svg>
+    <div class="arriba"><span class="logo blanco"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg></span>Orbe Servicios</div>
+    <svg class="signo" viewBox="0 0 120 120"><line x1="60" y1="4" x2="60" y2="116"/><line x1="4" y1="60" x2="116" y2="60"/><line x1="20" y1="20" x2="100" y2="100"/><line x1="100" y1="20" x2="20" y2="100"/></svg>
+    <div class="abajo"><span class="pastilla-v"><i></i>Todo en línea</span><span>Versión 4.2 · 18 nov</span></div>
+  </aside>
+
+  <!-- ── 2 · Imagen ── -->
+  <aside class="vis vis-imagen" aria-label="Planta norte hoy">
+    <svg class="escena" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c7c3df"/><stop offset=".45" stop-color="#e9c9b6"/><stop offset=".7" stop-color="#f1d3ae"/></linearGradient>
+        <linearGradient id="piso" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4b4a5c"/><stop offset="1" stop-color="#26252f"/></linearGradient>
+        <pattern id="nervio" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="none"/><path d="M0 0v8" stroke="rgb(0 0 0/.16)" stroke-width="2"/></pattern>
+      </defs>
+      <rect width="600" height="800" fill="url(#cielo)"/>
+      <circle cx="420" cy="420" r="70" fill="#fbe3c0" opacity=".8"/>
+      <path d="M0 470 Q120 420 240 450 T480 430 T600 445 V560 H0Z" fill="#a9a6c4" opacity=".7"/>
+      <rect y="540" width="600" height="260" fill="url(#piso)"/>
+      <!-- grúa -->
+      <g stroke="#2b2a36" stroke-width="6" fill="none"><path d="M470 560V250"/><path d="M380 262H600"/><path d="M470 250l-60 12M470 250l70 12"/><path d="M400 262v90"/></g>
+      <rect x="380" y="350" width="44" height="22" fill="#d0a23c"/><rect x="380" y="350" width="44" height="22" fill="url(#nervio)"/>
+      <!-- pilas de módulos -->
+      <g>
+        <rect x="40" y="470" width="150" height="70" fill="#b5523b"/><rect x="40" y="470" width="150" height="70" fill="url(#nervio)"/>
+        <rect x="40" y="400" width="150" height="70" fill="#3f6b8f"/><rect x="40" y="400" width="150" height="70" fill="url(#nervio)"/>
+        <rect x="70" y="330" width="150" height="70" fill="#e4e0d6"/><rect x="70" y="330" width="150" height="70" fill="url(#nervio)"/>
+        <rect x="200" y="470" width="160" height="70" fill="#6c7a59"/><rect x="200" y="470" width="160" height="70" fill="url(#nervio)"/>
+        <rect x="220" y="400" width="140" height="70" fill="#d0a23c"/><rect x="220" y="400" width="140" height="70" fill="url(#nervio)"/>
+        <rect x="380" y="470" width="190" height="70" fill="#8a8f9c"/><rect x="380" y="470" width="190" height="70" fill="url(#nervio)"/>
+        <!-- ventanitas de módulo habitable -->
+        <g fill="#f6d9a7"><rect x="92" y="350" width="26" height="18" rx="2"/><rect x="132" y="350" width="26" height="18" rx="2"/><rect x="172" y="350" width="26" height="18" rx="2"/></g>
+      </g>
+      <path d="M0 560H600" stroke="rgb(255 255 255/.12)"/>
+    </svg>
+    <div class="dato-img"><span class="pastilla-v"><i></i>Planta norte · hoy 07:40</span><span class="pastilla-v num">142 módulos en obra</span></div>
+    <h3>Lo que pasa en planta, en la misma pantalla que la factura.</h3>
+    <p class="num">18 contratos por renovar · 3 entregas hoy</p>
+  </aside>
+
+  <!-- ── 3 · Pasos ── -->
+  <aside class="vis vis-pasos" aria-label="Pasos para entrar">
+    <h3>Tres pasos y estás adentro</h3>
+    <p>Entrás con tu rol de Comercial y las empresas que te asignaron.</p>
+    <ol class="pasos" id="pasos">
+      <li aria-current="step"><span class="n"><span>1</span><i class="ph ph-check"></i></span>Creá tu contraseña<small>1 min</small></li>
+      <li><span class="n"><span>2</span><i class="ph ph-check"></i></span>Confirmá tu correo<small>Código</small></li>
+      <li><span class="n"><span>3</span><i class="ph ph-check"></i></span>Elegí tu empresa<small>3 disponibles</small></li>
+    </ol>
+  </aside>
+
+  <!-- ── 5 · Puntos ── -->
+  <aside class="vis vis-puntos" aria-hidden="true">
+    <svg viewBox="0 0 640 800" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <pattern id="p-den" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="1.25" fill="var(--punto)"/></pattern>
+        <pattern id="p-sua" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="var(--punto)"/></pattern>
+        <pattern id="p-fon" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="6" cy="6" r="1" fill="var(--punto-2)"/></pattern>
+        <mask id="m-frente"><g fill="#fff"><rect x="60" y="560" width="200" height="90"/><rect x="60" y="470" width="200" height="90"/><rect x="100" y="380" width="200" height="90"/><rect x="290" y="560" width="210" height="90"/><rect x="310" y="470" width="180" height="90"/><rect x="430" y="380" width="120" height="90"/></g></mask>
+        <mask id="m-lado"><g fill="#fff"><path d="M260 470l30-20v200l-30 0z"/><path d="M300 380l30-20v90l-30 20z"/><path d="M500 560l30-20v110h-30z"/><path d="M550 380l30-20v180l-30 20z"/><rect x="455" y="120" width="12" height="530"/><rect x="300" y="132" width="320" height="12"/><path d="M461 120l-90 14h16l74-8zM461 120l130 14h-16l-114-8z"/><rect x="330" y="144" width="4" height="150"/><rect x="306" y="294" width="52" height="30"/></g></mask>
+        <mask id="m-fondo"><rect y="660" width="640" height="140" fill="#fff"/><path d="M0 540 Q160 480 320 520 T640 500 V660 H0Z" fill="#fff" opacity=".6"/></mask>
+      </defs>
+      <g class="revela">
+        <rect width="640" height="800" fill="url(#p-fon)" mask="url(#m-fondo)"/>
+        <rect width="640" height="800" fill="url(#p-sua)" mask="url(#m-lado)"/>
+        <rect width="640" height="800" fill="url(#p-den)" mask="url(#m-frente)"/>
+        <g stroke="var(--puntos-fondo)" stroke-width="3"><path d="M60 560H260M60 470H260M100 380H300M290 560H500M310 470H490M430 380H550"/><path d="M120 470v90M180 470v90M160 380v90M220 380v90M360 560v90M430 560v90M380 470v90M490 380v90"/></g>
+      </g>
+    </svg>
+    <div class="rotulo"><b class="num">142 módulos · 38 contratos</b><span>planta norte · 22 nov 07:40</span></div>
+  </aside>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span class="ok"><i class="ph ph-check"></i></span><div><b id="toast-t">Entraste a Orbe Servicios</b><small id="toast-s">Demo: acá abre Inicio</small></div></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const quieto=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const espera=ms=>new Promise(r=>setTimeout(r,quieto?0:ms));
+const marco=$('#marco');
+const fmt=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+
+/* ── Tema ── */
+function tema(t,guardar){document.documentElement.dataset.tema=t;$$('[data-t]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===t));if(guardar){try{localStorage.setItem('acceso-tema',t)}catch(e){}}}
+tema(document.documentElement.dataset.tema||'claro');
+$$('[data-t]').forEach(b=>b.onclick=()=>tema(b.dataset.t,true));
+
+/* ── Diseño ── */
+function diseno(d){marco.dataset.diseno=d;$$('[data-d]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.d===d));if(d==='pasos'&&!['invitacion','codigo','empresa'].includes(estadoActual))estado('invitacion');url()}
+$$('[data-d]').forEach(b=>b.onclick=()=>diseno(b.dataset.d));
+
+/* ── Estados: 5 vistas; error y bloqueo son la vista Entrar con su aviso ── */
+let estadoActual='entrar',relojOtp=null,relojBloq=null;
+const vistaDe={entrar:'entrar',error:'entrar',bloqueo:'entrar',codigo:'codigo',empresa:'empresa',invitacion:'invitacion',vencida:'vencida'};
+const pasoDe={invitacion:0,codigo:1,empresa:2};
+function estado(e,foco){
+  estadoActual=e;
+  $$('[data-e]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.e===e));
+  const v=vistaDe[e];
+  $$('.vista').forEach(s=>s.hidden=s.dataset.vista!==v);
+  $('#av-error').hidden=e!=='error';
+  $('#av-bloqueo').hidden=e!=='bloqueo';
+  $('#c-clave').classList.toggle('mal',e==='error');
+  $('#clave').setAttribute('aria-invalid',e==='error');
+  if(e==='error'||e==='bloqueo'){$('#correo').value='ana.ruiz@orbe.com.ar';$('#clave').value='orbe2025'}
+  $('#enl-cab').textContent=e==='invitacion'?'Ya tengo cuenta':'Pedir acceso';
+  // pasos del panel
+  const p=pasoDe[e];
+  $$('#pasos li').forEach((li,i)=>{li.classList.toggle('hecho',p!==undefined&&i<p);if(i===p)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current')});
+  // relojes
+  clearInterval(relojBloq);relojBloq=null;
+  const b=$('#b-entrar');
+  if(e==='bloqueo'){let s=299;b.setAttribute('aria-disabled','true');const pinta=()=>{b.innerHTML=`<i class="ph ph-hourglass-medium"></i><span>Probá de nuevo en <span class="num">${fmt(s)}</span></span>`};pinta();relojBloq=setInterval(()=>{s--;if(s<=0){clearInterval(relojBloq);estado('entrar')}else pinta()},1000)}
+  else{b.removeAttribute('aria-disabled');b.innerHTML='Entrar<i class="ph ph-arrow-right flecha"></i>'}
+  if(e==='codigo')arrancarOtp();else{clearInterval(relojOtp);relojOtp=null}
+  const sec=$(`.vista[data-vista="${v}"]`),f=(foco&&sec.querySelector(foco))||sec.querySelector('h2');
+  requestAnimationFrame(()=>f&&f.focus({preventScroll:true}));
+  url();
+}
+$$('[data-e]').forEach(b=>b.onclick=()=>estado(b.dataset.e));
+document.addEventListener('click',e=>{const b=e.target.closest('[data-ir]');if(b){e.preventDefault();estado(b.dataset.ir,b.dataset.ir==='codigo'?'#codigo':null)}});
+function url(){try{const u=new URL(location);u.searchParams.set('diseno',marco.dataset.diseno);u.searchParams.set('estado',estadoActual);history.replaceState(null,'',u)}catch(e){}}
+
+/* ── Validación de Entrar ── */
+const reCorreo=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+function marcar(input,msg){const c=input.closest('.campo'),m=c.querySelector('.msj');c.classList.toggle('mal',!!msg);input.setAttribute('aria-invalid',msg?'true':'false');if(m)m.innerHTML=msg?`<i class="ph ph-warning-circle"></i>${msg}`:''}
+['#correo','#clave'].forEach(s=>$(s).addEventListener('input',e=>{if(e.target.getAttribute('aria-invalid')==='true')marcar(e.target,'')}));
+$('#correo').addEventListener('blur',e=>{const v=e.target.value.trim();if(v&&!reCorreo.test(v))marcar(e.target,'A ese correo le falta algo: revisá el @ y el dominio.')});
+function cargando(btn,on,texto){if(on){btn.dataset.orig=btn.innerHTML;btn.style.width=btn.offsetWidth+'px';btn.setAttribute('aria-busy','true');btn.innerHTML=`<span class="giro" aria-hidden="true"></span>${texto}`}else if(btn.dataset.orig){btn.innerHTML=btn.dataset.orig;btn.style.width='';btn.removeAttribute('aria-busy');delete btn.dataset.orig}}
+$('#f-entrar').addEventListener('submit',async e=>{
+  e.preventDefault();const b=$('#b-entrar');
+  if(b.getAttribute('aria-disabled')==='true')return;
+  const c=$('#correo'),k=$('#clave'),eC=!c.value.trim()?'Escribí tu correo.':(!reCorreo.test(c.value.trim())?'A ese correo le falta algo: revisá el @ y el dominio.':''),eK=k.value?'':'Escribí tu contraseña.';
+  marcar(c,eC);marcar(k,eK);if(eC||eK){(eC?c:k).focus();return}
+  cargando(b,true,'Entrando…');await espera(900);cargando(b,false);estado('empresa');
+});
+
+/* ── Contraseña: ojo y Mayús ── */
+$('#ojo').onclick=()=>{const c=$('#clave'),ver=c.type==='password';c.type=ver?'text':'password';$('#ojo').setAttribute('aria-pressed',ver);$('#ojo').setAttribute('aria-label',ver?'Ocultar contraseña':'Mostrar contraseña');$('#ojo i').className='ph '+(ver?'ph-eye-slash':'ph-eye');c.focus()};
+['keydown','keyup'].forEach(ev=>$('#clave').addEventListener(ev,e=>{if(e.getModifierState){const on=e.getModifierState('CapsLock');$('#mayus').classList.toggle('ver',on);$('#enl-olvide').hidden=on}}));
+$('#clave').addEventListener('blur',()=>{$('#mayus').classList.remove('ver');$('#enl-olvide').hidden=false});
+$$('.recordar').forEach(b=>b.onclick=()=>b.setAttribute('aria-checked',b.getAttribute('aria-checked')!=='true'));
+
+/* ── Código: un input, seis casillas, se manda solo al completar ── */
+const otp=$('#otp'),cod=$('#codigo'),cajas=$$('#otp .d');
+function pintarOtp(){const v=cod.value;cajas.forEach((d,i)=>{d.textContent=v[i]||'';d.classList.toggle('on',document.activeElement===cod&&i===Math.min(v.length,5)&&!otp.classList.contains('bien'))})}
+cod.addEventListener('input',()=>{cod.value=cod.value.replace(/\D/g,'').slice(0,6);otp.classList.remove('mal');pintarOtp();if(cod.value.length===6)verificar()});
+['focus','blur','keyup','click'].forEach(ev=>cod.addEventListener(ev,pintarOtp));
+function arrancarOtp(){
+  cod.value='';otp.classList.remove('bien','mal');pintarOtp();$('#b-reenviar').hidden=true;
+  let s=24;$('#otp-txt').innerHTML=`Podés pedir otro en <b class="num" id="otp-cuenta">${fmt(s)}</b>`;
+  clearInterval(relojOtp);relojOtp=setInterval(()=>{s--;const c=$('#otp-cuenta');if(s<=0){clearInterval(relojOtp);$('#otp-txt').textContent='¿No llegó? Revisá spam.';$('#b-reenviar').hidden=false}else if(c)c.textContent=fmt(s)},1000);
+}
+$('#b-reenviar').onclick=()=>{arrancarOtp();toast('Mandamos otro código','A ana.ruiz@orbe.com.ar · vence en 10 min');cod.focus()};
+async function verificar(){
+  const b=$('#b-codigo');cargando(b,true,'Revisando…');await espera(600);cargando(b,false);
+  if(cod.value==='000000'){otp.classList.add('mal');$('#otp-txt').textContent='Ese código no es. Revisá el último correo.';cod.select();return}
+  clearInterval(relojOtp);otp.classList.add('bien');pintarOtp();$('#b-reenviar').hidden=true;
+  $('#otp-txt').innerHTML='<span class="ok"><i class="ph-fill ph-check-circle"></i>Correo confirmado</span>';
+  await espera(700);estado('empresa');
+}
+$('#b-codigo').onclick=()=>{if(cod.value.length<6){otp.classList.add('mal');$('#otp-txt').textContent=`Faltan ${6-cod.value.length} cifras.`;cod.focus();return}verificar()};
+
+/* ── Empresa: la fila muestra que está abriendo ── */
+$$('.esp').forEach(b=>b.onclick=async()=>{
+  if(b.getAttribute('aria-busy'))return;b.setAttribute('aria-busy','true');
+  const g=document.createElement('span');g.className='giro';g.setAttribute('aria-hidden','true');b.append(g);
+  await espera(900);g.remove();b.removeAttribute('aria-busy');
+  toast(`Entraste a ${b.querySelector('b').firstChild.textContent}`,'Demo: acá abre Inicio');
+});
+
+/* ── Invitación: reglas que se tildan en vivo ── */
+$('#nueva').addEventListener('input',e=>{const v=e.target.value;[['#r-largo',v.length>=8],['#r-num',/\d/.test(v)],['#r-dist',v.length>0&&!v.toLowerCase().includes('tomas')]].forEach(([s,ok])=>{const r=$(s);r.classList.toggle('ok',ok);r.querySelector('i').className=ok?'ph-fill ph-check-circle':'ph ph-circle'})});
+$('#f-invitacion').addEventListener('submit',async e=>{e.preventDefault();const n=$('#nueva');if($$('#reglas .ok').length<3){n.focus();n.closest('.campo').classList.add('mal');setTimeout(()=>n.closest('.campo').classList.remove('mal'),1200);return}const b=$('#b-crear');cargando(b,true,'Creando…');await espera(800);cargando(b,false);estado('codigo','#codigo')});
+$('#f-vencida').addEventListener('submit',e=>{e.preventDefault();toast('Volviste a Cobranzas','Recuperamos el borrador de FAC-01102')});
+
+/* ── Toast ── */
+let tT;function toast(t,s){$('#toast-t').textContent=t;$('#toast-s').textContent=s;$('#toast').classList.add('ver');clearTimeout(tT);tT=setTimeout(()=>$('#toast').classList.remove('ver'),4000)}
+
+/* ── Arranque desde la URL (?diseno=puntos&estado=codigo) ── */
+const q=new URLSearchParams(location.search);
+const d0=q.get('diseno'),e0=q.get('estado');
+if(e0&&vistaDe[e0])estado(e0);else estado('entrar');
+if(d0&&$(`[data-d="${d0}"]`))diseno(d0);
+if(matchMedia('(min-width:900px)').matches&&estadoActual==='entrar')requestAnimationFrame(()=>requestAnimationFrame(()=>$('#correo').focus({preventScroll:true})));
+</script>
+</body>
+</html>

@@ -159,6 +159,11 @@ button{cursor:pointer}
 .apilada .sg.lbl span{opacity:1}
 .apilada.foco .sg{opacity:.32}
 .apilada.foco .sg.on{opacity:1}
+.carr-ind{display:none;align-items:center;gap:var(--e4);margin:calc(-1 * var(--e3)) 0 var(--e4);font-size:12px;color:var(--texto-3)}
+.carr-ind b{color:var(--tinta);font-weight:500}
+.carr-ind .pts{display:flex;gap:4px;margin-left:auto}
+.carr-ind .pts i{width:6px;height:6px;border-radius:3px;background:var(--borde-f,var(--borde));transition:width .24s var(--ease),background .24s}
+.carr-ind .pts i.on{width:18px;background:var(--tinta)}
 .ley{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--e2);margin:var(--e5) calc(-1 * var(--e4)) 0}
 .ley button{border:0;background:none;text-align:left;padding:var(--e4);border-radius:12px;transition:background .15s;min-width:0}
 .ley button:hover,.ley button.on{background:var(--hover)}
@@ -363,9 +368,7 @@ tfoot .t-monto{color:var(--tinta)}
   .cab{flex-direction:column;align-items:flex-start}
   .cab h1{font-size:32px}
   .cab .acc{display:none}
-  .ley{display:flex;overflow-x:auto;margin:var(--e5) calc(-1 * var(--e7)) 0;padding:0 var(--e5);scroll-snap-type:x mandatory;scrollbar-width:none}
-  .ley::-webkit-scrollbar{display:none}
-  .ley button{flex:0 0 auto;scroll-snap-align:start}
+  .ley{grid-template-columns:repeat(2,minmax(0,1fr));margin:var(--e5) 0 0} /* etapas en 2 columnas: tocar una lleva a su columna */
   .emb-top .gan{margin-left:0;text-align:left}
   .herr .der{margin-left:0;width:100%}
   .campo{width:100%;height:auto}
@@ -373,6 +376,7 @@ tfoot .t-monto{color:var(--tinta)}
   .tablero{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:84%;margin:0 calc(-1 * var(--e6));padding:var(--e1) var(--e6) var(--e6);gap:var(--e5);scroll-padding:0 var(--e6);scroll-snap-type:x mandatory}
   .col{scroll-snap-align:start;min-height:360px}
   body.arrastrando .tablero{scroll-snap-type:none}
+  .carr-ind{display:flex}
   .op h4{font-size:16px}
   .tabla-wrap{border:0;padding:0;background:none;overflow:visible}
   table{min-width:0}
@@ -497,7 +501,8 @@ tfoot .t-monto{color:var(--tinta)}
           <p id="sinResTxt">Probá con otro responsable o limpiá la búsqueda.</p>
           <button class="btn chico" id="limpiar"><i class="ph ph-x"></i>Limpiar filtros</button>
         </div>
-        <div class="tablero" id="tablero" aria-label="Tablero del pipeline. Con una tarjeta enfocada, Mayúscula + flecha la pasa de etapa."></div>
+        <div class="carr-ind" id="carrInd" aria-hidden="true"></div>
+        <div class="tablero" id="tablero" data-carrusel aria-label="Tablero del pipeline. Con una tarjeta enfocada, Mayúscula + flecha la pasa de etapa."></div>
         <div class="tabla-wrap" id="tablaWrap"></div>
       </section>
     </div>
@@ -609,6 +614,10 @@ function tarjeta(o,i){
 
 /* ── tablero ── */
 const tab=$('#tablero');
+/* En celular el tablero es un carrusel a propósito (una etapa por vez, con encastre): el indicador dice cuál y cuántas */
+function pintarCarrInd(){const el=$('#carrInd');if(!el||getComputedStyle(el).display==='none')return;const col=tab.firstElementChild;const paso=col?col.getBoundingClientRect().width+parseFloat(getComputedStyle(tab).columnGap||0):1;const i=Math.max(0,Math.min(ETAPAS.length-1,Math.round(tab.scrollLeft/paso)));
+  el.innerHTML=`<b>${ETAPAS[i].n}</b><span>${i+1} de ${ETAPAS.length}</span><span class="pts">${ETAPAS.map((e,k)=>`<i class="${k===i?'on':''}"></i>`).join('')}</span>`}
+tab.addEventListener('scroll',()=>requestAnimationFrame(pintarCarrInd),{passive:true});addEventListener('resize',pintarCarrInd);setTimeout(pintarCarrInd,600);
 function renderTablero(entrada=false){
   let k=0;
   tab.innerHTML=ETAPAS.map(e=>{

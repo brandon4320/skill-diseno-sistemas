@@ -8,7 +8,7 @@ Abre una pantalla en Chromium (Playwright), mide los estilos computados y la com
 node scripts/revisar.mjs ejemplos/tablero-crm.html
 node scripts/revisar.mjs http://localhost:3000/cobranzas --ancho 1280
 node scripts/revisar.mjs pantalla.html --celular            # la pasada principal a 390 px, táctil
-node scripts/revisar.mjs pantalla.html --oscuro             # data-tema="oscuro" + prefers-color-scheme: dark
+node scripts/revisar.mjs pantalla.html --oscuro             # carga en claro, anota los colores, pasa a data-tema="oscuro" + prefers-color-scheme: dark
 node scripts/revisar.mjs ejemplos/componentes.html --galeria  # catálogo: no cuenta botones rellenos
 node scripts/revisar.mjs pantalla.html --json --minimo 80   # para otro agente o CI: sale con 1 si queda debajo
 ```
@@ -45,7 +45,13 @@ Siempre hace dos pasadas: la principal (`--ancho`, 1440 por defecto) y otra a 39
 | Botón de ícono sin nombre | falla | Clickeables sin texto visible, sin `aria-label`, `aria-labelledby`, `title` ni `<label for>`. |
 | Clickeable sin teclado | aviso | `<div>` o `<span>` con cursor de mano que no son botón ni enlace. |
 | Tamaños de letra | aviso | 11 / 12 / 13 / 14 / 16 / 20 / 24 / 32 / 40, y de 36 a 44 para títulos grandes. |
-| Desborde a 390 px | falla | `scrollWidth` mayor que la ventana. Lista los elementos de más afuera que se salen y no están dentro de un contenedor con scroll. Si `body` esconde el desborde, avisa igual "contenido cortado". |
+| Desborde a 390 px | falla | `scrollWidth` mayor que la ventana. Lista los elementos de más afuera que se salen y no están dentro de un contenedor con scroll. |
+| Scroll de costado dentro de un componente | falla | En la pasada de 390: todo contenedor visible con `overflow-x: auto/scroll` cuyo `scrollWidth` supera su `clientWidth` en más de 1 px (tabla ancha, kanban, cronograma, riel de filtros o pestañas, código). No cuenta si es un **carrusel a propósito**: `scroll-snap-type` distinto de `none` o el atributo `data-carrusel` en el contenedor (que además tiene que llevar indicador "2 de 5" o puntos: eso no lo mide). Tampoco cuenta lo que está dentro de un lienzo con paneo marcado `data-lienzo` (flujo de nodos, mapa), ni lo que está plegado dentro de un padre de 0 px (un "Ver código" cerrado). La cantidad de carruseles aceptados sale en `resumen.carruselesCelular`. Ver SKILL.md §6e. |
+| Se sale de la pantalla | falla | En la pasada de 390: textos y controles que quedan cortados en el borde (parte adentro, parte afuera) sin un scroll que los muestre, también cuando `body` esconde el desborde. No cuenta lo que está del todo afuera (una hoja cerrada), lo `fixed`, lo que está en un `data-lienzo` ni lo truncado con "…" por un padre que entra en la pantalla. |
+| Oscuro · la página no cambia | aviso | Solo con `--oscuro`: el fondo de `body` sigue claro; en ese caso no mide lo demás de oscuro. |
+| Oscuro · blanco puro sobre negro puro | aviso | Solo con `--oscuro`: texto de 253 o más en los tres canales sobre un fondo de 3 o menos. |
+| Oscuro · color sin versión oscura | aviso | Solo con `--oscuro`: la página se carga primero en claro y se anota el color de cada texto; después pasa a oscuro. Avisa los textos de color (saturación > 0,3) que quedaron **con el mismo valor que en claro** y no llegan a 4,5:1 (3:1 desde 24 px) sobre su fondo oscuro: un estado o un delta escrito a mano. |
+| Oscuro · sombra como única separación | aviso | Solo con `--oscuro`: piezas de 120 × 56 o más con sombra difusa, sin borde (ni anillo de 1 px hecho con sombra) y con un fondo que contrasta menos de 1,12:1 con lo de abajo. |
 | Errores en la consola | aviso | Errores de JS y de consola de las dos pasadas. |
 | Simetría y alineación | aviso (tope 10 entre todos) | Ver `guias/simetria.md` §15. **Hermanos de distinto alto:** tarjetas de la misma clase en una fila de grid o flex (tops a ≤ 2 px, hasta 520 de alto) que difieren en más de 2 px. **Pies a distinta altura:** en esas filas con el mismo alto, el último hijo no coincide ni arriba ni abajo (> 2 px). **Padding asimétrico:** botones y pastillas con fondo o borde de hasta 48 px y tarjetas con clase de tarjeta, > 1 px de diferencia; se tolera hasta 4 px con un ícono del lado más chico y 10 con un avatar redondo; no cuentan apilados en columna ni tarjetas con padding 0 en un lado. **Ícono descentrado:** `svg` o `i.ph*` solo en un cuadro de 24–48 px, centro a más de 1,5 px. **Bordes casi alineados:** bloques apilados del contenido principal (`main`) y de cada tarjeta, por su caja (fondo o borde izquierdo) y su primer texto o ícono, a entre 1 y 6 px (1 px exacto se tolera; los íconos colgados con margen negativo y lo centrado no cuentan). **Botones de distinto ancho:** 2–4 botones estirados que llenan su fila, > 2 px. **Borde duplicado:** hermanos pegados con borde en los dos lados que se tocan. **Medio píxel:** piezas con borde de 1 px movidas por un `transform` a una posición con decimales. |
 
@@ -53,7 +59,7 @@ La nota parte de 100 y cada problema resta según su peso, con tope por chequeo.
 
 ### Lo que no ve
 
-El revisor mide reglas, no el gusto. No sabe si la pantalla tiene vida, si hay un protagonista o si se ve tan bien como 06, 07, 08 y 14. Para eso: abrí la captura al lado de la referencia. Tampoco mide el contraste de texto dentro de un SVG ni el foco con teclado. De simetría no mide radios concéntricos, la línea base de las cifras ni el alto de los controles de una barra: eso se mira con `?grilla` (`ejemplos/simetria.html`). `ejemplos/simetria.html` es la prueba del chequeo: sus "antes" tienen que salir todos como avisos (se revisa con `--galeria`).
+El revisor mide reglas, no el gusto. No sabe si la pantalla tiene vida, si hay un protagonista o si se ve tan bien como 06, 07, 08 y 14. Para eso: abrí la captura al lado de la referencia. Tampoco mide el contraste de texto dentro de un SVG ni el foco con teclado. Del celular no mira si un carrusel marcado tiene indicador, ni prueba 360 y 414: la pasada de celular es siempre a 390, así que esos dos anchos se miran a mano. Del oscuro no mide la escalera de superficies ni si la grilla de un gráfico quedó más brillante que los datos. De simetría no mide radios concéntricos, la línea base de las cifras ni el alto de los controles de una barra: eso se mira con `?grilla` (`ejemplos/simetria.html`). `ejemplos/simetria.html` es la prueba del chequeo: sus "antes" tienen que salir todos como avisos (se revisa con `--galeria`).
 
 ## guardia-datos.mjs: que un overhaul no toque los datos
 

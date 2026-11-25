@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="es" data-tema="claro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arrastre con impacto</title>
+<meta name="description" content="Mover una tarjeta muestra cómo cambia la entrega antes de soltar (análisis 68), más cuatro piezas de app nativa (análisis 67): optimista con reversión, foto con vista borrosa, tarjeta que crece y títulos balanceados.">
+<script>try{var t=localStorage.getItem('impacto-tema');if(t)document.documentElement.dataset.tema=t;else if(matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.dataset.tema='oscuro'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+:root{
+  --acento:#4338ca; --acento-texto:#4338ca;
+  --color-fondo:#f4f4f5; --color-panel:#fafafa; --color-superficie:#fff; --color-suave:#f4f4f5; --color-hover:#f8f8f9;
+  --color-borde:#e4e4e7; --color-borde-fuerte:#d4d4d8; --color-divisor:#f0f0f2;
+  --color-tinta:#18181b; --color-texto-2:#565b68; --color-texto-3:#646979; --color-deshabilitado:#a1a1aa;
+  --color-verde-fondo:#e8f7ee; --color-verde-texto:#15803d; --color-ambar-fondo:#fef3e2; --color-ambar-texto:#b45309;
+  --color-rojo-fondo:#fdecec; --color-rojo-texto:#b91c1c; --color-azul-fondo:#eaf2fe; --color-azul-texto:#1d4ed8;
+  --color-gris-fondo:#f4f4f5; --color-gris-texto:#52525b;
+  --color-dato-1:#6366f1; --color-dato-2:#22b8e8; --color-dato-3:#4cb862; --color-dato-4:#f2c230; --color-dato-5:#f0634f;
+  --etapa-1:#a1a1aa; --etapa-2:#6366f1; --etapa-3:#3730a3; --etapa-4:#15803d;
+  --radius-app:26px; --radius-marco:20px; --radius-interno:16px; --radius-control:12px; --radius-chip:8px;
+  --espacio-1:2px; --espacio-2:4px; --espacio-3:6px; --espacio-4:8px; --espacio-5:12px; --espacio-6:16px; --espacio-7:20px; --espacio-8:24px; --espacio-9:28px; --espacio-10:40px;
+  --shadow-min:0 1px 2px rgb(22 24 29/.05); --shadow-hover:0 14px 30px -18px rgb(22 24 29/.3);
+  --shadow-flotante:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
+  --ease:cubic-bezier(.23,1,.32,1); --ease-mover:cubic-bezier(.65,0,.35,1);
+  --font:'Geist',ui-sans-serif,system-ui,sans-serif; --mono:'Geist Mono',ui-monospace,monospace;
+  --globo:#18181b; --globo-texto:#fff;
+  color-scheme:light;
+}
+[data-tema=oscuro]{
+  --acento:#6366f1; --acento-texto:#a5b4fc;
+  --color-fondo:#0a0a0a; --color-panel:#111113; --color-superficie:#18181b; --color-suave:#232326; --color-hover:#1f1f22;
+  --color-borde:#27272a; --color-borde-fuerte:#3f3f46; --color-divisor:#202023;
+  --color-tinta:#fafafa; --color-texto-2:#b4b4bd; --color-texto-3:#8f8f9a;
+  --color-verde-fondo:#22c55e1f; --color-verde-texto:#4ade80; --color-ambar-fondo:#f5b8001f; --color-ambar-texto:#fbbf24;
+  --color-rojo-fondo:#ef44441f; --color-rojo-texto:#f87171; --color-azul-fondo:#3b82f61f; --color-azul-texto:#60a5fa;
+  --color-gris-fondo:#27272a; --color-gris-texto:#a1a1aa;
+  --etapa-1:#71717a; --etapa-2:#818cf8; --etapa-3:#a5b4fc; --etapa-4:#4ade80;
+  --shadow-min:none; --shadow-hover:0 14px 30px -18px rgb(0 0 0/.8); --shadow-flotante:0 24px 48px -16px rgb(0 0 0/.7);
+  --globo:#f4f4f5; --globo-texto:#18181b;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--color-fondo);color:var(--color-tinta);font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased;padding:var(--espacio-7)}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ph,.ph-fill{line-height:1}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:2px}
+[hidden]{display:none!important}
+
+.panel{max-width:1440px;margin:0 auto;background:var(--color-panel);border:1px solid var(--color-borde);border-radius:var(--radius-app);padding:var(--espacio-8) var(--espacio-9)}
+.cab{display:flex;align-items:flex-end;gap:var(--espacio-6);flex-wrap:wrap}
+.cab .tx{flex:1;min-width:0}
+.migas{font-size:13px;color:var(--color-texto-3);margin-bottom:var(--espacio-4)}
+.migas b{color:var(--color-tinta);font-weight:500}
+h1{font-size:32px;font-weight:500;line-height:1.15;letter-spacing:-.03em;display:flex;align-items:center;gap:var(--espacio-5);flex-wrap:wrap;text-wrap:balance}
+.sub{margin-top:var(--espacio-2);color:var(--color-texto-2);font-size:14px}
+.sub b{color:var(--color-tinta);font-weight:500}
+.sub .rojo{color:var(--color-rojo-texto);font-weight:500}.sub .verde{color:var(--color-verde-texto);font-weight:500}
+.pastilla{display:inline-flex;align-items:center;gap:var(--espacio-3);height:24px;padding:0 var(--espacio-4);border-radius:var(--radius-chip);font-size:12px;font-weight:500;letter-spacing:0;transition:background .24s,color .24s}
+.pastilla::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.p-verde{background:var(--color-verde-fondo);color:var(--color-verde-texto)}
+.p-rojo{background:var(--color-rojo-fondo);color:var(--color-rojo-texto)}
+.p-ambar{background:var(--color-ambar-fondo);color:var(--color-ambar-texto)}
+.seg{display:inline-flex;background:var(--color-suave);border:1px solid var(--color-borde);border-radius:var(--radius-control);padding:3px;gap:var(--espacio-1)}
+.seg button{border:0;background:none;width:36px;height:30px;border-radius:var(--radius-chip);display:grid;place-items:center;color:var(--color-texto-2)}
+.seg button .ph{font-size:16px}
+.seg button[aria-pressed=true]{background:var(--color-superficie);color:var(--color-tinta);box-shadow:0 1px 2px rgb(22 24 29/.1),0 0 0 1px var(--color-borde)}
+[data-tema=oscuro] .seg button[aria-pressed=true]{background:var(--color-tinta);color:var(--color-superficie);box-shadow:none}
+.leyenda{display:flex;align-items:center;gap:var(--espacio-6);flex-wrap:wrap;margin-top:var(--espacio-9);font-size:12px;color:var(--color-texto-3)}
+.leyenda span{display:inline-flex;align-items:center;gap:var(--espacio-3)}
+.leyenda .raya{width:12px;height:3px;border-radius:2px;background:var(--color-rojo-texto)}
+.leyenda .raya.v{background:var(--color-verde-texto)}
+.leyenda kbd{font-family:var(--mono);font-size:12px;padding:0 var(--espacio-2);border:1px solid var(--color-borde);border-radius:4px;background:var(--color-superficie)}
+
+/* ── Tablero ── */
+.tablero{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--espacio-gap,14px);margin-top:var(--espacio-5)}
+.col{background:var(--color-suave);border:1px solid var(--color-borde);border-radius:var(--radius-marco);padding:var(--espacio-2);display:flex;flex-direction:column;min-width:0;transition:background .18s,border-color .18s}
+.col.destino{background:color-mix(in oklch,var(--acento) 8%,var(--color-suave));border-color:color-mix(in oklch,var(--acento) 45%,transparent)}
+.col-cab{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-4) var(--espacio-5);font-size:13px;font-weight:500}
+.col-cab .punto{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.col-cab .cuenta{display:inline-flex;align-items:center;gap:var(--espacio-2);color:var(--color-texto-3);font-weight:400}
+.delta{display:inline-flex;align-items:center;height:18px;padding:0 var(--espacio-2);border-radius:4px;background:var(--color-superficie);border:1px solid var(--color-borde);font-family:var(--mono);font-size:11px;color:var(--color-texto-2)}
+.col-cab .lim{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--color-texto-3);font-weight:400}
+.col-cab .lim.pasa{color:var(--color-rojo-texto);font-weight:500}
+.tarjetas{display:flex;flex-direction:column;gap:var(--espacio-2);flex:1;min-height:96px}
+.soltar{display:none;align-items:center;justify-content:center;height:36px;font-size:12px;color:var(--acento-texto);font-weight:500}
+.col.destino .soltar{display:flex}
+.t{position:relative;background:var(--color-superficie);border:1px solid var(--color-borde);border-radius:var(--radius-interno);padding:var(--espacio-5) var(--espacio-5) var(--espacio-5) var(--espacio-6);box-shadow:var(--shadow-min);touch-action:pan-y;user-select:none;cursor:grab;text-align:left;width:100%;transition:opacity .18s,transform .24s var(--ease-mover)}
+.t::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:transparent}
+.t.camino::before{background:var(--color-verde-texto)}
+.t.define::before{background:var(--color-rojo-texto)}
+.t.origen{opacity:.35}
+.t .meta{display:flex;align-items:center;gap:var(--espacio-3);font-size:12px;color:var(--color-texto-3)}
+.t .meta .mono{font-size:12px}
+.t b{display:block;font-weight:500;font-size:14px;line-height:1.3;margin-top:var(--espacio-2)}
+.t .pie{display:flex;align-items:center;gap:var(--espacio-4);margin-top:var(--espacio-4);font-size:12px;color:var(--color-texto-3)}
+.t .pie .der{margin-left:auto}
+.t .def{color:var(--color-rojo-texto);font-weight:500;display:inline-flex;align-items:center;gap:var(--espacio-2)}
+.t .def .ph{font-size:14px}
+.rayitas{display:flex;gap:2px}
+.rayitas i{width:8px;height:6px;border-radius:2px;background:var(--color-borde-fuerte)}
+.rayitas i.h{background:var(--c,var(--etapa-2))}
+
+/* fantasma y consecuencia */
+.fantasma{position:fixed;left:0;top:0;z-index:20;pointer-events:none;rotate:2deg;scale:1.03;box-shadow:var(--shadow-flotante);opacity:.97;cursor:grabbing}
+.consecuencia{position:fixed;left:0;top:0;z-index:21;pointer-events:none;background:var(--color-superficie);border:1px solid var(--color-borde);border-radius:var(--radius-control);box-shadow:var(--shadow-flotante);padding:var(--espacio-3) var(--espacio-5);font-size:12px;display:flex;flex-direction:column;gap:var(--espacio-1);min-width:200px}
+.consecuencia .dest{display:flex;align-items:center;gap:var(--espacio-3);color:var(--color-texto-3)}
+.consecuencia .dest i{width:6px;height:6px;border-radius:50%;background:var(--c)}
+.consecuencia .val{display:flex;align-items:center;gap:var(--espacio-3);color:var(--color-tinta);font-weight:500;white-space:nowrap}
+.consecuencia .val .ph{font-size:14px;color:var(--color-texto-3)}
+.consecuencia .chip{display:inline-flex;align-items:center;height:20px;padding:0 var(--espacio-3);border-radius:6px;font-size:12px;font-weight:500}
+.chip.mejor{background:var(--color-verde-fondo);color:var(--color-verde-texto)}
+.chip.peor{background:var(--color-rojo-fondo);color:var(--color-rojo-texto)}
+.chip.igual{background:var(--color-gris-fondo);color:var(--color-gris-texto)}
+
+/* toast con barrita */
+.toast{position:fixed;left:50%;bottom:var(--espacio-9);translate:-50% 0;z-index:30;background:#18181b;color:#fff;border-radius:var(--radius-interno);box-shadow:var(--shadow-flotante);padding:var(--espacio-4) var(--espacio-4) var(--espacio-4) var(--espacio-6);display:flex;align-items:center;gap:var(--espacio-5);font-size:13px;overflow:hidden;opacity:0;transform:translateY(16px);transition:opacity .24s,transform .32s var(--ease);pointer-events:none;max-width:calc(100vw - 32px)}
+.toast.ver{opacity:1;transform:none;pointer-events:auto}
+.toast .ok{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:none;background:rgb(74 222 128/.18);color:#4ade80}
+.toast .ok.mal{background:rgb(248 113 113/.18);color:#f87171}
+.toast small{display:block;color:rgb(255 255 255/.72);font-size:12px}
+.toast button{border:0;background:none;color:#c7d2fe;font-weight:500;font-size:13px;padding:0 var(--espacio-5);height:36px;border-radius:8px;display:inline-flex;align-items:center;gap:var(--espacio-2);white-space:nowrap}
+.toast .barrita{position:absolute;left:0;bottom:0;height:2px;width:100%;background:#a5b4fc;transform-origin:left;transform:scaleX(0)}
+.toast.ver .barrita{animation:vacia var(--dur,8s) linear forwards}
+.toast:hover .barrita,.toast:focus-within .barrita{animation-play-state:paused}
+@keyframes vacia{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+[data-tema=oscuro] .toast{background:#232327;border:1px solid #2f2f35}
+
+/* ── Láminas de app nativa ── */
+.titulo-sec{font-size:20px;font-weight:500;letter-spacing:-.01em;margin-top:var(--espacio-10)}
+.titulo-sec small{font-size:14px;color:var(--color-texto-3);font-weight:400;margin-left:var(--espacio-4)}
+.laminas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--espacio-gap,14px);margin-top:var(--espacio-5)}
+.lam{background:var(--color-suave);border:1px solid var(--color-borde);border-radius:var(--radius-marco);padding:var(--espacio-2);display:flex;flex-direction:column}
+.lam-cab{padding:var(--espacio-4) var(--espacio-5);font-size:13px;font-weight:500;display:flex;align-items:center;gap:var(--espacio-4)}
+.lam-cab .ph{font-size:16px;color:var(--color-texto-3)}
+.lam .demo{background:var(--color-superficie);border:1px solid var(--color-borde);border-radius:var(--radius-interno);padding:var(--espacio-6);flex:1;display:flex;flex-direction:column;gap:var(--espacio-5);min-height:268px;position:relative;overflow:hidden}
+.lam .regla{padding:var(--espacio-4) var(--espacio-5) var(--espacio-3);font-size:12px;color:var(--color-texto-2);line-height:1.45}
+
+/* optimista */
+.tarea{display:flex;align-items:center;gap:var(--espacio-5);min-height:44px;border:0;background:none;width:100%;text-align:left;border-bottom:1px solid var(--color-divisor);font-size:13px;padding:0}
+.tarea:last-of-type{border-bottom:0}
+.tarea .c{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--color-borde-fuerte);display:grid;place-items:center;flex:none;transition:background .12s,border-color .12s}
+.tarea .c .ph-fill{font-size:20px;color:var(--color-verde-texto);display:none}
+.tarea[aria-checked=true] .c{border:0}
+.tarea[aria-checked=true] .c .ph-fill{display:block}
+.tarea[aria-checked=true] span.n{color:var(--color-texto-3)}
+.tarea .q{margin-left:auto;font-size:12px;color:var(--color-texto-3)}
+.contador{font-size:12px;color:var(--color-texto-3)}
+.contador b{color:var(--color-tinta);font-weight:500}
+.inter{display:inline-flex;align-items:center;gap:var(--espacio-4);border:0;background:none;font-size:12px;color:var(--color-texto-2);font-weight:500;min-height:32px;margin-top:auto}
+.inter .riel{width:32px;height:18px;border-radius:99px;background:var(--color-borde-fuerte);position:relative;transition:background .18s;flex:none}
+.inter .riel::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .18s var(--ease)}
+.inter[aria-checked=true] .riel{background:var(--acento)}
+.inter[aria-checked=true] .riel::after{transform:translateX(14px)}
+
+/* foto con vista borrosa */
+.foto{position:relative;border-radius:var(--radius-control);overflow:hidden;aspect-ratio:4/3;background:#cdbfb8}
+.foto svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.foto .borrosa{filter:blur(16px);transform:scale(1.12)}
+.foto .real{opacity:0;transition:opacity .32s var(--ease)}
+.foto.cargada .real{opacity:1}
+.foto-pie{display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-4);font-size:12px;color:var(--color-texto-3)}
+.foto-pie b{color:var(--color-tinta);font-weight:500;font-size:13px;display:block}
+.btn{height:32px;padding:0 var(--espacio-5);border-radius:var(--radius-chip);border:1px solid var(--color-borde);background:var(--color-superficie);box-shadow:var(--shadow-min);font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:var(--espacio-3);white-space:nowrap}
+.btn .ph{font-size:14px}
+
+/* tarjeta que crece */
+.lista-m{display:flex;flex-direction:column;gap:var(--espacio-3)}
+.fila-m{display:flex;align-items:center;gap:var(--espacio-5);border:1px solid var(--color-borde);border-radius:var(--radius-control);background:var(--color-superficie);padding:var(--espacio-4) var(--espacio-5);min-height:52px;width:100%;text-align:left}
+.cuadro{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:#fff;background:var(--c);flex:none}
+.cuadro .ph-fill{font-size:16px}
+.fila-m b{font-size:13px;font-weight:500;display:block}
+.fila-m small{font-size:12px;color:var(--color-texto-3)}
+.fila-m .der{margin-left:auto;font-size:13px;font-weight:500}
+.ficha-m{position:absolute;inset:0;background:var(--color-superficie);padding:var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-5)}
+.ficha-m .cuadro{width:48px;height:48px;border-radius:var(--radius-control)}
+.ficha-m .cuadro .ph-fill{font-size:22px}
+.ficha-m h3{font-size:20px;font-weight:500;letter-spacing:-.01em}
+.ficha-m dl{display:grid;grid-template-columns:1fr 1fr;gap:var(--espacio-5)}
+.ficha-m dt{font-size:12px;color:var(--color-texto-3)}
+.ficha-m dd{font-size:14px;font-weight:500;margin-top:var(--espacio-1)}
+.ficha-m .volver{border:0;background:none;font-size:13px;color:var(--color-texto-2);font-weight:500;display:inline-flex;align-items:center;gap:var(--espacio-2);min-height:32px;margin-top:auto;align-self:flex-start}
+::view-transition-group(*){animation-duration:.32s;animation-timing-function:cubic-bezier(.65,0,.35,1)}
+
+/* títulos balanceados */
+.par{display:grid;grid-template-columns:1fr;gap:var(--espacio-5)}
+.caso{border:1px solid var(--color-borde);border-radius:var(--radius-control);padding:var(--espacio-5);width:100%;max-width:252px}
+.caso .et{display:inline-flex;align-items:center;gap:var(--espacio-2);font-size:12px;font-weight:500;margin-bottom:var(--espacio-3)}
+.caso .et.mal{color:var(--color-rojo-texto)}.caso .et.bien{color:var(--color-verde-texto)}
+.caso h4{font-size:20px;font-weight:500;line-height:1.2;letter-spacing:-.01em}
+.caso.sin h4{text-wrap:wrap}.caso.con h4{text-wrap:balance}
+
+@media (hover:hover){
+  .t:hover{border-color:var(--color-borde-fuerte)}
+  .fila-m:hover,.btn:hover{background:var(--color-hover)}
+  .toast button:hover{background:rgb(255 255 255/.08)}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}::view-transition-group(*){animation:none!important}}
+@media (max-width:1279px){.tablero{grid-template-columns:repeat(2,minmax(0,1fr))}.laminas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:767px){
+  body{padding:0}
+  .panel{border:0;border-radius:0;padding:var(--espacio-6)}
+  h1{font-size:24px}
+  .tablero,.laminas{grid-template-columns:minmax(0,1fr);gap:var(--espacio-5)}
+  .t{touch-action:none}
+  .seg button{width:44px;height:44px}
+  .tarea,.inter,.btn,.fila-m,.ficha-m .volver{min-height:44px}
+  .btn{height:44px}
+  .toast{bottom:var(--espacio-6)}
+}
+</style>
+</head>
+<body>
+<div class="panel">
+  <header class="cab">
+    <div class="tx">
+      <div class="migas">Pedidos / <b>PED-0417</b></div>
+      <h1>Módulos para Planta Sur <span class="pastilla p-rojo" id="estado">1 día tarde</span></h1>
+      <p class="sub" id="sub"></p>
+    </div>
+    <div class="seg" role="group" aria-label="Tema"><button type="button" data-t="claro" aria-pressed="true" aria-label="Tema claro"><i class="ph ph-sun"></i></button><button type="button" data-t="oscuro" aria-pressed="false" aria-label="Tema oscuro"><i class="ph ph-moon"></i></button></div>
+  </header>
+
+  <div class="leyenda">
+    <span><i class="raya"></i>Define la fecha de entrega</span>
+    <span><i class="raya v"></i>En el camino de entrega</span>
+    <span>Arrastrá una tarjeta para ver cómo mueve la entrega antes de soltarla · con teclado: <kbd>⇧</kbd> + <kbd>←</kbd> <kbd>→</kbd></span>
+  </div>
+
+  <div class="tablero" id="tablero">
+    <section class="col" data-col="0" style="--c:var(--etapa-1)" aria-label="Por preparar"><div class="col-cab"><i class="punto"></i>Por preparar<span class="cuenta"><span class="n num"></span><span class="delta" hidden></span></span></div><div class="tarjetas"></div><div class="soltar">Soltá para mover acá</div></section>
+    <section class="col" data-col="1" style="--c:var(--etapa-2)" aria-label="En armado"><div class="col-cab"><i class="punto"></i>En armado<span class="cuenta"><span class="n num"></span><span class="delta" hidden></span></span><span class="lim" data-lim="3"></span></div><div class="tarjetas"></div><div class="soltar">Soltá para mover acá</div></section>
+    <section class="col" data-col="2" style="--c:var(--etapa-3)" aria-label="En control"><div class="col-cab"><i class="punto"></i>En control<span class="cuenta"><span class="n num"></span><span class="delta" hidden></span></span></div><div class="tarjetas"></div><div class="soltar">Soltá para mover acá</div></section>
+    <section class="col" data-col="3" style="--c:var(--etapa-4)" aria-label="Listo para entregar"><div class="col-cab"><i class="punto"></i>Listo para entregar<span class="cuenta"><span class="n num"></span><span class="delta" hidden></span></span></div><div class="tarjetas"></div><div class="soltar">Soltá para mover acá</div></section>
+  </div>
+  <p class="sr" id="anuncio" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"></p>
+
+  <h2 class="titulo-sec">Piezas de app nativa <small>análisis 67</small></h2>
+  <div class="laminas">
+    <!-- Optimista con reversión -->
+    <section class="lam">
+      <div class="lam-cab"><i class="ph ph-lightning"></i>Optimista con reversión</div>
+      <div class="demo">
+        <div class="contador" id="opt-cont" aria-live="polite"></div>
+        <div id="opt-lista">
+          <button type="button" class="tarea" role="checkbox" aria-checked="false"><span class="c"><i class="ph-fill ph-check-circle"></i></span><span class="n">Llamar a Grupo Atlas</span><span class="q">hoy</span></button>
+          <button type="button" class="tarea" role="checkbox" aria-checked="true"><span class="c"><i class="ph-fill ph-check-circle"></i></span><span class="n">Mandar remito R-2207</span><span class="q">ayer</span></button>
+          <button type="button" class="tarea" role="checkbox" aria-checked="false"><span class="c"><i class="ph-fill ph-check-circle"></i></span><span class="n">Revisar cobro FAC-01102</span><span class="q">vie</span></button>
+        </div>
+        <button type="button" class="inter" id="opt-falla" role="switch" aria-checked="false"><span class="riel"></span>Simular que el servidor falla</button>
+      </div>
+      <p class="regla">Se tilda en el mismo cuadro del toque; si el servidor falla, vuelve atrás sola y lo dice con Reintentar.</p>
+    </section>
+
+    <!-- Foto con vista borrosa -->
+    <section class="lam">
+      <div class="lam-cab"><i class="ph ph-image"></i>Foto con vista borrosa</div>
+      <div class="demo">
+        <div class="foto" id="foto" role="img" aria-label="Foto de la visita: módulos apilados en planta">
+          <svg class="borrosa" viewBox="0 0 8 6" preserveAspectRatio="none" aria-hidden="true"><rect width="8" height="3" fill="#d9c7c0"/><rect y="3" width="8" height="3" fill="#4a4858"/><rect x="1" y="2" width="2" height="2" fill="#a2583f"/><rect x="3" y="2" width="2" height="2" fill="#c49a45"/><rect x="5" y="2.5" width="2" height="1.5" fill="#7d8190"/></svg>
+          <svg class="real" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="fc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c7c3df"/><stop offset=".6" stop-color="#efcfb3"/></linearGradient><pattern id="fn" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 0v6" stroke="rgb(0 0 0/.16)" stroke-width="1.5"/></pattern></defs><rect width="400" height="300" fill="url(#fc)"/><circle cx="300" cy="140" r="40" fill="#fbe3c0" opacity=".8"/><rect y="190" width="400" height="110" fill="#3d3c4b"/><rect x="40" y="140" width="110" height="50" fill="#a2583f"/><rect x="40" y="140" width="110" height="50" fill="url(#fn)"/><rect x="60" y="90" width="110" height="50" fill="#3f6b8f"/><rect x="60" y="90" width="110" height="50" fill="url(#fn)"/><rect x="160" y="140" width="110" height="50" fill="#c49a45"/><rect x="160" y="140" width="110" height="50" fill="url(#fn)"/><rect x="280" y="150" width="90" height="40" fill="#7d8190"/><rect x="280" y="150" width="90" height="40" fill="url(#fn)"/><path d="M330 190V60M280 66h110M300 66v50" stroke="#2b2a36" stroke-width="4" fill="none"/></svg>
+        </div>
+        <div class="foto-pie"><span><b>Visita 0412</b>Planta Sur · hoy 09:12</span><button type="button" class="btn" id="foto-otra"><i class="ph ph-arrow-clockwise"></i>Cargar de nuevo</button></div>
+      </div>
+      <p class="regla">Mientras llega, la propia foto borrosa (16 px de desenfoque, escala 1,12); la real entra por fundido en 320 ms. Nunca una caja gris con un ícono.</p>
+    </section>
+
+    <!-- Tarjeta que crece -->
+    <section class="lam">
+      <div class="lam-cab"><i class="ph ph-arrows-out-simple"></i>Tarjeta que crece</div>
+      <div class="demo" id="crece">
+        <div class="lista-m" id="lista-m">
+          <button type="button" class="fila-m" data-i="0" style="--c:var(--color-dato-1)"><span class="cuadro"><i class="ph-fill ph-storefront"></i></span><span><b>Orbe Retail</b><small class="mono">CONT-01101</small></span><span class="der num">$ 1,2 M</span></button>
+          <button type="button" class="fila-m" data-i="1" style="--c:var(--color-verde-texto)"><span class="cuadro"><i class="ph-fill ph-buildings"></i></span><span><b>Grupo Atlas</b><small class="mono">CONT-01088</small></span><span class="der num">US$ 4.700</span></button>
+          <button type="button" class="fila-m" data-i="2" style="--c:var(--color-ambar-texto)"><span class="cuadro"><i class="ph-fill ph-factory"></i></span><span><b>Hotel Bahía</b><small class="mono">CONT-01064</small></span><span class="der num">$ 640 mil</span></button>
+        </div>
+        <div class="ficha-m" id="ficha-m" hidden>
+          <span class="cuadro" id="fm-cuadro"><i class="ph-fill ph-storefront"></i></span>
+          <div><h3 id="fm-nom">Orbe Retail</h3><small class="mono" id="fm-cod" style="font-size:12px;color:var(--color-texto-3)">CONT-01101</small></div>
+          <dl><div><dt>Mensual</dt><dd class="num" id="fm-monto">$ 1,2 M</dd></div><div><dt>Vence</dt><dd>12 mar 2027</dd></div></dl>
+          <button type="button" class="volver" id="fm-volver"><i class="ph ph-arrow-left"></i>Volver a la lista</button>
+        </div>
+      </div>
+      <p class="regla">El cuadro de color y el nombre viajan de la fila a la cabecera de la ficha en 320 ms (View Transitions); sin soporte, fundido.</p>
+    </section>
+
+    <!-- Títulos balanceados -->
+    <section class="lam">
+      <div class="lam-cab"><i class="ph ph-text-align-left"></i>Títulos balanceados</div>
+      <div class="demo">
+        <div class="par">
+          <div class="caso sin"><span class="et mal"><i class="ph ph-x-circle"></i>Una palabra sola</span><h4>Cobros de la semana listos para revisar en caja</h4></div>
+          <div class="caso con"><span class="et bien"><i class="ph ph-check-circle"></i>Balanceado</span><h4>Cobros de la semana listos para revisar en caja</h4></div>
+        </div>
+      </div>
+      <p class="regla"><span class="mono">text-wrap: balance</span> en títulos y <span class="mono">pretty</span> en párrafos: nunca una palabra sola en la última línea.</p>
+    </section>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span class="ok" id="toast-i"><i class="ph ph-check"></i></span><div><b id="toast-t"></b><small id="toast-s"></small></div><button type="button" id="toast-b"></button><span class="barrita" aria-hidden="true"></span></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const quieto=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Tema */
+function tema(t,g){document.documentElement.dataset.tema=t;$$('[data-t]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===t));if(g){try{localStorage.setItem('impacto-tema',t)}catch(e){}}}
+tema(document.documentElement.dataset.tema||'claro');$$('[data-t]').forEach(b=>b.onclick=()=>tema(b.dataset.t,true));
+
+/* ── Modelo: días que le faltan a cada tarea según su etapa; la entrega la define la más lenta del camino ── */
+const HOY=new Date(2026,10,25), PROMETIDA=new Date(2026,11,3), TRASLADO=1;
+const ETAPAS=['Por preparar','En armado','En control','Listo para entregar'];
+let tareas=[
+  {id:'T-31',n:'Pintura de 2 módulos',d:3,col:0,camino:true},
+  {id:'T-32',n:'Estructura módulo 3',d:4,col:0,camino:true},
+  {id:'T-35',n:'Manual de uso',d:1,col:0,camino:false},
+  {id:'T-28',n:'Aberturas y vidrios',d:2,col:1,camino:true},
+  {id:'T-29',n:'Baño químico',d:2,col:1,camino:false},
+  {id:'T-26',n:'Control eléctrico',d:2,col:2,camino:true},
+  {id:'T-21',n:'Base y anclajes',d:3,col:3,camino:true},
+  {id:'T-22',n:'Plano firmado',d:1,col:3,camino:false}
+];
+const resta=(t,col=t.col)=>[t.d+2,Math.ceil(t.d/2)+1,1,0][col];
+function habiles(desde,n){const f=new Date(desde);while(n>0){f.setDate(f.getDate()+1);const w=f.getDay();if(w&&w<6)n--}return f}
+function difHabiles(a,b){if(+a===+b)return 0;const s=a<b?1:-1;let n=0;const f=new Date(a);while(+f!==+b){f.setDate(f.getDate()+s);const w=f.getDay();if(w&&w<6)n+=s}return n}
+function entrega(lista){const m=Math.max(0,...lista.filter(t=>t.camino).map(t=>resta(t)));return habiles(HOY,m+TRASLADO)}
+const dias=['dom','lun','mar','mié','jue','vie','sáb'],meses=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const corta=f=>`${f.getDate()} ${meses[f.getMonth()]}`,larga=f=>`${dias[f.getDay()]} ${corta(f)}`;
+const plural=(n,u,p)=>`${n} ${n===1?u:p}`;
+function contra(f){const d=difHabiles(PROMETIDA,f);return d===0?{t:'el día prometido',c:'verde',e:'A tiempo',p:'p-verde'}:d<0?{t:`${plural(-d,'día hábil','días hábiles')} antes`,c:'verde',e:'A tiempo',p:'p-verde'}:{t:`${plural(d,'día hábil','días hábiles')} tarde`,c:'rojo',e:plural(d,'día tarde','días tarde'),p:'p-rojo'}}
+
+/* ── Pintar ── */
+function pintar(){
+  const f=entrega(tareas),c=contra(f),max=Math.max(...tareas.filter(t=>t.camino).map(t=>resta(t)));
+  $$('.col').forEach(col=>{const i=+col.dataset.col,cont=col.querySelector('.tarjetas');cont.innerHTML='';
+    tareas.filter(t=>t.col===i).forEach(t=>cont.append(tarjeta(t,t.camino&&resta(t)===max&&max>0)));
+    const n=tareas.filter(t=>t.col===i).length;col.querySelector('.n').textContent=n;
+    const lim=col.querySelector('.lim');if(lim){const L=+lim.dataset.lim;lim.textContent=n>L?`${n} / ${L} · pasa el límite`:`${n} / ${L} límite`;lim.classList.toggle('pasa',n>L)}});
+  const e=$('#estado');e.className='pastilla '+c.p;e.textContent=c.e;
+  const enArmado=tareas.filter(t=>t.col===1).length;
+  $('#sub').innerHTML=`${plural(tareas.filter(t=>t.col<3).length,'tarea abierta','tareas abiertas')} · ${enArmado} en armado · Entrega <b>${larga(f)}</b>, <span class="${c.c}">${c.t}</span>`;
+}
+function tarjeta(t,define){
+  const b=document.createElement('div');b.className='t'+(t.camino?(define?' define':' camino'):'');b.tabIndex=0;b.dataset.id=t.id;
+  b.setAttribute('role','button');b.setAttribute('aria-roledescription','tarjeta arrastrable');
+  b.setAttribute('aria-label',`${t.n}, ${ETAPAS[t.col]}. Mayúscula y flechas para cambiar de etapa.`);
+  const r=resta(t),hechas=[0,1,2,3].map(i=>i<t.col||t.col===3?'<i class="h"></i>':'<i></i>').join('');
+  b.innerHTML=`<span class="meta"><span class="mono">${t.id}</span>· ${t.camino?'camino de entrega':'aparte'}</span><b>${t.n}</b><span class="pie"><span class="rayitas" style="--c:var(--etapa-${t.col+1})">${hechas}</span>${define?'<span class="def"><i class="ph ph-flag"></i>Define la fecha</span>':''}<span class="der num">${r?plural(r,'día','días'):'hecha'}</span></span>`;
+  return b;
+}
+
+/* ── Simular un movimiento: qué fecha queda ── */
+function simular(id,col){const copia=tareas.map(t=>t.id===id?{...t,col}:t);return entrega(copia)}
+function chipDelta(antes,despues,camino){
+  if(!camino)return{t:'No está en el camino de entrega',k:'igual',sin:true};
+  const d=difHabiles(antes,despues);
+  return d===0?{t:'mismo día',k:'igual'}:d<0?{t:`${plural(-d,'día','días')} antes`,k:'mejor'}:{t:`${plural(d,'día','días')} después`,k:'peor'};
+}
+
+/* ── Arrastre con pointer events ── */
+let drag=null;
+const tab=$('#tablero');
+tab.addEventListener('pointerdown',e=>{
+  const el=e.target.closest('.t');if(!el||e.button>0)return;
+  const t=tareas.find(x=>x.id===el.dataset.id),r=el.getBoundingClientRect();
+  const espera=e.pointerType==='touch'?230:0;
+  drag={t,el,dx:e.clientX-r.left,dy:e.clientY-r.top,w:r.width,h:r.height,x0:e.clientX,y0:e.clientY,activo:false,t0:Date.now(),espera,dest:t.col};
+  el.setPointerCapture(e.pointerId);
+});
+tab.addEventListener('pointermove',e=>{
+  if(!drag)return;
+  if(!drag.activo){
+    const lejos=Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)>4;
+    if(!lejos)return;
+    if(Date.now()-drag.t0<drag.espera){drag=null;return}
+    empezar();
+  }
+  mover(e.clientX,e.clientY);
+});
+function empezar(){
+  drag.activo=true;
+  const g=drag.el.cloneNode(true);g.classList.add('fantasma');g.style.width=drag.w+'px';g.removeAttribute('tabindex');document.body.append(g);drag.g=g;
+  drag.el.classList.add('origen');
+  const c=document.createElement('div');c.className='consecuencia';document.body.append(c);drag.c=c;
+  drag.antes=entrega(tareas);
+}
+function mover(x,y){
+  drag.g.style.transform=`translate(${x-drag.dx}px,${y-drag.dy}px)`;
+  drag.c.style.transform=`translate(${Math.max(8,Math.min(x-drag.dx+24,innerWidth-256))}px,${y-drag.dy+drag.h+8}px)`;
+  drag.g.style.visibility='hidden';const bajo=document.elementFromPoint(x,y);drag.g.style.visibility='';
+  const col=bajo&&bajo.closest('.col');const dest=col?+col.dataset.col:drag.dest;
+  marcarDestino(dest);
+}
+function marcarDestino(dest){
+  drag.dest=dest;const t=drag.t;
+  $$('.col').forEach(c=>{const i=+c.dataset.col;c.classList.toggle('destino',i===dest&&dest!==t.col);const d=c.querySelector('.delta');
+    if(dest!==t.col&&i===dest){d.hidden=false;d.textContent='+1'}else if(dest!==t.col&&i===t.col){d.hidden=false;d.textContent='−1'}else d.hidden=true;
+    const lim=c.querySelector('.lim');if(lim){const L=+lim.dataset.lim,n=tareas.filter(x=>x.col===i).length+(dest!==t.col?(i===dest?1:i===t.col?-1:0):0);lim.textContent=n>L?`${n} / ${L} · pasa el límite`:`${n} / ${L} límite`;lim.classList.toggle('pasa',n>L)}});
+  const despues=simular(t.id,dest),ch=chipDelta(drag.antes,despues,t.camino);
+  drag.c.style.setProperty('--c',`var(--etapa-${dest+1})`);
+  drag.c.innerHTML=`<span class="dest"><i></i>${ETAPAS[dest]}</span>`+(ch.sin?`<span class="val"><i class="ph ph-minus-circle"></i>${ch.t}</span>`:`<span class="val"><i class="ph ph-truck"></i><span class="num">Entrega ${corta(drag.antes)} → ${corta(despues)}</span><span class="chip ${ch.k}">${ch.t}</span></span>`);
+}
+function terminar(cancelar){
+  if(!drag)return;const d=drag;drag=null;
+  if(!d.activo)return;
+  d.g.remove();d.c.remove();d.el.classList.remove('origen');
+  $$('.col').forEach(c=>{c.classList.remove('destino');c.querySelector('.delta').hidden=true});
+  if(cancelar||d.dest===d.t.col){pintar();return}
+  mover_a(d.t,d.dest);
+}
+tab.addEventListener('pointerup',()=>terminar(false));
+tab.addEventListener('pointercancel',()=>terminar(true));
+addEventListener('keydown',e=>{if(e.key==='Escape'&&drag)terminar(true)});
+
+/* teclado: Mayúscula + ←/→ */
+tab.addEventListener('keydown',e=>{
+  const el=e.target.closest('.t');if(!el||!e.shiftKey||!['ArrowLeft','ArrowRight'].includes(e.key))return;
+  e.preventDefault();const t=tareas.find(x=>x.id===el.dataset.id),dest=t.col+(e.key==='ArrowRight'?1:-1);
+  if(dest<0||dest>3)return;mover_a(t,dest,true);
+});
+
+let ultimo=null;
+function mover_a(t,dest,foco){
+  const antes=entrega(tareas),desde=t.col;ultimo={id:t.id,col:desde};
+  t.col=dest;pintar();
+  const despues=entrega(tareas),ch=chipDelta(antes,despues,t.camino);
+  const efecto=ch.sin?'no cambia la entrega':`entrega ${corta(despues)}${ch.k==='igual'?'':' · '+ch.t}`;
+  $('#anuncio').textContent=`${t.n} pasó a ${ETAPAS[dest]}: ${efecto}.`;
+  toast(`${t.n} → ${ETAPAS[dest]}`,efecto,'Deshacer',()=>{const x=tareas.find(y=>y.id===ultimo.id);x.col=ultimo.col;pintar();$('#anuncio').textContent=`Se deshizo: ${x.n} volvió a ${ETAPAS[x.col]}.`});
+  if(foco)requestAnimationFrame(()=>{const n=tab.querySelector(`[data-id="${t.id}"]`);n&&n.focus()});
+}
+
+/* ── Toast con barrita de tiempo ── */
+let tT;
+function toast(t,s,accion,fn,mal){
+  const el=$('#toast');$('#toast-t').textContent=t;$('#toast-s').textContent=s;
+  $('#toast-i').classList.toggle('mal',!!mal);$('#toast-i').innerHTML=mal?'<i class="ph ph-warning"></i>':'<i class="ph ph-check"></i>';
+  const b=$('#toast-b');b.hidden=!accion;b.innerHTML=accion==='Deshacer'?'<i class="ph ph-arrow-counter-clockwise"></i>Deshacer':(accion||'');
+  b.onclick=()=>{fn&&fn();cerrar()};
+  el.classList.remove('ver');void el.offsetWidth;el.style.setProperty('--dur',accion?'8s':'5s');el.classList.add('ver');
+  clearTimeout(tT);tT=setTimeout(cerrar,accion?8000:5000);
+}
+function cerrar(){$('#toast').classList.remove('ver')}
+$('#toast').addEventListener('mouseenter',()=>clearTimeout(tT));
+$('#toast').addEventListener('mouseleave',()=>{tT=setTimeout(cerrar,3000)});
+
+/* ── Optimista con reversión ── */
+const contar=()=>{const n=$$('#opt-lista .tarea[aria-checked=false]').length;$('#opt-cont').innerHTML=n?`<b class="num">${n}</b> ${n===1?'pendiente':'pendientes'} para hoy`:'Al día: nada pendiente'};
+contar();
+$$('#opt-lista .tarea').forEach(b=>b.onclick=()=>{
+  const antes=b.getAttribute('aria-checked');b.setAttribute('aria-checked',antes!=='true');contar();
+  if($('#opt-falla').getAttribute('aria-checked')==='true'){
+    setTimeout(()=>{b.setAttribute('aria-checked',antes);contar();toast('No se guardó el cambio',b.querySelector('.n').textContent+' volvió a como estaba','Reintentar',()=>b.click(),true)},800);
+  }
+});
+$('#opt-falla').onclick=e=>{const b=e.currentTarget;b.setAttribute('aria-checked',b.getAttribute('aria-checked')!=='true')};
+
+/* ── Foto con vista borrosa ── */
+function cargarFoto(){const f=$('#foto');f.classList.remove('cargada');setTimeout(()=>f.classList.add('cargada'),quieto?0:1200)}
+cargarFoto();$('#foto-otra').onclick=cargarFoto;
+
+/* ── Tarjeta que crece (View Transitions con respaldo) ── */
+const vt=fn=>{if(document.startViewTransition&&!quieto)document.startViewTransition(fn);else fn()};
+$$('.fila-m').forEach(f=>f.onclick=()=>{
+  const cu=f.querySelector('.cuadro'),nom=f.querySelector('b');
+  cu.style.viewTransitionName='vt-cuadro';nom.style.viewTransitionName='vt-nombre';
+  vt(()=>{cu.style.viewTransitionName='';nom.style.viewTransitionName='';
+    $('#lista-m').hidden=true;const fm=$('#ficha-m');fm.hidden=false;fm.style.setProperty('--c',getComputedStyle(f).getPropertyValue('--c'));
+    $('#fm-cuadro').innerHTML=cu.innerHTML;$('#fm-cuadro').style.viewTransitionName='vt-cuadro';
+    $('#fm-nom').textContent=nom.textContent;$('#fm-nom').style.viewTransitionName='vt-nombre';
+    $('#fm-cod').textContent=f.querySelector('small').textContent;$('#fm-monto').textContent=f.querySelector('.der').textContent;$('#ficha-m').dataset.i=f.dataset.i;});
+  setTimeout(()=>$('#fm-volver').focus(),360);
+});
+$('#fm-volver').onclick=()=>{const i=$('#ficha-m').dataset.i,f=$(`.fila-m[data-i="${i}"]`);
+  vt(()=>{$('#fm-cuadro').style.viewTransitionName='';$('#fm-nom').style.viewTransitionName='';$('#ficha-m').hidden=true;$('#lista-m').hidden=false;
+    f.querySelector('.cuadro').style.viewTransitionName='vt-cuadro';f.querySelector('b').style.viewTransitionName='vt-nombre'});
+  setTimeout(()=>{f.querySelector('.cuadro').style.viewTransitionName='';f.querySelector('b').style.viewTransitionName='';f.focus()},360);
+};
+
+pintar();
+</script>
+</body>
+</html>

@@ -441,19 +441,18 @@ body.trabado .toast{right:496px}
   .cont{padding:8px 16px 168px;gap:22px}
   .cab h1{font-size:32px}
   .cab .acc{display:none}
-  .kpis{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 8px;gap:10px;scrollbar-width:none}
-  .kpis::-webkit-scrollbar{display:none}
-  .kpis>*{flex:0 0 84%;scroll-snap-align:center}
+  .kpis{display:grid;grid-template-columns:minmax(0,1fr);gap:12px} /* KPIs apilados: se leen bajando, nunca de costado */
+  .kpis>*{min-width:0}
   .lista{border:0;background:none}
   .barra-h{padding:0}
   .barra-h h2{display:none}
-  .barra-h .seg-vista{order:1;width:100%;overflow-x:auto;scrollbar-width:none;display:flex}
+  .barra-h .seg-vista{order:1;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))} /* 4 vistas en 2×2: nada de costado */
   .barra-h .seg-vista::-webkit-scrollbar{display:none}
-  .barra-h .seg-vista button{flex:1 0 auto;height:44px}
+  .barra-h .seg-vista button{min-width:0;justify-content:center;height:44px}
   .buscador{order:2;width:auto;flex:1;margin:0;height:46px;border-radius:12px}
   .buscador .kbd{display:none}
   .agrupar{order:3;height:44px}
-  .chips{padding:12px 0 6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding-left:16px;padding-right:16px}
+  .chips{padding:12px 0 6px;flex-wrap:wrap}
   .chips::-webkit-scrollbar{display:none}
   .filtro{height:44px;padding:0 16px}
   .limpiar{height:44px}

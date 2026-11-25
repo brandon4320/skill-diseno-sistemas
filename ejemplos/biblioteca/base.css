@@ -543,7 +543,18 @@ a.pie:hover{color:var(--tinta)}
 @media (max-width:767px){
   body{font-size:14px}
   .bib-pag{padding:var(--espacio-6) var(--espacio-6) 64px}
-  .bib-indice{margin:0 calc(var(--espacio-6)*-1);padding:var(--espacio-4) var(--espacio-6)}
+  /* SKILL.md §6e: en el celular nada se desliza de costado. Rieles de pestañas, chips, vistas, pasos y
+     menús internos de las láminas se acomodan en líneas (.bib sube la especificidad sobre el CSS de cada lámina) */
+  .bib .seg,.bib .pestanas,.bib .nv-tabs,.bib .nv-vtabs,.bib .pc-chips,.bib .m-chips,.bib .cfg-nav,.bib .paleta,.bib .rail,
+  .bib .aj-nav,.bib .alta-ind,.bib .imp-pasos,.bib .rango-pre,.bib .nv-tabs-est,.bib .nv-pills,.bib .nv-trab-tabs .rio,
+  .bib .c-ajustes nav{flex-wrap:wrap;overflow-x:visible;-webkit-mask:none;mask:none}
+  .bib .nv-pills .fondo{display:none} /* en líneas, el fondo que se desliza no sirve: la activa lleva su propio fondo */
+  .bib .matriz{overflow-x:visible}
+  .bib .lamina pre,.bib pre{white-space:pre-wrap;overflow-wrap:anywhere}
+  /* índice: en celular, grilla de 2 columnas arriba (nada de deslizar de costado) */
+  .bib-indice{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--espacio-2);overflow:visible;margin:0 calc(var(--espacio-6)*-1);padding:var(--espacio-4) var(--espacio-6)}
+  .bib-indice .volver{grid-column:1/-1;justify-self:start}
+  .bib-indice a.it{white-space:normal;min-width:0;border-radius:10px}
   .bib-cab{flex-wrap:wrap}.bib-cab h1{font-size:32px}.bib-cab .der{margin-left:0}
   .lamina{margin-top:var(--espacio-9)}
   .lamina-cab{grid-template-columns:minmax(0,1fr)}
@@ -566,8 +577,8 @@ a.pie:hover{color:var(--tinta)}
   .bib-cab .eti a{display:inline-flex;align-items:center;min-height:44px}
   a.pie{min-height:44px}
   .card .tit{flex-wrap:wrap}
-  .card .tit .der{margin-left:0;width:100%;overflow-x:auto}
-  .codigo pre{padding:var(--espacio-5) var(--espacio-6)}
+  .card .tit .der{margin-left:0;width:100%;flex-wrap:wrap}
+  .codigo pre{padding:var(--espacio-5) var(--espacio-6);white-space:pre-wrap;overflow-wrap:anywhere} /* el código se acomoda: sin scroll de costado */
   .toasts{left:var(--espacio-6);right:var(--espacio-6);bottom:calc(var(--espacio-6) + var(--ds-pie-movil));width:auto}
   .monto .cent{display:none}
   /* tabla → tarjetas de 2 líneas con el mismo HTML: poner class="tabla tarjetas-cel" y data-area en cada td */

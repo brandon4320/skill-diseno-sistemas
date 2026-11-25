@@ -232,7 +232,7 @@ Una pieza centrada vive aislada: si comparte columna con piezas a la izquierda, 
 
 ## 13. Simetría en celular (390 px)
 
-- Márgenes laterales iguales: 16 y 16. Lo que llega al borde (carrusel, tabla con scroll) llega a los dos lados o a ninguno; el primer ítem del carrusel arranca en 16.
+- Márgenes laterales iguales: 16 y 16. Lo que llega al borde (un carrusel a propósito) llega a los dos lados o a ninguno; el primer ítem del carrusel arranca en 16.
 - Una columna: todas las tarjetas del mismo ancho, sin una "un poco más angosta" por un padding distinto.
 - Barra inferior: ítems de ancho igual (`grid-template-columns:repeat(5,1fr)`), ícono y rótulo centrados en cada uno; la píldora del activo con el mismo padding a los dos lados.
 - Píldora de acción fija: centrada con `left:16px; right:16px`, no con `translate(-50%)` (subpíxeles).

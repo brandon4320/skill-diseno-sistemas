@@ -1,6 +1,6 @@
 # Skill `diseno-sistemas`
 
-Lenguaje visual y de UX para sistemas de gestión (CRM, ERP, tableros internos, portales B2B), en escritorio y celular, para usar con **Claude Code**. Sale del análisis de 14 interfaces de referencia y trae reglas, tokens, piezas en React + Tailwind v4, pantallas de ejemplo, guías por tema y dos scripts: uno que revisa una pantalla y otro que frena un rediseño si toca los datos.
+Lenguaje visual y de UX para sistemas de gestión (CRM, ERP, tableros internos, portales B2B), en escritorio y celular, para usar con **Claude Code**. Sale del análisis de 20 interfaces de referencia (y 69 tweets de diseñadores) y trae reglas, tokens, piezas en React + Tailwind v4, pantallas de ejemplo, guías por tema y dos scripts: uno que revisa una pantalla y otro que frena un rediseño si toca los datos.
 
 Sirve para dos cosas: **crear** pantallas nuevas y hacer el **overhaul** de un sistema que ya está en producción sin romper cómo lee y escribe los datos.
 
@@ -25,8 +25,28 @@ Para los scripts hace falta Node 18 o más. `revisar.mjs` además necesita Playw
 | `componentes/` | Piezas en React 19 + TypeScript + Tailwind v4, listas para copiar, en 17 carpetas: `base/` (botón, campo, segmentado, pastilla, menú, avatar…), `datos/` (KPI, protagonista, curva, barras apiladas, anillo, formato de números y fechas), `estructura/` (marco, barra lateral, cabecera, tabla, hoja lateral, toast, vacío, esqueleto, error en el lugar) y una por categoría de la biblioteca (`navegacion/`, `botones/`, `campos/`, `datos-chicos/`, `kpis/`, `tablas/`, `listas/`, `tarjetas/`, `capas/`, `tiempo/`, `ia-automatizaciones/`, `flujos/`, `estados/`, `celular/`). Índice y dependencias en `componentes/README.md`. |
 | `ilustraciones/` | 12 SVG de línea para vacíos, error, bienvenida, éxito y procesos largos. Toman el color del sistema por variables CSS: pegalos en línea, no como `<img>`. |
 | `scripts/` | `revisar.mjs` y `guardia-datos.mjs` (abajo). Detalle completo en `scripts/README.md`. |
-| `referencias/` | Las 14 capturas de referencia. Son de sus autores y van solo como material de estudio, no para copiar. |
-| `analisis/` | El análisis de cada tema de las referencias, con valores estimados. |
+| `referencias/` | Las 20 capturas de referencia (lista abajo). Son de sus autores y van solo como material de estudio, no para copiar. |
+| `analisis/` | El análisis de cada tema de las referencias, con valores estimados: `01`–`15` por tema, `16-espacio-y-pantalla.md` (spacing medido y cómo llenan la pantalla), `17-claro-oscuro.md` (la misma pantalla en claro y oscuro, elemento por elemento) y `18-tweets-66-69.md`; en `tweets/` los 65 tweets anteriores. |
+
+### Referencias
+
+| # | Archivo | Qué muestra | Para qué se mira |
+|---|---|---|---|
+| 01 | `01-axon-notificaciones.jpg` | Centro de avisos | Listas de 2 líneas, acción en la fila |
+| 02–05 | `02-closecrm-*.jpg` … `05-…` | Reuniones, contacto y ajustes de un CRM | Calendario, ficha, ajustes en dos niveles |
+| 06 | `06-gr8r-home.jpg` | Inicio con tarjetas de proyecto | Vida, tarjetas de entidad, bandeja con tarjeta |
+| 07 | `07-loops-ingresos.jpg` | Ingresos con tabla y gráfico | KPIs, tabla de pagos, estados |
+| 08 | `08-finora-gastos.jpg` | Gastos con protagonista | Protagonista de acento, cuadros de ícono |
+| 09, 11, 12 | `09-movil-tareas.jpg`, `11-…`, `12-…` | Celular | Cifra protagonista, accesos, píldora fija |
+| 10 | `10-escuela-agenda.jpg` | Agenda | Bloques por duración |
+| 13 | `13-tessera-dashboard.jpg` | Tablero | Grilla de KPIs con anillos |
+| 14 | `14-solexa-oscuro.jpg` | Monitoreo en oscuro | Capas por luminosidad |
+| 15 | `15-orbitly-chat.jpg` | Chat en 3 columnas con panel de información | Columna fluida + paneles fijos, compositor abajo |
+| 16 | `16-loops-reporte.jpg` | Reporte con vista previa A4 y panel Compartir | Vista previa + panel fijo de 340 con la acción principal |
+| 17 | `17-brick-timeline.jpg` | Cronograma de obras con "Needs attention" y "Starts today" arriba | Lo urgente arriba con su arreglo; días que llenan el ancho |
+| 18 | `18-brick-timeline-2.jpg` | El mismo cronograma, segunda versión | Tarjeta de proyecto con resumen fijo; desplazamiento de escritorio con aviso |
+| 19 | `19-halo-roadmap.jpg` | Roadmap con Gantt, anillos, carga del equipo e hitos | Grilla que hereda columnas, Gantt denso, carga contra el límite |
+| 20 | `20-saffron-claro-oscuro.jpg` | Hoja de cuadros de un video: el mismo tablero denso en claro y oscuro con un deslizador | Spacing real a 1440 y mapeo claro → oscuro |
 
 ## Biblioteca de piezas: `ejemplos/biblioteca/`
 
@@ -46,7 +66,7 @@ cd ~/.claude/skills/diseno-sistemas/ejemplos && python3 -m http.server
 
 ## Revisar una pantalla: `scripts/revisar.mjs`
 
-Abre la pantalla en Chromium, mide los estilos y devuelve una nota de 0 a 100 con cada problema, su selector y la sugerencia: un solo botón relleno, dos voces tipográficas, radios y tamaños en la escala, contraste AA, toques de 44 px, estado solo con color, cifras tabulares, nombres accesibles, desborde a 390 px y errores de consola.
+Abre la pantalla en Chromium, mide los estilos y devuelve una nota de 0 a 100 con cada problema, su selector y la sugerencia: un solo botón relleno, dos voces tipográficas, radios y tamaños en la escala, contraste AA, toques de 44 px, estado solo con color, cifras tabulares, nombres accesibles, desborde a 390 px, **componentes que se deslizan de costado en el celular** (salvo carruseles con encastre o `data-carrusel`), contenido cortado en el borde, errores de consola y, con `--oscuro`, blanco puro sobre negro, colores de estado sin versión oscura y sombras como única separación.
 
 Instalá Playwright una vez, fuera de la carpeta de la skill:
 

@@ -440,9 +440,8 @@ kbd{font-family:var(--mono);font-weight:500;font-size:11px;color:var(--texto-2);
   .grilla{grid-template-columns:minmax(0,1fr) 320px}
   .indice{grid-column:1/-1;position:sticky;top:0;z-index:25;margin:0 calc(-1*var(--espacio-9));padding:var(--espacio-4) var(--espacio-9);background:var(--vidrio);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--divisor)}
   .avance,.atajos,.marca{display:none}
-  .lista-ind{flex-direction:row;overflow-x:auto;scrollbar-width:none;gap:var(--espacio-3);background:none;border:0;padding:0;border-radius:0}
+  .lista-ind{flex-direction:row;flex-wrap:wrap;gap:var(--espacio-3);background:none;border:0;padding:0;border-radius:0}
   .sec{scroll-margin-top:76px}
-  .lista-ind::-webkit-scrollbar{display:none}
   .lista-ind a{min-height:44px;padding:var(--espacio-3) var(--espacio-5) var(--espacio-3) var(--espacio-3);border:1px solid var(--borde);border-radius:99px;background:var(--superficie);white-space:nowrap;gap:var(--espacio-4)}
   .lista-ind a.on{border-color:var(--tinta);box-shadow:0 0 0 1px var(--tinta)}
   .lista-ind small{display:none}
@@ -455,6 +454,10 @@ kbd{font-family:var(--mono);font-weight:500;font-size:11px;color:var(--texto-2);
 }
 @media (max-width:760px){
   body{padding:0}
+  /* índice: los 6 pasos como anillos numerados en una fila; el nombre queda para el lector de pantalla (nunca de costado) */
+  .lista-ind{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--espacio-3)}
+  .lista-ind a{justify-content:center;padding:0;min-width:0}
+  .lista-ind b{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   .app{grid-template-columns:minmax(0,1fr);border-radius:0;padding:0;border:0;box-shadow:none;background:var(--panel)}
   .riel{display:none}
   .panel{border-radius:0;border:0}

@@ -441,6 +441,15 @@ body.moviendo-col,body.moviendo-col *{cursor:grabbing!important}
   .det-cuerpo{grid-template-columns:minmax(0,1fr);padding-left:var(--espacio-7);gap:var(--espacio-6)}
 }
 @media (max-width:767px){
+  /* nada de costado (SKILL.md §6e): las grillas pasan a tarjetas (tarjetas: true); las tablas fijas de 3–6 columnas se ajustan al ancho y truncan */
+  .tt:not(.tarjetas-cel) .tt-scroll{overflow-x:visible}
+  .tt:not(.tarjetas-cel) table{min-width:0!important;width:100%!important;table-layout:fixed}
+  .tel .chips-e{flex-wrap:wrap;overflow-x:visible}
+  .tt.plan .tt-scroll{overflow-x:visible}
+  .tt.plan table{min-width:0!important;width:100%!important;table-layout:fixed}
+  .plan th,.plan td{padding:0 4px;font-size:12px;overflow:hidden;text-overflow:ellipsis}
+  .plan td.n,.plan th.n{width:24px}
+  .plan col:first-child{width:24px!important}.plan col:nth-child(2){width:92px!important}.plan col:last-child{width:48px!important}
   .tt th .agarre{display:none}
   .tt th .th{height:44px}
   .tt th .ord,.tt th .mc,.tt th button.ord,.tt th button.mc,.exp,.calc,.quien,.tt tr.grupo .pleg,.faceta,.leyenda-e button,.pv-fila,.pv-cab .volver,.opc button,.ed,.fchip button,.ed-pop button{min-height:44px;min-width:44px}
@@ -1627,7 +1636,7 @@ const gBase = new Grilla($('#g-base'), { cols: cols('proy', 'cli', 'estado', 've
 $('#g-base').addEventListener('click', e => menuFila(gBase, e));
 
 /* ───────── 2 · Densidad ───────── */
-const gDens = new Grilla($('#g-dens'), { cols: cols('proy', 'cli', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS).slice(0, 10), clave: 'densidad', etiqueta: 'Facturas, densidad a elección' });
+const gDens = new Grilla($('#g-dens'), { tarjetas: true, cols: cols('proy', 'cli', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS).slice(0, 10), clave: 'densidad', etiqueta: 'Facturas, densidad a elección' });
 const MEDIDA = { compacta: '28 px', normal: '36 px', comoda: '44 px' };
 function marcarDens(d) {
   $$('#dens-opc button').forEach(b => { const on = b.dataset.v === d; b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1; });
@@ -1649,7 +1658,7 @@ const TIPOS = [
   ['avance', 'Avance', 140], ['pago', 'Medio de pago', 170], ['resultado', 'Resultado', 110], ['historial', 'Modificó', 150], ['tiempo', 'Hora', 96],
 ];
 $('#tipos').innerHTML = TIPOS.map(([k, t, w]) => `<button type="button" class="tipo" data-tipo="${k}" aria-label="${t}: ícono ${ICO[k]}, ancho ${w} px"><i class="ph ph-${ICO[k]}"></i><b>${t}</b><small>${w}</small></button>`).join('');
-const gTipos = new Grilla($('#g-tipos'), { cols: cols('proy', 'cod', 'cli', 'resp', 'estado', 'vence', 'monto', 'web', 'ciudad', 'rubro'), filas: copiar(FACTURAS).slice(0, 5), etiqueta: 'Facturas con todos los tipos de columna', pie: false });
+const gTipos = new Grilla($('#g-tipos'), { tarjetas: true, cols: cols('proy', 'cod', 'cli', 'resp', 'estado', 'vence', 'monto', 'web', 'ciudad', 'rubro'), filas: copiar(FACTURAS).slice(0, 5), etiqueta: 'Facturas con todos los tipos de columna', pie: false });
 function luz(tipo) {
   $$('.luz', gTipos.el).forEach(x => x.classList.remove('luz'));
   $$('.tipo').forEach(b => b.classList.toggle('on', b.dataset.tipo === tipo));
@@ -1662,7 +1671,7 @@ $('#tipos').addEventListener('focusin', e => luz(e.target.closest('.tipo')?.data
 $('#tipos').addEventListener('focusout', () => luz(null));
 
 /* ───────── 4 · Orden ───────── */
-const gOrden = new Grilla($('#g-orden'), {
+const gOrden = new Grilla($('#g-orden'), { tarjetas: true, 
   cols: cols('proy', 'cli', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS).slice(0, 9), etiqueta: 'Facturas ordenables',
   alCambiar: g => {
     const o = g.s.orden;
@@ -1672,13 +1681,13 @@ const gOrden = new Grilla($('#g-orden'), {
 $('#orden-limpiar').addEventListener('click', () => { gOrden.s.orden = []; gOrden.conFlip(() => gOrden.render()); gOrden.cambio(); });
 
 /* ───────── 5 · Menú del encabezado ───────── */
-const gMenu = new Grilla($('#g-menu'), { cols: cols('proy', 'cli', 'resp', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS).slice(0, 7), menu: true, candado: true, etiqueta: 'Facturas con menú de columna' });
+const gMenu = new Grilla($('#g-menu'), { tarjetas: true, cols: cols('proy', 'cli', 'resp', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS).slice(0, 7), menu: true, candado: true, etiqueta: 'Facturas con menú de columna' });
 
 /* ───────── 6 · Redimensionar ───────── */
 function leerAnchos(g, vivo) {
   $('#anchos-lee').innerHTML = g.vis().map(c => `<span>${esc(c.t)} <b>${vivo?.[0] === c.id ? vivo[1] : g.ancho(c)}</b></span>`).join('');
 }
-const gAncho = new Grilla($('#g-ancho'), {
+const gAncho = new Grilla($('#g-ancho'), { tarjetas: true,
   cols: cols('proy', 'cli', 'resp', 'estado', 'monto'), filas: copiar(FACTURAS).slice(0, 7), anchos: true, clave: 'anchos', etiqueta: 'Facturas con anchos ajustables',
   alCambiar: g => leerAnchos(g), alAjustar: (id, w) => leerAnchos(gAncho, [id, w]),
 });
@@ -1686,7 +1695,7 @@ leerAnchos(gAncho);
 $('#anchos-reset').addEventListener('click', () => { gAncho.restablecerAnchos(); toast({ titulo: 'Anchos restablecidos', detalle: 'Cada columna vuelve al ancho de su tipo', icono: 'ph-arrows-in-line-horizontal' }); });
 
 /* ───────── 7 · Mover columnas ───────── */
-const gMover = new Grilla($('#g-mover'), {
+const gMover = new Grilla($('#g-mover'), { tarjetas: true,
   cols: cols('proy', 'cli', 'resp', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS).slice(0, 7), mover: true, menu: true, ordenable: false, clave: 'mover', etiqueta: 'Facturas con columnas que se mueven',
   alCambiar: g => { $('#mover-lee').textContent = 'Orden: ' + g.vis().map(c => c.t).join(' · '); },
 });
@@ -1694,7 +1703,7 @@ if (gMover.s.cols.join() !== gMover.base.cols.join()) gMover.o.alCambiar(gMover)
 $('#mover-reset').addEventListener('click', () => { gMover.restablecerCols(); $('#mover-lee').textContent = 'Arrastrá «Responsable» antes de «Cliente»'; });
 
 /* ───────── 8 · Columna fija ───────── */
-const gFija = new Grilla($('#g-fija'), { cols: cols('proy', 'cod', 'cli', 'resp', 'estado', 'emitida', 'vence', 'monto', 'modif'), filas: copiar(FACTURAS), candado: true, alto: true, etiqueta: 'Las 24 facturas, con la primera columna fija' });
+const gFija = new Grilla($('#g-fija'), { tarjetas: true, cols: cols('proy', 'cod', 'cli', 'resp', 'estado', 'emitida', 'vence', 'monto', 'modif'), filas: copiar(FACTURAS), candado: true, alto: true, etiqueta: 'Las 24 facturas, con la primera columna fija' });
 $('#fija-seg').addEventListener('cambio', e => { gFija.s.fija = e.detail === 'si'; gFija.render(); gFija.scroll.dispatchEvent(new Event('scroll')); });
 
 /* ───────── 9 · Panel Vista ───────── */
@@ -1705,7 +1714,7 @@ const GRUPOS_FAC = {
   resp: { t: k => k, k: f => f.resp, marca: k => avatar(k, { clase: 'ch', titulo: false }) },
 };
 const NOM_GRUPO = { '': 'Ninguno', cli: 'Cliente', estado: 'Estado', resp: 'Responsable' };
-const gVista = new Grilla($('#g-vista'), {
+const gVista = new Grilla($('#g-vista'), { tarjetas: true,
   cols: cols('proy', 'cli', 'resp', 'estado', 'emitida', 'vence', 'monto', 'modif'), ocultas: ['emitida', 'modif'], filas: copiar(FACTURAS).slice(0, 14),
   menu: true, anchos: true, mover: true, candado: true, clave: 'vista', grupos: GRUPOS_FAC, etiqueta: 'Facturas con panel Vista',
   alCambiar: () => { pintarPV(); leyendaVista(); insigniaVista(); },
@@ -1891,7 +1900,7 @@ function aplicarConds() {
   gCons.filtrar(ok.length ? f => union === 'y' ? ok.every(c => cumple(c, f)) : ok.some(c => cumple(c, f)) : null);
   $('#cons-chips').innerHTML = ok.length ? ok.map((c, j) => `${j ? `<span class="y-o">${union}</span>` : ''}<span class="fchip"><span>${CAMPOS[c.campo].t}</span>${c.op}${valorTxt(c) ? ` <b>${esc(valorTxt(c))}</b>` : ''}<button type="button" data-qc="${conds.indexOf(c)}" aria-label="Quitar ${CAMPOS[c.campo].t} ${c.op} ${esc(valorTxt(c))}"><i class="ph ph-x"></i></button></span>`).join('') : '<span class="t-12 gris">Sin filtro: se ven las 24 facturas</span>';
 }
-const gCons = new Grilla($('#g-cons'), { cols: cols('proy', 'cli', 'resp', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS), alto: true, etiqueta: 'Facturas filtradas por condiciones' });
+const gCons = new Grilla($('#g-cons'), { tarjetas: true, cols: cols('proy', 'cli', 'resp', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS), alto: true, etiqueta: 'Facturas filtradas por condiciones' });
 $('#cons-filas').addEventListener('change', e => {
   const el = e.target.closest('[data-k]'); if (!el) return;
   const i = +el.dataset.i, k = el.dataset.k, c = conds[i];
@@ -1968,7 +1977,7 @@ $('#fac').addEventListener('input', e => { if (e.target.id === 'fac-q') { FAC.q 
 pintarFacetas();
 
 /* ───────── 12 · Agrupada ───────── */
-const gGrupo = new Grilla($('#g-grupo'), {
+const gGrupo = new Grilla($('#g-grupo'), { tarjetas: true,
   cols: cols('proy', 'resp', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS).slice(0, 16), grupo: 'cli', grupos: GRUPOS_FAC, etiqueta: 'Facturas agrupadas',
   alCambiar: g => { const todos = g.s.plegados.size > 0; $('#grupo-todos span').textContent = todos ? 'Desplegar todos' : 'Plegar todos'; $('#grupo-todos i').className = `ph ph-arrows-${todos ? 'out' : 'in'}-simple`; },
 });
@@ -1980,7 +1989,7 @@ $('#grupo-todos').addEventListener('click', () => {
 });
 
 /* ───────── 13 · Selección múltiple ───────── */
-const gSel = new Grilla($('#g-sel'), {
+const gSel = new Grilla($('#g-sel'), { tarjetas: true,
   cols: cols('proy', 'cli', 'resp', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS).slice(0, 12), sel: true, etiqueta: 'Facturas para elegir',
   alElegir: g => pintarLote(g),
 });
@@ -2019,7 +2028,7 @@ $('#lote-asignar').addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && gSel.s.sel.size && MENU.hidden && !$('.toasts .toast')) { gSel.limpiarSel(); anunciar('Selección soltada'); } });
 
 /* ───────── 14 · Pie con Calcular ───────── */
-const gCalc = new Grilla($('#g-calc'), { cols: cols('proy', 'cli', 'resp', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS), calcular: true, calc: { cli: 'unicos', vence: 'antigua', monto: 'suma' }, alto: true, etiqueta: 'Facturas con Calcular por columna' });
+const gCalc = new Grilla($('#g-calc'), { tarjetas: true, cols: cols('proy', 'cli', 'resp', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS), calcular: true, calc: { cli: 'unicos', vence: 'antigua', monto: 'suma' }, alto: true, etiqueta: 'Facturas con Calcular por columna' });
 let calcEst = '';
 function leyendaCalc() {
   const t = gCalc.filasTodas, n = k => t.filter(f => f.estado === k).length;
@@ -2218,7 +2227,7 @@ function detalleFac(f) {
     <div><h5>Qué pasó</h5>${hitos.map(([i, t, d]) => `<div class="hito"><i class="ph ph-${i}"></i><span>${t}<small>${d}</small></span></div>`).join('')}</div>
     <div class="pila g4" style="align-items:flex-start"><h5>Sigue</h5><button type="button" class="btn chico" data-det-acc="${f.id}"><i class="ph ph-${acc[0]}"></i>${acc[1]}</button><button type="button" class="btn chico texto" data-det-pdf="${f.id}"><i class="ph ph-file-pdf"></i>${f.id}.pdf</button></div></div>`;
 }
-const gDet = new Grilla($('#g-det'), { cols: cols('proy', 'cli', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS).slice(0, 8), detalle: detalleFac, etiqueta: 'Facturas con detalle' });
+const gDet = new Grilla($('#g-det'), { tarjetas: true, cols: cols('proy', 'cli', 'estado', 'vence', 'monto'), filas: copiar(FACTURAS).slice(0, 8), detalle: detalleFac, etiqueta: 'Facturas con detalle' });
 gDet.alternarDetalle(gDet.filasTodas[1].id, true);
 $('#g-det').addEventListener('click', e => {
   const a = e.target.closest('[data-det-acc]'), p = e.target.closest('[data-det-pdf]');
@@ -2263,7 +2272,7 @@ const R = [
   { id: 'ren', t: 'Renueva', tipo: 'fecha', w: 170, val: f => f.renueva, html: f => `<span class="num">${fmt.fecha(f.renueva)}</span>${plazo(f.renueva)}` },
   { id: 'pago', t: 'Medio de pago', tipo: 'pago', w: 200, val: f => f.pago[1], html: f => medio(f.pago) },
 ];
-new Grilla($('#g-ricas'), { cols: R, filas: CLIENTES, unidad: ['cliente', 'clientes'], nombre: f => f.nombre, total: null, candado: true, etiqueta: 'Clientes con celdas ricas' });
+new Grilla($('#g-ricas'), { tarjetas: true, cols: R, filas: CLIENTES, unidad: ['cliente', 'clientes'], nombre: f => f.nombre, total: null, candado: true, etiqueta: 'Clientes con celdas ricas' });
 
 /* ───────── 19 · Gravedad ───────── */
 const LOG = [
@@ -2287,7 +2296,7 @@ const G = [
   { id: 'd', t: 'Detalle', tipo: 'texto', w: 340, val: f => f.det, html: f => `<span class="trunca gris">${esc(f.det)}</span>` },
   { id: 'ms', t: 'Duración', tipo: 'numero', w: 100, r: true, num: true, val: f => f.ms, html: f => f.ms == null ? NADA : `<span class="mono-12">${fmt.numero(f.ms / 1000, 2)} s</span>` },
 ];
-const gGrav = new Grilla($('#g-grav'), {
+const gGrav = new Grilla($('#g-grav'), { tarjetas: true,
   cols: G, filas: LOG, unidad: ['evento', 'eventos'], nombre: f => f.ev, total: null, etiqueta: 'Registro de integraciones de hoy',
   claseFila: f => ({ error: 'error', aviso: 'aviso', pausa: 'apagada', ok: '' })[f.n], anchoAcc: 120,
   acciones: f => f.n === 'error' ? `<button type="button" class="btn chico" data-reintentar="${f.id}"><i class="ph ph-arrow-clockwise"></i>Reintentar</button>` : '',
@@ -2308,7 +2317,7 @@ $('#g-grav').addEventListener('click', e => {
 
 /* ───────── 20 · Modificó ───────── */
 C.act = { id: 'act', t: 'Actualizado', tipo: 'tiempo', w: 130, num: true, val: f => f.mod ? f.mod.hace : null, html: f => f.mod ? `<span class="gris num">${haceTxt(f.mod.hace)}</span>` : NADA };
-const gMod = new Grilla($('#g-mod'), { cols: cols('proy', 'cli', 'monto', 'act', 'modif'), filas: copiar(FACTURAS).slice(0, 10), orden: [{ id: 'act', dir: 'asc' }], etiqueta: 'Facturas con quién las modificó' });
+const gMod = new Grilla($('#g-mod'), { tarjetas: true, cols: cols('proy', 'cli', 'monto', 'act', 'modif'), filas: copiar(FACTURAS).slice(0, 10), orden: [{ id: 'act', dir: 'asc' }], etiqueta: 'Facturas con quién las modificó' });
 $('#g-mod').addEventListener('click', e => {
   const b = e.target.closest('.quien'); if (!b) return;
   e.stopPropagation();

@@ -1,6 +1,6 @@
 ---
 name: diseno-sistemas
-description: Lenguaje visual y de UX para sistemas de gestión (CRM, ERP, tableros internos, portales B2B), en escritorio y celular, con tokens, piezas React + Tailwind v4, ejemplos HTML, guías y dos scripts (revisor visual y guardia de datos). Sacado de 14 referencias analizadas por agentes. Usar SIEMPRE al crear, rediseñar, hacer un overhaul o revisar una pantalla de un sistema nuevo o existente (tablero, dashboard, tabla, lista, pipeline, kanban, ficha, calendario, formulario, alta, ajustes, login, hoja lateral, documento imprimible, correo o vista de celular) y al decidir colores, tipografía, espacios, radios, estados, botones, íconos, gráficos, textos o movimiento.
+description: Lenguaje visual y de UX para sistemas de gestión (CRM, ERP, tableros internos, portales B2B), en escritorio y celular, con tokens, piezas React + Tailwind v4, ejemplos HTML, guías y dos scripts (revisor visual y guardia de datos). Sacado de 20 referencias analizadas por agentes (espacios medidos y claro/oscuro medido cuadro por cuadro). Usar SIEMPRE al crear, rediseñar, hacer un overhaul o revisar una pantalla de un sistema nuevo o existente (tablero, dashboard, tabla, lista, pipeline, kanban, ficha, calendario, formulario, alta, ajustes, login, hoja lateral, documento imprimible, correo o vista de celular) y al decidir colores, tipografía, espacios, radios, estados, botones, íconos, gráficos, textos o movimiento.
 ---
 
 # Diseño de sistemas, versión 2
@@ -32,8 +32,14 @@ Rutas relativas a esta carpeta; los números sueltos (`06`, `07`…) son las cap
 | Formulario o alta larga | §5 Formularios | `ejemplos/pantallas/formulario-alta.html`, `componentes/base/Campo.tsx`, `componentes/estructura/HojaLateral.tsx` |
 | Ajustes, permisos, integraciones | §5 Ajustes | `ejemplos/pantallas/ajustes.html`, `04`, `05` |
 | Calendario / agenda | §5 Calendario | `ejemplos/pantallas/calendario.html`, `02`, `10` |
-| Login / acceso | §5 Acceso | `ejemplos/pantallas/login.html` |
-| Celular | §5 Celular, §6e | `ejemplos/pantallas/celular.html`, `09`, `11`, `12` |
+| Login / acceso (entrar, invitación, código, elegir empresa, sesión vencida) | §5 Acceso, `guias/acceso.md` | `ejemplos/pantallas/login-variantes.html` (5 diseños × 7 estados), `ejemplos/pantallas/login.html` |
+| Arrastre que cambia un resultado (fecha, ponderado, carga) | §1c.5, §5 Pipeline | `ejemplos/arrastre-con-impacto.html` |
+| Celular | §5 Celular, §6e (nunca de costado) | `ejemplos/pantallas/celular.html`, `09`, `11`, `12` |
+| Aprovechar la pantalla: anchos, paneles fijos, densidad, lo urgente arriba | §4h, `analisis/16-espacio-y-pantalla.md` | `15`–`20` |
+| Cronograma, Gantt, roadmap, carga del equipo | §4h, §5 Calendario | `17`, `18`, `19` |
+| Chat o conversación con panel de información | §4h | `15` |
+| Reporte con vista previa y envío | §4h, §5 Documentos | `16` |
+| Modo oscuro | §5 Oscuro, `analisis/17-claro-oscuro.md` | `14`, `20` (el mismo tablero en claro y oscuro), `tokens.css` |
 | Gráficos | §5 Gráficos, `guias/graficos.md` | `ejemplos/graficos.html`, `componentes/datos/` |
 | Dos monedas (moneda local y dólares) | §5 Dos monedas | `ejemplos/dos-monedas.html`, `componentes/datos/DosMonedas.tsx` |
 | Textos de interfaz | §6 Textos, `guias/textos.md` | — |
@@ -48,7 +54,7 @@ Rutas relativas a esta carpeta; los números sueltos (`06`, `07`…) son las cap
 | Patrón concreto con medidas (tabla, vista, lote, proceso, ⌘K, menú, kanban, carga del equipo, facturación, oscuro) | §1c, `guias/patrones-de-referencia.md` (Top 25 al final, tabla de lo que no se copia) | — |
 | Buscar una pieza concreta (biblioteca completa por categoría) | — | `ejemplos/biblioteca/index.html`: 14 categorías, 299 piezas vivas con su regla y su código. Abrir con un servidor local porque usa `base.css` y `base.js` (`cd ejemplos && python3 -m http.server`, después `localhost:8000/biblioteca/`) |
 | La misma pieza en React | `componentes/README.md` (índice por carpeta y qué carpetas copiar juntas) | `componentes/` (17 carpetas: `base/`, `datos/`, `estructura/` y una por categoría de la biblioteca) |
-| Profundizar un tema | `analisis/01-estructura.md` … `15-homogeneidad.md` | `ejemplos/componentes.html` (galería de piezas) |
+| Profundizar un tema | `analisis/01-estructura.md` … `18-tweets-66-69.md` | `ejemplos/componentes.html` (galería de piezas) |
 
 ## Receta rápida
 
@@ -63,7 +69,7 @@ Rutas relativas a esta carpeta; los números sueltos (`06`, `07`…) son las cap
 9. Espacios con la tabla de §4a; escalera tipográfica de 5 niveles (§4e).
 10. Vida (§1b): color por entidad, caras, un gráfico con estado, movimiento al cargar.
 11. Estados vacío, cargando y error (§6b); textos según `guias/textos.md`.
-12. Probá a 1440, 390 y en oscuro; pasá `scripts/revisar.mjs` y la lista de §8.
+12. Probá a 1280, 1440, 1920, a 360/390/414 (sin nada que se deslice de costado) y en oscuro; pasá `scripts/revisar.mjs` y la lista de §8.
 
 ---
 
@@ -98,7 +104,7 @@ Rutas relativas a esta carpeta; los números sueltos (`06`, `07`…) son las cap
 - **Barra superior del panel:** 56–58 px con `border-b`. Migas "Sección / **Página**" (padre en gris) a la izquierda; ⌘K, avisos (con `aria-label` que diga cuántos) y avatar a la derecha. En celular: flecha al padre y título.
 - **Cabecera:** título display (§2); subtítulo `texto-2` con **cifras reales del estado** unidas con " · " ("12 por facturar · 3 vencidas"), lo que exige actuar primero y coloreado solo en esa pieza; cada cifra lleva a su lista filtrada. Acciones a la derecha, alineadas abajo con el título.
 - **Orden vertical fijo:** cabecera → filtros que cambian los KPIs (período) → KPIs → cuerpo (lo de hoy primero) → consulta. Nunca KPIs debajo de una tabla ni filtros debajo de lo que filtran.
-- **Cuerpo con contexto:** `grid-cols-[1fr_360px]`: el trabajo a la izquierda, el contexto o lo siguiente a la derecha. En celular la derecha baja, salvo que sea de la pila Actuar: entonces sube arriba de todo.
+- **Cuerpo con contexto:** `grid-cols-[minmax(0,1fr)_340px]` (panel fijo de 320–380): el trabajo a la izquierda, el contexto o lo siguiente a la derecha (§4h). En celular la derecha baja, salvo que sea de la pila Actuar: entonces sube arriba de todo.
 - **Ficha:** 3 columnas `minmax(244px,.85fr) minmax(0,1.7fr) minmax(272px,.95fr)`: datos y contactos / actividad en pestañas con conteo / resumen que abre con su protagonista. Medí que las pestañas entren a 1440; si no, pasá los secundarios de la cabecera a íconos con tooltip antes de achicar letra. Cabecera de ficha: cuadro con el color de la entidad, nombre display, pastillas, subtítulo con cifras; correo, teléfono, Meet y nueva tarea como íconos de 38 px con tooltip, separados por una rayita del único botón relleno. Actividad: compositor arriba (bandeja con caja blanca, tipos en chips), línea de tiempo con un color fijo por tipo y lo que trae el evento en línea. Detalle en `ejemplos/pantallas/ficha-cliente.html`.
 - **Grillas declaradas:** KPIs `repeat(4,1fr)` o `1.25fr repeat(3,1fr)` con protagonista; tarjetas de entidad 4 → 2 (< 1280) → 1 (< 768). Todo hijo de grilla lleva `min-w-0`.
 
@@ -124,13 +130,13 @@ Sacadas de `guias/patrones-de-referencia.md`; el cómo con medidas está ahí, e
 1. **La vista es del usuario.** Densidad (28 / 36 / 44), columnas visibles, orden, anchos y filtros se guardan por persona y por tabla (§6g). El panel Vista muestra el valor actual de cada ajuste en el primer nivel ("Densidad · Compacta ›") y el botón de filtros dice cuántos hay activos.
 2. **El estado es forma + color + palabra**, idéntico en menú, fila y panel. Lo normal o resuelto va en gris sin pastilla; solo lo que exige actuar lleva color, y siempre con el motivo después de una raya ("Bloqueado — falta remito").
 3. **Ningún aviso sin acción.** Cada problema aparece en todos los niveles donde se ve, con el botón que lo resuelve, y además en una lista de control. Deshabilitado, solo con la causa escrita al lado o cuando es obvia por la posición (§5 Acciones).
-4. **Todo proceso se ve correr en el lugar.** Pasos con ícono por estado (punteado / girando / ✓ / ✕), tiempo en mono y "n/N". El resultado se escribe en verbos y cifras ("Facturó 12 · 1 sin correr: falta X") y queda un registro de las corridas. Nunca un spinner que tape la pantalla.
-5. **Consecuencia antes de actuar.** Una acción masiva muestra antes una vista previa con datos reales y la fila "sin asignar" en rojo. Una opción cuyo efecto no se ve lleva vista previa en vivo o una línea gris con la consecuencia.
+4. **Todo proceso se ve correr en el lugar.** Pasos con ícono por estado (punteado / girando / ✓ / ✕), tiempo en mono y "n/N". El resultado se escribe en verbos y cifras ("Facturó 12 · 1 sin correr: falta X") y queda un registro de las corridas. Nunca un spinner que tape la pantalla. Si una corrida falla por un límite, el límite se dibuja como raya rotulada sobre el dato y la barra pasa a rojo desde la raya; el paso fallido muestra el código en mono, un mensaje claro y los datos de entrada con la línea culpable resaltada. Reintentar crea una corrida nueva con código propio y la anterior queda en el registro.
+5. **Consecuencia antes de actuar.** Una acción masiva muestra antes una vista previa con datos reales y la fila "sin asignar" en rojo. Una opción cuyo efecto no se ve lleva vista previa en vivo o una línea gris con la consecuencia. **Al arrastrar algo que cambia un resultado, la consecuencia se ve antes de soltar:** pastilla pegada debajo de la tarjeta con el destino + "antes → después" + delta coloreado por bueno o malo; conteos −1/+1 en origen y destino; un límite superado en rojo con palabra; si no cambia nada, la pastilla lo dice. Al soltar, la cabecera y el toast repiten la consecuencia con Deshacer (`ejemplos/arrastre-con-impacto.html`).
 6. **No se navega para ver o editar:** hoja lateral que empuja la tabla sin taparla, modal con el contexto ya cargado (y "Crear otra" en las altas) o ⌘K. Dentro de un módulo el marco queda quieto; nunca un panel en blanco entre dos estados: esqueleto con la propia interfaz en fantasma o el contenido anterior hasta que llega el nuevo.
 7. **Los conteos dicen algo.** En pestañas de estado, punto + nombre + conteo, también en 0 (sirven de leyenda); en el menú, con verbo ("2 te necesitan", "3 vencidas"), en ámbar o rojo solo si exige actuar; en el subtítulo, número en `tinta` + rótulo gris. Toda tabla con montos lleva pie fijo con "N registros" y el total del filtro, una línea por moneda.
 8. **El color tiene dueño.** Cada entidad, su color fijo por id en todo el sistema (§1b). En un gráfico, color solo en lo nombrado en la leyenda; el resto, grises escalonados.
 9. **El movimiento explica.** Al ordenar o filtrar, las filas viajan a su lugar en 200–300 ms; la cascada de entrada solo en la primera visita, ≤ 8 piezas y completa antes de 600 ms; los números que cambian ruedan dígito por dígito; lo que llega en vivo entra desde un desenfoque de 6 px a 0 en ~300 ms. Nada en bucle detrás de los datos (§6f).
-10. **El oscuro es el mismo layout con otros tokens.** El botón principal pasa a blanco, los estados van como ícono + palabra sin pastilla y las capas se separan por luminosidad, sin sombras (§5 Oscuro).
+10. **El oscuro es el mismo layout con otros tokens.** El botón principal pasa a blanco, los estados usan su versión oscura (más clara y menos saturada) y las capas se separan por luminosidad y borde, sin sombras (§5 Oscuro).
 
 ## 2. Tipografía (análisis 02)
 - **Geist en todo y Geist Mono para códigos.** Una sola familia con dos papeles: **interfaz** (400–500 a 13–14 px) y **títulos y cifras** (500–600, tracking cerrado). Geist Mono para códigos (FAC-01101, CUIT, B/L) y, en monitoreo, cifras. Se eligió el 18/11/2026 comparando contra Outfit + Plus Jakarta, Manrope + Inter y Space Grotesk + IBM Plex sobre la misma pantalla: las letras de trazo fino o en 300 se pierden en un sistema denso; Geist se lee firme a 13 px y sus cifras quedan compactas. Otra familia solo si la marca la exige (y entonces una sola, con su mono). Cargá Geist con `next/font/google` (`Geist`, `Geist_Mono`) o Google Fonts (`family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500`).
@@ -141,6 +147,7 @@ Sacadas de `guias/patrones-de-referencia.md`; el cómo con medidas está ahí, e
 - **Dato = rótulo arriba y valor abajo** (§4e). Nunca "Rótulo: valor" en la misma línea dentro de una ficha (sí en leyendas y metadatos).
 - **Cifras:** `tabular-nums`, a la derecha en tablas (encabezado incluido). Moneda, centavos y unidad en `texto-3`, un paso más chicos (la moneda al 60–65 % de la cifra): `US$ 24.957`<span>,81</span>. En tablas, centavos completos pero igual en gris; en celular, sin centavos.
 - **Mayúscula** solo en el rótulo de grupo del menú. Encabezados de tabla, botones y pestañas en tipo oración.
+- **Corte de líneas:** títulos con `text-wrap: balance` (sin una palabra sola en la última línea); párrafos y descripciones con `text-wrap: pretty`.
 - **Nunca el atajo `font:`** sobre algo con cifras: resetea `font-variant-numeric`. Usá `font-size` y `font-weight` sueltos o repetí `tabular-nums` después.
 
 ## 3. Color (análisis 03)
@@ -183,11 +190,14 @@ Solo valores de `--espacio-*` (`tokens.css`). La única excepción literal es el
 | Grupo ↔ grupo dentro de una tarjeta | 16–24 | `--espacio-6` / `--espacio-8` |
 | Grupo ↔ grupo de un formulario | 24 + rótulo de grupo (o banda fina) | `--espacio-8` |
 | Bandeja ↔ tarjeta interna | 4 | `--espacio-2` |
-| Padding de tarjeta | 16 (densa, celular); 20 (normal); 24 (vistazo, protagonista) | `--espacio-6` / `-7` / `-8` |
-| Padding del panel | 24 arriba y abajo, 28 a los costados; 16 en celular | `--espacio-8` + `--espacio-9`; `--espacio-6` |
-| Entre tarjetas hermanas (gap de grilla) | 14 (12 en celular) | literal / `--espacio-5` |
-| Entre bloques grandes (KPIs → cuerpo) | 28 | `--espacio-9` |
-| Aire sobre un título de sección | 40 (28 en pantallas de operación y en celular) | `--espacio-10` (`--espacio-9`) |
+| Padding de tarjeta | 16 (densa, operación, celular); 20 (normal); 24 (vistazo, protagonista) | `--espacio-6` / `-7` / `-8` |
+| Rótulo de bandeja (ícono + rótulo + ⋯ sobre la bandeja) | fila de 32–36 | — |
+| Padding del panel | vistazo: 24 arriba y abajo, 28 a los costados · operación: 20 (medido en 20) · celular: 16 | `--espacio-8` + `--espacio-9` · `--espacio-7` · `--espacio-6` |
+| Título de página ↔ primer bloque | 16–24 | `--espacio-6` / `--espacio-8` |
+| Entre tarjetas hermanas (gap de grilla) | 14 vistazo; 12 operación y celular | literal / `--espacio-5` |
+| Entre bloques grandes (KPIs → cuerpo) | 28 vistazo; **16 operación** (medido en 19 y 20) | `--espacio-9` / `--espacio-6` |
+| Aire sobre un título de sección | 40 vistazo; 28 operación y celular; 16 si el bloque es una bandeja con su rótulo | `--espacio-10` / `--espacio-9` / `--espacio-6` |
+| Panel lateral fijo (contexto) | 320–380 de ancho (340 por defecto) | — |
 | Márgenes laterales en celular | 16 | `--espacio-6` |
 
 ### 4b. Proximidad
@@ -195,6 +205,7 @@ Solo valores de `--espacio-*` (`tokens.css`). La única excepción literal es el
 - El título de sección nunca es simétrico: 40 (o 28) arriba, 12 abajo.
 - El rótulo está a 2–4 de su valor y a 16 o más del dato siguiente.
 - Padding interno ≤ espacio entre bloques: una tarjeta con 20 de padding vive en un gap de 14 y a 28 del bloque siguiente.
+- **En operación, la bandeja reemplaza al aire.** Cuando cada bloque es una bandeja con su rótulo arriba (padding 4, fila de 32–36), 16 entre bloques y 12 entre columnas alcanzan (ref. 20: todo el ritmo es 16 vertical y 12 horizontal, y respira). Con bloques sueltos sin bandeja, volvé a 28.
 - **Separá con la herramienta más débil que alcance:** aire → divisor 1 px → banda o bandeja → tarjeta → título de sección + aire. Nunca dos fuertes juntas para lo mismo; nunca tres niveles de cajas con borde. Una tarjeta = un tema.
 - **Topes por bloque** (si hay más, "+N más" o "Ver todo"): KPIs 3–6 por fila; pasos visibles 3–5; filas en tarjeta de lista 5–7; etiquetas 2; piezas de metadato 3; series 3–6; avatares en pila 3–4. Tabla completa en `guias/jerarquia-y-espacios.md` §4.
 
@@ -205,6 +216,7 @@ Solo valores de `--espacio-*` (`tokens.css`). La única excepción literal es el
 | Operación (cobranzas, pipeline, avisos) | tabla 28 / 36 / 44 (36 por defecto) · 56–64 lista de 2 líneas | 16–20 | 13–14 | 24–32 |
 | Consulta (historial, caja, registro) | tabla 28 / 36 / 44 (28 o 36 por defecto) | 16 | 13 | 14 en la tabla |
 | Monitoreo (pantalla siempre abierta) | tarjetas de 180–200 en grilla de 4 | 16 | 12–13 | 32 mono |
+| Planificación (cronograma, Gantt, roadmap) | Gantt 30–32 · lista "necesita atención" 36–40 · carga y hitos 40–48 | 16 | 13–14 | 18–20 en KPI compacto con anillo |
 | Celular | 56–64 (toque ≥ 44) | 16 | 14–16 | 32–36 |
 
 Ítem de menú 32–36; botón 36–38 (chico 28; 44 en celular); campo 36–40 (52 en celular). Una sola densidad por zona; en tablas la elige la persona (§1c.1); la densidad se logra con altura y padding, nunca con letra de menos de 12. Lo premium respira, lo operativo rinde: elegí por el uso.
@@ -266,6 +278,18 @@ Lo premium se nota en que todo cae en su lugar. Un desfase de 2 px se ve aunque 
 - **Sombras del tono de la tinta, nunca negras:** mínima (`--shadow-min`) en botones con borde, tarjeta interna, ítem activo y cuadros de ícono; hover (`--shadow-hover` + subir 2 px) en tarjetas clickeables; flotante (`--shadow-flotante`) en menú, hoja, modal, toast y barras flotantes; `--shadow-principal` en el botón relleno. Una tarjeta quieta va con borde, sin sombra grande.
 - **Subdividir** con bandas a todo el ancho (`border-t` o fondo `suave`) o bandeja + tarjeta blanca; métricas en fila con `divide-x`. Nunca tarjeta dentro de tarjeta con borde.
 
+### 4h. Aprovechar la pantalla (`analisis/16-espacio-y-pantalla.md` · referencias 15–20)
+Las referencias llenan el ancho sin huecos y nunca obligan a buscar el contenido de costado. Un sistema que deja franjas vacías en 1920 o que hace deslizar en el celular está mal armado, no "limpio".
+
+- **Llenar el ancho con `fr` y `minmax`.** Columna de trabajo fluida `minmax(0,1fr)` + panel de contexto fijo de **320–380** (340 por defecto; 20: 338, 16: ~340, 19: ~288). KPIs a todo el ancho: iguales `repeat(4,minmax(0,1fr))` o según su contenido (`minmax(0,1.85fr) minmax(0,1.85fr) minmax(0,1fr)` en 20). Grillas de tiempo divididas en `1fr` para que el último día o semana toque el borde: `140px repeat(5,minmax(0,1fr))` (17), `170px repeat(10,minmax(0,1fr))` (19).
+- **La grilla de abajo hereda las columnas de arriba.** Si hay 4 KPIs, el cuerpo es `3fr 1fr` y el panel derecho mide lo mismo que el cuarto KPI (19): todos los bordes coinciden.
+- **Nada de contenido centrado y angosto.** Prohibido un `max-width: 960px; margin: auto` para una pantalla de trabajo. El ancho de lectura se limita **adentro** (texto corrido a 68ch, formulario a su ancho por campo), no en el contenedor de la página. Lo único que va centrado es lo que representa un objeto aislado: la hoja A4 de una vista previa (16), un vacío, el acceso.
+- **Crecer de 1280 a 1920 sin huecos.** Lo que crece es la columna fluida (gráfico, tabla, cronograma, conversación); los paneles laterales quedan fijos y las grillas se estiran. Probá a 1280, 1440 y 1920: no puede aparecer una franja vacía a la derecha ni una tarjeta estirada con el contenido pegado a la izquierda (en ese caso, más columnas o más datos por fila, nunca más aire). Por encima de ~1680, una grilla de tarjetas suma una columna (`repeat(auto-fill,minmax(280px,1fr))`) antes que agrandarlas.
+- **Densidad según la tarea** (§4c): lo que se lee (chat, reporte, ficha) respira; lo que se recorre (cronograma, roadmap, cobranzas, monitoreo) va denso, con filas de 30–40 y bandejas con rótulo en vez de aire. Una zona, una densidad.
+- **Lo urgente arriba, con su arreglo en la fila.** Toda pantalla de planificación u operación abre con un bloque **"Requiere atención" + "Empieza hoy"** (o "Vence hoy") lado a lado (≈ 57/43 o 50/50, filas de 36–40) antes del cronograma o la tabla (17, 18). Cada fila dice el motivo con ícono ("Vencida · venció 27 oct · 75 %", "Fechas al revés · 5 nov – 12 oct") y, si se arregla ahí, el botón ("Corregir fechas"). Si está vacío, una línea "Nada pendiente hoy" y se pliega.
+- **Cabecera compacta en operación:** título 20–24 con subtítulo de cifras reales y las acciones en la misma fila (36); el primer bloque a 16–24.
+- **Escritorio puede desplazar de costado solo con aviso.** Un cronograma más largo que la pantalla (18) se desliza con barra visible, columna de nombres fija y un chip que dice qué quedó afuera ("‹ 6 vencidas"). En celular, nunca (§6e).
+
 ---
 
 ## 5. Piezas
@@ -322,13 +346,14 @@ Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una 
 - **Acciones rápidas** secundarias de una fila aparecen con hover **y** `:focus-within`, superpuestas con un degradé del fondo; en celular, siempre visibles.
 - **Guardando:** el botón recibe `cargando` desde el primer render, fija su ancho, pasa a gerundio ("Guardando…") con `aria-busy` y sin perder el foco.
 - **Éxito en el lugar:** la fila se tiñe de verde tenue, el botón pasa a pastilla "✓ Aprobado", nada desaparece en el momento; toast abajo a la derecha con participio + código + monto, la consecuencia ("Quedó en Cobranzas"), **Deshacer** y ×; 5 s (8 s con Deshacer), se pausa con mouse, foco o pestaña oculta; máximo 3 apilados.
+- **Optimista lo chico y reversible:** tildar, mover, archivar o renombrar se ven hechos al instante y vuelven atrás solos si el servidor falla, con toast "No se guardó · Reintentar". El toast con Deshacer lleva una barrita de 2 px que se vacía (`linear`) y se pausa con el mouse o el foco.
 - **Deshacer antes que confirmar.** Modal solo para lo irreversible, con la consecuencia y el botón que repite la acción.
 - **Nunca un control deshabilitado sin decir por qué.** Deshabilitado solo con la causa escrita al lado, o cuando es obvia por la posición ("Mover a la izquierda" en la primera columna, que queda en su lugar al 40 %). Si no aplica, no se muestra; si espera tiempo, contador ("Podés pedir otro en 0:28"); si falta algo, el botón dice qué y lleva ahí.
 - "+ Agregar …" al final de su propia lista, en gris. Correo, teléfono y Meet como botones cuadrados de ícono con tooltip.
 
 ### Selector segmentado y pestañas (`componentes/base/Segmentado.tsx`)
-- Todo cambio de vista o período de 2–4 opciones (y toda elección de 2–3 en un formulario) va en segmentado: riel `bg-suave`, activa en pastilla `bg-superficie` con sombra mínima que se desliza (sin animar en el primer pintado). En oscuro, la activa es pastilla clara (`bg-tinta text-superficie`).
-- Pestañas con conteo gris ("Actividad 16"); el conteo de la activa va invertido y se actualiza en el momento. Riel deslizable de costado si no entra.
+- Todo cambio de vista o período de 2–4 opciones (y toda elección de 2–3 en un formulario) va en segmentado: riel `bg-suave`, activa en pastilla `bg-superficie` con sombra mínima que se desliza (sin animar en el primer pintado). En oscuro, la activa sube un escalón (`bg-superficie` con borde sobre el riel `bg-suave`, como en la ref. 20); la pastilla clara invertida (`bg-tinta text-superficie`) queda para el selector fuerte de la pantalla (período del tablero, tema).
+- Pestañas con conteo gris ("Actividad 16"); el conteo de la activa va invertido y se actualiza en el momento. Si no entran en el celular, se acomodan en una grilla de 2–3 columnas (el indicador se mueve en x e y) o las que sobran van a "Más ▾"; nunca un riel que se desliza de costado (§6e).
 
 ### Formularios (01, 04 · análisis 11 · `ejemplos/pantallas/formulario-alta.html`)
 - Ediciones secundarias en **hoja lateral derecha** de 420 px (380–440), sin cambiar de página; en celular sube desde abajo. Pie: "Volver a lo predeterminado" a la izquierda; Cancelar (borde) y Guardar (relleno) a la derecha.
@@ -342,7 +367,7 @@ Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una 
 - Combobox con búsqueda sin acentos, teclado completo y "Crear «texto»"; fecha que se puede escribir o elegir, con atajos. Los selects llevan ícono; las opciones binarias son toggles con su explicación debajo.
 
 ### Ajustes (04, 05 · `ejemplos/pantallas/ajustes.html`)
-- Dos niveles: columna interna con grupos (Personal / Empresa / Integraciones) y contenido a la derecha; en celular, riel horizontal de pastillas fijo arriba.
+- Dos niveles: columna interna con grupos (Personal / Empresa / Integraciones) y contenido a la derecha; en celular, las secciones como pastillas que se acomodan en líneas arriba del contenido (o una lista que abre cada sección), nunca un riel de costado.
 - **Sin Guardar por sección:** cada edición marca el campo y su ítem del menú interno con un punto de acento (rojo si necesita atención) y levanta la barra flotante "Tenés cambios sin guardar · N cambios en Perfil y Notificaciones", con Descartar (con Deshacer) y Guardar cambios (⌘S). Esa barra es la capa: el relleno de la cabecera pasa a borde.
 - Lo que se aplica al instante (tema, vista) no pasa por la barra; lo que cambia datos de otros sí. Acciones sobre una persona o integración (invitar, suspender, conectar) se ejecutan en el momento con toast y Deshacer.
 - **Preferencias por canal:** tarjeta por canal con su destino real e interruptor; tabla de casillas evento × canal con casilla maestra de estado intermedio y "6 de 10"; un canal apagado deja su columna al 30 % sin perder lo elegido.
@@ -360,18 +385,23 @@ Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una 
 - Filtros por persona y tipo: chips redondos, activo en negro con ✓.
 
 ### Pipeline (`ejemplos/pantallas/pipeline.html`)
-- Cada columna es una bandeja: punto de la etapa, nombre y conteo; monto total que cuenta, ponderado y barrita de participación; tarjetas de radio 16 adentro. Las 5 columnas entran a 1440 (≥ 200 px cada una); en celular, carrusel con encastre al 84 % que se apaga mientras se arrastra.
+- Cada columna es una bandeja: punto de la etapa, nombre y conteo; monto total que cuenta, ponderado y barrita de participación; tarjetas de radio 16 adentro. Las 5 columnas entran a 1440 (≥ 200 px cada una); en celular, una etapa a la vez: carrusel a propósito con encastre al 84 % (`data-carrusel`), indicador "Propuesta · 3 de 5" con puntos, la leyenda de etapas en 2 columnas que lleva a cada una, y el encastre se apaga mientras se arrastra. Alternativa: segmentado de etapas y una columna visible.
 - Etapas abiertas en una rampa de un solo tono, de claro a oscuro; solo Ganada en verde.
 - Tarjeta: cuadradito del cliente, código mono, monto con moneda gris, anillo de probabilidad; pie en dos líneas con la fecha relativa arriba (vencida en rojo con ícono) y la próxima acción abajo.
 - Arrastre con pointer events (no HTML5 drag): copia que vuela (`rotate:2deg; scale:1.03`), hueco punteado de acento, vecinos con FLIP de 240 ms, autoscroll en bordes, Esc cancela; en el dedo, toque largo de ~230 ms. Alternativa por teclado (Mayúscula + ←/→ cambia de etapa) y anuncio en `aria-live`.
+- **Mientras se arrastra**, la pastilla de la tarjeta dice qué pasa con el ponderado del mes o con la fecha (§1c.5). Si una tarea define la fecha de entrega, lleva rayita roja de 3 px y "Define la fecha"; las del camino crítico, rayita verde, con leyenda.
 - Todo cambio de etapa: toast con qué cambió ("probabilidad 30 % → 75 %") y Deshacer. Ganada tiñe de verde con sello ~4 s; Perdida es una zona que aparece solo al arrastrar.
 - Barra apilada: rótulo de tramo solo si mide ≥ 96 px reales; clic en tramo o leyenda lleva a la columna con destello.
 
-### Acceso (`ejemplos/pantallas/login.html`)
-- Dos mitades dentro del marco de 26: formulario sobre `superficie` a la izquierda; panel con degradé del acento, puntos con máscara y 2–3 tarjetas del producto a la derecha. En celular, solo el formulario.
-- Error del servidor en el lugar, arriba del formulario: qué pasó, intentos que quedan y la salida ("Recuperar contraseña"); nunca modal, nunca borrar lo escrito.
-- `autocomplete` (`username`, `current-password`), `inputmode="email"`, `autocapitalize="off"`; campos de 52 px y 16 px en celular; foco automático solo en escritorio.
-- Al cambiar de vista, el foco pasa al título nuevo (`tabindex="-1"`).
+### Acceso (`guias/acceso.md` · `ejemplos/pantallas/login-variantes.html` · `ejemplos/pantallas/login.html`)
+- **Una columna de formulario de 360–440 px con orden fijo:** logo y nombre del sistema arriba (un solo enlace secundario a la derecha) → título 32/500 con un verbo o una pregunta → bajada solo si trae un dato → aviso del servidor → campos → "Recordarme" → principal a todo el ancho → "o" → proveedores → salida alternativa → pie con el estado del sistema ("● Todo en línea").
+- **El panel de al lado elige el diseño; el formulario no cambia.** Marca (panel oscuro con el signo de la marca y rayas de 1 px al 6–8 %): **por defecto en sistemas internos**. Imagen (foto real de la operación con velo y un dato del día): solo con fotos propias. Pasos (hasta 3 apilados): invitaciones y primera vez. Centrado (tarjeta de 476 sobre puntos): lo que llega por correo (código, invitación, recuperar). Puntos (la operación tramada en puntos). Lista de beneficios solo en productos que se venden. En celular, solo el formulario.
+- **Siete estados, todos en el lugar y sin modal:** entrar, error (qué pasó, intentos que quedan y la salida; nunca se borra lo escrito), bloqueo (con cuenta regresiva), código, elegir empresa, invitación y sesión vencida (el correo ya puesto; vuelve a donde estaba).
+- **Código:** un solo `<input autocomplete="one-time-code" inputmode="numeric">` dibujado como 6 casillas; pegar o el autocompletado del celular lo llenan de un toque; reenviar con contador.
+- **Elegir empresa** solo si hay 2 o más (con una, entra directo): filas con cuadro de color, nombre, rol y último ingreso.
+- **Proveedores** lado a lado y del mismo ancho, solo los que de verdad se usan.
+- `autocomplete` en todos los campos (`username`, `current-password`, `new-password`), `inputmode="email"`, `autocapitalize="off"`; campos de 44 en escritorio y **52 con letra de 16 en celular**; foco automático solo en escritorio. Al cambiar de estado, el foco pasa al título nuevo (`tabindex="-1"`).
+- **El panel no vende:** sin slogans, fotos de stock ni montos del negocio.
 
 ### Celular (09, 11, 12 · análisis 12 · `ejemplos/pantallas/celular.html`)
 - Fondo `fondo` del sistema, tarjetas `superficie` radio 20–24 sin borde, márgenes de 16, gap 12.
@@ -381,6 +411,8 @@ Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una 
 - **Barra inferior** de 4 destinos, cápsula flotante de 64 px a 16 de los bordes: activo en pastilla de acento suave con ícono fill y texto, el resto solo ícono; degradé del fondo detrás.
 - Toasts arriba de la barra y de la píldora (`--ds-pie-movil`). Toques ≥ 44 px.
 - Lo que pasa en una pantalla actualiza las otras (contadores, anillos, KPIs). La falta de señal se muestra en el dato ("1 sin subir" en ámbar), no en un cartel.
+- **Fotos con su versión borrosa mientras cargan** (desenfoque de 16–20 px, escala 1,1, fundido de 320 ms al llegar la buena); nunca una caja gris.
+- **Tarjeta que crece a ficha** con View Transitions (320 ms, `--ease-mover`); la hoja inferior se arrastra desde el agarre y desde su cabecera.
 - Monto en celular: 40–48 centrado, moneda y centavos en gris, formato en vivo, impacto contra el tope debajo (cargado sólido, este rayado).
 
 ### Gráficos (05, 07, 08, 14 · `guias/graficos.md` · `ejemplos/graficos.html`)
@@ -393,11 +425,17 @@ Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una 
 - SVG al ancho real y redibujado al redimensionar; nunca `preserveAspectRatio="none"` con texto. Con estirado: `vector-effect:non-scaling-stroke` y el punto y el globo en HTML encima. El punto marcado nunca pegado al borde.
 - Todo gráfico con ejes: teclado (Tab, flechas, Esc), "Ver como tabla", `aria-label` con la conclusión y una tabla `sr-only` dentro de un div.
 
-### Oscuro (14)
-- Fondos que suben de luz por capa (#0a0a0a → #111113 → #18181b), borde #27272a, **sin sombras**; la selección se invierte (pastilla clara).
-- Barras normales en gris claro; se colorean solo con un estado.
-- Foto solo en la franja de cabecera (~150 px) con degradé hacia el fondo y controles en pastillas translúcidas.
-- **Ningún color escrito a mano en el HTML:** avatares, rayitas y pastillas salen de variables que cambian con `[data-tema=oscuro]`. Cuadros de tipo al 18 %.
+### Oscuro (14, 20 · `analisis/17-claro-oscuro.md` · bloque oscuro de `tokens.css`)
+El oscuro es **el mismo layout con otros tokens**: mismas posiciones, tamaños, radios, letras y paleta de datos. Lo que cambia es la luz de cada capa, los estados, los grises de datos y la forma de separar. Medido sobre la ref. 20, que muestra la misma pantalla en los dos modos con un deslizador.
+- **Escalera de superficies**, ~7 de luz por capa, lo de arriba más claro: lienzo `#0a0a0b` → panel `#111113` → bandeja (`suave`) `#18181b` → tarjeta (`superficie`) `#1f1f22` → hover y capa flotante `#26262a` → borde `#2a2a2e`. **La tarjeta siempre más clara que su bandeja** (como en claro, donde la bandeja es más oscura que la tarjeta blanca); si la bandeja queda más clara, la tarjeta se ve hundida.
+- **Nunca `#fff` sobre `#000`** (vibra y cansa): tinta `#fafafa`, lienzo `#0a0a0b`. Los tres textos mantienen su contraste del claro: tinta 15,8:1, `texto-2` 8:1, `texto-3` ≥ 5:1 sobre la tarjeta y la bandeja.
+- **Estados y deltas con versión oscura**, más clara y menos saturada (verde `#4ade80`, ámbar `#fbbf24`, rojo `#f87171`, azul `#60a5fa`) y pastilla al 12–20 %. El del claro sobre oscuro no se lee (rojo `#b91c1c` sobre la tarjeta: 2,5:1) y el del oscuro sobre blanco tampoco (verde `#4ade80`: 1,7:1). Por eso **ningún color escrito a mano**: avatares, rayitas, pastillas, deltas e íconos de tipo salen de variables que cambian con `[data-tema=oscuro]`; cuadros de tipo al 18 %.
+- **Bordes en vez de sombras.** En oscuro la sombra no se ve: cada tarjeta, campo y control lleva borde de 1 px (+11 de luz sobre su fondo) y las sombras se apagan (`--shadow-min: none`). Las capas flotantes (menú, hoja, modal, toast) suben un escalón (`hover`) y llevan `borde-fuerte`; la sombra negra larga es solo un extra.
+- **AA en los dos modos**, medido sobre el fondo real (bandeja incluida). La ref. 20 no pasa en sus metadatos (2,7:1 en claro, 3,3:1 en oscuro), en su verde del claro (2,6:1) ni en su rojo del oscuro (2,5:1): eso no se copia.
+- **Gráficos:** conservan sus colores de datos (≥ 3:1 sobre la tarjeta oscura). Baja todo lo que no es dato: grilla a ≤ 1,1:1 (`#26262a` sobre `#1f1f22`), barras "no elegidas", pistas y rayado a `#2a2a2e`–`#3f3f46` (`--color-dato-6`), líneas guía (meta) más oscuras, no más brillantes. Los escalones pastel de un anillo o barra se mezclan con la superficie, no con blanco, para no brillar más que el dato fuerte.
+- **Qué se invierte y qué sube.** Se invierte lo único y fuerte: botón principal (blanco con texto oscuro), tooltip, insignia de conteo, opción activa del selector de tema (`bg-tinta text-superficie`). Lo elegido dentro de un grupo (ítem activo del menú, opción del segmentado, pestaña) **no se invierte**: sube un escalón (`superficie` sobre `suave`) con borde, salvo que sea la única selección de la pantalla.
+- **Logos e imágenes con fondo.** Un logo oscuro sobre fondo oscuro desaparece: va en cuadro blanco con borde en los dos modos. Fotos con radio, sin sombra; foto de cabecera solo en la franja de ~150 px con degradé hacia el fondo y controles en pastillas translúcidas.
+- Barras normales en gris claro; se colorean solo con un estado o como dato nombrado en la leyenda.
 
 ### Documentos y correos (`guias/documentos.md` · `ejemplos/documentos/`)
 - Hoja A4 (210 × 297 mm) con `@page{size:A4;margin:12mm 14mm 14mm}` y "Hoja N de M" en las cajas del margen.
@@ -470,10 +508,26 @@ Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una 
 ## 6e. Del escritorio al celular
 - **Cortes únicos:** < 1280 px los KPIs y las tarjetas de entidad pasan a 2, el panel lateral baja y la barra lateral pasa a riel de íconos; **< 768 px es celular**. Si un ejemplo usa otro corte, manda este.
 - Celular: sin barra lateral (barra inferior de 4), una columna con márgenes de 16, acción principal en la píldora fija y **no repetida en la cabecera** (`ocultarAccionesEnCelular`).
-- **Tablas → tarjetas de 2 líneas por CSS** (mismo HTML; áreas por columna): nombre y monto arriba, estado y fecha abajo, casilla con área de 44. Sin encabezado ni pie de cálculo.
-- **Ficha de varias columnas → una columna con segmentado fijo arriba** (Actividad / Resumen / Datos, abre en Actividad); nunca las tres apiladas.
-- Hoja lateral → hoja inferior con agarre; KPIs y kanban en carrusel con `scroll-snap`; filtros que se deslizan de costado.
-- Grillas con `minmax(0,1fr)`; números largos (CVU, alias) con `word-break:break-all`. Nunca scroll horizontal de página: lo ancho se desplaza dentro de su tarjeta.
+
+**Regla dura: en el celular NADA se desliza de costado.** Ni la página ni un componente adentro: tabla, kanban, cronograma, Gantt, fila de KPIs, riel de filtros, pestañas, índice, código. Deslizar de costado para ver el resto de un componente es fricción y esconde datos (pasó en un CRM real: había que arrastrar de costado por componentes enormes). La única excepción es un **carrusel a propósito**: `scroll-snap-type: x mandatory`, cada elemento con `scroll-snap-align`, un indicador visible ("2 de 5" o puntos) y `data-carrusel` en el contenedor. Se usa solo cuando ver una cosa por vez es la tarea (etapas del pipeline, días de una semana, fotos), nunca para meter algo que no entra. La otra excepción es un **lienzo con paneo** (flujo de nodos, mapa, plano): se recorre con el dedo en las dos direcciones, lleva "Ajustar a la pantalla" y `data-lienzo` en el contenedor.
+
+| En escritorio | En celular (< 768) |
+|---|---|
+| Tabla | tarjetas de 2 líneas por CSS (mismo HTML, áreas por columna): nombre y monto arriba, estado y fecha abajo, casilla con área de 44; sin encabezado ni pie de cálculo |
+| Kanban / pipeline | una etapa a la vez: segmentado de etapas arriba y una columna visible, o carrusel a propósito con indicador "3 de 5" |
+| Cronograma por días, Gantt, roadmap | lista por día ("Hoy", "Mañana", "Jue 13") con las tareas debajo; el Gantt pasa a lista por proyecto con barra de avance, fecha de fin y "en riesgo" arriba |
+| Fila de KPIs | 1–2 columnas (la protagonista a todo el ancho), nunca carrusel |
+| Panel lateral de contexto | baja debajo del trabajo, o se abre como hoja inferior con agarre; si es de la pila Actuar, sube arriba de todo |
+| Hoja lateral | hoja inferior con agarre |
+| Filtros, chips, vistas guardadas | botón "Filtros (3)" que abre una hoja; los chips activos se acomodan en líneas (`flex-wrap`) |
+| Pestañas o segmentado que no entran | grilla de 2–3 columnas, o las que sobran en "Más ▾" |
+| Ficha de varias columnas | una columna con segmentado fijo arriba (Actividad / Resumen / Datos, abre en Actividad); nunca las tres apiladas |
+| Chat en 3 columnas | una por vez: lista → conversación → información en hoja |
+| Índice de secciones de un alta | anillos numerados en una fila (el nombre para el lector de pantalla) |
+| Bloque de código | `white-space: pre-wrap` |
+
+- **Cómo se garantiza en el código:** todo hijo de flex o grid lleva `min-w-0`; grillas con `minmax(0,1fr)`, nunca `1fr` solo ni `repeat(n, 200px)`; **ningún ancho fijo sin `max-w-full`** (`w-[420px]` → `w-full max-w-[420px]`); tablas, SVG e imágenes con `max-width:100%`; textos largos con `truncate`, `line-clamp` o `break-words`, y números largos (CVU, alias) con `word-break:break-all`. Nunca se esconde el desborde con `overflow-x:hidden` en `body`: se arregla el componente que se sale.
+- **Probalo a 360, 390 y 414.** `revisar.mjs` falla si la página o un componente interno scrollea de costado sin `data-carrusel` ni encastre, y si un texto o un control queda cortado en el borde.
 - Para mostrar pantallas de celular lado a lado en una galería: cada una a 390 reales achicada con `zoom`; a < 600 px, una sola pantalla real que navega.
 
 ## 6f. Movimiento (`guias/movimiento.md` · `ejemplos/movimiento.html`)
@@ -486,6 +540,7 @@ Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una 
 - **Las capas flotantes viven fuera de todo contenedor con `transform`** (rompe `position: fixed`).
 - Hover que mueve, siempre dentro de `@media (hover: hover)`. Filas: solo fondo; tarjetas clickeables: suben 2 px con sombra de hover.
 - Cambio de vista: fundido + escala .985 + desenfoque 4 px (~140 ms sale, ~300 ms entra).
+- **Elemento compartido lista → ficha:** la tarjeta viaja y crece a la ficha en 320 ms con `--ease-mover` (View Transitions). El contenido real reemplaza al esqueleto con un fundido, sin salto.
 - Reduced-motion: distancias × `--mueve` (0) y dibujos a fundido de 120 ms.
 
 ## 6g. Implementación (React + Tailwind v4)
@@ -514,6 +569,12 @@ Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una 
 - Spinner a pantalla completa; vacío sin acción ni dato; "null", "(s)", "exitosamente".
 - Foto detrás de datos o texto blanco sobre foto sin degradé; color escrito a mano que no cambia en oscuro.
 - Sumar monedas distintas.
+- **Pantalla sin aprovechar:** contenedor angosto centrado (`max-width` + `margin:auto`) en una pantalla de trabajo, franja vacía a la derecha a 1920, panel lateral que se estira con la ventana, columnas en px fijos que no llenan el ancho, la grilla de abajo con bordes distintos a la de arriba.
+- Lo urgente (vencido, en riesgo, empieza hoy) debajo del cronograma o de la tabla, o un aviso sin su arreglo en la fila.
+- **En celular, algo que se desliza de costado:** tabla ancha, kanban de columnas, cronograma o Gantt, fila de KPIs en carrusel, riel de filtros o pestañas, código; un carrusel sin encastre ni indicador; un ancho fijo sin `max-w-full`; un hijo de flex o grid sin `min-w-0`; `overflow-x:hidden` en `body` para tapar un desborde.
+- **Oscuro mal hecho:** `#fff` sobre `#000`; estados o deltas con el mismo color que en claro (el rojo del claro sobre oscuro da 2,5:1); tarjeta más oscura que su bandeja; tarjetas separadas solo por sombra; grilla o guías de gráfico más brillantes que los datos; logo oscuro sin cuadro sobre fondo oscuro; invertir a blanco todo lo seleccionado.
+- **En el acceso:** campos de solo línea, correo y contraseña lado a lado, principal circular en un rincón, slogans o fotos de stock, todo oscuro por defecto; código casilla por casilla (seis inputs); foto como caja gris mientras carga.
+- Arrastre que recién después de soltar dice qué cambió; errores de una corrida en tarjetas de degradé saturado.
 - En un overhaul: renombrar o "limpiar" una firma de datos, borrar un comportamiento, mezclar tokens globales con piezas en un commit, apagar la guardia.
 
 ## 8. Antes de entregar
@@ -523,7 +584,7 @@ Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una 
 3. **Overhaul:** `node scripts/guardia-datos.mjs --base main` en PASA (lo permitido con motivo y OK); typecheck, pruebas y build verdes; misma red y mismos permisos por rol; lista de comportamiento en [x]; informe con capturas del antes y del después.
 4. **Rellenos:** uno por pantalla más uno por capa abierta; acciones de fila en la fila (≤ 2).
 5. **Jerarquía:** prueba de 5 segundos, desenfoque (una mancha por bloque), escala de grises, ≤ 3 textos en `tinta` 500 por tarjeta, ≤ 3 tamaños y ≤ 2 pesos.
-6. **Espacios:** todos de §4a; adentro ≤ la mitad de afuera; título de sección 40/12; un borde izquierdo por columna.
+6. **Espacios:** todos de §4a con la variante del uso (vistazo 24–28 de panel y 28 entre bloques; operación 20 y 16 con bandejas con rótulo); adentro ≤ la mitad de afuera; título de sección 40/12 (28/12 en operación); un borde izquierdo por columna.
 7. **Legibilidad:** nada < 12 px, contraste AA, interlineado por tamaño, texto corrido ≤ 72 caracteres, truncado al final.
 8. **Vida:** color por entidad, cifras con dibujo, un protagonista, caras, movimiento al cargar; Geist con títulos grandes y firmes.
 9. **Cabecera y KPIs:** subtítulo con cifras reales; cada KPI con contexto, delta por sentido y link a su lista.
@@ -532,8 +593,11 @@ Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una 
 12. **Datos:** montos `tabular-nums` a la derecha con moneda y centavos en gris, sin sumar monedas; números y fechas de `formato.ts`; "—" para lo vacío.
 13. **Estados:** vacío (los tres casos), cargando con esqueleto, error en el lugar con Reintentar, guardando con ancho fijo, éxito en el lugar con Deshacer.
 14. **Textos:** pasada la lista de `guias/textos.md` §14 (incluido el grep de palabras prohibidas).
-15. **Celular:** a 390 sin scroll horizontal, toques de 44, acción fija abajo y no repetida arriba, tablas en tarjetas, inputs de 16.
+15. **Celular:** a 360, 390 y 414 **nada se desliza de costado** (ni la página ni un componente: tabla → tarjetas, kanban → una etapa, cronograma → lista por día, KPIs → 1–2 columnas, panel → hoja inferior, filtros → hoja); solo carruseles a propósito con encastre, indicador y `data-carrusel`; `min-w-0` en hijos de flex/grid y ningún ancho fijo sin `max-w-full`; toques de 44, acción fija abajo y no repetida arriba, inputs de 16.
 16. **Teclado y lector:** todo alcanzable con Tab, foco visible, Esc cierra, `aria-label` en íconos, gráficos con "Ver como tabla".
 17. **Movimiento:** tokens, `prefers-reduced-motion` probado, nada animado en el marco ni en acciones de cientos de veces por día.
 18. **Peor caso:** nombre de 60 caracteres, monto de 9 cifras, 0 y 40 elementos: el foco sigue en su lugar.
 19. **Transversales:** las 10 reglas de §1c, una por una.
+20. **Pantalla aprovechada:** a 1280, 1440 y 1920 llena el ancho sin franjas vacías; columna fluida + panel fijo de 320–380; la grilla de abajo hereda las columnas de arriba; densidad según la tarea; "Requiere atención" y "Empieza hoy" arriba con su arreglo en la fila (§4h).
+21. **Oscuro:** escalera de superficies (tarjeta más clara que su bandeja), tinta `#fafafa` sobre `#0a0a0b`, estados con su versión oscura, bordes en vez de sombras, AA en los dos modos, gráficos con sus colores y la grilla baja, logos en cuadro; el revisor con `--oscuro` sin avisos de oscuro.
+22. **Acceso:** los 7 estados resueltos en el lugar (`guias/acceso.md`), `autocomplete` en cada campo, código en un solo input, y el revisor ≥ 90 con `--galeria` y con `--oscuro`.
