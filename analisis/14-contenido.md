@@ -27,7 +27,7 @@
 9. La pantalla de inicio de cada persona arranca con la fecha y el saludo con su nombre ("Buenas tardes, Agustín"). El saludo depende de la hora de Argentina y se calcula en el servidor.
 10. Los botones dicen verbo + objeto ("Registrar cobro", "Reprogramar", "Ver PDF"). No uses "Aceptar", "Enviar" ni "Continuar" solos.
 11. Los estados son una pastilla con punto, en una palabra ("Cobrada", "Vencida", "Parcial"). El rojo queda solo para lo atrasado o lo fallido.
-12. Escribe los códigos de documento (CONT-01101, FC A-0003-00001234, CBU parcial ···· 4821) en `font-mono`.
+12. Escribe los códigos de documento (CTR-0412, FC A-0003-00001234, CBU parcial ···· 4821) en `font-mono`.
 13. Lo que se puede deshacer no pide confirmación: se hace y aparece un aviso con "Deshacer" que repite qué se hizo y con qué número.
 14. Ningún bloque lleva tagline, ayuda decorativa ni texto que repita lo que ya dice el título.
 

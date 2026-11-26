@@ -33,7 +33,7 @@ export type VacioProps = {
 export function Vacio({ titulo, texto, accion, dibujo = 'lista', filtro, compacto, className }: VacioProps) {
   const arte = typeof dibujo === 'string' ? <Dibujo tipo={(filtro ? 'busqueda' : dibujo) as DibujoVacio} /> : dibujo
   return (
-    <div className={cn('flex flex-col items-center gap-2 text-center', compacto ? 'px-4 py-6' : 'px-6 py-10', className)}>
+    <div className={cn('flex flex-col items-center gap-2 text-center', compacto ? 'px-4 py-4' : 'px-6 py-8', className)}>
       {!compacto && <div className="mb-1 text-acento">{arte}</div>}
       <h4 className="font-display text-base font-medium tracking-[-.01em] text-tinta">{titulo}</h4>
       {texto && <p className="max-w-72 text-[13px] text-pretty text-texto-2">{texto}</p>}

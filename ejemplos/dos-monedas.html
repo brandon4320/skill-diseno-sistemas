@@ -4,360 +4,385 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dos monedas · ejemplo</title>
+<script>try{var t=localStorage.getItem('monedas-tema');if(t)document.documentElement.dataset.tema=t}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <style>
-/* Ejemplo de la skill (SKILL.md §5 "Dos monedas"): formas de mostrar moneda local y dólares con el mismo peso, y una pantalla de caja. Datos de ejemplo. */
+/* Ejemplo de la skill (SKILL.md §5 "Dos monedas" y §4i densidad): tres formas de mostrar moneda local y dólares
+   con el mismo peso, y una pantalla de caja. Marca y datos inventados. */
 :root{
-  --lienzo:#e6e9f0; --marco:#f3f5f9; --superficie:#fff; --bandeja:#f3f5f9;
-  --borde:#e3e6ee; --divisor:#edf0f5;
-  --tinta:#151a2b; --texto-2:#646b80; --texto-3:#9aa1b3; --acento:#001080;
-  --verde:#1f9d5c; --verde-f:#e7f6ee; --ambar:#c27a0e; --ambar-f:#fdf3e1; --rojo:#d93f3f; --rojo-f:#fdecec; --azul:#2f6fdc; --azul-f:#e9f1fd;
-  /* las dos monedas: siempre el mismo color en todo el sistema */
-  --ars:#3b6fe0; --ars-f:#e8effc; --usd:#1f9d5c; --usd-f:#e5f5ec;
+  --lienzo:#e8eaee; --marco:#f4f5f7; --superficie:#fff; --bandeja:#f4f5f7; --suave:#eef0f3; --hover:#f7f8fa;
+  --borde:#e6e8ec; --borde-f:#d9dce2; --divisor:#eef0f3;
+  --tinta:#16181d; --texto-2:#565b68; --texto-3:#656a79;
+  --acento:#4f46e5; --acento-f:#eeedfd;
+  --verde:#15803d; --verde-f:#e8f7ee; --ambar:#b45309; --ambar-f:#fef3e2; --rojo:#b91c1c; --rojo-f:#fdecec; --azul:#1d4ed8; --azul-f:#eaf2fe; --gris-f:#f0f1f4;
+  /* las dos monedas: siempre el mismo color en todo el sistema (y para nada más) */
+  --ars:#2f62d6; --ars-f:#e8effc; --ars-l:#3b6fe0; --usd:#126b33; --usd-f:#e5f5ec; --usd-l:#1f9d5c;
+  --e2:#c8692b; --e2-f:#fbefe5;
   --display:'Geist',sans-serif; --ui:'Geist',sans-serif; --mono:'Geist Mono',monospace;
-  --s-1:0 1px 2px rgb(21 26 43/.05);
+  --s-min:0 1px 2px rgb(22 24 29/.05); --s-hover:0 14px 30px -18px rgb(22 24 29/.3);
+  --heroe:radial-gradient(120% 140% at 100% 0%,#6d63ff 0%,transparent 55%),linear-gradient(150deg,#3b31c9,#4f46e5 60%,#3a30d0);
   --ease:cubic-bezier(.23,1,.32,1);
 }
+[data-tema=oscuro]{
+  --lienzo:#050506; --marco:#0b0b0d; --superficie:#1a1a1e; --bandeja:#111114; --suave:#1d1d21; --hover:#222226;
+  --borde:#2a2a2f; --borde-f:#3a3a40; --divisor:#232327;
+  --tinta:#f4f4f5; --texto-2:#b4b4bd; --texto-3:#8f8f9a;
+  --acento:#7c74ff; --acento-f:rgb(124 116 255/.14);
+  --verde:#4ade80; --verde-f:rgb(34 197 94/.13); --ambar:#fbbf24; --ambar-f:rgb(245 184 0/.13); --rojo:#f87171; --rojo-f:rgb(239 68 68/.13); --azul:#60a5fa; --azul-f:rgb(59 130 246/.13); --gris-f:#26262a;
+  --ars:#7aa2f7; --ars-f:rgb(96 140 247/.16); --ars-l:#7aa2f7; --usd:#4ade80; --usd-f:rgb(34 197 94/.14); --usd-l:#4ade80;
+  --e2:#f0a46a; --e2-f:rgb(240 164 106/.14);
+  --s-min:none; --s-hover:0 0 0 1px var(--borde-f);
+  --heroe:radial-gradient(120% 140% at 100% 0%,#5b52e6 0%,transparent 55%),linear-gradient(150deg,#2a238f,#3a31b8 60%,#2b2496);
+}
+@media (prefers-color-scheme:dark){:root:not([data-tema=claro]){
+  --lienzo:#050506; --marco:#0b0b0d; --superficie:#1a1a1e; --bandeja:#111114; --suave:#1d1d21; --hover:#222226;
+  --borde:#2a2a2f; --borde-f:#3a3a40; --divisor:#232327;
+  --tinta:#f4f4f5; --texto-2:#b4b4bd; --texto-3:#8f8f9a;
+  --acento:#7c74ff; --acento-f:rgb(124 116 255/.14);
+  --verde:#4ade80; --verde-f:rgb(34 197 94/.13); --ambar:#fbbf24; --ambar-f:rgb(245 184 0/.13); --rojo:#f87171; --rojo-f:rgb(239 68 68/.13); --azul:#60a5fa; --azul-f:rgb(59 130 246/.13); --gris-f:#26262a;
+  --ars:#7aa2f7; --ars-f:rgb(96 140 247/.16); --ars-l:#7aa2f7; --usd:#4ade80; --usd-f:rgb(34 197 94/.14); --usd-l:#4ade80;
+  --e2:#f0a46a; --e2-f:rgb(240 164 106/.14);
+  --s-min:none; --s-hover:0 0 0 1px var(--borde-f);
+  --heroe:radial-gradient(120% 140% at 100% 0%,#5b52e6 0%,transparent 55%),linear-gradient(150deg,#2a238f,#3a31b8 60%,#2b2496);
+}}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--ui);background:var(--lienzo);color:var(--tinta);font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:24px}
-button{font:inherit;color:inherit}
-.ph,.ph-fill{font-size:17px;line-height:1}
-.num{font-variant-numeric:tabular-nums}
-.hoja{max-width:1240px;margin:0 auto;background:var(--superficie);border:1px solid #dde1ea;border-radius:26px;padding:32px 36px 40px;box-shadow:0 30px 60px -30px rgb(21 26 43/.25);position:relative;overflow:hidden}
-.hoja::before{content:"";position:absolute;inset:0 0 auto 0;height:280px;background:radial-gradient(70% 120% at 85% -20%,rgb(0 16 128/.08),transparent 60%);pointer-events:none}
-.cab{position:relative;display:flex;align-items:flex-end;gap:16px;margin-bottom:36px}
-.cab small{color:var(--texto-2);font-weight:500}
-.cab h1{font:500 42px/1.08 var(--display);letter-spacing:-.035em;margin-top:6px}
-.cab h1 b{font-weight:500}
-.cab .sub{margin-top:8px;color:var(--texto-2);font-weight:500}
-.cab .acc{margin-left:auto;display:flex;gap:8px}
-.demo{font:500 11px var(--mono);color:var(--texto-3);border:1px dashed #d2d7e1;border-radius:7px;padding:3px 7px}
+body{font-family:var(--ui);background:var(--lienzo);color:var(--tinta);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased;padding:20px;transition:background .3s}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+.ph,.ph-fill{font-size:16px;line-height:1}
+body,body *{font-variant-numeric:tabular-nums!important} /* el atajo font: lo borra: el !important lo repone */
+:focus-visible{outline:2px solid color-mix(in oklch,var(--acento) 55%,transparent);outline-offset:2px;border-radius:8px}
 
-.opcion{position:relative;margin-top:44px}
-.opcion:first-of-type{margin-top:0}
-.otit{display:flex;align-items:center;gap:12px;margin-bottom:6px}
-.letra{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font:600 14px var(--display);background:var(--marco);border:1px solid var(--borde)}
-.otit h2{font:500 22px var(--display);letter-spacing:-.02em}
-.rec{margin-left:6px;font:600 11.5px var(--ui);color:var(--verde);background:var(--verde-f);border-radius:7px;padding:3px 8px;display:inline-flex;gap:5px;align-items:center}
-.obaja{color:var(--texto-2);margin:0 0 16px 42px;max-width:760px}
-.pros{display:flex;gap:18px;margin:0 0 16px 42px;font-size:12.5px;color:var(--texto-2)}
-.pros span{display:inline-flex;gap:6px;align-items:center}
-.pros .ph-fill{font-size:15px}
-.tres{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.cuatro{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:14px}
+.hoja{max-width:1480px;margin:0 auto;background:var(--marco);border:1px solid var(--borde);border-radius:26px;padding:24px 28px 28px;box-shadow:0 30px 60px -30px rgb(22 24 29/.25);position:relative;overflow:hidden}
+.cab{position:relative;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.cab h1{font:500 24px/1.2 var(--display);letter-spacing:-.02em}
+.cab .sub{margin-top:4px;color:var(--texto-2);font-size:14px}
+.cab .sub b{color:var(--tinta);font-weight:500}
+.cab .acc{margin-left:auto;display:flex;gap:8px;align-items:center}
+.demo{font:500 11px var(--mono);color:var(--texto-3);border:1px dashed var(--borde-f);border-radius:7px;padding:3px 7px}
+.ic-btn{width:36px;height:36px;border-radius:12px;border:1px solid var(--borde);background:var(--superficie);display:grid;place-items:center;box-shadow:var(--s-min)}
+
+.opcion{margin-top:28px}
+.otit{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.letra{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;font:500 13px var(--display);background:var(--superficie);border:1px solid var(--borde);color:var(--texto-2)}
+.otit h2{font:500 16px var(--display);letter-spacing:-.01em}
+.otit p{color:var(--texto-2);font-size:13px;flex-basis:100%;padding-left:32px}
+.rec{font:500 12px var(--ui);color:var(--verde);background:var(--verde-f);border-radius:7px;padding:2px 8px;display:inline-flex;gap:4px;align-items:center}
+.rec .ph-fill{font-size:13px}
+.tres{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.cuatro{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 
 /* bandeja con tarjeta adentro */
-.bandeja{background:var(--bandeja);border:1px solid var(--borde);border-radius:20px;padding:4px;display:flex;flex-direction:column}
-.rot{display:flex;align-items:center;gap:8px;padding:9px 10px 8px;color:var(--texto-2);font-weight:600;font-size:12.5px}
-.rot .ph{font-size:16px;color:var(--texto-3)}
-.rot .der{margin-left:auto}
-.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:14px 16px 16px;box-shadow:var(--s-1);flex:1}
-.pie{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 10px 7px;font-size:12px;font-weight:500;color:var(--texto-2)}
-.pie a{color:var(--texto-2);text-decoration:none;display:inline-flex;gap:3px;align-items:center}
-.n{font:500 30px/1.1 var(--display);letter-spacing:-.03em}
-.n span,.n em{color:var(--texto-3);font-size:18px;font-weight:400;font-style:normal}
-.n span{margin-right:3px}.n em{margin-left:3px}
-.ctx{color:var(--texto-3);font-size:12px;margin-top:2px}
+.bandeja{background:var(--bandeja);border:1px solid var(--borde);border-radius:20px;padding:4px;display:flex;flex-direction:column;min-width:0}
+.rot{display:flex;align-items:center;gap:8px;min-height:32px;padding:4px 17px;color:var(--texto-2);font-weight:500;font-size:13px}
+.rot .ph{color:var(--texto-3)}
+.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:16px;box-shadow:var(--s-min);flex:1;min-width:0}
+.pie{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px;padding:4px 17px;font-size:12px;font-weight:500;color:var(--texto-2)}
+.pie a{color:var(--texto-2);text-decoration:none;display:inline-flex;gap:4px;align-items:center}
+.pie a:hover{color:var(--tinta)}
+.pie .ph{font-size:13px}
+.n{font:500 24px/1.1 var(--display);letter-spacing:-.025em;white-space:nowrap}
+.n span,.n em{color:var(--texto-3);font-size:16px;font-weight:400;font-style:normal}
+.n span{margin-right:2px}.n em{margin-left:2px}
+.ctx{display:block;color:var(--texto-3);font-size:12px;margin-top:2px}
 .sube{color:var(--verde)}.baja{color:var(--rojo)}
 
 /* chip de moneda */
-.mon{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 6px;border-radius:6px;font:600 10.5px var(--mono);letter-spacing:.02em}
+.mon{display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:6px;font:500 11px var(--mono);letter-spacing:.02em}
 .mon.ars{background:var(--ars-f);color:var(--ars)}
 .mon.usd{background:var(--usd-f);color:var(--usd)}
 
-/* Opción A: dos renglones iguales */
-.par{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:4px 10px}
-.par + .par{margin-top:12px;padding-top:12px;border-top:1px dashed var(--divisor)}
-.par .n2{font:500 24px/1.1 var(--display);letter-spacing:-.03em}
-.par .n2 span,.par .n2 em{color:var(--texto-3);font-size:15px;font-weight:400;font-style:normal}
-.par .n2 span{margin-right:3px}.par .n2 em{margin-left:2px}
-.par small{grid-column:2/4;color:var(--texto-3);font-size:11.5px;margin-top:-2px}
-.par svg{width:64px;height:26px}
-
-/* Opción B: selector */
-.seg{display:inline-flex;background:var(--marco);border:1px solid var(--borde);padding:2px;border-radius:9px;gap:2px}
-.seg button{border:0;background:none;height:22px;padding:0 8px;border-radius:7px;font:600 11px var(--ui);color:var(--texto-2);cursor:pointer;display:inline-flex;gap:5px;align-items:center}
-.seg button i{width:6px;height:6px;border-radius:50%}
-.seg button.on{background:var(--superficie);color:var(--tinta);box-shadow:0 1px 2px rgb(21 26 43/.1),0 0 0 1px var(--borde)}
-
-/* Opción C: total en pesos + composición */
-.comp{display:flex;gap:3px;height:8px;margin-top:14px}
-.comp i{border-radius:3px}
-.dos{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
-.dos div{border:1px solid var(--borde);border-radius:11px;padding:7px 9px;background:#fafbfd}
-.dos div b{display:block;font:500 15px/1.2 var(--display);letter-spacing:-.01em;margin-top:3px}
-.dos div small{display:block;color:var(--texto-3);font-size:11px}
-.tc{font-size:11px;color:var(--texto-3);margin-top:8px;display:flex;gap:5px;align-items:center}
-
-/* héroe */
-.heroe{border-radius:20px;padding:20px 20px 84px;color:#fff;position:relative;overflow:hidden;min-height:220px;
-  background:radial-gradient(120% 140% at 100% 0%,#3a55e8 0%,transparent 55%),linear-gradient(150deg,#001080,#1a2fb8 60%,#0a1b9c);
-  box-shadow:0 18px 36px -18px rgb(0 16 128/.65),inset 0 1px 0 rgb(255 255 255/.18)}
-.heroe .ico{width:38px;height:38px;border-radius:12px;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.22);display:grid;place-items:center}
-.heroe small{display:block;margin-top:14px;opacity:.8;font-weight:500}
-.heroe .n{color:#fff;font-size:34px}
-.heroe .n span,.heroe .n em{color:#fff;opacity:.6;font-size:20px}
-.heroe .comp i.r{background:rgb(255 255 255/.85)}
-.heroe .comp i.u{background:#7ee2a8}
-.heroe .dos div{background:rgb(255 255 255/.1);border-color:rgb(255 255 255/.18)}
-.heroe .dos div small{color:rgb(255 255 255/.7)}
-.heroe .tc{color:rgb(255 255 255/.65)}
-
-.reco{margin-top:28px;border:1px solid #cfe9da;background:linear-gradient(#f4fbf7,#fff);border-radius:20px;padding:18px 20px;display:flex;gap:14px}
-.reco .ico{width:36px;height:36px;border-radius:11px;background:var(--verde-f);color:var(--verde);display:grid;place-items:center;flex:none}
-.reco h3{font:500 17px var(--display);letter-spacing:-.01em}
-.reco p{color:var(--texto-2);margin-top:4px;max-width:900px}
-.reco ul{margin:8px 0 0 18px;color:var(--texto-2)}
-.reco li{margin-top:3px}
-
-
 /* Forma 1: lado a lado */
-.lado{display:grid;grid-template-columns:1fr 1fr;gap:0}
-.lado > div{padding-right:14px}
-.lado > div + div{padding:0 0 0 14px;border-left:1px solid var(--divisor)}
-.n3{font:500 26px/1.1 var(--display);letter-spacing:-.03em;margin-top:8px;white-space:nowrap}
-.n3 span,.n3 em{color:var(--texto-3);font-size:16px;font-weight:400;font-style:normal}
-.n3 span{margin-right:3px}.n3 em{margin-left:2px}
-.lado small,.dos-t small{display:block;color:var(--texto-3);font-size:11.5px;margin-top:2px}
-.lado svg{width:100%;height:30px;margin-top:8px;display:block}
+.lado{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.lado > div{padding-right:12px;min-width:0}
+.lado > div + div{padding:0 0 0 12px;border-left:1px solid var(--divisor)}
+.lado .n{margin-top:4px}
+.lado svg{width:100%;height:24px;margin-top:4px;display:block}
 .lado-pie{display:grid;grid-template-columns:1fr 1fr}
-.lado-pie > :last-child{padding-left:14px}
-.dos-t{display:grid;grid-template-columns:1fr 1fr;gap:4px;flex:1}
-.lado-heroe{margin-top:6px}
-.lado-heroe > div + div{border-left-color:rgb(255 255 255/.2)}
-.heroe .n3{color:#fff}
-.heroe .n3 span,.heroe .n3 em{color:#fff;opacity:.6}
-.heroe .lado small{color:rgb(255 255 255/.7)}
-.heroe .curva-h{position:absolute;left:0;right:0;bottom:0;width:100%;height:64px}
+.lado-pie > :last-child{padding-left:12px}
+
+/* Forma 2: una arriba de la otra */
+.par{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:2px 8px}
+.par + .par{margin-top:6px;padding-top:6px;border-top:1px dashed var(--divisor)}
+.par .ctx{grid-column:2/4;margin-top:0}
+.par svg{width:64px;height:24px}
+
+/* Forma 3: una tarjeta por moneda */
+.dos-t{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px;flex:1}
+.dos-t .n{margin-top:6px}
+
+/* protagonista */
+.heroe{border-radius:20px;padding:20px 20px 56px;color:#fff;position:relative;overflow:hidden;background:var(--heroe);box-shadow:0 18px 36px -18px rgb(79 70 229/.6),inset 0 1px 0 rgb(255 255 255/.18)}
+[data-tema=oscuro] .heroe{box-shadow:inset 0 0 0 1px rgb(255 255 255/.08)}
+.heroe .tope{display:flex;align-items:center;gap:8px;font-weight:500;font-size:13px}
+.heroe .ico{width:28px;height:28px;border-radius:10px;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.22);display:grid;place-items:center}
+.heroe .lado{margin-top:12px;position:relative}
+.heroe .lado > div + div{border-left-color:rgb(255 255 255/.22)}
+.heroe .n{color:#fff}
+.heroe .n span,.heroe .n em{color:rgb(255 255 255/.9)}
+.heroe .ctx{color:rgb(255 255 255/.94)}
+.heroe .mon{background:rgb(255 255 255/.18);color:#fff}
+.heroe .curva-h{position:absolute;left:0;right:0;bottom:0;width:100%;height:48px}
+
+.reco{margin-top:20px;border:1px solid var(--borde);background:var(--superficie);border-radius:20px;padding:16px 20px;display:flex;gap:12px}
+.reco .ico{width:32px;height:32px;border-radius:10px;background:var(--verde-f);color:var(--verde);display:grid;place-items:center;flex:none}
+.reco h3{font:500 16px var(--display);letter-spacing:-.01em}
+.reco ul{margin:6px 0 0 18px;color:var(--texto-2);font-size:13px;max-width:96ch}
+.reco li{margin-top:2px}
 
 /* ── Caja ── */
-.sep{height:1px;background:var(--divisor);margin:48px 0 36px}
-.btn{height:38px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:13px;border:1px solid var(--borde);background:var(--superficie);cursor:pointer;box-shadow:var(--s-1);white-space:nowrap}
-.btn.prim{background:var(--acento);border-color:var(--acento);color:#fff;box-shadow:0 1px 0 rgb(255 255 255/.14) inset,0 4px 10px -2px rgb(0 16 128/.45)}
-.btn.chico{height:28px;padding:0 10px;border-radius:9px;font-size:12px;gap:6px}
+.sep{height:1px;background:var(--divisor);margin:28px 0 24px}
+.btn{height:36px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;gap:8px;font-weight:500;font-size:13px;border:1px solid var(--borde);background:var(--superficie);box-shadow:var(--s-min);white-space:nowrap}
+.btn.prim{background:var(--tinta);border-color:var(--tinta);color:var(--superficie);box-shadow:inset 0 1px 0 rgb(255 255 255/.12),0 4px 10px -2px rgb(22 24 29/.35)}
+.btn.chico{height:28px;padding:0 10px;border-radius:8px;font-size:12px;gap:6px}
 .btn.chico .ph{font-size:14px}
-.sec{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.sec h2{font:500 17px var(--display);letter-spacing:-.01em}
+.sec{display:flex;align-items:center;gap:8px;margin:16px 0 12px}
+.sec h2{font:500 16px var(--display);letter-spacing:-.01em}
 .sec .c{color:var(--texto-3);font-weight:500}
-.sec .der{margin-left:auto;display:flex;gap:8px;align-items:center}
-.bloque{margin-top:28px}
+.sec .der{margin-left:auto;color:var(--texto-3);font-size:12px}
+.bloque{margin-top:16px}
 
-.barras2{margin-top:12px;display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;align-items:center;font-size:12px}
-.barras2 .lbl{color:var(--texto-3);display:inline-flex;gap:5px;align-items:center}
+.comp{display:flex;gap:2px;height:6px;margin-top:8px;border-radius:3px;overflow:hidden}
+.barras2{margin-top:8px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 8px;align-items:center;font-size:12px}
+.barras2.dos-col{grid-template-columns:minmax(0,1fr) auto}
+.barras2 .lbl{color:var(--texto-2);display:inline-flex;gap:6px;align-items:center;white-space:nowrap}
 .barras2 .lbl .ph{font-size:13px}
-.barras2 .riel{height:7px;border-radius:4px;background:#eef1f6;overflow:hidden}
-.barras2 .riel i{display:block;height:100%;border-radius:4px}
-.barras2 b{font-weight:600;text-align:right}
+.barras2 .lbl i.p{width:8px;height:8px;border-radius:2px;display:inline-block}
+.barras2 .riel{height:6px;border-radius:3px;background:var(--suave);overflow:hidden}
+.barras2 .riel i{display:block;height:100%;border-radius:3px}
+.barras2 b{font-weight:500;text-align:right;white-space:nowrap}
 
 .card{border:1px solid var(--borde);border-radius:20px;background:var(--superficie)}
-.card .tit{display:flex;align-items:flex-start;gap:12px;padding:18px 20px 12px}
-.card .tit h3{font:500 17px var(--display);letter-spacing:-.01em}
+.card .tit{display:flex;align-items:center;gap:12px;padding:12px 16px}
+.card .tit h3{font:500 16px var(--display);letter-spacing:-.01em}
 .card .tit p{color:var(--texto-3);font-size:12px;margin-top:2px}
 .card .tit .der{margin-left:auto;display:flex;gap:8px;align-items:center}
-.cuadro{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:none}
-.costos{display:grid;grid-template-columns:110px 1fr 90px 120px;column-gap:16px}
-.costos > div{padding:10px 0;border-top:1px solid var(--divisor);display:contents}
+.cuadro{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none}
+.costos{display:grid;grid-template-columns:96px minmax(0,1fr) 64px 112px;column-gap:16px;padding:0 16px 8px}
 .costos .fila{display:contents}
-.costos .fila > *{padding:10px 0;border-top:1px solid var(--divisor);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.costos .h > *{padding:8px 0;font-size:12px;color:var(--texto-3);font-weight:500;border-top:1px solid var(--divisor)}
-.cod{font:500 12px var(--mono);color:var(--tinta)}
-.der-t{text-align:right}
+.costos .fila > *{display:flex;align-items:center;min-height:36px;border-top:1px solid var(--divisor);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.costos .fila > * > span{overflow:hidden;text-overflow:ellipsis}
+.costos .h > *{min-height:32px;font-size:12px;color:var(--texto-3);font-weight:500}
+.costos .der-t{justify-content:flex-end}
+.cod{font:500 12px var(--mono);color:var(--texto-2)}
+.chip{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:7px;font-weight:500;font-size:12px;white-space:nowrap}
 
-.cajas{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.caja{border:1px solid var(--borde);border-radius:20px;background:var(--superficie);padding:16px;display:flex;flex-direction:column;cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s,border-color .2s;position:relative}
-.caja:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgb(21 26 43/.3)}
-.caja.on{border-color:transparent;box-shadow:0 0 0 2px var(--acento),0 14px 30px -18px rgb(0 16 128/.35)}
-.caja .top{display:flex;align-items:center;gap:10px}
-.caja .top b{display:block;font-weight:600;font-size:13.5px}
-.caja .top small{display:block;color:var(--texto-3);font-size:11.5px}
+.cajas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.caja{border:1px solid var(--borde);border-radius:20px;background:var(--superficie);padding:16px;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .2s var(--ease),box-shadow .2s,border-color .2s;position:relative}
+.caja:hover{transform:translateY(-2px);box-shadow:var(--s-hover)}
+.caja.on{border-color:transparent;box-shadow:0 0 0 2px var(--acento)}
+.caja .top{display:flex;align-items:center;gap:8px}
+.caja .top b{display:block;font-weight:500;font-size:14px}
+.caja .top small{display:block;color:var(--texto-3);font-size:12px}
 .caja .top .ph-pencil-simple{margin-left:auto;color:var(--texto-3);font-size:15px}
-.caja .saldo{font:500 28px/1.1 var(--display);letter-spacing:-.03em;margin-top:14px}
-.caja .saldo span{color:var(--texto-3);font-size:17px;font-weight:400;margin-right:3px}
-.caja .mes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;padding:9px 10px;border-radius:12px;background:var(--marco)}
-.caja .mes small{display:block;color:var(--texto-3);font-size:11px}
-.caja .mes b{font-weight:600;font-size:12.5px}
-.caja .abajo{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--texto-3)}
-.caja.on .abajo .ver{color:var(--acento);font-weight:600}
-.nueva{border:1.5px dashed #d2d7e1;border-radius:20px;display:grid;place-items:center;color:var(--texto-2);font-weight:600;gap:8px;min-height:200px;cursor:pointer;background:transparent}
-.nueva div{display:grid;place-items:center;gap:8px}
-.nueva .ph{font-size:22px}
+.caja .n{margin-top:12px}
+.caja .mes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;padding:8px 12px;border-radius:12px;background:var(--bandeja)}
+.caja .mes small{display:block;color:var(--texto-3);font-size:12px}
+.caja .mes b{font-weight:500;font-size:13px}
+.caja .abajo{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:12px;color:var(--texto-3)}
+.caja.on .abajo .ver{color:var(--acento);font-weight:500}
+.nueva{border:1px dashed var(--borde-f);border-radius:20px;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--texto-2);font-weight:500;background:transparent}
+.nueva:hover{background:var(--hover);color:var(--tinta)}
 
-.libro table{width:100%;border-collapse:collapse}
-.libro th{font-size:12px;color:var(--texto-3);font-weight:500;text-align:left;padding:9px 20px;border-top:1px solid var(--divisor);background:#fafbfd}
-.libro td{padding:11px 20px;border-top:1px solid var(--divisor);vertical-align:middle}
-.libro td.m,.libro th.m{text-align:right;white-space:nowrap}
-.libro .q b{font-weight:600;display:block}
-.libro .q small{color:var(--texto-3);font-size:12px}
-.dir{width:28px;height:28px;border-radius:9px;display:grid;place-items:center}
+.libro .filtros{display:flex;gap:8px;align-items:center;padding:0 16px 12px;flex-wrap:wrap}
+.buscar{flex:1;min-width:200px;display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border:1px solid var(--borde);border-radius:12px;color:var(--texto-3);font-size:13px;background:var(--superficie)}
+.seg{display:inline-flex;background:var(--suave);border:1px solid var(--borde);padding:2px;border-radius:12px;gap:2px}
+.seg button{border:0;background:none;height:30px;padding:0 12px;border-radius:10px;font-weight:500;font-size:13px;color:var(--texto-2)}
+.seg button.on{background:var(--superficie);color:var(--tinta);box-shadow:var(--s-min),0 0 0 1px var(--borde)}
+.mov{display:grid;grid-template-columns:28px minmax(0,1fr) 64px 150px 128px 128px;column-gap:16px;align-items:center;padding:0 16px;min-height:52px;border-top:1px solid var(--divisor)}
+.mov.h{min-height:32px;font-size:12px;color:var(--texto-3);font-weight:500;background:var(--bandeja)}
+.mov .m{text-align:right;white-space:nowrap}
+.mov .q b{font-weight:500;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mov .q small{color:var(--texto-3);font-size:12px}
+.mov .f,.mov .s{color:var(--texto-2)}
+.dir{width:28px;height:28px;border-radius:8px;display:grid;place-items:center}
+.dir .ph{font-size:14px}
 .dir.in{background:var(--verde-f);color:var(--verde)}
 .dir.out{background:var(--rojo-f);color:var(--rojo)}
-.dir.tr{background:#eff1f5;color:var(--texto-2)}
-.chip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:7px;font-weight:600;font-size:11.5px;white-space:nowrap}
-.filtros{display:flex;gap:8px;align-items:center;padding:0 20px 12px}
-.buscar{flex:1;display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;border:1px solid var(--borde);border-radius:11px;color:var(--texto-3)}
-@media (max-width:1100px){.tres,.cuatro,.cajas{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:700px){body{padding:0}.hoja{border-radius:0;padding:20px 16px}.tres,.cuatro,.cajas{grid-template-columns:1fr}.costos{grid-template-columns:90px 1fr 100px}.costos .fecha{display:none}.cab{flex-direction:column;align-items:flex-start}.cab .acc{margin-left:0}}
+.dir.tr{background:var(--gris-f);color:var(--texto-2)}
+
+@media (max-width:1100px){.tres,.cuatro,.cajas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){
+  body{padding:0}
+  .hoja{border-radius:0;border-width:0;padding:16px}
+  .tres,.cuatro,.cajas{grid-template-columns:minmax(0,1fr)}
+  .otit p{padding-left:0}
+  .cab .acc{margin-left:0;width:100%}
+  .cab .acc .btn{flex:1;justify-content:center;height:44px}
+  .cab .acc .btn:not(.prim) span{display:none}
+  .ic-btn{width:44px;height:44px}
+  .pie{min-height:44px}
+  .pie a{min-height:44px}
+  .nueva{min-height:56px}
+  .btn.chico{height:44px;padding:0 12px}
+  .seg{width:100%}
+  .seg button{flex:1;height:44px}
+  .costos{grid-template-columns:minmax(0,1fr) auto}
+  .costos .fecha,.costos .h{display:none}
+  .costos .fila > :nth-child(1){grid-column:1/3;min-height:28px;border-top:1px solid var(--divisor);padding-top:8px}
+  .costos .fila > :nth-child(2){border-top:0;min-height:28px;padding-bottom:8px}
+  .costos .fila > :nth-child(4){border-top:0;min-height:28px;padding-bottom:8px}
+  .mov{grid-template-columns:28px minmax(0,1fr) auto;row-gap:2px;padding:8px 16px}
+  .mov.h,.mov .f,.mov .o,.mov .s{display:none}
+  .card .tit{flex-wrap:wrap}
+  .card .tit .der{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
-<body>
+<body data-pantalla="galeria">
 <div class="hoja">
   <div class="cab">
     <div>
-      <small>Ejemplo · dos monedas</small>
-      <h1>Las dos monedas, <b>a la vista</b></h1>
-      <div class="sub">Tres formas de mostrar pesos y dólares con el mismo peso, y cómo quedaría Caja</div>
+      <h1>Las dos monedas, a la vista</h1>
+      <div class="sub">Tres formas de mostrar pesos y dólares con el mismo peso, y cómo queda la Caja</div>
     </div>
-    <div class="acc"><span class="demo">datos de ejemplo</span></div>
+    <div class="acc"><span class="demo">datos de ejemplo</span><button class="ic-btn" id="tema" type="button" aria-label="Cambiar a oscuro"><i class="ph ph-moon"></i></button></div>
   </div>
 
   <!-- ── Forma 1 ── -->
   <section class="opcion">
-    <div class="otit"><span class="letra">1</span><h2>Lado a lado</h2><span class="rec"><i class="ph-fill ph-star"></i>La recomendada</span></div>
-    <p class="obaja">Pesos a la izquierda y dólares a la derecha, del mismo tamaño y con su propio dibujo. Se lee como dos columnas de una planilla.</p>
+    <div class="otit"><span class="letra">1</span><h2>Lado a lado</h2><span class="rec"><i class="ph-fill ph-star"></i>La recomendada</span><p>Pesos a la izquierda y dólares a la derecha, del mismo tamaño y con su propio dibujo.</p></div>
     <div class="tres">
       <div class="bandeja">
         <div class="rot"><i class="ph ph-repeat"></i>Facturación recurrente</div>
         <div class="adentro lado">
-          <div><span class="mon ars">ARS</span><div class="n3 num"><span>$</span>45,7<em>M</em></div><small>por mes · 63 contratos</small><svg data-spark="26,29,31,33,36,37,38,39,41,43,45.7" data-color="#3b6fe0" data-w="120"></svg></div>
-          <div><span class="mon usd">USD</span><div class="n3 num"><span>US$</span>4.700</div><small>por mes · 2 contratos</small><svg data-spark="2,2,2.7,2.7,2.7,3.5,3.5,4,4,4.7,4.7" data-color="#1f9d5c" data-w="120"></svg></div>
+          <div><span class="mon ars">ARS</span><div class="n"><span>$</span>45,7<em>M</em></div><small class="ctx">por mes · 63 contratos</small><svg data-spark="26,29,31,33,36,37,38,39,41,43,45.7" data-color="--ars-l" data-w="120"></svg></div>
+          <div><span class="mon usd">USD</span><div class="n"><span>US$</span>4.700</div><small class="ctx">por mes · 2 contratos</small><svg data-spark="2,2,2.7,2.7,2.7,3.5,3.5,4,4,4.7,4.7" data-color="--usd-l" data-w="120"></svg></div>
         </div>
         <div class="pie lado-pie"><span class="sube"><i class="ph ph-trend-up"></i> +$ 2,4 M</span><span class="sube"><i class="ph ph-trend-up"></i> +US$ 700</span></div>
       </div>
       <div class="bandeja">
         <div class="rot"><i class="ph ph-bank"></i>Caja y bancos</div>
         <div class="adentro lado">
-          <div><span class="mon ars">ARS</span><div class="n3 num"><span>$</span>170,2<em>M</em></div><small>caja $ 21,3 M · banco $ 148,9 M</small><svg data-spark="150,152,149,158,161,163,166,170.2" data-color="#3b6fe0" data-w="120"></svg></div>
-          <div><span class="mon usd">USD</span><div class="n3 num"><span>US$</span>15.200</div><small>caja dólares</small><svg data-spark="6,6,6,8,8,12,15.2,15.2" data-color="#1f9d5c" data-w="120"></svg></div>
+          <div><span class="mon ars">ARS</span><div class="n"><span>$</span>170,2<em>M</em></div><small class="ctx">caja 21,3 M · banco 148,9 M</small><svg data-spark="150,152,149,158,161,163,166,170.2" data-color="--ars-l" data-w="120"></svg></div>
+          <div><span class="mon usd">USD</span><div class="n"><span>US$</span>15.200</div><small class="ctx">caja dólares</small><svg data-spark="6,6,6,8,8,12,15.2,15.2" data-color="--usd-l" data-w="120"></svg></div>
         </div>
-        <div class="pie lado-pie"><span>+ $ 98,4 M en cheques</span><a href="#">Tesorería <i class="ph ph-arrow-right" style="font-size:12px"></i></a></div>
+        <div class="pie lado-pie"><span>+ $ 98,4 M en cheques</span><a href="#caja">Tesorería <i class="ph ph-arrow-right"></i></a></div>
       </div>
       <div class="bandeja">
         <div class="rot"><i class="ph ph-warning-circle"></i>Deuda vencida</div>
         <div class="adentro lado">
-          <div><span class="mon ars">ARS</span><div class="n3 num"><span>$</span>198,4<em>M</em></div><small>35 contratos</small><svg data-spark="230,231,232,238,196,191,212,218,198.4" data-color="#3b6fe0" data-w="120"></svg></div>
-          <div><span class="mon usd">USD</span><div class="n3 num"><span>US$</span>3.100</div><small>1 contrato</small><svg data-spark="0,0,1.2,1.2,3.1,3.1,3.1,3.1,3.1" data-color="#1f9d5c" data-w="120"></svg></div>
+          <div><span class="mon ars">ARS</span><div class="n"><span>$</span>198,4<em>M</em></div><small class="ctx">35 contratos</small><svg data-spark="230,231,232,238,196,191,212,218,198.4" data-color="--ars-l" data-w="120"></svg></div>
+          <div><span class="mon usd">USD</span><div class="n"><span>US$</span>3.100</div><small class="ctx">1 contrato</small><svg data-spark="0,0,1.2,1.2,3.1,3.1,3.1,3.1,3.1" data-color="--usd-l" data-w="120"></svg></div>
         </div>
-        <div class="pie lado-pie"><span class="baja"><i class="ph ph-warning-circle"></i> +60 días: $ 25,8 M</span><span class="baja">+60 días: US$ 0</span></div>
+        <div class="pie lado-pie"><span class="baja"><i class="ph ph-warning-circle"></i> +60 d: $ 25,8 M</span><span>+60 d: US$ 0</span></div>
       </div>
     </div>
   </section>
 
   <!-- ── Forma 2 ── -->
   <section class="opcion">
-    <div class="otit"><span class="letra">2</span><h2>Una arriba de la otra</h2></div>
-    <p class="obaja">Cada moneda en su renglón, mismo tamaño, con su chip de color. Ocupa menos ancho: sirve en tarjetas angostas y en el celular.</p>
+    <div class="otit"><span class="letra">2</span><h2>Una arriba de la otra</h2><p>Cada moneda en su renglón, del mismo tamaño y con su chip. Ocupa menos ancho: tarjetas angostas y celular.</p></div>
     <div class="tres">
       <div class="bandeja">
         <div class="rot"><i class="ph ph-repeat"></i>Facturación recurrente</div>
         <div class="adentro">
-          <div class="par"><span class="mon ars">ARS</span><div class="n2 num"><span>$</span>45,7<em>M/mes</em></div><svg data-spark="26,29,31,33,36,37,38,39,41,43,45.7" data-color="#3b6fe0"></svg><small>63 contratos · +$ 2,4 M en nov</small></div>
-          <div class="par"><span class="mon usd">USD</span><div class="n2 num"><span>US$</span>4.700<em>/mes</em></div><svg data-spark="2,2,2.7,2.7,2.7,3.5,3.5,4,4,4.7,4.7" data-color="#1f9d5c"></svg><small>2 contratos · +US$ 700 en nov</small></div>
+          <div class="par"><span class="mon ars">ARS</span><div class="n"><span>$</span>45,7<em>M/mes</em></div><svg data-spark="26,29,31,33,36,37,38,39,41,43,45.7" data-color="--ars-l"></svg><small class="ctx">63 contratos · +$ 2,4 M en nov</small></div>
+          <div class="par"><span class="mon usd">USD</span><div class="n"><span>US$</span>4.700<em>/mes</em></div><svg data-spark="2,2,2.7,2.7,2.7,3.5,3.5,4,4,4.7,4.7" data-color="--usd-l"></svg><small class="ctx">2 contratos · +US$ 700 en nov</small></div>
         </div>
-        <div class="pie"><span></span><a href="#">Contratos <i class="ph ph-arrow-right" style="font-size:12px"></i></a></div>
+        <div class="pie"><span></span><a href="#caja">Contratos <i class="ph ph-arrow-right"></i></a></div>
       </div>
       <div class="bandeja">
         <div class="rot"><i class="ph ph-bank"></i>Caja y bancos</div>
         <div class="adentro">
-          <div class="par"><span class="mon ars">ARS</span><div class="n2 num"><span>$</span>170,2<em>M</em></div><svg data-spark="150,152,149,158,161,163,166,170.2" data-color="#3b6fe0"></svg><small>caja $ 21,3 M · banco $ 148,9 M</small></div>
-          <div class="par"><span class="mon usd">USD</span><div class="n2 num"><span>US$</span>15.200</div><svg data-spark="6,6,6,8,8,12,15.2,15.2" data-color="#1f9d5c"></svg><small>caja dólares</small></div>
+          <div class="par"><span class="mon ars">ARS</span><div class="n"><span>$</span>170,2<em>M</em></div><svg data-spark="150,152,149,158,161,163,166,170.2" data-color="--ars-l"></svg><small class="ctx">caja $ 21,3 M · banco $ 148,9 M</small></div>
+          <div class="par"><span class="mon usd">USD</span><div class="n"><span>US$</span>15.200</div><svg data-spark="6,6,6,8,8,12,15.2,15.2" data-color="--usd-l"></svg><small class="ctx">caja dólares</small></div>
         </div>
-        <div class="pie"><span>+ $ 98,4 M en cheques</span><a href="#">Tesorería <i class="ph ph-arrow-right" style="font-size:12px"></i></a></div>
+        <div class="pie"><span>+ $ 98,4 M en cheques</span><a href="#caja">Tesorería <i class="ph ph-arrow-right"></i></a></div>
       </div>
       <div class="bandeja">
         <div class="rot"><i class="ph ph-warning-circle"></i>Deuda vencida</div>
         <div class="adentro">
-          <div class="par"><span class="mon ars">ARS</span><div class="n2 num"><span>$</span>198,4<em>M</em></div><svg data-spark="230,231,232,238,196,191,212,218,198.4" data-color="#3b6fe0"></svg><small>35 contratos</small></div>
-          <div class="par"><span class="mon usd">USD</span><div class="n2 num"><span>US$</span>3.100</div><svg data-spark="0,0,1.2,1.2,3.1,3.1,3.1,3.1,3.1" data-color="#1f9d5c"></svg><small>1 contrato</small></div>
+          <div class="par"><span class="mon ars">ARS</span><div class="n"><span>$</span>198,4<em>M</em></div><svg data-spark="230,231,232,238,196,191,212,218,198.4" data-color="--ars-l"></svg><small class="ctx">35 contratos</small></div>
+          <div class="par"><span class="mon usd">USD</span><div class="n"><span>US$</span>3.100</div><svg data-spark="0,0,1.2,1.2,3.1,3.1,3.1,3.1,3.1" data-color="--usd-l"></svg><small class="ctx">1 contrato</small></div>
         </div>
-        <div class="pie"><span class="baja"><i class="ph ph-warning-circle"></i> +60 días: $ 25,8 M</span><a href="#">Ver cuáles <i class="ph ph-arrow-right" style="font-size:12px"></i></a></div>
+        <div class="pie"><span class="baja"><i class="ph ph-warning-circle"></i> +60 d: $ 25,8 M</span><a href="#caja">Ver cuáles <i class="ph ph-arrow-right"></i></a></div>
       </div>
     </div>
   </section>
 
   <!-- ── Forma 3 ── -->
   <section class="opcion">
-    <div class="otit"><span class="letra">3</span><h2>Una tarjeta por moneda</h2></div>
-    <p class="obaja">Cada número del Resumen tiene dos tarjetas blancas, una por moneda. Es la que más separa las dos, pero ocupa el doble de lugar.</p>
+    <div class="otit"><span class="letra">3</span><h2>Una tarjeta por moneda</h2><p>Dos tarjetas blancas por número. Es la que más las separa, pero ocupa el doble.</p></div>
     <div class="tres">
       <div class="bandeja">
         <div class="rot"><i class="ph ph-repeat"></i>Facturación recurrente</div>
         <div class="dos-t">
-          <div class="adentro"><span class="mon ars">ARS</span><div class="n3 num"><span>$</span>45,7<em>M</em></div><small>por mes · 63 contratos</small></div>
-          <div class="adentro"><span class="mon usd">USD</span><div class="n3 num"><span>US$</span>4.700</div><small>por mes · 2 contratos</small></div>
+          <div class="adentro"><span class="mon ars">ARS</span><div class="n"><span>$</span>45,7<em>M</em></div><small class="ctx">por mes · 63 contratos</small></div>
+          <div class="adentro"><span class="mon usd">USD</span><div class="n"><span>US$</span>4.700</div><small class="ctx">por mes · 2 contratos</small></div>
         </div>
-        <div class="pie"><span class="sube"><i class="ph ph-trend-up"></i> +$ 2,4 M · +US$ 700</span><a href="#">Contratos <i class="ph ph-arrow-right" style="font-size:12px"></i></a></div>
+        <div class="pie"><span class="sube"><i class="ph ph-trend-up"></i> +$ 2,4 M · +US$ 700</span><a href="#caja">Contratos <i class="ph ph-arrow-right"></i></a></div>
       </div>
       <div class="bandeja">
         <div class="rot"><i class="ph ph-bank"></i>Caja y bancos</div>
         <div class="dos-t">
-          <div class="adentro"><span class="mon ars">ARS</span><div class="n3 num"><span>$</span>170,2<em>M</em></div><small>caja y banco</small></div>
-          <div class="adentro"><span class="mon usd">USD</span><div class="n3 num"><span>US$</span>15.200</div><small>caja dólares</small></div>
+          <div class="adentro"><span class="mon ars">ARS</span><div class="n"><span>$</span>170,2<em>M</em></div><small class="ctx">caja y banco</small></div>
+          <div class="adentro"><span class="mon usd">USD</span><div class="n"><span>US$</span>15.200</div><small class="ctx">caja dólares</small></div>
         </div>
-        <div class="pie"><span>+ $ 98,4 M en cheques</span><a href="#">Tesorería <i class="ph ph-arrow-right" style="font-size:12px"></i></a></div>
+        <div class="pie"><span>+ $ 98,4 M en cheques</span><a href="#caja">Tesorería <i class="ph ph-arrow-right"></i></a></div>
       </div>
       <div class="bandeja">
         <div class="rot"><i class="ph ph-warning-circle"></i>Deuda vencida</div>
         <div class="dos-t">
-          <div class="adentro"><span class="mon ars">ARS</span><div class="n3 num"><span>$</span>198,4<em>M</em></div><small>35 contratos</small></div>
-          <div class="adentro"><span class="mon usd">USD</span><div class="n3 num"><span>US$</span>3.100</div><small>1 contrato</small></div>
+          <div class="adentro"><span class="mon ars">ARS</span><div class="n"><span>$</span>198,4<em>M</em></div><small class="ctx">35 contratos</small></div>
+          <div class="adentro"><span class="mon usd">USD</span><div class="n"><span>US$</span>3.100</div><small class="ctx">1 contrato</small></div>
         </div>
-        <div class="pie"><span class="baja"><i class="ph ph-warning-circle"></i> +60 días: $ 25,8 M</span><a href="#">Ver cuáles <i class="ph ph-arrow-right" style="font-size:12px"></i></a></div>
+        <div class="pie"><span class="baja"><i class="ph ph-warning-circle"></i> +60 d: $ 25,8 M</span><a href="#caja">Ver cuáles <i class="ph ph-arrow-right"></i></a></div>
       </div>
     </div>
   </section>
 
   <!-- ── Inicio con la forma 1 ── -->
   <section class="opcion">
-    <div class="otit"><span class="letra"><i class="ph ph-house" style="font-size:15px"></i></span><h2>Así quedaría el Resumen del Inicio (forma 1)</h2></div>
-    <p class="obaja">La tarjeta azul también muestra las dos monedas lado a lado. Cuando una cifra no tiene dólares (por ejemplo, la ocupación), la tarjeta queda como hoy.</p>
+    <div class="otit"><span class="letra"><i class="ph ph-house" style="font-size:13px"></i></span><h2>El Resumen del Inicio con la forma 1</h2><p>La protagonista también va lado a lado. Una cifra que no es plata (la ocupación) va una sola vez.</p></div>
     <div class="cuatro">
       <div class="heroe">
-        <span class="ico"><i class="ph ph-hand-coins" style="font-size:19px"></i></span>
-        <small>A cobrar</small>
-        <div class="lado lado-heroe">
-          <div><span class="mon" style="background:rgb(255 255 255/.18);color:#fff">ARS</span><div class="n3 num"><span>$</span>286,0<em>M</em></div><small>128 facturas</small></div>
-          <div><span class="mon" style="background:rgb(126 226 168/.22);color:#c4f5d8">USD</span><div class="n3 num"><span>US$</span>8.900</div><small>2 facturas</small></div>
+        <div class="tope"><span class="ico"><i class="ph ph-hand-coins" style="font-size:15px"></i></span>A cobrar</div>
+        <div class="lado">
+          <div><span class="mon">ARS</span><div class="n"><span>$</span>286,0<em>M</em></div><small class="ctx">128 facturas</small></div>
+          <div><span class="mon">USD</span><div class="n"><span>US$</span>8.900</div><small class="ctx">2 facturas</small></div>
         </div>
-        <svg class="curva-h" data-spark="140,143,194,300,301,306,274,295,307,315,286" data-color="#ffffff" data-w="300" data-h="64"></svg>
+        <svg class="curva-h" data-spark="140,143,194,300,301,306,274,295,307,315,286" data-color="#ffffff" data-w="300" data-h="48"></svg>
       </div>
       <div class="bandeja">
         <div class="rot"><i class="ph ph-warning-circle"></i>Deuda vencida</div>
         <div class="adentro lado">
-          <div><span class="mon ars">ARS</span><div class="n3 num"><span>$</span>198,4<em>M</em></div><small>35 contratos</small></div>
-          <div><span class="mon usd">USD</span><div class="n3 num"><span>US$</span>3.100</div><small>1 contrato</small></div>
+          <div><span class="mon ars">ARS</span><div class="n"><span>$</span>198,4<em>M</em></div><small class="ctx">35 contratos</small></div>
+          <div><span class="mon usd">USD</span><div class="n"><span>US$</span>3.100</div><small class="ctx">1 contrato</small></div>
         </div>
-        <div class="pie"><span class="baja"><i class="ph ph-warning-circle"></i> +60 días: $ 25,8 M</span><a href="#">Ver cuáles <i class="ph ph-arrow-right" style="font-size:12px"></i></a></div>
+        <div class="pie"><span class="baja"><i class="ph ph-warning-circle"></i> +60 d: $ 25,8 M</span><a href="#caja">Ver cuáles <i class="ph ph-arrow-right"></i></a></div>
       </div>
       <div class="bandeja">
         <div class="rot"><i class="ph ph-repeat"></i>Facturación recurrente</div>
         <div class="adentro lado">
-          <div><span class="mon ars">ARS</span><div class="n3 num"><span>$</span>45,7<em>M</em></div><small>por mes</small></div>
-          <div><span class="mon usd">USD</span><div class="n3 num"><span>US$</span>4.700</div><small>por mes</small></div>
+          <div><span class="mon ars">ARS</span><div class="n"><span>$</span>45,7<em>M</em></div><small class="ctx">por mes</small></div>
+          <div><span class="mon usd">USD</span><div class="n"><span>US$</span>4.700</div><small class="ctx">por mes</small></div>
         </div>
         <div class="pie lado-pie"><span class="sube"><i class="ph ph-trend-up"></i> +$ 2,4 M</span><span class="sube"><i class="ph ph-trend-up"></i> +US$ 700</span></div>
       </div>
       <div class="bandeja">
         <div class="rot"><i class="ph ph-bank"></i>Caja y bancos</div>
         <div class="adentro lado">
-          <div><span class="mon ars">ARS</span><div class="n3 num"><span>$</span>170,2<em>M</em></div><small>caja y banco</small></div>
-          <div><span class="mon usd">USD</span><div class="n3 num"><span>US$</span>15.200</div><small>caja dólares</small></div>
+          <div><span class="mon ars">ARS</span><div class="n"><span>$</span>170,2<em>M</em></div><small class="ctx">caja y banco</small></div>
+          <div><span class="mon usd">USD</span><div class="n"><span>US$</span>15.200</div><small class="ctx">caja dólares</small></div>
         </div>
-        <div class="pie"><span>+ $ 98,4 M en cheques</span><a href="#">Tesorería <i class="ph ph-arrow-right" style="font-size:12px"></i></a></div>
+        <div class="pie"><span>+ $ 98,4 M en cheques</span><a href="#caja">Tesorería <i class="ph ph-arrow-right"></i></a></div>
       </div>
     </div>
   </section>
 
   <div class="reco">
-    <span class="ico"><i class="ph-fill ph-lightbulb" style="font-size:18px"></i></span>
+    <span class="ico"><i class="ph-fill ph-lightbulb" style="font-size:17px"></i></span>
     <div>
       <h3>Reglas para todo el sistema</h3>
       <ul>
-        <li>Pesos y dólares siempre con el mismo tamaño y en el mismo orden: pesos a la izquierda (o arriba), dólares a la derecha (o abajo).</li>
-        <li>Cada moneda con su chip de color: ARS en azul, USD en verde. Nunca se suman entre sí.</li>
-        <li>Si una moneda está en cero, se muestra igual ("US$ 0"), para que siempre se sepa que se miró.</li>
+        <li>Pesos y dólares siempre del mismo tamaño y en el mismo orden: pesos a la izquierda (o arriba), dólares a la derecha (o abajo).</li>
+        <li>Cada moneda con su chip de color, que no se usa para otra cosa. Nunca se suman entre sí.</li>
+        <li>Si una moneda está en cero, se muestra igual ("US$ 0"): así se sabe que se miró.</li>
       </ul>
     </div>
   </div>
@@ -365,47 +390,46 @@ button{font:inherit;color:inherit}
   <div class="sep"></div>
 
   <!-- ── Caja ── -->
-  <div class="cab" style="margin-bottom:28px">
+  <div class="cab" id="caja">
     <div>
-      <small>Finanzas</small>
       <h1>Caja</h1>
-      <div class="sub">3 cajas · <b style="color:var(--tinta);font-weight:600">$ 22.480.300</b> · <b style="color:var(--tinta);font-weight:600">US$ 14.900</b> · <span style="color:var(--ambar);font-weight:600">6 costos para asentar</span></div>
+      <div class="sub">3 cajas · <b>$ 22.480.300</b> · <b>US$ 14.900</b> · <span style="color:var(--ambar);font-weight:500">6 gastos para asentar</span></div>
     </div>
     <div class="acc">
-      <button class="btn"><i class="ph ph-arrows-left-right"></i>Pasar plata entre cajas</button>
-      <button class="btn prim"><i class="ph ph-plus"></i>Registrar movimiento</button>
+      <button class="btn" type="button" aria-label="Pasar plata entre cajas"><i class="ph ph-arrows-left-right"></i><span>Pasar plata entre cajas</span></button>
+      <button class="btn prim" type="button"><i class="ph ph-plus"></i>Registrar movimiento</button>
     </div>
   </div>
 
-  <div class="cuatro" style="grid-template-columns:repeat(4,1fr)">
+  <div class="cuatro bloque">
     <div class="bandeja">
       <div class="rot"><span class="mon ars">ARS</span>Saldo en pesos</div>
       <div class="adentro">
-        <div class="n num"><span>$</span>22.480.300</div>
-        <div class="ctx">en 2 cajas</div>
-        <div class="comp"><i style="flex:100;background:var(--ars)"></i></div>
-        <div class="barras2" style="grid-template-columns:auto 1fr"><span class="lbl"><i style="width:7px;height:7px;border-radius:2px;background:#3b6fe0;display:inline-block"></i>Caja Pesos</span><b class="num">$ 22.480.300</b><span class="lbl"><i style="width:7px;height:7px;border-radius:2px;background:#c8692b;display:inline-block"></i>Caja chica</span><b class="num">$ 0</b></div>
+        <div class="n"><span>$</span>22.480.300</div>
+        <small class="ctx">en 2 cajas</small>
+        <div class="comp"><i style="flex:100;background:var(--ars-l)"></i></div>
+        <div class="barras2 dos-col"><span class="lbl"><i class="p" style="background:var(--ars-l)"></i>Caja Pesos</span><b>$ 22.480.300</b><span class="lbl"><i class="p" style="background:var(--e2)"></i>Caja chica</span><b>$ 0</b></div>
       </div>
       <div class="pie"><span>Último movimiento 13/11</span></div>
     </div>
     <div class="bandeja">
       <div class="rot"><span class="mon usd">USD</span>Saldo en dólares</div>
       <div class="adentro">
-        <div class="n num"><span>US$</span>14.900</div>
-        <div class="ctx">en 1 caja</div>
-        <div class="comp"><i style="flex:100;background:var(--usd)"></i></div>
-        <div class="barras2" style="grid-template-columns:auto 1fr"><span class="lbl"><i style="width:7px;height:7px;border-radius:2px;background:#1f9d5c;display:inline-block"></i>Caja Dólares</span><b class="num">US$ 14.900</b><span class="lbl" style="visibility:hidden">—</span><b></b></div>
+        <div class="n"><span>US$</span>14.900</div>
+        <small class="ctx">en 1 caja</small>
+        <div class="comp"><i style="flex:100;background:var(--usd-l)"></i></div>
+        <div class="barras2 dos-col"><span class="lbl"><i class="p" style="background:var(--usd-l)"></i>Caja Dólares</span><b>US$ 14.900</b></div>
       </div>
       <div class="pie"><span>Último movimiento 10/11</span></div>
     </div>
     <div class="bandeja">
       <div class="rot"><span class="mon ars">ARS</span>Noviembre en pesos</div>
       <div class="adentro">
-        <div class="n num"><span>−$</span>1.410.000</div>
-        <div class="ctx">quedó en el mes</div>
+        <div class="n"><span>−$</span>1.410.000</div>
+        <small class="ctx">quedó en el mes</small>
         <div class="barras2">
-          <span class="lbl"><i class="ph ph-arrow-down-left sube"></i>Entró</span><div class="riel"><i style="width:31%;background:var(--verde)"></i></div><b class="num">$ 640.000</b>
-          <span class="lbl"><i class="ph ph-arrow-up-right baja"></i>Salió</span><div class="riel"><i style="width:100%;background:var(--rojo)"></i></div><b class="num">$ 2.050.000</b>
+          <span class="lbl"><i class="ph ph-arrow-down-left sube"></i>Entró</span><div class="riel"><i style="width:31%;background:var(--verde)"></i></div><b>$ 640.000</b>
+          <span class="lbl"><i class="ph ph-arrow-up-right baja"></i>Salió</span><div class="riel"><i style="width:100%;background:var(--rojo)"></i></div><b>$ 2.050.000</b>
         </div>
       </div>
       <div class="pie"><span>Sin traspasos ni anulados</span></div>
@@ -413,11 +437,11 @@ button{font:inherit;color:inherit}
     <div class="bandeja">
       <div class="rot"><span class="mon usd">USD</span>Noviembre en dólares</div>
       <div class="adentro">
-        <div class="n num"><span>+US$</span>14.900</div>
-        <div class="ctx">quedó en el mes</div>
+        <div class="n"><span>+US$</span>14.900</div>
+        <small class="ctx">quedó en el mes</small>
         <div class="barras2">
-          <span class="lbl"><i class="ph ph-arrow-down-left sube"></i>Entró</span><div class="riel"><i style="width:100%;background:var(--verde)"></i></div><b class="num">US$ 14.900</b>
-          <span class="lbl"><i class="ph ph-arrow-up-right baja"></i>Salió</span><div class="riel"><i style="width:0%;background:var(--rojo)"></i></div><b class="num">US$ 0</b>
+          <span class="lbl"><i class="ph ph-arrow-down-left sube"></i>Entró</span><div class="riel"><i style="width:100%;background:var(--verde)"></i></div><b>US$ 14.900</b>
+          <span class="lbl"><i class="ph ph-arrow-up-right baja"></i>Salió</span><div class="riel"><i style="width:0%;background:var(--rojo)"></i></div><b>US$ 0</b>
         </div>
       </div>
       <div class="pie"><span>Sin traspasos ni anulados</span></div>
@@ -427,76 +451,75 @@ button{font:inherit;color:inherit}
   <section class="card bloque">
     <div class="tit">
       <span class="cuadro" style="background:var(--ambar-f);color:var(--ambar)"><i class="ph ph-receipt"></i></span>
-      <div><h3>Para asentar en caja</h3><p>6 costos · $ 1.120.000 · se cargaron en contratos y todavía no salieron de ninguna caja</p></div>
-      <div class="der"><span class="chip" style="background:var(--ambar-f);color:var(--ambar)">● Nos toca</span></div>
+      <div><h3>Para asentar en caja</h3><p>6 gastos · $ 1.120.000 · cargados en proyectos y todavía sin salir de ninguna caja</p></div>
+      <div class="der"><span class="chip" style="background:var(--ambar-f);color:var(--ambar)"><i class="ph-fill ph-circle" style="font-size:7px"></i>Nos toca</span></div>
     </div>
-    <div style="padding:0 20px 8px">
-      <div class="costos">
-        <div class="fila h"><span>Contrato</span><span>Detalle</span><span class="fecha">Fecha</span><span class="der-t">Monto</span></div>
-        <div class="fila"><span class="cod">CONT-01170</span><span>Alquiler módulo a proveedor · noviembre</span><span class="num fecha" style="color:var(--texto-3)">01/11</span><b class="num der-t">$ 400.000</b></div>
-        <div class="fila"><span class="cod">CONT-01121</span><span>Alquiler 2º módulo a proveedor · noviembre</span><span class="num fecha" style="color:var(--texto-3)">01/11</span><b class="num der-t">$ 380.000</b></div>
-        <div class="fila"><span class="cod">CONT-01188</span><span>Alquiler garita a proveedor · noviembre</span><span class="num fecha" style="color:var(--texto-3)">01/11</span><b class="num der-t">$ 100.000</b></div>
-        <div class="fila"><span class="cod">CONT-01121</span><span>Alquiler 2º módulo a proveedor · octubre (6 días)</span><span class="num fecha" style="color:var(--texto-3)">26/10</span><b class="num der-t">$ 76.000</b></div>
-        <div class="fila"><span class="cod">CONT-01170</span><span>Alquiler módulo a proveedor · octubre (10 días)</span><span class="num fecha" style="color:var(--texto-3)">22/10</span><b class="num der-t">$ 133.000</b></div>
-        <div class="fila"><span class="cod">CONT-01188</span><span>Alquiler garita a proveedor · octubre (10 días)</span><span class="num fecha" style="color:var(--texto-3)">22/10</span><b class="num der-t">$ 31.000</b></div>
-      </div>
+    <div class="costos">
+      <div class="fila h"><span>Proyecto</span><span>Detalle</span><span class="fecha">Fecha</span><span class="der-t">Monto</span></div>
+      <div class="fila"><span class="cod">PRY-0142</span><span><span>Imprenta · folletos de temporada</span></span><span class="fecha" style="color:var(--texto-3)">01/11</span><b class="der-t" style="font-weight:500">$ 400.000</b></div>
+      <div class="fila"><span class="cod">PRY-0138</span><span><span>Sesión de fotos de producto · estudio</span></span><span class="fecha" style="color:var(--texto-3)">01/11</span><b class="der-t" style="font-weight:500">$ 380.000</b></div>
+      <div class="fila"><span class="cod">PRY-0151</span><span><span>Licencia de tipografía · un año</span></span><span class="fecha" style="color:var(--texto-3)">01/11</span><b class="der-t" style="font-weight:500">$ 100.000</b></div>
+      <div class="fila"><span class="cod">PRY-0138</span><span><span>Retoque de fotos · 20 imágenes</span></span><span class="fecha" style="color:var(--texto-3)">26/10</span><b class="der-t" style="font-weight:500">$ 76.000</b></div>
+      <div class="fila"><span class="cod">PRY-0142</span><span><span>Pruebas de color en papel</span></span><span class="fecha" style="color:var(--texto-3)">22/10</span><b class="der-t" style="font-weight:500">$ 133.000</b></div>
+      <div class="fila"><span class="cod">PRY-0151</span><span><span>Envíos de muestras al cliente</span></span><span class="fecha" style="color:var(--texto-3)">22/10</span><b class="der-t" style="font-weight:500">$ 31.000</b></div>
     </div>
   </section>
 
-  <section class="bloque">
-    <div class="sec"><h2>Cajas</h2><span class="c">3</span><div class="der"><span style="color:var(--texto-3);font-size:12.5px">Tocá una para ver su libro abajo</span></div></div>
-    <div class="cajas">
-      <div class="caja on">
-        <div class="top"><span class="cuadro" style="background:#e8effc;color:#3b6fe0"><i class="ph ph-wallet"></i></span><div><b>Caja Pesos</b><small>Efectivo · ARS</small></div><i class="ph ph-pencil-simple"></i></div>
-        <div class="saldo num"><span>$</span>22.480.300</div>
-        <div class="mes"><div><small>Entró en nov</small><b class="num">$ 640.000</b></div><div><small>Salió en nov</small><b class="num">$ 2.050.000</b></div></div>
-        <div class="abajo"><span>189 movimientos · último 13/11</span><span class="ver">Viendo ↓</span></div>
-      </div>
-      <div class="caja">
-        <div class="top"><span class="cuadro" style="background:#fbefe5;color:#c8692b"><i class="ph ph-coins"></i></span><div><b>Caja chica</b><small>Efectivo · ARS</small></div><i class="ph ph-pencil-simple"></i></div>
-        <div class="saldo num"><span>$</span>0</div>
-        <div class="mes"><div><small>Entró en nov</small><b class="num">$ 0</b></div><div><small>Salió en nov</small><b class="num">$ 0</b></div></div>
-        <div class="abajo"><span>4 movimientos · último 16/09</span><span class="ver">Ver ↓</span></div>
-      </div>
-      <div class="caja">
-        <div class="top"><span class="cuadro" style="background:#e5f5ec;color:#1f9d5c"><i class="ph ph-currency-dollar"></i></span><div><b>Caja Dólares</b><small>Efectivo · USD</small></div><i class="ph ph-pencil-simple"></i></div>
-        <div class="saldo num"><span>US$</span>14.900</div>
-        <div class="mes"><div><small>Entró en nov</small><b class="num">US$ 14.900</b></div><div><small>Salió en nov</small><b class="num">US$ 0</b></div></div>
-        <div class="abajo"><span>33 movimientos · último 10/11</span><span class="ver">Ver ↓</span></div>
-      </div>
-      <button class="nueva"><div><i class="ph ph-plus-circle"></i>Nueva caja</div></button>
-    </div>
-  </section>
+  <div class="sec"><h2>Cajas</h2><span class="c">3</span><span class="der">Tocá una para ver su libro abajo</span></div>
+  <div class="cajas">
+    <a class="caja on" href="#libro">
+      <div class="top"><span class="cuadro" style="background:var(--ars-f);color:var(--ars)"><i class="ph ph-wallet"></i></span><div><b>Caja Pesos</b><small>Efectivo · ARS</small></div><i class="ph ph-pencil-simple"></i></div>
+      <div class="n"><span>$</span>22.480.300</div>
+      <div class="mes"><div><small>Entró en nov</small><b>$ 640.000</b></div><div><small>Salió en nov</small><b>$ 2.050.000</b></div></div>
+      <div class="abajo"><span>189 movimientos · último 13/11</span><span class="ver">Viendo ↓</span></div>
+    </a>
+    <a class="caja" href="#libro">
+      <div class="top"><span class="cuadro" style="background:var(--e2-f);color:var(--e2)"><i class="ph ph-coins"></i></span><div><b>Caja chica</b><small>Efectivo · ARS</small></div><i class="ph ph-pencil-simple"></i></div>
+      <div class="n"><span>$</span>0</div>
+      <div class="mes"><div><small>Entró en nov</small><b>$ 0</b></div><div><small>Salió en nov</small><b>$ 0</b></div></div>
+      <div class="abajo"><span>4 movimientos · último 16/09</span><span class="ver">Ver ↓</span></div>
+    </a>
+    <a class="caja" href="#libro">
+      <div class="top"><span class="cuadro" style="background:var(--usd-f);color:var(--usd)"><i class="ph ph-currency-dollar"></i></span><div><b>Caja Dólares</b><small>Efectivo · USD</small></div><i class="ph ph-pencil-simple"></i></div>
+      <div class="n"><span>US$</span>14.900</div>
+      <div class="mes"><div><small>Entró en nov</small><b>US$ 14.900</b></div><div><small>Salió en nov</small><b>US$ 0</b></div></div>
+      <div class="abajo"><span>33 movimientos · último 10/11</span><span class="ver">Ver ↓</span></div>
+    </a>
+    <button class="nueva" type="button"><i class="ph ph-plus-circle"></i>Nueva caja</button>
+  </div>
 
-  <section class="card bloque libro">
+  <section class="card bloque libro" id="libro">
     <div class="tit">
       <div><h3>Movimientos de Caja Pesos</h3><p>Nada se borra: para corregir se anula y se vuelve a cargar</p></div>
-      <div class="der"><button class="btn chico">Ver todas las cajas</button><button class="btn chico"><i class="ph ph-download-simple"></i>Exportar</button></div>
+      <div class="der"><button class="btn chico" type="button">Ver todas las cajas</button><button class="btn chico" type="button"><i class="ph ph-download-simple"></i>Exportar</button></div>
     </div>
     <div class="filtros">
       <div class="buscar"><i class="ph ph-magnifying-glass"></i>Buscar por detalle, origen o quién lo cargó…</div>
-      <div class="seg" style="padding:3px;border-radius:11px"><button class="on" style="height:28px;padding:0 12px;font-size:12.5px">Este mes 4</button><button style="height:28px;padding:0 12px;font-size:12.5px">Anteriores 185</button><button style="height:28px;padding:0 12px;font-size:12.5px">Todos 189</button></div>
+      <div class="seg" role="tablist" aria-label="Período"><button class="on" type="button" role="tab" aria-selected="true">Este mes 4</button><button type="button" role="tab" aria-selected="false">Anteriores 185</button><button type="button" role="tab" aria-selected="false">Todos 189</button></div>
     </div>
-    <table>
-      <thead><tr><th style="width:56px"></th><th>Detalle</th><th>Fecha</th><th>Origen</th><th class="m">Monto</th><th class="m">Saldo</th></tr></thead>
-      <tbody>
-        <tr><td><span class="dir out"><i class="ph ph-arrow-up-right"></i></span></td><td class="q"><b>Pago a proveedor · fletes</b><small>Cargó Agustín</small></td><td class="num" style="color:var(--texto-2)">13/11</td><td><span class="chip" style="background:#eff1f5;color:var(--texto-2)">Costo CONT-01170</span></td><td class="m num"><b>−$ 1.250.000</b></td><td class="m num" style="color:var(--texto-2)">$ 22.480.300</td></tr>
-        <tr><td><span class="dir in"><i class="ph ph-arrow-down-left"></i></span></td><td class="q"><b>Cobro en efectivo · alquiler octubre</b><small>Cargó Brandon</small></td><td class="num" style="color:var(--texto-2)">10/11</td><td><span class="chip" style="background:var(--azul-f);color:var(--azul)">Cobranza</span></td><td class="m num"><b>+$ 640.000</b></td><td class="m num" style="color:var(--texto-2)">$ 23.730.300</td></tr>
-        <tr><td><span class="dir out"><i class="ph ph-arrow-up-right"></i></span></td><td class="q"><b>Combustible camioneta</b><small>Cargó Luis</small></td><td class="num" style="color:var(--texto-2)">06/11</td><td><span class="chip" style="background:#eff1f5;color:var(--texto-2)">Manual</span></td><td class="m num"><b>−$ 800.000</b></td><td class="m num" style="color:var(--texto-2)">$ 23.090.300</td></tr>
-        <tr><td><span class="dir tr"><i class="ph ph-arrows-left-right"></i></span></td><td class="q"><b>Traspaso a Caja chica</b><small>Cargó Brandon</small></td><td class="num" style="color:var(--texto-2)">03/11</td><td><span class="chip" style="background:#eff1f5;color:var(--texto-2)">Traspaso</span></td><td class="m num"><b style="color:var(--texto-2)">$ 0</b></td><td class="m num" style="color:var(--texto-2)">$ 23.890.300</td></tr>
-      </tbody>
-    </table>
+    <div class="mov h"><span></span><span>Detalle</span><span>Fecha</span><span>Origen</span><span class="m">Monto</span><span class="m">Saldo</span></div>
+    <div class="mov"><span class="dir out"><i class="ph ph-arrow-up-right"></i></span><span class="q"><b>Pago a proveedor · imprenta</b><small>Cargó Tomás</small></span><span class="f">13/11</span><span class="o"><span class="chip" style="background:var(--gris-f);color:var(--texto-2)">Gasto PRY-0142</span></span><b class="m" style="font-weight:500">−$ 1.250.000</b><span class="m s">$ 22.480.300</span></div>
+    <div class="mov"><span class="dir in"><i class="ph ph-arrow-down-left"></i></span><span class="q"><b>Cobro en efectivo · fee de octubre</b><small>Cargó Ana</small></span><span class="f">10/11</span><span class="o"><span class="chip" style="background:var(--azul-f);color:var(--azul)">Cobranza</span></span><b class="m" style="font-weight:500">+$ 640.000</b><span class="m s">$ 23.730.300</span></div>
+    <div class="mov"><span class="dir out"><i class="ph ph-arrow-up-right"></i></span><span class="q"><b>Insumos de oficina</b><small>Cargó Lucía</small></span><span class="f">06/11</span><span class="o"><span class="chip" style="background:var(--gris-f);color:var(--texto-2)">Manual</span></span><b class="m" style="font-weight:500">−$ 800.000</b><span class="m s">$ 23.090.300</span></div>
+    <div class="mov"><span class="dir tr"><i class="ph ph-arrows-left-right"></i></span><span class="q"><b>Traspaso a Caja chica</b><small>Cargó Ana</small></span><span class="f">03/11</span><span class="o"><span class="chip" style="background:var(--gris-f);color:var(--texto-2)">Traspaso</span></span><b class="m" style="font-weight:500;color:var(--texto-2)">$ 0</b><span class="m s">$ 23.890.300</span></div>
     <div style="height:8px"></div>
   </section>
 </div>
 
 <script>
-const $=s=>document.querySelector(s);
 function curva(pts){let d=`M${pts[0][0]},${pts[0][1]}`;for(let i=0;i<pts.length-1;i++){const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2;const c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6],c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];d+=` C${c1[0]},${c1[1]} ${c2[0]},${c2[1]} ${p2[0]},${p2[1]}`}return d}
 let gid=0;
-function spark(svg,vals,color,w=64,h=26){const mx=Math.max(...vals),mn=Math.min(...vals),pad=3;const pts=vals.map((v,i)=>[pad+i*(w-2*pad)/(vals.length-1),h-pad-(v-mn)/(mx-mn||1)*(h-2*pad)]);const d=curva(pts),id='g'+(gid++);svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.innerHTML=`<defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".22"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs><path d="${d} L${pts.at(-1)[0]},${h} L${pts[0][0]},${h}Z" fill="url(#${id})"/><path d="${d}" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round"/><circle cx="${pts.at(-1)[0]}" cy="${pts.at(-1)[1]}" r="2.6" fill="#fff" stroke="${color}" stroke-width="1.5"/>`}
-document.querySelectorAll('svg[data-spark]').forEach(s=>spark(s,s.dataset.spark.split(',').map(Number),s.dataset.color,+(s.dataset.w||64),+(s.dataset.h||26)));
-
+// el color sale de una variable (--ars-l, --usd-l) para que cambie con el tema
+function spark(svg){const vals=svg.dataset.spark.split(',').map(Number),w=+(svg.dataset.w||64),h=+(svg.dataset.h||24),c=svg.dataset.color,color=c.startsWith('--')?`var(${c})`:c;
+  const mx=Math.max(...vals),mn=Math.min(...vals),pad=3;const pts=vals.map((v,i)=>[pad+i*(w-2*pad)/(vals.length-1),h-pad-(v-mn)/(mx-mn||1)*(h-2*pad)]);const d=curva(pts),id='g'+(gid++);
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.setAttribute('preserveAspectRatio','none');svg.setAttribute('aria-hidden','true');
+  svg.innerHTML=`<defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" style="stop-color:${color}" stop-opacity=".22"/><stop offset="1" style="stop-color:${color}" stop-opacity="0"/></linearGradient></defs><path d="${d} L${pts.at(-1)[0]},${h} L${pts[0][0]},${h}Z" fill="url(#${id})"/><path d="${d}" fill="none" style="stroke:${color}" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`}
+document.querySelectorAll('svg[data-spark]').forEach(spark);
+const btn=document.getElementById('tema');
+const oscuro=()=>document.documentElement.dataset.tema==='oscuro'||(!document.documentElement.dataset.tema&&matchMedia('(prefers-color-scheme: dark)').matches);
+function pintar(){const o=oscuro();btn.innerHTML=`<i class="ph ph-${o?'sun':'moon'}"></i>`;btn.setAttribute('aria-label',o?'Cambiar a claro':'Cambiar a oscuro')}
+btn.addEventListener('click',()=>{const t=oscuro()?'claro':'oscuro';document.documentElement.dataset.tema=t;try{localStorage.setItem('monedas-tema',t)}catch(e){}pintar()});
+pintar();
 </script>
 </body>
 </html>

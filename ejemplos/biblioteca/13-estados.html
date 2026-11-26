@@ -287,10 +287,10 @@
 .pie-mono{font-family:var(--mono);font-size:12px;color:var(--texto-3);padding:var(--espacio-4) var(--espacio-6);border-top:1px solid var(--divisor);background:var(--bandeja)}
 
 /* ───── 17 microinteracciones ───── */
-.micro{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--espacio-gap)}
-.micro .card{padding:var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-5);min-height:168px}
+.micro{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--espacio-gap);align-items:start} /* el contenido cambia de alto al animar: cada una con el suyo (§4i) */
+.micro .card{padding:var(--espacio-6);display:flex;flex-direction:column;gap:var(--espacio-5)}
 .micro .card .rot-g{display:flex;gap:var(--espacio-3);align-items:center}
-.micro .card .esc{flex:1;display:flex;align-items:center;justify-content:center;gap:var(--espacio-4);flex-wrap:wrap}
+.micro .card .esc{min-height:48px;display:flex;align-items:center;justify-content:center;gap:var(--espacio-4);flex-wrap:wrap}
 .micro .card p{font-size:12px;color:var(--texto-3);line-height:1.45}
 .btn .ok-ic{color:var(--verde)}
 .btn.hecho{color:var(--verde)}
@@ -357,7 +357,7 @@
 }
 </style>
 </head>
-<body class="bib">
+<body data-pantalla="galeria" class="bib">
 <div class="bib-pag">
   <aside class="bib-indice" data-volver="index.html" data-titulo="Estados"></aside>
 
@@ -1125,7 +1125,7 @@
               <div class="marco">
                 <div class="cab"><h3>Conexiones</h3><span class="gris t-12">4 sistemas · 3 activos</span></div>
                 <div id="sy-con">
-                  <div class="con"><span class="logo" style="--ent:var(--e1)">J</span><div class="q"><b>Jaque</b><small><span class="est e-ok"><i class="ph ph-check-circle"></i>Al día</span>· cobros del contador · hace 12 min</small></div><button class="toggle" role="switch" aria-checked="true" aria-label="Jaque activa"></button></div>
+                  <div class="con"><span class="logo" style="--ent:var(--e1)">C</span><div class="q"><b>Contable</b><small><span class="est e-ok"><i class="ph ph-check-circle"></i>Al día</span>· cobros del contador · hace 12 min</small></div><button class="toggle" role="switch" aria-checked="true" aria-label="Contable activa"></button></div>
                   <div class="con" id="sy-arca"><span class="logo" style="--ent:var(--e4)">A</span><div class="q"><b>ARCA</b><small id="sy-arca-est"><span class="est e-am"><i class="ph ph-warning"></i>Certificado vencido</span>· no emite facturas desde ayer</small></div><button class="btn chico fijo" id="sy-reconectar" style="--ancho:124px"><i class="ph ph-arrow-clockwise"></i><span>Reconectar</span></button></div>
                   <div class="con"><span class="logo" style="--ent:var(--e2)">G</span><div class="q"><b>Gmail</b><small><span class="est e-az"><i class="ph ph-circle-notch gira"></i>Trayendo correos</span><span class="mini-barra" aria-hidden="true"><i id="sy-gm-b" style="width:28%"></i></span><span class="num" id="sy-gm">340 de 1.200</span></small></div><button class="toggle" role="switch" aria-checked="true" aria-label="Gmail activa"></button></div>
                   <div class="con apag"><span class="logo" style="--ent:var(--e6)">D</span><div class="q"><b>Google Drive</b><small><span class="est"><i class="ph ph-pause-circle"></i>Apagada</span>· remitos escaneados</small></div><button class="toggle" role="switch" aria-checked="false" aria-label="Google Drive activa" id="sy-drive"></button></div>
@@ -1531,7 +1531,7 @@ const SPIN = '<i class="ph ph-circle-notch gira"></i>';
     banda.setAttribute('role', tipo === 'v' ? 'status' : 'alert');
     tabla.classList.toggle('viejo', tipo !== 'v');
     if (tipo === 'ro') banda.innerHTML = `<span class="tile"><i class="ph ph-warning-circle"></i></span><div class="q"><b>No pudimos actualizar los saldos</b><small>Mostrando lo de las 14:32 · <span class="mono">ERR-503 · ${hhmm()}</span></small></div><button class="btn chico fijo" style="--ancho:124px" id="ba-re"><i class="ph ph-arrow-clockwise"></i><span>Reintentar</span></button>`;
-    if (tipo === 'am') banda.innerHTML = `<span class="tile"><i class="ph ph-warning"></i></span><div class="q"><b>Jaque responde lento desde las 13:10</b><small>Los cobros nuevos pueden tardar hasta 30 min en verse</small></div><button class="btn chico texto">Ver estado</button>`;
+    if (tipo === 'am') banda.innerHTML = `<span class="tile"><i class="ph ph-warning"></i></span><div class="q"><b>El sistema contable responde lento desde las 13:10</b><small>Los cobros nuevos pueden tardar hasta 30 min en verse</small></div><button class="btn chico texto">Ver estado</button>`;
     if (tipo === 'v') banda.innerHTML = `<span class="tile"><i class="ph ph-check-circle"></i></span><div class="q"><b>Saldos al día</b><small>Actualizado ${hhmm()} · 1 cobro nuevo de Grupo Atlas</small></div>`;
     $('#ba-pie').textContent = tipo === 'v' ? `Datos de las ${hhmm()}` : 'Datos de las 14:32';
     const re = $('#ba-re');
@@ -1923,10 +1923,10 @@ const SPIN = '<i class="ph ph-circle-notch gira"></i>';
   function pintar() {
     const re = '<button class="btn ic chico texto" id="sy-re" aria-label="Sincronizar ahora" data-tip="Sincronizar ahora"><i class="ph ph-arrows-clockwise"></i></button><span class="sep-p"></span><button class="btn chico texto"><i class="ph ph-export"></i>Exportar</button>';
     const T = {
-      ok: `<span class="pt" aria-hidden="true"></span><span>Sincronizado con Jaque ${rel()}</span>`,
-      sync: `<i class="ph ph-arrows-clockwise gira" style="color:var(--azul);font-size:14px"></i><span>Sincronizando con Jaque…</span>`,
+      ok: `<span class="pt" aria-hidden="true"></span><span>Sincronizado con el sistema contable ${rel()}</span>`,
+      sync: `<i class="ph ph-arrows-clockwise gira" style="color:var(--azul);font-size:14px"></i><span>Sincronizando con el sistema contable…</span>`,
       aviso: `<span class="pt am" aria-hidden="true"></span><span class="est e-am" style="font-weight:500">2 cobros sin factura</span><span>· ${rel()}</span>`,
-      falla: `<span class="pt ro" aria-hidden="true"></span><span class="est e-ro" style="font-weight:500">Jaque no responde</span><span>· último ${rel()}</span>`,
+      falla: `<span class="pt ro" aria-hidden="true"></span><span class="est e-ro" style="font-weight:500">El sistema contable no responde</span><span>· último ${rel()}</span>`,
       pausa: `<span class="pt gr" aria-hidden="true"></span><span>Sincronización pausada por Lucía</span>`,
     };
     est.innerHTML = T[estado] + (estado === 'sync' ? '' : estado === 'pausa' ? '<span class="sep-p"></span><button class="btn chico texto" id="sy-reanudar">Reanudar</button>' : re);
@@ -1937,7 +1937,7 @@ const SPIN = '<i class="ph ph-circle-notch gira"></i>';
   async function sincronizar() {
     const previo = estado; estado = 'sync'; pintar();
     await espera(1300);
-    if (previo === 'falla') { estado = 'falla'; pintar(); toast({ titulo: 'Jaque sigue sin responder', detalle: 'Probamos de nuevo en 5 min', tipo: 'error', accion: { texto: 'Reintentar', fn: sincronizar } }); return; }
+    if (previo === 'falla') { estado = 'falla'; pintar(); toast({ titulo: 'El sistema contable sigue sin responder', detalle: 'Probamos de nuevo en 5 min', tipo: 'error', accion: { texto: 'Reintentar', fn: sincronizar } }); return; }
     sincronizadoEn = Date.now(); estado = previo === 'aviso' ? 'aviso' : 'ok'; pintar();
     const nuevo = { cli: 'Grupo Atlas', f: 'FAC-01112', m: 500000, e: 'e4', cuando: `hoy ${hhmm()}` };
     lista.insertAdjacentHTML('afterbegin', fila(nuevo, true));

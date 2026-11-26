@@ -112,7 +112,7 @@ export function ErrorEnLugar({ titulo, texto, onReintentar, variante = 'bloque',
 
   const I = icono ?? WifiSlashIcon
   return (
-    <div role="alert" className={cn('flex flex-col items-center gap-2 px-6 py-8 text-center', className)}>
+    <div role="alert" className={cn('flex flex-col items-center gap-2 px-6 py-6 text-center', className)}>
       <span className="grid size-11 place-items-center rounded-control bg-rojo-fondo text-rojo-texto">
         <I size={20} />
       </span>

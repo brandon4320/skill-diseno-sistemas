@@ -99,11 +99,12 @@ button{cursor:pointer}
 .ic-btn{width:36px;height:36px;border-radius:12px;border:1px solid var(--borde);background:var(--superficie);display:grid;place-items:center;color:var(--texto-2);position:relative;box-shadow:var(--s-min)}
 .ic-btn i.p{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--rojo);outline:2px solid var(--superficie)}
 .demo{font-weight:500;font-size:12px;color:var(--texto-3);border:1px dashed var(--borde-f);border-radius:8px;padding:var(--e1) var(--e4)}
-.cont{position:relative;padding:var(--e8) var(--e9) var(--e10);display:flex;flex-direction:column;gap:var(--e9)}
+.cont{position:relative;padding:var(--e7) var(--e9) var(--e10);display:flex;flex-direction:column;gap:var(--e6)}
 
 .cab{display:flex;align-items:flex-end;gap:var(--e6)}
 .cab small{display:block;color:var(--texto-2);font-weight:500;font-size:13px}
-.cab h1{font-weight:500;font-size:40px;line-height:1.1;font-family:var(--display);letter-spacing:-.03em;margin-top:var(--e2)}
+/* operación: cabecera baja (§4h, §4i) */
+.cab h1{font-weight:500;font-size:32px;line-height:1.15;font-family:var(--display);letter-spacing:-.03em}
 .cab .sub{color:var(--texto-2);margin-top:var(--e2);font-size:14px}
 .cab .sub b{color:var(--tinta);font-weight:500}
 .cab .sub .rojo,.cab .sub .rojo b{color:var(--rojo);font-weight:500}
@@ -123,23 +124,24 @@ button{cursor:pointer}
 
 /* ── Resumen ── */
 .resumen{display:grid;grid-template-columns:320px minmax(0,1fr);gap:14px}
-.heroe{border-radius:20px;padding:var(--e8);color:#fff;position:relative;overflow:hidden;min-height:228px;
+.heroe{border-radius:20px;padding:var(--e7);color:#fff;position:relative;overflow:hidden;
   background:radial-gradient(90% 110% at 100% 0%,#6a60f6 0%,transparent 60%),linear-gradient(150deg,#3128b4,#463cdc 60%,#3a31c4);
   box-shadow:0 18px 36px -18px rgb(79 70 229/.6),inset 0 1px 0 rgb(255 255 255/.18)}
 .heroe::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgb(255 255 255/.10) 1px,transparent 1.2px);background-size:14px 14px;mask:linear-gradient(200deg,#000,transparent 60%);-webkit-mask:linear-gradient(200deg,#000,transparent 60%);pointer-events:none}
-.heroe .ico{width:38px;height:38px;border-radius:12px;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.22);display:grid;place-items:center}
-.heroe .pill{position:absolute;top:var(--e8);right:var(--e8);font-weight:500;font-size:12px;font-family:var(--ui);background:rgb(255 255 255/.16);border:1px solid rgb(255 255 255/.2);padding:var(--e1) var(--e4);border-radius:99px;display:flex;gap:var(--e2);align-items:center;font-variant-numeric:tabular-nums}
-.heroe small{display:block;margin-top:var(--e7);font-weight:500;font-size:13px;color:rgb(255 255 255/.88)}
-.heroe .n{margin-top:var(--e4);font-weight:500;font-size:40px;line-height:1.05;font-family:var(--display);letter-spacing:-.03em}
+.heroe .ico{width:32px;height:32px;border-radius:12px;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.22);display:grid;place-items:center}
+.heroe .pill{position:absolute;top:var(--e7);right:var(--e7);white-space:nowrap;font-weight:500;font-size:12px;font-family:var(--ui);background:rgb(255 255 255/.16);border:1px solid rgb(255 255 255/.2);padding:var(--e1) var(--e4);border-radius:99px;display:flex;gap:var(--e2);align-items:center;font-variant-numeric:tabular-nums}
+.heroe small{display:block;margin-top:var(--e5);font-weight:500;font-size:13px;color:rgb(255 255 255/.88)}
+.heroe .n{margin-top:var(--e2);font-weight:500;font-size:40px;line-height:1.05;font-family:var(--display);letter-spacing:-.03em}
 .heroe .n span{color:rgb(255 255 255/.8);font-size:24px;margin-right:var(--e2);font-weight:400}
-.heroe .ctx{font-size:12px;color:rgb(255 255 255/.88);margin-top:var(--e2);max-width:240px;position:relative;z-index:1}
-.heroe svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:84px}
+.heroe .ctx{font-size:12px;color:rgb(255 255 255/.88);margin-top:var(--e2);max-width:240px;position:relative;z-index:1;padding-bottom:var(--e9)}
+/* la curva por su clase: `.heroe svg` agrandaría cualquier ícono svg de adentro */
+.heroe .curva{position:absolute;left:0;right:0;bottom:0;width:100%;height:72px}
 
 .bandeja{background:var(--bandeja);border:1px solid var(--borde);border-radius:20px;padding:4px;display:flex;flex-direction:column;min-width:0}
 .bandeja .rot{display:flex;align-items:center;gap:var(--e4);padding:var(--e4) var(--e5);min-height:36px;color:var(--texto-2);font-weight:500;font-size:13px}
 .bandeja .rot .ph{font-size:16px;color:var(--texto-3)}
 .bandeja .rot .mas{margin-left:auto}
-.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:var(--e7);box-shadow:var(--s-min);flex:1;position:relative;min-width:0}
+.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:var(--e6);box-shadow:var(--s-min);flex:1;position:relative;min-width:0}
 .pie{display:flex;align-items:center;justify-content:space-between;gap:var(--e5);padding:var(--e4) var(--e5);min-height:36px;font-size:12px;font-weight:500;color:var(--texto-2)}
 .pie span{display:inline-flex;align-items:center;gap:var(--e2)}
 .pie .ph{font-size:14px}
@@ -152,11 +154,11 @@ button{cursor:pointer}
 .emb-top .gan{margin-left:auto;text-align:right}
 .emb-top .gan small{display:block;color:var(--texto-2);font-size:12px;font-weight:500}
 .emb-top .gan b{display:block;margin-top:var(--e1);font-weight:500;font-size:20px;font-family:var(--display);letter-spacing:-.02em;color:var(--verde)}
-.apilada{display:flex;gap:3px;height:28px;margin-top:var(--e7);position:relative}
-.apilada .sg{flex:0 1 0;min-width:0;border-radius:8px;background:var(--c);position:relative;overflow:hidden;display:flex;align-items:center;padding:0;transition:flex-grow .8s var(--ease),opacity .2s,filter .2s;cursor:pointer;border:0}
+.apilada{display:flex;gap:3px;height:12px;margin-top:var(--e5);position:relative} /* los montos ya están en la leyenda y en el globo: la barra es solo dibujo (§4i) */
+.apilada .sg{flex:0 1 0;min-width:0;border-radius:4px;background:var(--c);position:relative;overflow:hidden;display:flex;align-items:center;padding:0;transition:flex-grow .8s var(--ease),opacity .2s,filter .2s;cursor:pointer;border:0}
 .apilada .sg::after{content:"";position:absolute;inset:0;background:linear-gradient(rgb(255 255 255/.18),transparent);pointer-events:none}
 .apilada .sg span{padding-left:var(--e4);font-weight:500;font-size:12px;font-family:var(--ui);white-space:nowrap;color:var(--tc,#fff);font-variant-numeric:tabular-nums;opacity:0;transition:opacity .3s}
-.apilada .sg.lbl span{opacity:1}
+.apilada .sg.lbl span{opacity:0}
 .apilada.foco .sg{opacity:.32}
 .apilada.foco .sg.on{opacity:1}
 .carr-ind{display:none;align-items:center;gap:var(--e4);margin:calc(-1 * var(--e3)) 0 var(--e4);font-size:12px;color:var(--texto-3)}
@@ -164,14 +166,18 @@ button{cursor:pointer}
 .carr-ind .pts{display:flex;gap:4px;margin-left:auto}
 .carr-ind .pts i{width:6px;height:6px;border-radius:3px;background:var(--borde-f,var(--borde));transition:width .24s var(--ease),background .24s}
 .carr-ind .pts i.on{width:18px;background:var(--tinta)}
-.ley{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--e2);margin:var(--e5) calc(-1 * var(--e4)) 0}
-.ley button{border:0;background:none;text-align:left;padding:var(--e4);border-radius:12px;transition:background .15s;min-width:0}
+.ley{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--e2);margin:var(--e4) calc(-1 * var(--e4)) 0}
+/* nombre con su conteo arriba, monto y participación abajo: dos líneas en vez de tres */
+.ley button{border:0;background:none;text-align:left;padding:var(--e3) var(--e4);border-radius:12px;transition:background .15s;min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:var(--e3);align-items:baseline}
+.ley button .v{grid-column:1;grid-row:2;min-width:0}
 .ley button:hover,.ley button.on{background:var(--hover)}
 .ley .nm{display:flex;align-items:center;gap:var(--e3);color:var(--texto-2);font-weight:500;font-size:12px;white-space:nowrap}
 .ley .nm i{width:8px;height:8px;border-radius:3px;background:var(--c);flex:none}
+.ley .nm b{font-weight:400;color:var(--texto-3)}
 .ley .v{font-weight:500;font-size:16px;font-family:var(--display);letter-spacing:-.02em;margin-top:var(--e2);display:block;white-space:nowrap}
 .ley .v small{color:var(--texto-3);font-size:12px;font-weight:400;margin-right:2px}
-.ley .k{color:var(--texto-3);font-size:12px}
+.ley .k{color:var(--texto-3);font-size:12px;grid-column:2;grid-row:2;white-space:nowrap}
+.ley .nm{grid-column:1/-1}
 .tip{position:absolute;background:#16181d;color:#fff;font-size:12px;padding:var(--e3) var(--e5);border-radius:10px;font-variant-numeric:tabular-nums;pointer-events:none;white-space:nowrap;box-shadow:var(--s-flot);transform:translate(-50%,calc(-100% - 8px));opacity:0;transition:opacity .15s;display:flex;gap:8px;z-index:5;top:0}
 .tip b{font-weight:500}.tip span{opacity:.5}
 
@@ -455,7 +461,6 @@ tfoot .t-monto{color:var(--tinta)}
     <div class="cont">
       <div class="cab">
         <div>
-          <small>Martes 17 de noviembre</small>
           <h1>Pipeline</h1>
           <p class="sub num" id="sub">—</p>
         </div>
@@ -464,12 +469,12 @@ tfoot .t-monto{color:var(--tinta)}
 
       <section class="resumen" aria-label="Resumen">
         <div class="heroe">
-          <span class="ico"><i class="ph ph-crosshair" style="font-size:19px"></i></span>
+          <span class="ico"><i class="ph ph-crosshair" style="font-size:16px"></i></span>
           <span class="pill num"><i class="ph ph-trend-up" style="font-size:12px"></i>+8,2 % vs. semana pasada</span>
           <small>Pronóstico ponderado</small>
           <div class="n num"><span>US$</span><b id="hPond" style="font-weight:500">0</b></div>
           <div class="ctx num" id="hCtx">—</div>
-          <svg viewBox="0 0 300 84" preserveAspectRatio="none" id="hSvg" aria-hidden="true"></svg>
+          <svg class="curva" viewBox="0 0 300 84" preserveAspectRatio="none" id="hSvg" aria-hidden="true"></svg>
         </div>
         <div class="bandeja">
           <div class="rot"><i class="ph ph-funnel-simple"></i>Por etapa</div>
@@ -658,7 +663,7 @@ function totales(){
   ETAPAS.forEach(e=>{const sg=$(`#apilada [data-e="${e.id}"]`),s=S[e.id],sh=s.m/total;
     sg.style.flexGrow=s.m;sg.classList.toggle('lbl',sh*$('#apilada').clientWidth>96);sg.querySelector('span').textContent='US$ '+abrev(s.m);
     const b=$(`#ley [data-e="${e.id}"]`);b.querySelector('.v').innerHTML=`<small>US$</small>${abrev(s.m)}`;
-    b.querySelector('.k').textContent=`${s.n} · ${Math.round(sh*100)} %`});
+    b.querySelector('.k').textContent=`${Math.round(sh*100)} %`;b.querySelector('.nm b').textContent=s.n});
   // filtros
   $('#fVencN').textContent=vencN;
   // menú lateral y meta (todo el equipo)
@@ -691,7 +696,7 @@ function heroe(pond){
 /* ── barra apilada + leyenda ── */
 function armarResumen(){
   $('#apilada').innerHTML=ETAPAS.map(e=>`<button class="sg" data-e="${e.id}" style="--c:${e.c};--tc:${e.tc};flex-grow:0" tabindex="-1"><span></span></button>`).join('');
-  $('#ley').innerHTML=ETAPAS.map(e=>`<button data-e="${e.id}" style="--c:${e.c}" aria-label="Ir a ${e.n}"><span class="nm"><i></i>${e.n}</span><span class="v num">—</span><span class="k num">—</span></button>`).join('');
+  $('#ley').innerHTML=ETAPAS.map(e=>`<button data-e="${e.id}" style="--c:${e.c}" aria-label="Ir a ${e.n}"><span class="nm"><i></i>${e.n}<b class="num">—</b></span><span class="v num">—</span><span class="k num">—</span></button>`).join('');
   const ap=$('#apilada'),tip=$('#tip'),adentro=ap.parentElement;
   // en el celular los tramos son solo dibujo: la leyenda de abajo hace de botón (toques de 44)
   const mq=matchMedia('(max-width:767px)'),fijar=()=>$$('#apilada .sg').forEach(s=>s.disabled=mq.matches);fijar();mq.addEventListener('change',fijar);

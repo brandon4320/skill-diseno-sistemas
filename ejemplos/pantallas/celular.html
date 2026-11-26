@@ -157,38 +157,38 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 @keyframes pop{40%{transform:scale(1.15)}}
 
 /* ── 1 · Inicio ── */
-.saludo{font-family:var(--display);font-size:32px;font-weight:500;line-height:1.1;letter-spacing:-.035em;margin-top:var(--espacio-7)}
+.saludo{font-family:var(--display);font-size:24px;font-weight:500;line-height:1.15;letter-spacing:-.025em;margin-top:var(--espacio-5)}
 .saludo b{font-weight:500}
-.bajada{color:var(--texto-2);margin-top:var(--espacio-4);font-size:14px}
+.bajada{color:var(--texto-2);margin-top:var(--espacio-2);font-size:14px}
 .bajada b{color:var(--tinta);font-weight:500}
-.heroe{margin-top:var(--espacio-8);border-radius:24px;padding:var(--espacio-7);color:#fff;position:relative;overflow:hidden;
+.heroe{margin-top:var(--espacio-6);border-radius:24px;padding:var(--espacio-6) var(--espacio-6) var(--espacio-6);color:#fff;position:relative;overflow:hidden;
   background:radial-gradient(120% 140% at 100% 0%,rgb(124 114 255/.7) 0%,transparent 55%),linear-gradient(150deg,#3a31bf,#4a40dc 60%,#3f36cf);
   box-shadow:0 20px 36px -18px rgb(79 70 229/.65),inset 0 1px 0 rgb(255 255 255/.2)}
 .heroe::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgb(255 255 255/.1) 1px,transparent 1.2px);background-size:14px 14px;mask:linear-gradient(210deg,#000,transparent 55%);-webkit-mask:linear-gradient(210deg,#000,transparent 55%);pointer-events:none}
 .heroe .arr{display:flex;gap:var(--espacio-6);align-items:center;position:relative;z-index:1}
 .heroe .pill{display:inline-flex;gap:var(--espacio-2);align-items:center;font-size:12px;font-weight:500;height:24px;background:rgb(30 20 120/.18);border:1px solid rgb(255 255 255/.24);padding:0 var(--espacio-4);border-radius:99px}
 .heroe .pill .ph{font-size:14px}
-.heroe h2{font-family:var(--display);font-size:24px;font-weight:500;line-height:1.15;letter-spacing:-.02em;margin-top:var(--espacio-5)}
+.heroe h2{font-family:var(--display);font-size:24px;font-weight:500;line-height:1.15;letter-spacing:-.02em;margin-top:var(--espacio-4)}
 .heroe p{font-size:13px;color:rgb(255 255 255/.88);margin-top:var(--espacio-2)}
-.anillo{position:relative;width:88px;height:88px;flex:none;margin-left:auto}
+.anillo{position:relative;width:76px;height:76px;flex:none;margin-left:auto}
 .anillo svg{width:100%;height:100%;transform:rotate(-90deg)}
 .anillo .arco{transition:stroke-dashoffset .9s var(--ease)}
 .anillo .cen{position:absolute;inset:0;display:grid;place-items:center;text-align:center;line-height:1}
 .anillo .cen b{font-family:var(--display);font-size:24px;font-weight:500;letter-spacing:-.02em}
 .anillo .cen small{display:block;font-size:12px;color:rgb(255 255 255/.88);margin-top:var(--espacio-1)}
-.dia{position:relative;z-index:1;margin-top:var(--espacio-7)}
+.dia{position:relative;z-index:1;margin-top:var(--espacio-5)}
 .dia .tramos{display:flex;gap:var(--espacio-2)}
 .dia .tramos i{flex:1;height:6px;border-radius:3px;background:rgb(255 255 255/.24);transition:background .32s}
 .dia .tramos i.h{background:#fff}
 .dia .tramos i.a{background:repeating-linear-gradient(-45deg,#fff 0 3px,rgb(255 255 255/.45) 3px 6px)}
 .dia .horas{display:flex;margin-top:var(--espacio-3);font-family:var(--mono);font-size:12px;font-weight:500;color:rgb(255 255 255/.86)}
 .dia .horas span{flex:1}
-.heroe .ir{position:relative;z-index:1;margin-top:var(--espacio-7);height:44px;padding:0 var(--espacio-6);border-radius:99px;background:#fff;color:#3730a3;font-weight:500;font-size:14px;display:inline-flex;align-items:center;gap:var(--espacio-4);border:0;box-shadow:0 6px 14px -6px rgb(20 10 90/.5)}
+.heroe .ir{position:relative;z-index:1;margin-top:var(--espacio-5);height:44px;padding:0 var(--espacio-6);border-radius:99px;background:#fff;color:#3730a3;font-weight:500;font-size:14px;display:inline-flex;align-items:center;gap:var(--espacio-4);border:0;box-shadow:0 6px 14px -6px rgb(20 10 90/.5)}
 .accesos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--espacio-5);margin-top:var(--espacio-5)}
-.accesos button{background:var(--superficie);border:1px solid var(--borde);border-radius:20px;height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--espacio-4);font-weight:500;font-size:13px;box-shadow:var(--s-min);transition:transform .12s var(--ease)}
+.accesos button{background:var(--superficie);border:1px solid var(--borde);border-radius:20px;height:68px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--espacio-2);font-weight:500;font-size:13px;box-shadow:var(--s-min);transition:transform .12s var(--ease)}
 .accesos button:active{transform:scale(.96)}
 .accesos .ph-fill{font-size:22px;color:var(--acento-t)}
-.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--espacio-5);margin-top:var(--espacio-5)}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--espacio-5);margin-top:var(--espacio-6)}
 .bandeja{background:var(--bandeja);border:1px solid var(--borde);border-radius:20px;padding:var(--espacio-2);display:flex;flex-direction:column}
 .bandeja .rot{display:flex;align-items:center;gap:var(--espacio-3);padding:var(--espacio-4) var(--espacio-4) var(--espacio-3);color:var(--texto-2);font-weight:500;font-size:12px}
 .bandeja .rot .ph{font-size:14px}
@@ -378,7 +378,7 @@ button.fila:active{transform:scale(.985)}
 }
 </style>
 </head>
-<body>
+<body data-pantalla="galeria">
 <div class="pag">
   <header class="pag-cab">
     <div>
@@ -401,7 +401,7 @@ button.fila:active{transform:scale(.985)}
             <button class="circ" aria-label="Buscar"><i class="ph ph-magnifying-glass"></i></button>
             <button class="circ" data-ir="avisos" aria-label="Avisos"><i class="ph ph-bell"></i><i class="pto" id="campanaPto"></i></button>
           </div>
-          <h1 class="saludo">Buenas tardes,<br><b>Nico</b></h1>
+          <h1 class="saludo">Buenas tardes, <b>Nico</b></h1>
           <p class="bajada num" id="bajada"></p>
 
           <section class="heroe">
@@ -427,6 +427,9 @@ button.fila:active{transform:scale(.985)}
             <button><i class="ph-fill ph-navigation-arrow"></i>Ruta</button>
           </div>
 
+          <div class="sec"><h3>Hoy</h3><span class="c num" id="hoyCuenta">5 visitas</span><button class="ver" data-ir="detalle">Ver ruta</button></div>
+          <div class="grupo"><div class="gh"><span>Martes 17 nov</span><span class="num" id="hoyHechas"></span></div><div class="filas" id="listaHoy"></div></div>
+
           <div class="kpis">
             <div class="bandeja">
               <div class="rot"><i class="ph ph-path"></i>Recorrido</div>
@@ -439,9 +442,6 @@ button.fila:active{transform:scale(.985)}
               <div class="pie t-v"><i class="ph ph-seal-check"></i>2 aprobados</div>
             </div>
           </div>
-
-          <div class="sec"><h3>Hoy</h3><span class="c num" id="hoyCuenta">5 visitas</span><button class="ver" data-ir="detalle">Ver ruta</button></div>
-          <div class="grupo"><div class="gh"><span>Martes 17 nov</span><span class="num" id="hoyHechas"></span></div><div class="filas" id="listaHoy"></div></div>
         </div>
         <div class="toast"></div>
         <div class="home-ind"></div>

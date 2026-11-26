@@ -98,7 +98,7 @@ export function ErrorBloqueIlustrado({ titulo, texto, codigo, cuando, referencia
     }
   }
   return (
-    <div ref={caja} role="alert" className={cn('flex flex-col items-center px-6 py-8 text-center', CLIMA.malo, className)}>
+    <div ref={caja} role="alert" className={cn('flex flex-col items-center px-6 py-6 text-center', CLIMA.malo, className)}>
       <Ilustracion nombre="error" tamano="hoja" />
       <h4 className="mt-2 font-display text-xl font-medium tracking-[-.02em] text-tinta">{titulo}</h4>
       {texto && <p className="mt-1 max-w-[34ch] text-[13px] leading-normal text-texto-2">{texto}</p>}

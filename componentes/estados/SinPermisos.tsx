@@ -54,7 +54,7 @@ export function SinPermisos({ titulo, texto, necesita, aprobador, onPedir, onCan
     setPedidoEn(null)
   }
   return (
-    <div className={cn('flex min-h-[360px] flex-col items-center justify-center px-6 py-10 text-center', CLIMA.neutro, className)}>
+    <div className={cn('flex min-h-[240px] flex-col items-center justify-center px-6 py-8 text-center', CLIMA.neutro, className)}>
       <Ilustracion nombre="sin-permisos" tamano="pagina" />
       <h4 className="mt-2 font-display text-xl font-medium tracking-[-.02em] text-tinta">{titulo}</h4>
       <p className="mt-1 max-w-[40ch] text-[13px] leading-normal text-texto-2">{texto}</p>

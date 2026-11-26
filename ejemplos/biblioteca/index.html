@@ -58,7 +58,7 @@
 .f1{--fam:var(--e1)}.f2{--fam:var(--e2)}.f3{--fam:var(--e3)}.f4{--fam:var(--e4)}.f5{--fam:var(--e5)}.f6{--fam:var(--e6)}
 
 /* otros recursos */
-.recursos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--espacio-gap)}
+.recursos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--espacio-gap);align-items:start} /* 11, 5 y 4 enlaces: cada una con su alto (§4i) */
 .recurso{display:flex;flex-direction:column;background:var(--superficie);border:1px solid var(--borde);border-radius:var(--radius-tarjeta);overflow:hidden}
 .recurso .cab-r{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-6) var(--espacio-7) var(--espacio-4)}
 .recurso .cab-r h3{font-family:var(--display);font-size:16px;font-weight:500}
@@ -81,7 +81,7 @@
 }
 </style>
 </head>
-<body class="bib">
+<body data-pantalla="galeria" class="bib">
 <div class="portada">
   <header class="bib-cab">
     <div>

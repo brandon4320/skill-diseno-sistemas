@@ -424,6 +424,7 @@ div.agf:hover{background:none}
 .tl-card.hecho b{text-decoration:line-through;color:var(--texto-3)}
 .lista-anim{animation:ev-entra var(--t-3) var(--ease) both}
 .semana-c{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--espacio-2)}
+@media (max-width:420px){.semana-c{gap:1px;margin:0 -4px}.semana-c button{padding:var(--espacio-4) var(--espacio-2)}} /* 7 días en 390: cada toque de 44 */
 .semana-c button{all:unset;box-sizing:border-box;cursor:pointer;min-height:76px;border-radius:var(--radius-control);padding:var(--espacio-4) var(--espacio-3);display:flex;flex-direction:column;gap:var(--espacio-2);border:1px solid transparent;transition:background var(--t-1),border-color var(--t-1)}
 .semana-c button:hover{background:var(--hover)}
 .semana-c button[aria-pressed=true]{background:var(--superficie);border-color:var(--borde);box-shadow:var(--s-min)}
@@ -656,7 +657,7 @@ div.agf:hover{background:none}
 }
 </style>
 </head>
-<body class="bib">
+<body data-pantalla="galeria" class="bib">
 <div class="bib-pag">
   <aside class="bib-indice" data-volver="index.html" data-titulo="Calendario y tiempo"></aside>
 

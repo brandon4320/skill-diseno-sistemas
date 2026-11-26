@@ -26,7 +26,7 @@
   --display:'Geist',sans-serif; --ui:'Geist',sans-serif; --mono:'Geist Mono',monospace;
   --s-min:0 1px 2px rgb(22 24 29/.05); --s-hover:0 14px 30px -18px rgb(22 24 29/.3); --s-flot:0 6px 16px rgb(22 24 29/.08),0 24px 48px -16px rgb(22 24 29/.22);
   --ease:cubic-bezier(.23,1,.32,1);
-  --hz:80px; /* alto de una hora */
+  --hz:64px; /* alto de una hora: la jornada entra casi entera sin scrollear (§4i) */
   color-scheme:light;
 }
 [data-tema=oscuro]{
@@ -99,8 +99,9 @@ button{font:inherit;color:inherit}
 
 /* Cabecera */
 .cab{display:flex;align-items:flex-end;gap:16px}
+.cab .t1{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap} /* el período va en la fila del título (§4i) */
 .cab small{display:block;font-size:13px;color:var(--texto-2);font-weight:500}
-.cab h1{font:500 42px/1.08 var(--display);letter-spacing:-.035em;margin-top:6px}
+.cab h1{font:500 32px/1.1 var(--display);letter-spacing:-.03em}
 .cab .sub{color:var(--texto-2);margin-top:var(--e2);font-size:14px}
 .cab .sub b{color:var(--tinta);font-weight:500}
 .am-t,.am-t b{color:var(--ambar)!important}
@@ -394,7 +395,7 @@ html.anim .mcel{animation:entra .45s var(--ease) backwards}
 .m-heroe h4{font:500 20px/1.25 var(--display);letter-spacing:-.015em;margin-top:6px}
 .m-h-pie{display:flex;align-items:center;margin-top:16px}
 .m-h-pie .pila .av{border-color:#5047e6}
-.m-unirme{margin-left:auto;height:44px;padding:0 18px;border-radius:99px;border:0;background:#fff;color:#2f27b8;font-weight:500;font-size:14px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 6px 14px -6px rgb(0 0 0/.35)}
+.m-unirme{margin-left:auto;height:44px;padding:0 18px;border-radius:99px;border:1px solid rgb(255 255 255/.4);background:rgb(255 255 255/.16);color:#fff;font-weight:500;font-size:14px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 6px 14px -6px rgb(0 0 0/.35)}
 .m-h{display:flex;align-items:baseline;gap:8px;margin:22px 2px 10px;font:500 16px var(--display);letter-spacing:-.01em}
 .m-h .c{color:var(--texto-3);font:500 13px var(--ui)}
 .m-h .tot{margin-left:auto;color:var(--texto-3);font:500 12px var(--ui)}
@@ -452,7 +453,7 @@ html.anim .mcel{animation:entra .45s var(--ease) backwards}
 }
 </style>
 </head>
-<body>
+<body data-pantalla="calendario">
 <div class="app">
   <aside class="lat">
     <div class="espacio">
@@ -498,8 +499,7 @@ html.anim .mcel{animation:entra .45s var(--ease) backwards}
     <div class="cont">
       <div class="cab">
         <div>
-          <small id="cabSmall"></small>
-          <h1>Calendario</h1>
+          <div class="t1"><h1>Calendario</h1><small id="cabSmall"></small></div>
           <p class="sub num" id="cabSub"></p>
         </div>
         <div class="acc">
@@ -559,7 +559,7 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 
 /* ── Fechas ── */
 const HOY=new Date(2026,10,17);            // datos de ejemplo: martes 17 de noviembre de 2026
-const INI=8, FIN=19, H=80, PXM=H/60;       // grilla de 08:00 a 19:00, 80 px por hora
+const INI=8, FIN=19, H=64, PXM=H/60;       // grilla de 08:00 a 19:00, 64 px por hora
 const DC=['dom','lun','mar','mié','jue','vie','sáb'], DL=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 const MC=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const ML=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];

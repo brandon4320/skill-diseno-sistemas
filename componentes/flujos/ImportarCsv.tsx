@@ -87,7 +87,7 @@ export function ImportarCsv({ campos, onImportar, plantilla, maxFilas = 5000, ej
           onDragOver={(e) => { e.preventDefault(); setEncima(true) }}
           onDragLeave={() => setEncima(false)}
           onDrop={soltar}
-          className={cx('flex flex-col items-center gap-3 rounded-tarjeta border-[1.5px] border-dashed px-6 py-10 text-center transition-colors', error ? 'border-rojo-texto/50 bg-rojo-fondo' : encima ? 'border-acento bg-acento-suave' : 'border-borde-fuerte bg-panel')}
+          className={cx('flex flex-col items-center gap-3 rounded-tarjeta border-[1.5px] border-dashed px-6 py-8 text-center transition-colors', error ? 'border-rojo-texto/50 bg-rojo-fondo' : encima ? 'border-acento bg-acento-suave' : 'border-borde-fuerte bg-panel')}
         >
           <span className={cx('grid size-12 place-items-center rounded-control shadow-min', error ? 'bg-superficie text-rojo-texto' : 'bg-superficie text-texto-2')}>
             {error ? <FileXIcon size={22} aria-hidden /> : <FileCsvIcon size={22} aria-hidden />}

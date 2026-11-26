@@ -89,12 +89,13 @@ a{color:inherit}
 .ic-btn{width:36px;height:36px;border-radius:12px;border:1px solid var(--borde);background:var(--superficie);display:grid;place-items:center;color:var(--texto-2);position:relative;box-shadow:var(--s-min)}
 .ic-btn i.p{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--rojo);outline:2px solid var(--superficie)}
 .demo{font:500 11px var(--mono);color:var(--texto-3);border:1px dashed var(--borde-f);border-radius:7px;padding:3px 7px;white-space:nowrap}
-.cont{position:relative;padding:24px 28px 40px;display:flex;flex-direction:column;gap:28px}
+.cont{position:relative;padding:20px 28px 40px;display:flex;flex-direction:column;gap:16px}
 
 /* ── Cabecera ── */
 .cab{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
 .cab small{color:var(--texto-2);font-weight:500;font-size:13px}
-.cab h1{font-family:var(--display);font-size:40px;font-weight:500;line-height:1.1;letter-spacing:-.03em;margin-top:4px}
+/* operación: cabecera baja, título 32 y acciones en la misma fila (§4h, §4i) */
+.cab h1{font-family:var(--display);font-size:32px;font-weight:500;line-height:1.15;letter-spacing:-.03em}
 .cab .sub{margin-top:4px;color:var(--texto-2);font-size:14px;line-height:1.5}
 .cab .sub a{text-decoration:none;color:inherit;border-radius:6px;transition:color .15s}
 .cab .sub a:hover{color:var(--tinta)}
@@ -116,42 +117,46 @@ a{color:inherit}
 
 /* ── KPIs ── */
 .kpis{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:14px}
-.heroe{border-radius:20px;padding:20px;color:#fff;position:relative;overflow:hidden;min-height:216px;
+.heroe{border-radius:20px;padding:20px;color:#fff;position:relative;overflow:hidden;
   background:radial-gradient(110% 130% at 100% 0%,rgb(124 114 255/.24) 0%,transparent 55%),linear-gradient(150deg,#342bb6,#4239d4 60%,#3830c6);
   box-shadow:0 18px 36px -18px rgb(79 70 229/.6),inset 0 1px 0 rgb(255 255 255/.18);transition:transform .25s var(--ease)}
 .heroe:hover{transform:translateY(-2px)}
 .heroe .estira{position:absolute;inset:0;border:0;background:none;border-radius:inherit;cursor:pointer;z-index:2}
 .heroe .estira:focus-visible{outline:2px solid #fff;outline-offset:-4px}
 .heroe::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgb(255 255 255/.10) 1px,transparent 1.2px);background-size:14px 14px;mask:linear-gradient(200deg,#000,transparent 60%);-webkit-mask:linear-gradient(200deg,#000,transparent 60%);pointer-events:none}
-.heroe .ico{width:38px;height:38px;border-radius:12px;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.22);display:grid;place-items:center}
-.heroe .pill{position:absolute;top:24px;right:20px;font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;background:rgb(255 255 255/.1);border:1px solid rgb(255 255 255/.22);padding:2px 8px;border-radius:99px;display:flex;gap:4px;align-items:center}
-.heroe small{display:block;margin-top:16px;color:rgb(255 255 255/.92);font-weight:500;font-size:13px}
+.heroe .ico{width:32px;height:32px;border-radius:12px;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.22);display:grid;place-items:center}
+.heroe .pill{position:absolute;top:24px;right:20px;white-space:nowrap;font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;background:rgb(255 255 255/.1);border:1px solid rgb(255 255 255/.22);padding:2px 8px;border-radius:99px;display:flex;gap:4px;align-items:center}
+.heroe small{display:block;margin-top:12px;color:rgb(255 255 255/.92);font-weight:500;font-size:13px}
 .heroe .n{font-family:var(--display);font-size:40px;font-weight:500;line-height:1.05;letter-spacing:-.03em;display:flex;align-items:baseline;gap:4px;margin-top:4px;font-variant-numeric:tabular-nums}
 .heroe .n .mon,.heroe .n .suf{color:rgb(255 255 255/.82);font-size:24px;font-weight:400;margin:0}
-.heroe .usd{font-size:13px;color:rgb(255 255 255/.88);margin-top:4px}
-.heroe svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:84px}
+.heroe .usd{font-size:13px;color:rgb(255 255 255/.88);margin-top:4px;padding-bottom:16px}
+/* la curva por su clase: `.heroe svg` agrandaría cualquier ícono svg de adentro */
+.heroe .curva{position:absolute;left:0;right:0;bottom:0;width:100%;height:64px}
 .bandeja{background:var(--bandeja);border:1px solid var(--borde);border-radius:20px;padding:4px;display:flex;flex-direction:column}
-.bandeja .rot{display:flex;align-items:center;gap:8px;padding:8px 12px 8px 17px;color:var(--texto-2);font-weight:500;font-size:13px;min-width:0}
+.bandeja .rot{display:flex;align-items:center;gap:8px;min-height:32px;padding:6px 12px 6px 17px;color:var(--texto-2);font-weight:500;font-size:13px;min-width:0}
 .bandeja .rot .ph{font-size:16px;color:var(--texto-3)}
 .bandeja .rot .mas{margin-left:auto}
-.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:16px;box-shadow:var(--s-min);flex:1;min-width:0}
+.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:16px;box-shadow:var(--s-min);flex:1;min-width:0;display:flex;flex-direction:column}
+/* si la fila se iguala, el blanco queda entre el contexto y el dibujo, no al fondo (§4i) */
+.adentro>.ctx{margin-bottom:auto}
 .adentro .n{font-family:var(--display);font-size:32px;font-weight:500;line-height:1.05;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .adentro .n .mon,.adentro .n .suf{color:var(--texto-3);font-size:20px;font-weight:400;margin-right:2px}
 .adentro .n .suf{margin:0 0 0 2px}
-.adentro .ctx{color:var(--texto-3);font-size:12px;margin-top:4px;font-variant-numeric:tabular-nums}
-.pie{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 17px;font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--texto-2);border:0;background:none;text-align:left;border-radius:12px;width:100%}
+.adentro .ctx{color:var(--texto-3);font-size:12px;margin-top:2px;font-variant-numeric:tabular-nums}
+.pie{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px;padding:6px 17px;font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--texto-2);border:0;background:none;text-align:left;border-radius:12px;width:100%}
 button.pie:hover{background:var(--suave)}
 .pie .ph{font-size:15px;vertical-align:-2px}
-.ticks{display:flex;gap:2px;height:16px;margin-top:16px}
+.ticks{display:flex;gap:2px;height:16px;margin-top:8px}
 .ticks i{flex:1;border-radius:2px;background:var(--suave);transition:background .4s}
-.edad{display:flex;gap:2px;height:8px;margin-top:16px}
+.edad{display:flex;gap:2px;height:8px;margin-top:8px}
 .edad i{border-radius:3px;background:var(--rojo-g);transform-origin:left;transform:scaleX(0);transition:transform .9s var(--ease)}
 .edad.ver i{transform:none}
-.edad-l{display:flex;gap:4px 12px;margin-top:8px;font-size:12px;color:var(--texto-2);flex-wrap:wrap}
+.edad-l{display:flex;gap:4px 12px;margin-top:6px;font-size:12px;color:var(--texto-2);flex-wrap:wrap}
 .edad-l span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
 .edad-l i{width:8px;height:8px;border-radius:2px;background:var(--rojo-g)}
 .edad-l b{font-weight:500;color:var(--tinta)}
-.mini{width:100%;height:40px;margin-top:12px;display:block}
+.mini{width:100%;height:24px;margin-top:8px;display:block}
+.eje{display:flex;justify-content:space-between;gap:8px;margin-top:4px;font-size:12px;color:var(--texto-3);white-space:nowrap}
 
 /* ── Tarjeta de la lista ── */
 .lista{border:1px solid var(--borde);border-radius:20px;background:var(--superficie)}
@@ -176,7 +181,7 @@ button.pie:hover{background:var(--suave)}
 .toggle{width:34px;height:20px;border-radius:99px;background:var(--borde-f);position:relative;flex:none;transition:background .25s var(--ease)}
 .toggle::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgb(0 0 0/.2);transition:transform .25s var(--ease)}
 .toggle.on{background:var(--acento)}.toggle.on::after{transform:translateX(14px)}
-.chips{display:flex;gap:6px;align-items:center;padding:12px 16px 16px 20px;flex-wrap:wrap}
+.chips{display:flex;gap:6px;align-items:center;padding:12px 16px 12px 20px;flex-wrap:wrap}
 .filtro{height:28px;padding:0 10px;border-radius:99px;border:1px dashed var(--borde-f);background:none;font-weight:500;font-size:13px;color:var(--texto-2);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:background .2s,color .2s,border-color .2s}
 .filtro .ph{font-size:14px}
 .filtro:hover{color:var(--tinta);border-color:var(--texto-3)}
@@ -206,7 +211,7 @@ button.pie:hover{background:var(--suave)}
 .ck:checked,.ck:indeterminate{background:var(--acento);border-color:var(--acento)}
 .ck:checked::after{content:"";width:8px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
 .ck:indeterminate::after{content:"";width:8px;height:2px;background:#fff;border-radius:1px}
-.fila{min-height:44px;border-top:1px solid var(--divisor);position:relative;cursor:pointer;transition:background .2s}
+.fila{min-height:40px;border-top:1px solid var(--divisor);position:relative;cursor:pointer;transition:background .2s}
 .fila::before{content:"";position:absolute;left:3px;top:12px;bottom:12px;width:3px;border-radius:2px;background:var(--e)}
 .tabla.agrupado .fila::before{display:none}
 .fila:hover,.fila.menu-abierto{background:var(--hover)}
@@ -253,7 +258,7 @@ button.pie:hover{background:var(--suave)}
 
 /* grupos por cliente */
 .grupo{margin-top:6px}
-.g-cab{display:flex;align-items:center;gap:12px;min-height:56px;padding:0 12px;border-radius:12px;transition:background .2s;position:relative}
+.g-cab{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 12px;border-radius:12px;transition:background .2s;position:relative}
 .g-tog{display:flex;align-items:center;gap:12px;flex:1;min-width:0;align-self:stretch;border:0;background:none;padding:0;text-align:left;cursor:pointer;border-radius:10px}
 .g-tog:focus-visible{outline-offset:4px}
 .g-cab:hover{background:var(--hover)}
@@ -278,7 +283,7 @@ button.pie:hover{background:var(--suave)}
 .grupo.cerrado .g-cuerpo{grid-template-rows:0fr}
 .grupo .fila:first-child{border-top-color:transparent}
 
-.t-pie{display:grid;grid-template-columns:var(--cols);column-gap:12px;align-items:center;min-height:56px;padding:8px 12px;margin-top:8px;border-top:1px solid var(--borde);position:sticky;bottom:0;z-index:4;background:var(--superficie);border-radius:0 0 12px 12px;font-size:13px;color:var(--texto-2)}
+.t-pie{display:grid;grid-template-columns:var(--cols);column-gap:12px;align-items:center;min-height:48px;padding:6px 12px;margin-top:8px;border-top:1px solid var(--borde);position:sticky;bottom:0;z-index:4;background:var(--superficie);border-radius:0 0 12px 12px;font-size:13px;color:var(--texto-2)}
 .t-pie .cuenta{grid-column:1/4;white-space:nowrap;padding-left:4px}
 .t-pie .cuenta b{color:var(--tinta);font-weight:500}
 .t-pie .cargar{grid-column:4/-3;justify-self:start}
@@ -578,7 +583,6 @@ body.trabado .toast{right:496px}
     <div class="cont">
       <div class="cab">
         <div>
-          <small>Martes 17 de noviembre</small>
           <h1>Cobranzas</h1>
           <div class="sub num" id="subtitulo"></div>
         </div>
@@ -591,12 +595,12 @@ body.trabado .toast{right:496px}
       <section class="kpis" aria-label="Resumen">
         <div class="heroe" id="kHeroe">
           <button class="estira" id="kHeroeIr" type="button" aria-label="Ver lo que está por cobrar"></button>
-          <span class="ico"><i class="ph ph-hand-coins" style="font-size:19px"></i></span>
+          <span class="ico"><i class="ph ph-hand-coins" style="font-size:16px"></i></span>
           <span class="pill" id="kHeroePill"></span>
           <small>Por cobrar en pesos</small>
           <div class="n num" id="kHeroeN"></div>
           <div class="usd num" id="kHeroeUsd"></div>
-          <svg viewBox="0 0 300 84" preserveAspectRatio="none" id="kHeroeSvg"></svg>
+          <svg class="curva" viewBox="0 0 300 64" preserveAspectRatio="none" id="kHeroeSvg"></svg>
         </div>
         <div class="bandeja">
           <div class="rot"><i class="ph ph-warning-octagon"></i>Vencido<i class="ph ph-dots-three mas"></i></div>
@@ -621,7 +625,7 @@ body.trabado .toast{right:496px}
           <div class="rot"><i class="ph ph-timer"></i>Días para cobrar<i class="ph ph-dots-three mas"></i></div>
           <div class="adentro">
             <div class="n num"><b data-cuenta="34" style="font-weight:500">34</b><span class="suf">días</span></div>
-            <div class="ctx">promedio de emisión a cobro</div>
+            <div class="ctx">promedio · de 41 a 34 en 9 meses</div>
             <svg class="mini" id="kDiasSvg"></svg>
           </div>
           <div class="pie"><span class="sube"><i class="ph ph-trend-down"></i> −4 días</span><span>vs. octubre</span></div>
@@ -1086,7 +1090,7 @@ function abrirCobro(id){
   S.formCobro=true;S.hoja=f.id;
   const clientes=Object.keys(C).filter(k=>F.some(x=>x.cli===k&&saldo(x)>0));
   $('#hojaIn').innerHTML=`
-  <div class="h-cab"><span class="agarre"></span><span class="tile v"><i class="ph ph-hand-coins" style="font-size:19px"></i></span>
+  <div class="h-cab"><span class="agarre"></span><span class="tile v"><i class="ph ph-hand-coins" style="font-size:16px"></i></span>
     <div class="h-tit"><small class="gris">Entra a Caja</small><h3 id="hojaTit">Registrar cobro</h3></div>
     <div class="h-nav"><button class="btn chico ic" data-cerrar aria-label="Cerrar" title="Cerrar (Esc)"><i class="ph ph-x"></i></button></div></div>
   <form class="h-cuerpo" id="fCobro" novalidate>
@@ -1157,27 +1161,28 @@ function pintarKpis(animar){
   $('#kHeroeUsd').textContent=`${pend.length} facturas${tP.USD?` · y ${montoT(tP.USD,'USD')} en dólares`:''}`;
   const serie=[...SERIE,tP.ARS/1e6],dv=(serie.at(-1)/serie.at(-5)-1)*100;
   $('#kHeroePill').innerHTML=`<i class="ph ph-trend-${dv>=0?'up':'down'}" style="font-size:12px"></i>${dv>=0?'+':'−'}${nf1.format(Math.abs(dv))} % en 4 semanas`;
-  if(animar){const s=$('#kHeroeSvg'),w=300,hh=84,mx=Math.max(...serie)+1,mn=Math.min(...serie)-2,p=serie.map((x,i)=>[i*w/(serie.length-1),hh-(x-mn)/(mx-mn)*hh]),d=curva(p),k=p.length-1;
+  if(animar){const s=$('#kHeroeSvg'),w=300,hh=64,mx=Math.max(...serie)+1,mn=Math.min(...serie)-2,p=serie.map((x,i)=>[i*w/(serie.length-1),hh-(x-mn)/(mx-mn)*hh]),d=curva(p),k=p.length-1;
     s.innerHTML=`<defs><linearGradient id="gh" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path d="${d} L${w},${hh} L0,${hh}Z" fill="url(#gh)"/><path class="l" d="${d}" fill="none" stroke="#fff" stroke-width="2" vector-effect="non-scaling-stroke"/><line x1="${p[7][0]}" x2="${p[7][0]}" y1="${p[7][1]}" y2="${hh}" stroke="#fff" stroke-opacity=".35" stroke-dasharray="2 3" vector-effect="non-scaling-stroke"/><circle cx="${p[k][0]-4}" cy="${p[k][1]}" r="4.5" fill="#fff" stroke="#5a50f0" stroke-width="3" vector-effect="non-scaling-stroke"/>`;dibujar(s.querySelector('.l'))}
   // vencido
   const v=abrev(tV.ARS,'ARS');
   $('#kVencN').innerHTML=`<span class="mon">$</span><span id="kVn">${v.n}</span><span class="suf">${v.u}</span>`;
   if(animar)contar($('#kVn'),tV.ARS/1e6,x=>nf1.format(x));
   const clV=new Set(venc.map(f=>f.cli)).size;
-  $('#kVencCtx').textContent=`${venc.length} facturas de ${clV} clientes`;
+  $('#kVencCtx').textContent=tV.USD?`${venc.length} facturas · y ${montoT(tV.USD,'USD')}`:`${venc.length} facturas de ${clV} clientes`;
   const tr=[['1–30 d',0,30,1],['31–60',31,60,.55],['+60',61,1e4,.28]].map(([n,a,b,o])=>({n,o,v:venc.filter(f=>f.mon==='ARS'&&-dias(f.ven)>=a&&-dias(f.ven)<=b).reduce((s,f)=>s+saldo(f),0)}));
   const tot=tr.reduce((s,x)=>s+x.v,0)||1;
   $('#kEdad').innerHTML=tr.map(x=>`<i style="flex:${Math.max(x.v/tot,.02)};opacity:${x.o}"></i>`).join('');
   if(animar&&!quieto)setTimeout(()=>$('#kEdad').classList.add('ver'),150);else $('#kEdad').classList.add('ver');
-  $('#kEdadL').innerHTML=tr.map(x=>`<span><i style="opacity:${x.o}"></i>${x.n} <b>${abrevT(x.v,'ARS').replace('$ ','')}</b></span>`).join('')+(tV.USD?`<span class="gris">y ${montoT(tV.USD,'USD')}</span>`:'');
+  // la leyenda va en una línea: los dos primeros tramos acá, el de +60 en el pie (§4i: nada de filas de más)
+  $('#kEdadL').innerHTML=tr.slice(0,2).map(x=>`<span><i style="opacity:${x.o}"></i>${x.n} <b>${abrevT(x.v,'ARS').replace('$ ','')}</b></span>`).join('');
   const viejas=venc.filter(f=>dias(f.ven)<-60).length;
-  $('#kVencPie').innerHTML=`<i class="ph ph-warning-circle"></i> ${viejas?`${viejas} con más de 60 días`:'Ninguna con más de 60 días'}`;
+  $('#kVencPie').innerHTML=viejas?`<i class="ph ph-warning-circle"></i> +60 d: ${abrevT(tr[2].v,'ARS')}`:'Nada a +60 días';
   // cobrado en noviembre
   let cob=0;F.forEach(f=>f.cob.forEach(c=>{if(f.mon==='ARS'&&c[0].startsWith('2026-11'))cob+=c[1]}));
   const cA=abrev(cob,'ARS'),PREV=12e6,pc=Math.round(cob/PREV*100);
   $('#kCobN').innerHTML=`<span class="mon">$</span><span id="kCn">${cA.n}</span><span class="suf">${cA.u}</span>`;
   if(animar)contar($('#kCn'),cob/1e6,x=>nf1.format(x));
-  $('#kCobCtx').textContent=`${pc} % de lo previsto ($ 12 M)`;
+  $('#kCobCtx').textContent=`${pc} % de $ 12 M · quedan 13 días`;
   const tk=$('#kCobTicks'),N=34,on=Math.round(N*Math.min(pc,100)/100);
   if(!tk.children.length)tk.innerHTML=Array.from({length:N},(_,i)=>`<i style="transition-delay:${i*14}ms"></i>`).join('');
   setTimeout(()=>[...tk.children].forEach((x,i)=>x.style.background=i<on?'var(--verde-g)':''),animar?200:0);
@@ -1193,7 +1198,7 @@ function pintarKpis(animar){
   $('#menuClientes').innerHTML=`<h6>Más vencido</h6>`+deuda.map(([k,m])=>`<button class="item" type="button" data-cliente="${k}" title="${C[k].n}"><span class="cuadro" style="--e:${C[k].c}"><i class="ph-fill ph-${C[k].i}"></i></span><span class="lbl">${C[k].n}</span><span class="c num">${m?abrevT(m,'ARS'):'—'}</span></button>`).join('');
 }
 // sparkline de días
-(()=>{const s=$('#kDiasSvg'),v=[41,39,40,38,38,36,37,35,34],w=200,h=40,mx=42,mn=33,p=v.map((x,i)=>[4+i*(w-8)/(v.length-1),h-4-(x-mn)/(mx-mn)*(h-8)]),d=curva(p);
+(()=>{const s=$('#kDiasSvg'),v=[41,39,40,38,38,36,37,35,34],w=200,h=24,mx=42,mn=33,p=v.map((x,i)=>[4+i*(w-8)/(v.length-1),h-4-(x-mn)/(mx-mn)*(h-8)]),d=curva(p);
   s.setAttribute('viewBox',`0 0 ${w} ${h}`);s.setAttribute('preserveAspectRatio','none');
   s.innerHTML=`<defs><linearGradient id="gd" x1="0" x2="0" y1="0" y2="1"><stop offset="0" style="stop-color:var(--verde-g)" stop-opacity=".2"/><stop offset="1" style="stop-color:var(--verde-g)" stop-opacity="0"/></linearGradient></defs><path d="${d} L${p.at(-1)[0]},${h} L${p[0][0]},${h}Z" fill="url(#gd)"/><path class="l" d="${d}" fill="none" stroke="var(--verde-g)" stroke-width="1.8" vector-effect="non-scaling-stroke"/><circle cx="${p.at(-1)[0]}" cy="${p.at(-1)[1]}" r="3.2" fill="var(--superficie)" stroke="var(--verde-g)" stroke-width="1.8" vector-effect="non-scaling-stroke"/>`;
   dibujar(s.querySelector('.l'))})();

@@ -66,7 +66,7 @@ export function VacioIlustrado({ caso, titulo, texto, ilustracion, tamano = 'hoj
       role={caso === 'filtro' ? 'status' : undefined}
       className={cn(
         'flex flex-col items-center text-center',
-        grande ? 'px-6 py-10' : 'px-5 py-8',
+        grande ? 'px-6 py-8' : 'px-5 py-6', // vacío de lista entera: 160–240 de alto (SKILL.md §4i)
         caso === 'al-dia' ? CLIMA.bueno : CLIMA.neutro,
         className,
       )}

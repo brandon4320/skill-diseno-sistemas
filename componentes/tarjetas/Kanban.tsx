@@ -118,7 +118,7 @@ export function ColumnaKanban({ id, titulo, color, cantidad, limite, onSoltar, o
       onDragLeave={() => setEncima(false)}
       onDrop={e => { e.preventDefault(); setEncima(false); const t = e.dataTransfer.getData('text/plain'); if (t) onSoltar?.(t, id) }}
       className={cx(
-        'flex min-h-[360px] min-w-[264px] flex-col gap-2 rounded-tarjeta bg-suave p-2 transition-[background-color,box-shadow] duration-150',
+        'flex min-h-[200px] min-w-[264px] flex-col gap-2 rounded-tarjeta bg-suave p-2 transition-[background-color,box-shadow] duration-150',
         encima && 'bg-acento-suave ring-2 ring-acento/30 ring-inset',
       )}
     >

@@ -138,6 +138,39 @@ No toda pantalla respira igual. La densidad sale de **cada cuánto se mira y cu�
 2. **Dentro de una misma pantalla, una sola densidad por zona.** Los KPIs pueden respirar y la tabla de abajo ser densa, pero dos tarjetas lado a lado van con el mismo padding.
 3. **La densidad se logra con altura de fila y padding, nunca con letra más chica que 12 px** (11 px solo para rótulos de grupo del menú y la unidad de una cifra).
 4. **Si se ve apretado, sacá cosas.** Si se ve vacío, no agregues relleno: subí la cifra o agregá el dibujo (sparkline, barra) que falta.
+5. **Si se ve vacío y no hay nada que sumar, achicá la tarjeta** (§5.1). El hueco no se llena con aire, ni con un ícono agrandado, ni con `min-height`.
+
+### 5.1 Densidad vertical: ver más sin scrollear (SKILL.md §4i)
+
+Fricción cero también es que lo importante entre en la primera pantalla. No se logra apretando (la letra y los toques no bajan), sino **sacándole a cada tarjeta el alto que no lleva nada**. Topes en `tokens.css` (`--alto-*`).
+
+**Presupuesto de alto a 1440 × 900** (un tablero de operación):
+
+| Franja | Alto | Acumulado |
+|---|---|---|
+| Barra superior con migas | 56 | 56 |
+| Aire del panel + cabecera de una fila (título, cifras, acciones) | 24 + 64 | 144 |
+| Aire hasta los KPIs | 16 | 160 |
+| Fila de KPIs en bandeja (rótulo 36 + tarjeta ~110 + pie 32) | 180–200 | ~360 |
+| Aire entre bloques (operación) | 16 | ~376 |
+| Rótulo del bloque principal + filas de 36 | 36 + 13 × 36 | ~880 |
+
+Con eso entran 10–13 filas de la lista principal sin scrollear. Si la cabecera crece a 200 (fecha, saludo, título de sección aparte, selector de período en su propia fila) y los KPIs a 260, quedan 3 filas: la pantalla pide scroll para lo único que se vino a hacer.
+
+**De dónde sale el alto que sobra, con antes y después:**
+
+| Pieza | Antes | Después |
+|---|---|---|
+| KPI | ícono en cuadro de 40 arriba, rótulo debajo, cifra, contexto, delta en su fila: 232 | ícono de 16 en la fila del rótulo, delta en el pie: 178 |
+| Protagonista | curva de 96 con `padding-bottom:96` y `min-height:196`: 241 | curva de 56, `padding-bottom:56`, sin `min-height`: 186 |
+| Cabecera de página | fecha / saludo / subtítulo / fila aparte con "Resumen" y el período: 200 | título + cifras a la izquierda, acciones y período a la derecha: 64 (vistazo ≤ 96) |
+| Vacío en una tarjeta | ilustración de 120 + título + texto + botón: 300 | una línea "Nada pendiente hoy · Ver lo de mañana": 44 |
+| Tarjeta de entidad | descripción de 4 líneas, gráfico de 96, 6 pasos: 520 | descripción de 2 líneas, gráfico de 56, 4 pasos + "2 más": 380 |
+| Fila de tarjetas | la de 6 pasos estira a las de 2: 180 px de blanco en tres tarjetas | `align-items:start`, o las tres recortadas a 4 pasos |
+
+**Lo que no se toca para ganar alto:** letra (nunca menos de 12), toques en celular (44), campos de formulario (36–40, 52 en celular), interlineado de lectura (1,5) y la proximidad (adentro ≤ la mitad de afuera). Formularios, acceso, chat, reportes y documentos conservan su aire.
+
+**Cómo verificarlo:** `revisar.mjs` imprime "Primera pantalla (tablero): 53 % con contenido · KPIs de 160 a 355 px · 12 de 30 filas a la vista" y avisa "Aire muerto" cuando una fila de tarjetas está estirada, hay un hueco de más de 60 px dentro de una tarjeta, un ícono pasa de 32 px o la primera pantalla no muestra lo que pide §4i. Para que el revisor sepa qué tipo de pantalla es, poné `data-pantalla="tablero|lista|ficha|documento|galeria"` en `<body>`; una zona que crece a propósito (lienzo, zona para soltar, calendario) va con `data-alto-libre`.
 
 ---
 
@@ -179,7 +212,7 @@ La escalera concreta, de lo más pegado a lo más suelto:
 
 - Todos los bloques del mismo nivel arrancan con el mismo patrón: título 16–20 display 500 + conteo gris + acciones a la derecha, 12 hasta el contenido. Si una sección lo hace distinto, se nota como error.
 - Las alturas de fila de una misma lista son iguales. Una fila con dos líneas en una lista de una línea rompe el ritmo: o todas llevan metadato o ninguna.
-- Las tarjetas de una fila tienen la misma altura (`align-items:stretch`) y el pie siempre pegado abajo (`margin-top:auto`), aunque el contenido varíe.
+- Las tarjetas de una fila tienen la misma altura (`align-items:stretch`) y el pie siempre pegado abajo (`margin-top:auto`), aunque el contenido varíe un poco. Si una necesita más de ~40 px que las demás, cada una toma su alto o la alta se recorta (§5.1): una fila estirada es aire muerto.
 
 ---
 
@@ -484,6 +517,7 @@ bandeja suave r20 p4
 - **Espacios simétricos:** título a la misma distancia de lo de arriba que de lo de abajo.
 - **Separar con todo a la vez:** tarjeta + borde + título grande + divisor + fondo para un mismo bloque.
 - **Achicar la letra para que entre** en vez de recortar con "+N más".
+- **Tarjetas infladas** (§5.1): KPIs de 230, cabecera de 200, `min-height` en una tarjeta de datos, un vacío de media pantalla, la fila estirada por la tarjeta más alta. El bloque principal no asoma sin scrollear.
 - **Mayúscula negrita para dar importancia.** La importancia sale del tamaño y de la posición, no del grito.
 - **Texto corrido centrado** o párrafos de más de 72 caracteres de ancho.
 - **Metadatos que necesitan leerse para decidir** escondidos en `texto-3` 11 px.

@@ -34,7 +34,7 @@ export type ExitoGrandeProps = {
 
 export function ExitoGrande({ titulo, texto, resumen, acciones, tituloRef, className }: ExitoGrandeProps) {
   return (
-    <div role="status" className={cn('flex flex-col items-center overflow-hidden rounded-tarjeta border border-borde bg-superficie px-6 pt-10 pb-8 text-center', CLIMA.bueno, className)}>
+    <div role="status" className={cn('flex flex-col items-center overflow-hidden rounded-tarjeta border border-borde bg-superficie px-6 py-8 text-center', CLIMA.bueno, className)}>
       <Ilustracion nombre="exito" tamano="pagina" aparece />
       <h4 ref={tituloRef} tabIndex={-1} className="mt-2 font-display text-2xl font-medium tracking-[-.02em] text-tinta outline-none">
         {titulo}

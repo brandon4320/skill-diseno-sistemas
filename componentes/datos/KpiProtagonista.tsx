@@ -63,13 +63,15 @@ export function KpiProtagonista({
         aria-hidden
         className="pointer-events-none absolute inset-0 [background-image:radial-gradient(rgb(255_255_255/.11)_1px,transparent_1.2px)] [background-size:14px_14px] [mask-image:linear-gradient(200deg,#000,transparent_60%)]"
       />
-      <div className="relative flex items-start gap-3">
+      {/* ícono y rótulo en la misma fila (SKILL.md §4i): la protagonista no pasa de ~190 px */}
+      <div className="relative flex min-h-8 items-center gap-2">
         {icono && (
-          <span className="grid size-[38px] shrink-0 place-items-center rounded-control border border-white/20 bg-white/15 [&>svg]:size-[19px]">
+          <span className="grid size-8 shrink-0 place-items-center rounded-[10px] border border-white/20 bg-white/15 [&>svg]:size-4">
             {icono}
           </span>
         )}
-        <span className="ml-auto flex items-center gap-1.5">
+        <span className="min-w-0 truncate text-[13px] font-medium text-white/80">{rotulo}</span>
+        <span className="ml-auto flex shrink-0 items-center gap-1.5">
           {variacion}
           {href && (
             <ArrowUpRightIcon
@@ -80,8 +82,7 @@ export function KpiProtagonista({
           )}
         </span>
       </div>
-      <div className="relative mt-4 text-[13px] font-medium text-white/80">{rotulo}</div>
-      <div className="font-display relative flex items-baseline text-[32px] leading-[1.1] font-medium tracking-[-.03em] tabular-nums">
+      <div className="font-display relative mt-2 flex items-baseline text-[32px] leading-[1.1] font-medium tracking-[-.03em] tabular-nums">
         {unidad && <span className="mr-1 text-xl font-normal tracking-normal text-white/60">{unidad}</span>}
         {valor}
         {sufijo && <span className="ml-0.5 text-xl font-normal tracking-normal text-white/60">{sufijo}</span>}
@@ -89,13 +90,13 @@ export function KpiProtagonista({
       {contexto && <div className="relative mt-0.5 truncate text-xs text-white/65">{contexto}</div>}
       {serie && serie.length > 0 && (
         <div className="absolute inset-x-0 bottom-0">
-          <Curva valores={serie} sobreColor alto={92} punto={punto ?? Math.max(0, serie.length - 3)} globo={globo} guia />
+          <Curva valores={serie} sobreColor alto={56} punto={punto ?? Math.max(0, serie.length - 3)} globo={globo} guia />
         </div>
       )}
     </>
   )
 
-  const clase = `group/heroe relative isolate flex min-h-[196px] min-w-0 flex-col overflow-hidden rounded-tarjeta p-5 text-white ${serie?.length ? 'pb-24' : ''} ${className}`
+  const clase = `group/heroe relative isolate flex min-w-0 flex-col overflow-hidden rounded-tarjeta p-5 text-white ${serie?.length ? 'pb-16' : ''} ${className}`
 
   return href ? (
     <Enlace

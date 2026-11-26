@@ -223,10 +223,12 @@ td.det{display:none}
   td.cant,td.pu{display:none}
   td.d.imp{grid-column:2;grid-row:1;padding-left:12px}
   td.det{display:block!important;grid-column:1/-1;font-size:12px;color:var(--texto-3);margin-top:4px;padding-left:14px}
-  .crono{overflow-x:auto}
-  .crono .fila{grid-template-columns:120px repeat(8,minmax(52px,1fr));width:max-content;min-width:100%}
-  .crono .fila>span{white-space:nowrap}
-  .crono .fila>b{padding:0 10px;font-size:12px}
+  /* el cronograma entra entero en el ancho: nada de costado (§6e); una fecha de cada dos */
+  .crono .fila{grid-template-columns:84px repeat(8,minmax(0,1fr))}
+  .crono .fila>span{white-space:nowrap;overflow:visible;text-align:left}
+  .crono .fila:first-child>span:nth-of-type(even){visibility:hidden}
+  .crono .fila>b{padding:0 8px;font-size:12px;overflow:hidden;text-overflow:ellipsis;display:block;line-height:36px}
+  .crono .fila>b i{display:none}
   .tramo-l{grid-template-columns:1fr}
   .firmas{grid-template-columns:1fr}
   .accion{flex-wrap:wrap}
@@ -238,7 +240,11 @@ td.det{display:none}
 @media screen and (max-width:640px){
   .seg a,.seg button,.btn,.volver{min-height:44px;min-width:44px}
   .seg a,.seg button{justify-content:center}
-  .marcar{position:relative}.marcar::before{content:"";position:absolute;inset:-13px}
+  /* la casilla se ve de 18 pero el toque es de 44 */
+  .marcar{box-sizing:content-box;padding:13px;margin:-13px -5px -13px -13px;border:0;background:none!important;position:relative}
+  .marcar::before{content:"";position:absolute;inset:13px;border:1.5px solid #878d9b;border-radius:6px;background:var(--superficie)}
+  .marcar.on::before{background:var(--acento);border-color:var(--acento)}
+  .marcar.on::after{position:relative;z-index:1}
 }
 
 @page{size:A4;margin:12mm 14mm 14mm;
@@ -264,7 +270,7 @@ td.det{display:none}
 }
 </style>
 </head>
-<body data-estado="enviado">
+<body data-pantalla="documento" data-estado="enviado">
 
 <nav class="barra" aria-label="Vista previa">
   <div class="seg" aria-label="Documentos">

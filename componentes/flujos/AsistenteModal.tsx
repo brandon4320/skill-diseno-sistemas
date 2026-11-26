@@ -65,7 +65,7 @@ export function AsistenteModal({ abierto, onCerrar, titulo, pasos, ilustracion, 
       aria-labelledby="asis-titulo"
       className="m-auto w-[min(100%-24px,880px)] overflow-hidden rounded-tarjeta border border-borde bg-superficie p-0 text-tinta shadow-flotante backdrop:bg-tinta/40 backdrop:backdrop-blur-[2px]"
     >
-      <div className="grid min-h-[520px] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="grid min-h-[440px] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div className="flex flex-col p-8 max-md:order-2 max-md:p-6">
           <div className="mb-8 flex items-center gap-4">
             <BarraPasos total={pasos.length} actual={i} />
@@ -87,7 +87,7 @@ export function AsistenteModal({ abierto, onCerrar, titulo, pasos, ilustracion, 
             </BotonEspera>
           </div>
         </div>
-        <div aria-hidden className="relative grid place-items-center overflow-hidden bg-panel p-8 max-md:order-1 max-md:min-h-[180px] max-md:p-6">
+        <div aria-hidden className="relative grid place-items-center overflow-hidden bg-panel p-8 max-md:order-1 max-md:min-h-[140px] max-md:p-6">
           {ilustracion(i)}
         </div>
       </div>

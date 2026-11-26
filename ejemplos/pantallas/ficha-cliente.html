@@ -107,7 +107,7 @@ a{color:inherit}
 .agregar:hover{color:var(--tinta)}
 
 /* ── Cabecera de la ficha ── */
-.cab{display:flex;align-items:center;gap:20px;padding:24px;border:1px solid var(--borde);border-radius:20px;background:color-mix(in oklch,var(--superficie) 82%,transparent);backdrop-filter:blur(10px);box-shadow:var(--s-min)}
+.cab{display:flex;align-items:center;gap:20px;padding:16px 24px;border:1px solid var(--borde);border-radius:20px;background:color-mix(in oklch,var(--superficie) 82%,transparent);backdrop-filter:blur(10px);box-shadow:var(--s-min)}
 .marca{width:64px;height:64px;border-radius:16px;flex:none;display:grid;place-items:center;color:#fff;position:relative;
   background:radial-gradient(90% 90% at 20% 10%,#7aa2ff,transparent 60%),linear-gradient(150deg,#2f5fd0,#3b6fe0);box-shadow:0 12px 24px -12px rgb(59 111 224/.7),inset 0 1px 0 rgb(255 255 255/.25)}
 .marca .ph-fill{font-size:28px}
@@ -119,7 +119,7 @@ a{color:inherit}
 .cab .sub{font-size:14px}
 .cab .sub span+span::before{content:"·";margin:0 8px;color:var(--texto-3)}
 .cab .sub .baja{font-weight:500}
-.cab .meta{display:flex;align-items:center;gap:16px;margin-top:12px;color:var(--texto-3);font-size:12px;flex-wrap:wrap}
+.cab .meta{display:flex;align-items:center;gap:16px;margin-top:6px;color:var(--texto-3);font-size:12px;flex-wrap:wrap}
 .cab .meta>span{display:inline-flex;align-items:center;gap:6px}
 .cab .meta b{color:var(--texto-2);font-weight:500}
 .cab .acc{margin-left:auto;display:flex;gap:8px;align-items:center;flex:none}
@@ -133,7 +133,7 @@ a{color:inherit}
 
 /* datos rótulo/valor */
 .datos{padding:4px 20px 12px;display:flex;flex-direction:column}
-.dato{padding:12px 0;border-bottom:1px solid var(--divisor);display:flex;align-items:flex-start;gap:8px}
+.dato{padding:8px 0;border-bottom:1px solid var(--divisor);display:flex;align-items:flex-start;gap:8px}
 .dato:last-child{border:0}
 .dato div{min-width:0;flex:1}
 .dato small{display:block;font-size:12px;color:var(--texto-3);font-weight:500}
@@ -422,7 +422,7 @@ a{color:inherit}
 }
 </style>
 </head>
-<body>
+<body data-pantalla="ficha">
 <div class="app">
   <aside class="lat" aria-label="Menú">
     <div class="espacio">
@@ -555,12 +555,12 @@ a{color:inherit}
                 </div>
               </div>
               <div class="filtros" id="filtros">
-                <button class="on" data-f="todo">Todo</button>
-                <button data-f="llamada">Llamadas</button>
-                <button data-f="reunion">Reuniones</button>
-                <button data-f="correo">Correos</button>
-                <button data-f="nota">Notas</button>
-                <button data-f="factura">Facturas</button>
+                <button class="on" data-f="todo" aria-pressed="true">Todo</button>
+                <button data-f="llamada" aria-pressed="false">Llamadas</button>
+                <button data-f="reunion" aria-pressed="false">Reuniones</button>
+                <button data-f="correo" aria-pressed="false">Correos</button>
+                <button data-f="nota" aria-pressed="false">Notas</button>
+                <button data-f="factura" aria-pressed="false">Facturas</button>
               </div>
               <div class="tl" id="tl"></div>
               <div class="vacio-f" id="vacioF"><i class="ph ph-funnel-x" style="font-size:28px;color:var(--texto-3)"></i><h4>Nada de este tipo todavía</h4><p>Probá con otro filtro o volvé a <button class="btn chico" onclick="filtrar('todo')" style="margin-left:4px">Todo</button></p></div>
@@ -727,7 +727,7 @@ function aplicarFiltro(){
   $('#vacioF').style.display=vis?'none':'block';
   $('#masAnt').style.display=vis&&filtro==='todo'?'':'none';
 }
-function filtrar(f){filtro=f;$$('#filtros button').forEach(b=>b.classList.toggle('on',b.dataset.f===f));aplicarFiltro()}
+function filtrar(f){filtro=f;$$('#filtros button').forEach(b=>{b.classList.toggle('on',b.dataset.f===f);b.setAttribute('aria-pressed',b.dataset.f===f)});aplicarFiltro()}
 $$('#filtros button').forEach(b=>b.onclick=()=>filtrar(b.dataset.f));
 pintarTL();
 

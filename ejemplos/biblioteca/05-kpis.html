@@ -16,14 +16,14 @@
 .k-cinco{display:grid;gap:var(--espacio-gap);grid-template-columns:repeat(6,minmax(0,1fr))}
 .k-cinco>*{min-width:0;grid-column:span 2}
 .k-cinco>:nth-child(n+4){grid-column:span 3}
-.heroe:not(.k-mini){padding-bottom:84px}
+.heroe:not(.k-mini){padding-bottom:64px}
 .k-dos{display:grid;gap:var(--espacio-gap);grid-template-columns:repeat(2,minmax(0,1fr))}
 .k-dos>*{min-width:0}
 .k-barra-ctl{display:flex;gap:var(--espacio-4);align-items:center;flex-wrap:wrap}
 .k-barra-ctl .empuja{margin-left:auto}
 
 /* ── dentro de la bandeja ── */
-.adentro svg.k-spark{width:100%;height:44px;margin-top:var(--espacio-4);overflow:visible}
+.adentro svg.k-spark{width:100%;height:32px;margin-top:var(--espacio-4);overflow:visible} /* curva de KPI 32–40 (§4i) */
 .k-anillo{display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-5)}
 .k-anillo svg{flex:none}
 .k-apilada{display:flex;gap:3px;height:8px;margin-top:var(--espacio-5)}
@@ -42,9 +42,9 @@
 .heroe.leyendo .k-lee{opacity:1}
 .heroe .k-guia{position:absolute;top:var(--espacio-8);bottom:0;width:1px;background:rgb(255 255 255/.35);opacity:0;pointer-events:none;transition:opacity var(--t-1)}
 .heroe.leyendo .k-guia{opacity:1}
-.heroe .k-zona{position:absolute;left:0;right:0;bottom:0;height:96px;z-index:1;cursor:crosshair}
+.heroe .k-zona{position:absolute;left:0;right:0;bottom:0;height:72px;z-index:1;cursor:crosshair}
 .heroe.k-verde{background:radial-gradient(120% 140% at 100% 0%,#1d7f56 0%,transparent 55%),linear-gradient(150deg,#0a5638,#0d6b47 60%,#0b5f3f);box-shadow:0 18px 36px -18px rgb(19 138 92/.6),inset 0 1px 0 rgb(255 255 255/.18)}
-.heroe.k-mini{min-height:120px;padding:var(--espacio-6)}
+.heroe.k-mini{padding:var(--espacio-6)}
 .heroe.k-mini .n{font-size:24px}
 
 /* ── KPI compacto (7.1) ── */
@@ -386,7 +386,7 @@ a.k-linea:hover{box-shadow:var(--s-hover);transform:translateY(calc(-2px*var(--m
 }
 </style>
 </head>
-<body class="bib">
+<body data-pantalla="galeria" class="bib">
 <div class="bib-pag">
   <aside class="bib-indice" data-volver="index.html" data-titulo="KPIs y cifras"></aside>
 
@@ -1277,7 +1277,12 @@ const PROY = {
 };
 Object.entries(PROY).forEach(([id, p]) => {
   const card = $('#' + id), seg = $(`#${id}-d`);
-  $(`#${id}-pasos`).innerHTML = p.pasos.map((t, i) => `<div class="fila g3 k-paso" style="min-height:32px;flex-wrap:nowrap"><button class="check" role="checkbox" aria-checked="${i < p.hechos}" aria-label="${escapar(t)}"></button><span class="t-13 trunca ${i < p.hechos ? 'gris' : ''}">${escapar(t)}</span></div>`).join('');
+  // tope de 6 filas por tarjeta (§4b, §4i): el resto detrás de "N pasos más", así las dos tarjetas de la fila miden parecido
+  const TOPE = 6, resto = p.pasos.length - TOPE;
+  $(`#${id}-pasos`).innerHTML = p.pasos.map((t, i) => `<div class="fila g3 k-paso" style="min-height:32px;flex-wrap:nowrap"${i >= TOPE ? ' hidden' : ''}><button class="check" role="checkbox" aria-checked="${i < p.hechos}" aria-label="${escapar(t)}"></button><span class="t-13 trunca ${i < p.hechos ? 'gris' : ''}">${escapar(t)}</span></div>`).join('')
+    + (resto > 0 ? `<button class="btn chico k-mas" type="button" style="align-self:flex-start"><i class="ph ph-caret-down"></i>${resto} pasos más</button>` : '');
+  const mas = $(`#${id}-pasos .k-mas`);
+  if (mas) mas.addEventListener('click', () => { $$(`#${id}-pasos .k-paso[hidden]`).forEach(f => { f.hidden = false; }); mas.hidden = true; });
   const pintar = () => {
     const ch = $$('.check', card), h = ch.filter(c => c.getAttribute('aria-checked') === 'true').length, pc = Math.round(h / p.pasos.length * 100);
     ch.forEach(c => c.nextElementSibling.classList.toggle('gris', c.getAttribute('aria-checked') === 'true'));

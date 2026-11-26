@@ -109,12 +109,12 @@ a{color:inherit;text-decoration:none}
 .ic-btn{width:36px;height:36px;border-radius:12px;border:1px solid var(--borde);background:var(--superficie);display:grid;place-items:center;color:var(--texto-2);position:relative;box-shadow:var(--s-min);transition:color .18s,background .18s}
 .ic-btn:hover{color:var(--tinta);background:var(--hover)}
 .ic-btn .p{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--rojo);outline:2px solid var(--superficie)}
-.cont{position:relative;padding:var(--e-8) var(--e-9) var(--e-10);display:flex;flex-direction:column;gap:var(--e-10)}
+.cont{position:relative;padding:var(--e-8) var(--e-9) var(--e-10);display:flex;flex-direction:column;gap:var(--e-9)}
 
 /* ── Cabecera ── */
 .cab{display:flex;align-items:flex-end;gap:var(--e-6)}
 .cab .fecha{color:var(--texto-3);font-size:13px;font-weight:500}
-.cab h1{font-family:var(--display);font-size:40px;font-weight:500;line-height:1.15;letter-spacing:-.03em;margin-top:var(--e-2)}
+.cab h1{font-family:var(--display);font-size:36px;font-weight:500;line-height:1.15;letter-spacing:-.03em;margin-top:var(--e-1)}
 .cab h1 b{font-weight:400}
 .cab .sub{margin-top:var(--e-2);color:var(--texto-2);display:flex;flex-wrap:wrap;gap:var(--e-2) var(--e-4);align-items:center}
 .cab .sub a{display:inline-flex;align-items:center;gap:var(--e-2);border-radius:6px}
@@ -154,28 +154,33 @@ a{color:inherit;text-decoration:none}
 /* ── KPIs ── */
 .kpis{display:grid;grid-template-columns:1.25fr repeat(3,minmax(0,1fr));gap:var(--gap)}
 .kpis>*{min-width:0}
-.heroe{border-radius:20px;padding:var(--e-8);color:#fff;position:relative;overflow:hidden;min-height:224px;display:flex;flex-direction:column;
+/* protagonista compacta: sin min-height; mide lo que su contenido y la fila la acompaña (§4i) */
+.heroe{border-radius:20px;padding:var(--e-7);color:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;
   background:radial-gradient(120% 140% at 100% 0%,#6d63ff 0%,transparent 55%),linear-gradient(150deg,#3730a3,#4f46e5 60%,#4338ca);box-shadow:var(--s-heroe)}
 .heroe::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgb(255 255 255/.10) 1px,transparent 1.2px);background-size:14px 14px;mask:linear-gradient(200deg,#000,transparent 60%);pointer-events:none}
 .heroe .arriba{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
-.heroe .ico{width:40px;height:40px;border-radius:12px;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.24);display:grid;place-items:center;backdrop-filter:blur(6px)}
-.heroe .ico i{font-size:20px}
+.heroe .ico{width:32px;height:32px;border-radius:10px;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.24);display:grid;place-items:center;backdrop-filter:blur(6px)}
+.heroe .ico i{font-size:16px}
 .heroe .pill{font-size:12px;font-weight:500;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.24);height:24px;padding:0 var(--e-4);border-radius:99px;display:flex;gap:var(--e-2);align-items:center;backdrop-filter:blur(6px)}
 .heroe .pill i{font-size:13px}
-.heroe .rotulo{display:block;margin-top:var(--e-6);font-size:13px;font-weight:500;color:rgb(255 255 255/.9);position:relative}
+.heroe .rotulo{display:block;margin-top:var(--e-5);font-size:13px;font-weight:500;color:rgb(255 255 255/.9);position:relative}
 .heroe .n{font-family:var(--display);font-size:40px;font-weight:500;line-height:1.05;letter-spacing:-.03em;margin-top:var(--e-2);position:relative;font-variant-numeric:tabular-nums}
 .heroe .n small{font-size:24px;font-weight:400;color:rgb(255 255 255/.88);margin-right:var(--e-2)}
 .heroe .ctx{font-size:12px;color:rgb(255 255 255/.9);margin-top:var(--e-2);position:relative}
-.heroe svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:84px;display:block}
+/* el estilo del gráfico va por su clase, nunca `.heroe svg`: agrandaría los íconos svg de adentro */
+.heroe .curva{position:absolute;left:0;right:0;bottom:0;width:100%;height:64px;display:block}
+.heroe .ctx{padding-bottom:var(--e-6)}
 .bandeja{background:var(--bandeja);border:1px solid var(--borde);border-radius:20px;padding:var(--e-2);display:flex;flex-direction:column}
-.bandeja .rot{display:flex;align-items:center;gap:var(--e-4);padding:var(--e-4) var(--e-5) var(--e-4) calc(var(--e-6) + 1px);color:var(--texto-2);font-weight:500;font-size:13px}
+.bandeja .rot{display:flex;align-items:center;gap:var(--e-4);min-height:32px;padding:var(--e-3) var(--e-5) var(--e-3) calc(var(--e-6) + 1px);color:var(--texto-2);font-weight:500;font-size:13px}
 .bandeja .rot .ph{font-size:16px;color:var(--texto-3)}
-.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:var(--e-6);box-shadow:var(--s-min);flex:1;min-width:0}
+.adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:var(--e-6);box-shadow:var(--s-min);flex:1;min-width:0;display:flex;flex-direction:column}
+/* el dibujo va al pie de la tarjeta: si la fila se iguala, el blanco queda repartido arriba del dibujo y no al fondo */
+.adentro>.ctx{margin-bottom:auto}
 .adentro .n{font-family:var(--display);font-size:32px;font-weight:500;line-height:1.05;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .adentro .n small{color:var(--texto-3);font-size:20px;font-weight:400;margin-right:var(--e-2)}
 .adentro .n small.u{margin:0 0 0 var(--e-1)}
 .adentro .ctx{color:var(--texto-3);font-size:12px;margin-top:var(--e-2)}
-.pie{display:flex;align-items:center;gap:var(--e-2);padding:var(--e-4) calc(var(--e-6) + 1px);font-size:12px;font-weight:500;color:var(--texto-3);border-radius:0 0 16px 16px;transition:color .18s}
+.pie{display:flex;align-items:center;gap:var(--e-2);min-height:32px;padding:var(--e-3) calc(var(--e-6) + 1px);font-size:12px;font-weight:500;color:var(--texto-3);border-radius:0 0 16px 16px;transition:color .18s}
 .pie .ph{font-size:14px}
 .pie .d{display:inline-flex;align-items:center;gap:var(--e-2)}
 .pie .ir{margin-left:auto;display:inline-flex;align-items:center;gap:var(--e-2)}
@@ -185,7 +190,7 @@ a{color:inherit;text-decoration:none}
 .ticks i{flex:1;border-radius:2px;background:var(--suave);transition:background .4s}
 .segs{display:flex;gap:3px}.segs i{flex:1;height:6px;border-radius:3px;background:var(--suave);transition:background .3s}
 .kpis .segs{margin-top:var(--e-6)}
-.mini{width:100%;height:40px;margin-top:var(--e-4);display:block;overflow:visible}
+.mini{width:100%;height:20px;margin-top:var(--e-4);display:block;overflow:visible}
 
 /* ── Proyectos ── */
 .proys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
@@ -361,7 +366,7 @@ a{color:inherit;text-decoration:none}
 }
 </style>
 </head>
-<body>
+<body data-pantalla="tablero">
 <div class="app">
   <aside class="lat" aria-label="Menú">
     <button class="espacio" aria-label="Cambiar de estudio: Estudio Faro">
@@ -433,7 +438,7 @@ a{color:inherit;text-decoration:none}
             <span class="rotulo">Pipeline abierto</span>
             <div class="n"><small>US$</small><span data-cuenta="184200">184.200</span></div>
             <div class="ctx">24 oportunidades en 4 etapas</div>
-            <svg id="heroeSvg" aria-hidden="true"></svg>
+            <svg id="heroeSvg" class="curva" aria-hidden="true"></svg>
           </a>
           <div class="bandeja">
             <div class="rot"><i class="ph ph-seal-check"></i>Ganado en noviembre</div>
@@ -460,7 +465,7 @@ a{color:inherit;text-decoration:none}
               <div class="ctx">para los próximos 7 días</div>
               <div class="segs" data-segs="11" data-hechos="2" data-color="var(--rojo)" aria-hidden="true"></div>
             </div>
-            <a class="pie baja" href="#"><span class="d"><i class="ph ph-warning-circle"></i>2 vencidos · requieren atención</span><span class="ir"><i class="ph ph-arrow-up-right"></i></span></a>
+            <a class="pie baja" href="#"><span class="d"><i class="ph ph-warning-circle"></i>2 vencidos · atender hoy</span><span class="ir"><i class="ph ph-arrow-up-right"></i></span></a>
           </div>
         </div>
       </section>
@@ -535,7 +540,7 @@ function curva(pts){let d=`M${pts[0][0]},${pts[0][1]}`;for(let i=0;i<pts.length-
 function dibujar(l,animar){if(!animar||quieto)return;const len=l.getTotalLength?.()||600;l.style.strokeDasharray=len;l.style.strokeDashoffset=len;l.getBoundingClientRect();l.style.transition='stroke-dashoffset .9s cubic-bezier(.23,1,.32,1)';requestAnimationFrame(()=>l.style.strokeDashoffset=0)}
 let gid=0;
 /* sparkline al ancho real (sin estirar: los puntos quedan redondos) */
-function spark(svg,vals,color,{h=40,pad=5,puntos=[],ancho=1.8,animar=true}={}){
+function spark(svg,vals,color,{h=svg.clientHeight||40,pad=5,puntos=[],ancho=1.8,animar=true}={}){
   const w=Math.max(60,svg.clientWidth||200),mx=Math.max(...vals),mn=Math.min(...vals),pts=vals.map((v,i)=>[pad+i*(w-2*pad)/(vals.length-1),h-pad-(v-mn)/(mx-mn||1)*(h-2*pad)]);
   const d=curva(pts),id='g'+(gid++);
   svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
@@ -546,7 +551,7 @@ function spark(svg,vals,color,{h=40,pad=5,puntos=[],ancho=1.8,animar=true}={}){
   dibujar(svg.querySelector('.linea'),animar);
 }
 /* héroe: línea blanca con el punto de hoy marcado */
-function heroe(animar=true){const s=$('#heroeSvg'),v=[120,128,122,140,135,150,146,162,158,171,168,184],w=s.clientWidth||300,h=84,mx=196,mn=100;
+function heroe(animar=true){const s=$('#heroeSvg'),v=[120,128,122,140,135,150,146,162,158,171,168,184],w=s.clientWidth||300,h=64,mx=196,mn=100;
  const pts=v.map((x,i)=>[i*w/(v.length-1),h-(x-mn)/(mx-mn)*h]);const d=curva(pts),k=9;
  s.setAttribute('viewBox',`0 0 ${w} ${h}`);
  s.innerHTML=`<defs><linearGradient id="gh" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".26"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path d="${d} L${w},${h} L0,${h}Z" fill="url(#gh)"/><path class="linea" d="${d}" fill="none" stroke="#fff" stroke-width="2" opacity=".95"/><line x1="${pts[k][0]}" x2="${pts[k][0]}" y1="${pts[k][1]}" y2="${h}" stroke="#fff" stroke-opacity=".35" stroke-dasharray="2 3"/><circle cx="${pts[k][0]}" cy="${pts[k][1]}" r="5" fill="#fff" stroke="#4f46e5" stroke-width="3"/>`;

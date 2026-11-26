@@ -163,14 +163,14 @@ body.sin-marcas .mk::after{opacity:0;transform:scale(.4)}
 
 /* ── DESPUÉS: piezas del estándar ── */
 .bandeja{background:var(--bandeja);border:1px solid var(--borde);border-radius:20px;padding:var(--espacio-2);display:flex;flex-direction:column}
-.bandeja .rot{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-4) var(--espacio-5);color:var(--texto-2);font-weight:500;font-size:13px}
+.bandeja .rot{display:flex;align-items:center;gap:var(--espacio-4);padding:var(--espacio-4) 17px; /* 17 = borde + padding de la tarjeta de adentro: mismo borde izquierdo */color:var(--texto-2);font-weight:500;font-size:13px}
 .bandeja .rot .ph{color:var(--texto-2)}
 .bandeja .rot .mas{margin-left:auto}
 .adentro{background:var(--superficie);border:1px solid var(--borde);border-radius:16px;padding:var(--espacio-6);box-shadow:var(--s-min);flex:1}
 .adentro .n{font-family:var(--display);font-weight:500;font-size:32px;line-height:1.1;letter-spacing:-.03em;display:block}
 .adentro .n .mon,.adentro .n .cent{font-size:20px}
 .adentro .ctx{color:var(--texto-3);font-size:12px;margin-top:var(--espacio-2)}
-.pie{display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-4);padding:var(--espacio-4) var(--espacio-5);font-size:12px;font-weight:500;color:var(--texto-2)}
+.pie{display:flex;align-items:center;justify-content:space-between;gap:var(--espacio-4);padding:var(--espacio-4) 17px;font-size:12px;font-weight:500;color:var(--texto-2)}
 .pie .ph{font-size:14px}
 .pie>span{display:inline-flex;align-items:center;gap:var(--espacio-2)}
 .pie a{display:inline-flex;align-items:center;gap:var(--espacio-2);text-decoration:none;color:var(--texto-2)}
@@ -472,10 +472,12 @@ textarea.ctrl{height:80px;padding:var(--espacio-4) var(--espacio-5);resize:verti
   .cabx-top{height:60px}
   .cabx-top .buscar{width:44px}
 }
+/* en celular ni el "antes" se desliza de costado: la planilla vieja se aprieta en su ancho */
+@media (max-width:700px){.a-scroll{overflow-x:visible}.a-tabla{min-width:0;table-layout:fixed}.a-tabla td,.a-tabla th{white-space:normal;overflow-wrap:anywhere;padding:4px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
-<body>
+<body data-pantalla="galeria">
 <div class="pag">
 
   <header class="pag-cab">

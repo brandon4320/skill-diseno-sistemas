@@ -190,7 +190,7 @@ Lo reversible se hace sin preguntar y aparece un toast con **Deshacer**. El moda
 | Antes | Después |
 |---|---|
 | Operación realizada exitosamente | Cobro registrado · FAC-01101 · US$ 18.400 / Quedó en Cobranzas como cobrada · [Deshacer] |
-| Guardado correctamente | Contrato actualizado · CONT-0412 / El nuevo precio corre desde el 1 dic · [Deshacer] |
+| Guardado correctamente | Contrato actualizado · CTR-0412 / El nuevo precio corre desde el 1 dic · [Deshacer] |
 | ¡Listo! Tarea completada | Hecho: Presentar rutas de logo / Quedó en el historial de Identidad Orbe · [Deshacer] |
 | El registro fue eliminado | Contacto borrado · Martín Ruiz / Sus 4 actividades quedan en Grupo Atlas · [Deshacer] |
 | Solicitud aprobada con éxito | Descuento aprobado · PR-0241 / Lucía ya puede enviar la propuesta · [Deshacer] |
@@ -263,7 +263,7 @@ Formato fijo en SKILL §6c. En frases:
 - **Conteos como fracción con meta:** "3 de 6 hechas", "8 ganadas de 25 decididas".
 - **Singular y plural bien resueltos en código:** "1 factura vencida", "2 facturas vencidas". Nunca "1 factura(s)".
 - **Cero con palabra** cuando es una buena noticia ("Ninguna vencida"); "—" gris cuando no hay dato.
-- **Códigos en mono y tal cual:** FAC-01101, PR-0241, CONT-0412. Cuenta bancaria parcial: "···· 4821".
+- **Códigos en mono y tal cual:** FAC-01101, PR-0241, CTR-0412. Cuenta bancaria parcial: "···· 4821".
 
 | Antes | Después |
 |---|---|

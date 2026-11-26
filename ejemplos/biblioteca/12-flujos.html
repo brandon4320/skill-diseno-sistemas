@@ -448,7 +448,7 @@
 @keyframes fl-flota2{from{opacity:0;transform:translateY(calc(10px*var(--mueve)))}}
 
 /* 15 · recálculo */
-.recal{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--espacio-gap)}
+.recal{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--espacio-gap);align-items:start} /* cada tarjeta con su alto (§4i) */
 .derivado{display:flex;justify-content:space-between;align-items:baseline;min-height:44px;border-bottom:1px solid var(--divisor);font-size:13px;gap:var(--espacio-4)}
 .derivado:last-child{border-bottom:0}
 .derivado .v{display:flex;flex-direction:column;align-items:flex-end;gap:var(--espacio-1)}
@@ -654,7 +654,7 @@ main,.demo,button{font-variant-numeric:tabular-nums}
 }
 </style>
 </head>
-<body class="bib">
+<body data-pantalla="galeria" class="bib">
 <div class="bib-pag">
   <aside class="bib-indice" data-volver="index.html" data-titulo="Flujos"></aside>
 

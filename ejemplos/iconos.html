@@ -71,14 +71,14 @@ button,input{font:inherit;color:inherit}
 
 /* reglas: héroe + bandejas */
 .reglas{display:grid;grid-template-columns:1.15fr 1fr 1fr 1fr;gap:14px;margin:20px 0 8px}
-.heroe{border-radius:20px;padding:20px;color:#fff;position:relative;overflow:hidden;min-height:228px;display:flex;flex-direction:column;
+.heroe{border-radius:20px;padding:20px;color:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;
   background:radial-gradient(120% 140% at 100% 0%,#7b72ff 0%,transparent 55%),linear-gradient(150deg,#3f36c9,#5a50f0 60%,#4b42dc);
   box-shadow:0 18px 36px -18px rgb(79 70 229/.6),inset 0 1px 0 rgb(255 255 255/.18)}
 .heroe .mosaico{position:absolute;right:-14px;top:-10px;display:grid;grid-template-columns:repeat(5,34px);gap:6px;opacity:.95;mask:radial-gradient(120% 120% at 100% 0%,#000 30%,transparent 72%)}
 .heroe .mosaico i{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgb(255 255 255/.10);border:1px solid rgb(255 255 255/.14);font-size:16px;transition:background .4s,transform .4s var(--ease)}
 .heroe .mosaico i.vivo{background:rgb(255 255 255/.28);transform:scale(1.06)}
-.heroe .ico{width:38px;height:38px;border-radius:12px;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.22);display:grid;place-items:center;position:relative}
-.heroe small{display:block;margin-top:auto;opacity:.8;font-weight:500;position:relative}
+.heroe .ico{width:32px;height:32px;border-radius:12px;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.22);display:grid;place-items:center;position:relative}
+.heroe small{display:block;margin-top:12px;opacity:.8;font-weight:500;position:relative}
 .heroe .n{font:500 40px/1.05 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-.03em;position:relative}
 .heroe .ctx{font-size:12.5px;opacity:.8;margin-top:4px;position:relative}
 .heroe .ok{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font:600 12px var(--ui);background:rgb(255 255 255/.16);border:1px solid rgb(255 255 255/.2);padding:3px 9px;border-radius:99px;position:relative;align-self:flex-start}
@@ -185,7 +185,7 @@ button,input{font:inherit;color:inherit}
   .barra{margin:0 -16px;padding:10px 16px;flex-wrap:wrap}
   .buscar{flex:1 1 100%}
   .barra .seg{order:3}
-  .chips{order:2;flex:1 1 100%}
+  .chips{order:2;flex:1 1 100%;flex-wrap:wrap;overflow:visible;mask:none;-webkit-mask:none} /* en celular los chips bajan de renglón: nada de costado */
   .reglas{grid-template-columns:1fr}
   .fam-cab{flex-wrap:wrap}.fam-cab p{margin-left:0;text-align:left;flex:1 1 100%}
   .grilla{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
@@ -196,7 +196,7 @@ button,input{font:inherit;color:inherit}
 }
 </style>
 </head>
-<body>
+<body data-pantalla="galeria">
 <div class="pag">
   <header class="cabeza">
     <div>

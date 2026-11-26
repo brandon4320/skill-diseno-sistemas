@@ -81,6 +81,24 @@
   --ease: cubic-bezier(.23, 1, .32, 1);
 }
 
+/* Densidad vertical (SKILL.md §4i): topes de alto para que lo importante entre sin scrollear.
+ * Van en :root y no en @theme porque no generan utilidades: se usan como max-height, height
+ * de dibujos y padding-bottom. Formularios, acceso y lectura no se compactan. */
+:root {
+  --alto-barra: 56px;            /* barra superior de la app (52–56) */
+  --alto-cabecera: 64px;         /* cabecera de página en operación: una fila (56–64); vistazo ≤ 96 */
+  --alto-rotulo-tarjeta: 36px;   /* rótulo de bandeja o cabecera de tarjeta (32–36) */
+  --alto-fila: 36px;             /* fila de tabla por defecto (28 / 36 / 44) */
+  --alto-kpi: 128px;             /* KPI simple (104–128) */
+  --alto-kpi-fila: 200px;        /* tope de la fila de KPIs con bandeja y pie, protagonista incluida */
+  --alto-curva-kpi: 40px;        /* curva o barras dentro de un KPI (32–40) */
+  --alto-curva-protagonista: 56px; /* curva al pie de la protagonista (48–64, ≤ ⅓ de la tarjeta) */
+  --alto-grafico: 220px;         /* área de dibujo de un gráfico de tablero (180–240; 120–160 en celular) */
+  --alto-vacio-linea: 44px;      /* vacío dentro de una tarjeta: una línea (36–48) */
+  --alto-vacio: 200px;           /* vacío de una lista o tabla entera (160–240) */
+  --aire-muerto: 40px;           /* lo máximo que puede quedar vacío dentro de una tarjeta */
+}
+
 /* Oscuro (analisis/17-claro-oscuro.md): el mismo layout con otros tokens.
  * Escalera de ~7 de luz por capa: lo de arriba es más claro y la tarjeta queda siempre por encima
  * de su bandeja (en claro la bandeja #f4f4f5 es más oscura que la tarjeta blanca: la relación se mantiene).

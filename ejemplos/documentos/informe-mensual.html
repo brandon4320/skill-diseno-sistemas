@@ -246,8 +246,7 @@ td.est{text-align:right}
   .kpis,.proys{grid-template-columns:minmax(0,1fr)}
   .card .tit{flex-wrap:wrap}
   .sec{flex-wrap:wrap;row-gap:2px}.sec h2{white-space:nowrap}
-  .graf{overflow-x:auto;scrollbar-width:none}
-  .graf svg{width:600px;max-width:none}
+  .graf svg{width:100%} /* el gráfico se achica con la hoja: nada de costado */
   thead{display:none}
   tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;padding:12px 0;border-bottom:1px solid var(--divisor)}
   tbody td{border:0!important;padding:0!important}
@@ -293,7 +292,7 @@ td.est{text-align:right}
 }
 </style>
 </head>
-<body>
+<body data-pantalla="documento">
 
 <nav class="barra" aria-label="Vista previa">
   <div class="seg" aria-label="Documentos">

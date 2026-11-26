@@ -229,7 +229,7 @@ export function PaletaComandos({ abierta, onCerrar, items, grupos = [], placehol
             )
           })}
           {visibles.length === 0 && (
-            <div className="grid gap-3 px-4 py-8 text-center text-[13px] text-texto-2">
+            <div className="grid gap-3 px-4 py-6 text-center text-[13px] text-texto-2">
               <p>
                 Nada con «<b className="font-medium text-tinta">{texto}</b>»{grupo ? ' en este tipo' : ''}.
               </p>

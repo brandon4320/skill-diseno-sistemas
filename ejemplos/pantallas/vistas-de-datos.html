@@ -511,7 +511,7 @@ kbd{font:500 11px var(--mono);color:var(--texto-3);border:1px solid var(--borde)
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 </head>
-<body>
+<body data-pantalla="lista">
 <div class="app">
   <aside class="lat" aria-label="Menú">
     <div class="espacio">
@@ -576,8 +576,8 @@ kbd{font:500 11px var(--mono);color:var(--texto-3);border:1px solid var(--borde)
       <div class="vtabs-wrap"><div class="vtabs" id="tabs" role="tablist"></div></div>
       <div class="herr">
         <label class="busca"><i class="ph ph-magnifying-glass"></i><input id="busca" type="search" placeholder="Buscar cliente" autocomplete="off" aria-label="Buscar"><kbd>/</kbd></label>
-        <button class="btn chico" data-acc="filtrar" aria-haspopup="menu"><i class="ph ph-funnel-simple"></i><span>Filtrar</span></button>
-        <button class="btn chico" data-acc="opciones" aria-haspopup="menu"><i class="ph ph-sliders-horizontal"></i><span>Vista</span></button>
+        <button class="btn chico" data-acc="filtrar" aria-haspopup="menu" aria-label="Filtrar"><i class="ph ph-funnel-simple"></i><span>Filtrar</span></button>
+        <button class="btn chico" data-acc="opciones" aria-haspopup="menu" aria-label="Vista"><i class="ph ph-sliders-horizontal"></i><span>Vista</span></button>
       </div>
     </nav>
     <div class="chips" id="chips"></div>

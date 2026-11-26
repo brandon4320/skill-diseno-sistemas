@@ -47,7 +47,7 @@ export function TarjetaProceso({ nombre, disparador, estado, pasos, serie, resum
   return (
     <CajaTarjeta clickeable={!!onAbrir} className="relative gap-0 overflow-hidden p-0" aria-label={`${nombre}, ${e.texto}`}>
       <div
-        className="relative m-2 flex h-[132px] items-center justify-center gap-2 overflow-hidden rounded-interno bg-panel px-5"
+        className="relative m-2 flex h-[104px] items-center justify-center gap-2 overflow-hidden rounded-interno bg-panel px-5"
         style={{ backgroundImage: 'radial-gradient(color-mix(in oklch, var(--color-texto-3) 26%, transparent) 1px, transparent 1.2px)', backgroundSize: '12px 12px' }}
       >
         <span className="absolute top-3 left-3"><Pastilla tono={e.tono}>{e.texto}</Pastilla></span>

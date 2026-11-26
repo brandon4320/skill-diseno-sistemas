@@ -9,7 +9,7 @@ export type FrescuraProps = {
   /** Cuándo llegó el último dato bueno. */
   sincronizado: Fecha
   ahora: Fecha
-  /** Nombre del sistema de origen: "Jaque", "AFIP", "Banco". */
+  /** Nombre del sistema de origen: "Contable", "AFIP", "Banco". */
   origen?: string
   /** Pasados estos minutos se pone ámbar (60 por defecto). */
   vieja?: number

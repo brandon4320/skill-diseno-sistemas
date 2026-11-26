@@ -28,6 +28,7 @@ if (!objetivo || flag('--ayuda') || flag('-h')) {
   --celular     la pasada principal va a 390 px como celular (táctil)
   --oscuro      pone data-tema="oscuro" en <html> y prefers-color-scheme: dark
   --galeria     catálogo de piezas: no cuenta botones rellenos (una galería muestra varios a propósito)
+                (lo mismo si la página trae data-pantalla="galeria" en <body>)
   --json        salida en JSON (para otro script o agente)
   --minimo N    sale con código 1 si la nota queda por debajo de N`);
   process.exit(objetivo ? 0 : 2);
@@ -38,7 +39,7 @@ const ANCHO = CELULAR ? 390 : parseInt(valor('--ancho', '1440'), 10) || 1440;
 const ALTO = parseInt(valor('--alto', CELULAR ? '844' : '900'), 10);
 const OSCURO = flag('--oscuro');
 const JSON_OUT = flag('--json');
-const GALERIA = flag('--galeria');
+let GALERIA = flag('--galeria'); // también se prende con data-pantalla="galeria" en <body> (ver abajo)
 const MINIMO = valor('--minimo', null);
 
 let url = objetivo;
@@ -169,6 +170,8 @@ function analizar(o) {
     const botones = vis.filter(el => el.matches('button,[role=button],input[type=submit],input[type=button],a[class*=btn],a[class*=boton],a[class*=button]'));
     const rellenos = [], chicos = [];
     for (const b of botones) {
+      // lo elegido de un grupo (filtro activo, día elegido, pestaña) es un estado, no una acción
+      if (b.matches('[aria-pressed=true],[aria-selected=true],[aria-checked=true],[aria-current]:not([aria-current=false]),[role=tab],[role=radio],[role=switch],[role=option]')) continue;
       const s = getComputedStyle(b), bc = color(s.backgroundColor);
       const bi = s.backgroundImage && s.backgroundImage !== 'none' && !/url\(/.test(s.backgroundImage);
       if (bc[3] < 0.5 && !bi) continue;
@@ -176,6 +179,7 @@ function analizar(o) {
       const debajo = fondo(b.parentElement).c;
       if (ratio(propio, debajo) < 2.2) continue; // blanco sobre blanco, pastilla de segmentado: no es relleno
       const r = b.getBoundingClientRect();
+      if (r.height > 96) continue; // una tarjeta entera clickeable (protagonista, ficha) no es un botón
       const item = { selector: sel(b), texto: recorte(b.innerText.trim() || b.getAttribute('aria-label') || ''), alto: Math.round(r.height), color: hex(propio) };
       (r.height >= 32 ? rellenos : chicos).push(item);
     }
@@ -501,7 +505,8 @@ function analizar(o) {
         const rs = g.items.map(h => h.getBoundingClientRect());
         if (rs.some(r => r.height > 520)) continue; // columnas de kanban, paneles largos: su alto depende del contenido
         const altos = rs.map(r => r.height), dif = Math.max(...altos) - Math.min(...altos);
-        if (dif > 2) S.alturas.push({ selector: sel(p) + ' > ' + g.firma, cantidad: g.items.length, dif: r1(dif), altos: altos.map(Math.round) });
+        // > 40 px de diferencia: cada una toma el alto de su contenido (§4i), está bien; entre 3 y 40 parece un error
+        if (dif > 2 && dif <= 40) S.alturas.push({ selector: sel(p) + ' > ' + g.firma, cantidad: g.items.length, dif: r1(dif), altos: altos.map(Math.round) });
         else {
           // mismo alto: ¿el último hijo (pie) cae a la misma altura en todos?
           const ult = g.items.map(h => { const hs = hijosVis(h); return hs.length >= 2 ? hs[hs.length - 1] : null; });
@@ -658,6 +663,197 @@ function analizar(o) {
 
     res.simetria = { ...S, padding: [...S.padding.values()], iconos: [...S.iconos.values()] };
   }
+
+  /* ── 14. aire muerto: tarjetas con huecos, filas estiradas, pliegue y íconos agrandados ── */
+  if (o.pasada === 'principal') {
+    const vh = innerHeight;
+    const enFlujo = el => { const p = getComputedStyle(el).position; return p !== 'absolute' && p !== 'fixed'; };
+    const tieneCaja = el => {
+      const s = getComputedStyle(el);
+      if (color(s.backgroundColor)[3] > 0.05) return true;
+      if (s.backgroundImage && s.backgroundImage !== 'none') return true;
+      if (s.boxShadow && s.boxShadow !== 'none' && !/inset/.test(s.boxShadow)) return true;
+      return ['Top', 'Right', 'Bottom', 'Left'].some(l => parseFloat(s['border' + l + 'Width']) >= 1 && s['border' + l + 'Style'] !== 'none' && color(s['border' + l + 'Color'])[3] > 0.1);
+    };
+    const claseDe = el => (typeof el.className === 'string' ? el.className : '') + ' ' + (el.id || '');
+    const CLASE_TARJETA = /(^|[-_ ])(card|tarjeta|kpi|bandeja|panel|tile|caja|bloque|metrica|stat|heroe|protagonista)s?([-_ ]|$)/i;
+    // zonas que crecen a propósito: columnas de kanban, zonas para soltar, lienzos, calendarios
+    const LIBRE = /(^|[-_ ])(kanban|kcol|columna|col|etapa|lane|soltar|dropzone|lienzo|canvas|calendario|cal|cel|celda|dia|semana|mes|hora|franja|slot|hueco|chat|conversacion|mensajes|hilo|firma|mapa|nave|sidebar|lateral|menu)s?([-_ ]|$)/i;
+    // marcos de presentación: el panel de una app de muestra, un teléfono, el escenario de una demo (alto fijo a propósito)
+    const MARCO = (o.galeria || document.body.dataset.pantalla === 'galeria') ? /(panel|app|marco|escena|escenario|demo|lamina|tel|cel|pant|movil|lienzo|hoja|stage|frame|mock|dispositivo)/i
+      : /(^|\s)([a-z]{1,4}-)?(panel|app|marco|escena|escenario|demo|lamina|lamina-cuerpo|tel|pant|pantalla|movil|lienzo|hoja|stage|frame|dispositivo)(\s|$)/i;
+    // lo que muestra a propósito cómo NO se hace (antes/después, simetría) no se cuenta
+    const ejemploMalo = el => !!el.closest('.antes,.mal,[data-antes],[data-mal],[data-ver=antes] .antes');
+    // la pantalla entera dentro de un marco (la vista de un teléfono de muestra) cuenta como el marco
+    const llenaMarco = el => { const p = el.parentElement; if (!p || !MARCO.test(claseDe(p))) return false; return el.getBoundingClientRect().height >= p.getBoundingClientRect().height * 0.9; };
+    const libre = el => !!el.closest('[data-alto-libre],[data-lienzo],[data-carrusel]') || LIBRE.test(claseDe(el)) || MARCO.test(claseDe(el)) || ejemploMalo(el) || llenaMarco(el)
+      || [1, 2].some(k => { let e = el; for (let i = 0; i < k && e; i++) e = e.parentElement; return e && /(^|[-_ ])(kanban|kcol|columna|col|lane)s?([-_ ]|$)/i.test(claseDe(e)); });
+    const dentroSvg = el => !!el.parentElement?.closest('svg');
+    const SOLIDO = 'svg,img,canvas,video,iframe,input,select,textarea,button,progress,meter,hr,picture,object';
+    // en el flujo cuenta aunque esté en opacidad 0 (lo que aparece al hacer scroll ya ocupa su lugar)
+    const ocupa = el => { if (getComputedStyle(el).display === 'contents') return true; if (!el.getClientRects().length) return false; const q = el.getBoundingClientRect(); if (q.width < 1 || q.height < 1) return false; const v = getComputedStyle(el).visibility; return v !== 'hidden' && v !== 'collapse'; };
+    const textoRects = n => { const rg = document.createRange(); rg.selectNodeContents(n); return [...rg.getClientRects()].filter(rr => rr.width > 0 && rr.height > 0); };
+    // alto real del contenido de un elemento: texto, dibujos, controles y cajas con fondo o borde
+    function extension(el, prof = 0) {
+      const r = el.getBoundingClientRect();
+      if (el.matches(SOLIDO)) return [r.top, r.bottom];
+      if (prof > 0 && enFlujo(el) && getComputedStyle(el).display !== 'contents' && tieneCaja(el)) return [r.top, r.bottom];
+      let t = Infinity, b = -Infinity;
+      for (const n of el.childNodes) {
+        if (n.nodeType === 3 && n.textContent.trim()) { for (const rr of textoRects(n)) { t = Math.min(t, rr.top); b = Math.max(b, rr.bottom); } }
+        else if (n.nodeType === 1 && !dentroSvg(n) && (enFlujo(n) ? ocupa(n) : visible(n)) && !/^(SCRIPT|STYLE|TEMPLATE|BR)$/.test(n.tagName)) {
+          const e = prof >= 10 ? (q => [q.top, q.bottom])(n.getBoundingClientRect()) : extension(n, prof + 1);
+          if (e) { t = Math.min(t, e[0]); b = Math.max(b, e[1]); }
+        }
+      }
+      return t < b ? [t, b] : null;
+    }
+    const caja = el => { const r = el.getBoundingClientRect(), s = getComputedStyle(el); return { r, s, it: r.top + parseFloat(s.borderTopWidth) + parseFloat(s.paddingTop), ib: r.bottom - parseFloat(s.borderBottomWidth) - parseFloat(s.paddingBottom) }; };
+    // una tarjeta visible: con fondo, borde o sombra; no el panel de toda la página
+    const esCaja = el => {
+      const r = el.getBoundingClientRect();
+      if (r.width < 120 || r.height < 56 || !tieneCaja(el)) return false;
+      if (r.width > vw * 0.6 && r.height > vh * 0.75) return false; // panel, sección o página entera
+      if (/^(BODY|HTML|MAIN|HEADER|NAV|ASIDE|FOOTER|TABLE|TBODY|THEAD|TR|TD|TH|UL|OL|FORM|DIALOG|DETAILS|BUTTON|A|LABEL|INPUT|SELECT|TEXTAREA)$/.test(el.tagName)) return false;
+      if (el.closest('dialog:not([open]),[aria-hidden=true],[hidden]')) return false;
+      return true;
+    };
+    const candidatas = vis.filter(el => esCaja(el) && !libre(el) && el.getBoundingClientRect().top < scrollY + document.documentElement.scrollHeight);
+    const A = { huecos: [], filas: [], iconos: [], pliegue: null };
+
+    /* a) filas de tarjetas estiradas: alto natural (align-self:start) contra el alto real */
+    const estiradas = new Set();
+    const contFila = vis.filter(el => { const s = getComputedStyle(el); return s.display.includes('grid') || (s.display.includes('flex') && !s.flexDirection.startsWith('column')); });
+    for (const p of contFila) {
+      const hijos = [...p.children].filter(c => visible(c) && enFlujo(c) && esCaja(c) && !libre(c));
+      if (hijos.length < 2) continue;
+      const filas = [];
+      for (const h of hijos) { const r = h.getBoundingClientRect(); let g = filas.find(x => Math.abs(x.top - r.top) <= 2); if (!g) filas.push(g = { top: r.top, items: [] }); g.items.push(h); }
+      for (const g of filas) {
+        if (g.items.length < 2) continue;
+        const reales = g.items.map(h => h.getBoundingClientRect().height);
+        const antes = g.items.map(h => h.style.getPropertyValue('align-self'));
+        const prio = g.items.map(h => h.style.getPropertyPriority('align-self'));
+        g.items.forEach(h => h.style.setProperty('align-self', 'start', 'important'));
+        const naturales = g.items.map(h => h.getBoundingClientRect().height);
+        g.items.forEach((h, i) => { if (antes[i]) h.style.setProperty('align-self', antes[i], prio[i]); else h.style.removeProperty('align-self'); });
+        const exceso = reales.map((a, i) => a - naturales[i]);
+        const sobrados = exceso.filter(e => e > 60).length;
+        if (sobrados >= Math.ceil(g.items.length / 2)) {
+          g.items.forEach((h, i) => { if (exceso[i] > 60) estiradas.add(h); });
+          const alta = naturales.indexOf(Math.max(...naturales));
+          const necesitan = naturales.filter((_, i) => exceso[i] > 60).sort((a, b) => a - b);
+          A.filas.push({ selector: sel(p), cantidad: g.items.length, alto: Math.round(Math.max(...reales)), necesitan: Math.round(necesitan[Math.floor(necesitan.length / 2)]),
+            exceso: Math.round(Math.max(...exceso)), culpable: `${sel(g.items[alta])} (${Math.round(naturales[alta])} px)` });
+        }
+      }
+    }
+
+    /* b) hueco vertical sin contenido dentro de una tarjeta (arriba, entre hijos o abajo) */
+    const vistos = new Map();
+    for (const el of candidatas) {
+      if ([...estiradas].some(e => e === el || e.contains(el))) continue; // ya cuenta como fila estirada
+      const s = getComputedStyle(el);
+      if (/url\(/.test(s.backgroundImage)) continue;                          // foto de fondo: el hueco es la foto
+      if (/(auto|scroll)/.test(s.overflowY) && el.scrollHeight > el.clientHeight + 1) continue; // lista con scroll: está llena
+      const { r, it, ib } = caja(el);
+      if (ib - it < 80) continue;
+      const tramos = [];
+      for (const n of el.childNodes) {
+        if (n.nodeType === 3 && n.textContent.trim()) for (const rr of textoRects(n)) tramos.push([rr.top, rr.bottom]);
+        else if (n.nodeType === 1 && !dentroSvg(n) && (enFlujo(n) ? ocupa(n) : visible(n)) && !/^(SCRIPT|STYLE|TEMPLATE|BR)$/.test(n.tagName)) {
+          // lo absoluto cuenta solo si dibuja algo (un gráfico al pie), no un brillo decorativo
+          const abs = !enFlujo(n);
+          const e = abs ? (n.matches(SOLIDO) || n.querySelector(SOLIDO) || n.innerText.trim() ? extension(n, 1) : null) : extension(n, 1);
+          if (e) tramos.push(e);
+        }
+      }
+      if (!tramos.length) continue;
+      tramos.sort((a, b) => a[0] - b[0]);
+      let cursor = it, mayor = 0, donde = '', total = 0;
+      const anotar = (h, d) => { if (h > 0) total += h; if (h > mayor) { mayor = h; donde = d; } };
+      tramos.forEach((t, i) => { if (t[0] > cursor) anotar(t[0] - cursor, i === 0 ? 'arriba' : 'entre hijos'); cursor = Math.max(cursor, t[1]); });
+      anotar(ib - cursor, 'abajo');
+      if (mayor <= 60 && !(total > 100 && mayor > 40)) continue;
+      const k = firma(el);
+      if (!vistos.has(k)) { vistos.set(k, { firma: k, cantidad: 0, mayor: 0, donde, alto: Math.round(r.height), ejemplos: [] }); A.huecos.push(vistos.get(k)); }
+      const g = vistos.get(k); g.cantidad++;
+      if (mayor > g.mayor) { g.mayor = Math.round(mayor); g.donde = donde; g.alto = Math.round(r.height); }
+      if (g.ejemplos.length < 2) g.ejemplos.push(sel(el));
+    }
+
+    /* c) íconos de tamaño anormal (> 32 px) que no son ilustración, gráfico, logo ni avatar */
+    const NO_ICONO = /(graf|chart|spark|curva|linea|barra|ilus|anillo|ring|dona|donut|gauge|mapa|map|logo|avatar|foto|marca|plano|lienzo|flujo|qr|firma)/i;
+    const VB_ICONO = /^0 0 (16|20|24|32|48|256) (16|20|24|32|48|256)$/;
+    for (const ic of document.querySelectorAll('svg, i[class*="ph"]')) {
+      if (ic.tagName === 'svg' && ic.parentElement?.closest('svg')) continue;
+      if (!visible(ic) || ic.closest('[data-ilustracion],[aria-label*="gráfico" i]')) continue;
+      let esIcono;
+      if (ic.tagName === 'I') esIcono = true;
+      else {
+        const vb = (ic.getAttribute('viewBox') || '').trim().replace(/\s+/g, ' ');
+        const usa = ic.querySelector('use')?.getAttribute('href') || ic.querySelector('use')?.getAttribute('xlink:href') || '';
+        esIcono = VB_ICONO.test(vb) || /^#?(ph|i|ico|icono)[-_]/i.test(usa.replace(/^#/, '#'));
+        if (ic.querySelector('text,polyline,circle[r] ~ circle[r] ~ circle[r],pattern,linearGradient,foreignObject')) esIcono = false; // tiene ejes, series o patrones: es un gráfico
+        if (ic.querySelectorAll('path,rect,circle,line,polygon,ellipse').length > 14) esIcono = false;   // muchas piezas: ilustración
+      }
+      if (!esIcono) continue;
+      let anc = ic, ruido = false;
+      for (let i = 0; anc && i < 4; anc = anc.parentElement, i++) if (NO_ICONO.test(claseDe(anc)) || NO_ICONO.test(anc.getAttribute?.('aria-label') || '')) { ruido = true; break; }
+      if (ruido) continue;
+      const ri = ic.getBoundingClientRect();
+      if (ejemploMalo(ic)) continue;
+      const tam = ic.tagName === 'I' ? parseFloat(getComputedStyle(ic).fontSize) : Math.max(ri.width, ri.height);
+      if (tam <= 32) continue;
+      // un ícono que es el dibujo de un vacío (sin ilustración a mano) se avisa igual: §6 Ilustraciones
+      const p = ic.parentElement, rp = p.getBoundingClientRect();
+      const k = firma(p) + ' > ' + firma(ic);
+      const prev = A.iconos.find(x => x.firma === k);
+      if (prev) { prev.cantidad++; continue; }
+      A.iconos.push({ firma: k, cantidad: 1, medida: `${Math.round(ri.width)}×${Math.round(ri.height)}`, caja: `${Math.round(rp.width)}×${Math.round(rp.height)}`,
+        desborda: ri.width > rp.width + 0.5 || ri.height > rp.height + 0.5, ejemplo: sel(ic) });
+    }
+
+    /* d) arriba del pliegue: cuánto de la primera pantalla es contenido y qué se alcanza a ver */
+    if (scrollY === 0) {
+      const zona = document.querySelector('main,[role=main]') || document.querySelector('.contenido,.principal,.pag,.pagina,.page,.panel') || document.body;
+      const rz = zona.getBoundingClientRect();
+      const x0 = Math.max(0, rz.left), x1 = Math.min(vw, rz.right), y0 = Math.max(0, rz.top), y1 = Math.min(vh, rz.bottom);
+      const PASO = 12, cols = Math.max(1, Math.floor((x1 - x0) / PASO)), filasG = Math.max(1, Math.floor((y1 - y0) / PASO));
+      const marca = new Uint8Array(cols * filasG);
+      const pintar = (q, m = 6) => {
+        const a = Math.max(0, Math.floor((q.left - m - x0) / PASO)), b = Math.min(cols - 1, Math.floor((q.right + m - x0) / PASO));
+        const c = Math.max(0, Math.floor((q.top - m - y0) / PASO)), d = Math.min(filasG - 1, Math.floor((q.bottom + m - y0) / PASO));
+        for (let y = c; y <= d; y++) for (let x = a; x <= b; x++) marca[y * cols + x] = 1;
+      };
+      const enZona = q => q.bottom > y0 && q.top < y1 && q.right > x0 && q.left < x1;
+      for (const el of vis) {
+        if (!zona.contains(el)) continue;
+        const q = el.getBoundingClientRect(); if (!enZona(q)) continue;
+        if (el.matches(SOLIDO)) { pintar(q); continue; }
+        for (const n of el.childNodes) if (n.nodeType === 3 && n.textContent.trim()) for (const rr of textoRects(n)) if (enZona(rr)) pintar(rr);
+      }
+      for (const sv of zona.querySelectorAll('svg')) if (!sv.parentElement.closest('svg') && visible(sv)) { const q = sv.getBoundingClientRect(); if (enZona(q)) pintar(q); }
+      const util = Math.round(marca.reduce((a, v) => a + v, 0) / marca.length * 100);
+      // tipo de pantalla: data-pantalla manda; si no, KPIs arriba = tablero, tabla o lista larga = lista, pestañas = ficha
+      // la fila de KPIs: la primera fila (mismo top) con 2 o más tarjetas de KPI en la primera pantalla
+      const KPI = /(^|[-_ ])(kpi|metrica|stat|heroe|protagonista)s?([-_ ]|$)/i, FILA_KPI = /(^|[-_ ])(kpis|metricas|stats|fila-kpis)([-_ ]|$)/i;
+      const candK = vis.filter(el => el.getBoundingClientRect().top < vh && esCaja(el) && !ejemploMalo(el) && (KPI.test(claseDe(el)) || (el.parentElement && FILA_KPI.test(claseDe(el.parentElement)))))
+        .sort((x, y) => x.getBoundingClientRect().top - y.getBoundingClientRect().top);
+      let kpis = [];
+      for (const k of candK) { const t = k.getBoundingClientRect().top; const fila = candK.filter(x => Math.abs(x.getBoundingClientRect().top - t) <= 2); if (fila.length >= 2) { kpis = fila; break; } }
+      const filasLista = [...document.querySelectorAll('tbody tr, [role=row]:not(thead [role=row]), [data-fila], .fila')].filter(f => visible(f) && !f.closest('thead') && zona.contains(f) && f.getBoundingClientRect().height >= 20);
+      const pestanas = document.querySelector('[role=tablist],.pestanas,.tabs');
+      const tipo = document.body.dataset.pantalla || document.documentElement.dataset.pantalla || (document.querySelector('.hoja-a4,[data-documento]') ? 'documento' : '') ||
+        (kpis.length >= 2 ? 'tablero' : filasLista.length >= 8 ? 'lista' : pestanas && visible(pestanas) ? 'ficha' : 'otra');
+      const kpiFondo = kpis.length ? Math.round(Math.max(...kpis.map(k => k.getBoundingClientRect().bottom))) : null;
+      const kpiTope = kpis.length ? Math.round(Math.min(...kpis.map(k => k.getBoundingClientRect().top))) : null;
+      const filasVisibles = filasLista.filter(f => f.getBoundingClientRect().bottom <= vh).length;
+      const pestanasTope = pestanas && visible(pestanas) ? Math.round(pestanas.getBoundingClientRect().top) : null;
+      A.pliegue = { util, tipo, alto: vh, kpiTope, kpiFondo, filasVisibles, filasTotales: filasLista.length, pestanasTope };
+    }
+    res.aire = A;
+  }
   return res;
 }
 
@@ -701,7 +897,7 @@ async function pasada(tipo, ancho, alto, movil) {
   }
   if (OSCURO) await page.evaluate(() => { document.documentElement.dataset.tema = 'oscuro'; document.documentElement.classList.add('dark'); });
   await page.waitForTimeout(1600); // cuentas, barras y líneas que se dibujan al cargar (y la transición de tema)
-  const datos = await page.evaluate(analizar, { pasada: tipo, oscuro: OSCURO });
+  const datos = await page.evaluate(analizar, { pasada: tipo, oscuro: OSCURO, galeria: GALERIA });
   const captura = `/tmp/revisar-${nombre}-${ancho}${OSCURO ? '-oscuro' : ''}.png`;
   await page.screenshot({ path: captura, fullPage: true }).catch(() => {});
   await ctx.close();
@@ -709,6 +905,7 @@ async function pasada(tipo, ancho, alto, movil) {
 }
 
 const principal = await pasada('principal', ANCHO, ALTO, CELULAR);
+if (principal.aire?.pliegue?.tipo === 'galeria') GALERIA = true; // la página se declara catálogo: data-pantalla="galeria"
 const cel = await pasada('celular', 390, 844, true);
 await navegador.close();
 
@@ -842,7 +1039,7 @@ else if (OSCURO && principal.oscuro) {
   const parte = (regla, puntos, detalle, sugerencia, ejemplos) => partes.push({ regla, puntos, detalle, sugerencia, ejemplos });
   if (Sm.alturas.length) parte('Simetría · hermanos de distinto alto', tope(Sm.alturas.length, 1.5, 4),
     Sm.alturas.map(a => `${a.cantidad} piezas en una fila con ${a.dif} px de diferencia (${a.altos.join(' / ')})`).join(' · '),
-    'Las tarjetas de una misma fila miden lo mismo: grid con align-items:stretch (el valor por defecto) y sin height fija ni align-items:start en el padre.',
+    'Hermanas con contenido parecido miden lo mismo: grid con align-items:stretch y el pie con margin-top:auto (el hueco que queda no pasa de ~40 px). Si una necesita mucho más, cada una toma su alto (align-items:start, §4i).',
     Sm.alturas.slice(0, 4).map(a => a.selector));
   if (Sm.pies.length) parte('Simetría · pies a distinta altura', tope(Sm.pies.length, 1.5, 3),
     Sm.pies.map(p => `${p.cantidad} tarjetas del mismo alto con el pie corrido ${p.dif} px`).join(' · '),
@@ -876,6 +1073,52 @@ else if (OSCURO && principal.oscuro) {
   for (const p of partes) add('aviso', p.regla, Math.round(p.puntos * escala * 10) / 10, p.detalle, p.sugerencia, p.ejemplos);
 }
 
+// 14. aire muerto y densidad vertical (SKILL.md §4i)
+{
+  const Ai = principal.aire;
+  if (Ai.filas.length) {
+    const grave = Ai.filas.some(f => f.exceso >= 120);
+    add(grave ? 'falla' : 'aviso', 'Aire muerto · fila estirada', tope(Ai.filas.length, grave ? 6 : 3, grave ? 12 : 6),
+      Ai.filas.map(f => `fila de ${f.cantidad} que mide ${f.alto} px cuando la mayoría necesita ~${f.necesitan} (hasta ${f.exceso} px de blanco); la estira ${f.culpable}`).join(' · '),
+      'Las tarjetas toman el alto de su contenido: align-items:start en la grilla, o compactá la pieza alta (protagonista con la curva de alto fijo, lista recortada a "+N más"). Si la fila se iguala, el contenido se reparte (pie pegado abajo) y no queda un hueco de más de ~40 px.',
+      Ai.filas.map(f => f.selector));
+  }
+  if (Ai.huecos.length) {
+    const grave = Ai.huecos.some(h => h.mayor >= 120);
+    const n = Ai.huecos.reduce((a, h) => a + h.cantidad, 0);
+    add(grave ? 'falla' : 'aviso', 'Aire muerto · hueco dentro de la tarjeta', tope(n, grave ? 4 : 1.5, grave ? 12 : 6),
+      Ai.huecos.map(h => `${h.firma} (${h.alto} px de alto) con ${h.mayor} px vacíos ${h.donde} ×${h.cantidad}`).join(' · '),
+      'Sacá el alto fijo o el min-height, o llená el hueco con algo útil: una línea de contexto ("Sin movimientos desde el 12 nov"), el detalle del número, la lista de los 3 primeros. Un vacío va compacto dentro de la tarjeta, nunca media pantalla. Si es una zona para soltar o un lienzo, marcá el contenedor con data-alto-libre.',
+      Ai.huecos.flatMap(h => h.ejemplos.slice(0, 1)));
+  }
+  const P = Ai.pliegue;
+  if (P && !CELULAR && !GALERIA && !['documento', 'galeria', 'formulario', 'acceso', 'lectura'].includes(P.tipo)) {
+    const faltas = [];
+    if (P.tipo === 'tablero' && P.kpiFondo !== null && P.kpiFondo > P.alto - 240)
+      faltas.push(`los KPIs terminan en ${P.kpiFondo} px de ${P.alto}: quedan menos de 240 px para el bloque principal`);
+    if (P.tipo === 'tablero' && P.kpiFondo !== null && P.kpiFondo - P.kpiTope > 205)
+      faltas.push(`la fila de KPIs mide ${P.kpiFondo - P.kpiTope} px (tope 200: simple 104–128, con dibujo 140–170, en bandeja con rótulo y pie ≤ 200)`);
+    if (P.tipo === 'tablero' && P.kpiTope !== null && P.kpiTope > 300)
+      faltas.push(`los KPIs empiezan recién en ${P.kpiTope} px: la cabecera ocupa demasiado`);
+    if (P.tipo === 'lista' && P.filasTotales >= 8 && P.filasVisibles < 8)
+      faltas.push(`solo ${P.filasVisibles} filas de ${P.filasTotales} arriba del pliegue (piso: 8)`);
+    if (P.tipo === 'ficha' && P.pestanasTope !== null && P.pestanasTope > P.alto - 160)
+      faltas.push(`las pestañas empiezan en ${P.pestanasTope} px: no se ve la primera pestaña`);
+    const umbral = P.tipo === 'tablero' || P.tipo === 'lista' ? 45 : 30;
+    if (P.util < umbral) faltas.push(`solo el ${P.util} % de la primera pantalla tiene contenido (piso ${umbral} % para ${P.tipo === 'otra' ? 'esta pantalla' : 'un ' + P.tipo})`);
+    if (faltas.length) add('aviso', 'Aire muerto · arriba del pliegue', Math.min(6, faltas.length * 2.5),
+      `A ${ANCHO}×${P.alto}: ${faltas.join(' · ')}.`,
+      'Sin scrollear tiene que verse (§4i): tablero = cabecera + KPIs + 240 px del bloque principal; lista = filtros + 8–10 filas; ficha = cabecera + datos clave + primera pestaña. Cabecera de una fila (≤ 96 en vistazo), KPIs de ≤ 200 px, protagonista con la curva de 48–64. Si la pantalla es un formulario, un acceso o algo para leer, marcala con data-pantalla en <body>.');
+  }
+  if (Ai.iconos.length) {
+    const n = Ai.iconos.reduce((a, i) => a + i.cantidad, 0);
+    add(Ai.iconos.some(i => i.desborda) ? 'falla' : 'aviso', 'Ícono de tamaño anormal', tope(n, Ai.iconos.some(i => i.desborda) ? 3 : 1.5, 6),
+      Ai.iconos.map(i => `${i.firma} a ${i.medida} px en una caja de ${i.caja}${i.desborda ? ' (se sale de su cuadro)' : ''} ×${i.cantidad}`).join(' · '),
+      'Íconos de 13 a 22 px (§6 Íconos). Si un ícono creció solo, buscá una regla genérica como `.tarjeta svg{width:100%;height:40px}` pensada para un gráfico: los estilos de gráficos van con clase propia (.curva, .grafico svg) y nunca sobre `svg` dentro de una tarjeta con íconos. Un vacío o una bienvenida llevan una ilustración de ilustraciones/, no un ícono agrandado (o marcá el svg con data-ilustracion).',
+      Ai.iconos.slice(0, 5).map(i => i.ejemplo));
+  }
+}
+
 // errores de JS
 const errs = [...new Set([...principal.errores, ...cel.errores])];
 if (errs.length) add('aviso', 'Errores en la consola', Math.min(6, errs.length * 2), errs.slice(0, 4).join(' · '), 'Una pantalla con errores de JS puede quedar a medio dibujar: revisalos antes de entregar.');
@@ -887,7 +1130,7 @@ const salida = {
   url, nota, ancho: ANCHO, oscuro: OSCURO,
   resumen: { fallas: problemas.filter(p => p.nivel === 'falla').length, avisos: problemas.filter(p => p.nivel === 'aviso').length,
     textosRevisados: principal.totalTextos, contrasteSobreImagen: principal.contraste.sobreImagen,
-    fuentes: F.uso.map(u => u.familia), display: F.display, cuerpo: F.cuerpo, botonesRellenos: principal.rellenos.length, carruselesCelular: cel.carruseles },
+    fuentes: F.uso.map(u => u.familia), display: F.display, cuerpo: F.cuerpo, botonesRellenos: principal.rellenos.length, carruselesCelular: cel.carruseles, pliegue: principal.aire.pliegue },
   problemas, capturas: [principal.captura, cel.captura],
 };
 
@@ -898,6 +1141,8 @@ else {
   const barra = n => '█'.repeat(Math.round(n / 5)) + '░'.repeat(20 - Math.round(n / 5));
   console.log(`\n${c('1', 'Revisión de pantalla')}  ${url}`);
   console.log(`${ANCHO} px${CELULAR ? ' (celular)' : ''}${OSCURO ? ' · oscuro' : ''} · ${principal.totalTextos} textos · fuentes: ${F.uso.map(u => u.familia).join(', ')}`);
+  const Pl = principal.aire.pliegue;
+  if (Pl) console.log(`Primera pantalla (${Pl.tipo}): ${Pl.util} % con contenido${Pl.kpiFondo !== null ? ` · KPIs de ${Pl.kpiTope} a ${Pl.kpiFondo} px` : ''}${Pl.filasTotales ? ` · ${Pl.filasVisibles} de ${Pl.filasTotales} filas a la vista` : ''}`);
   const colNota = nota >= 85 ? '32' : nota >= 65 ? '33' : '31';
   console.log(`\nNota ${c('1;' + colNota, String(nota))}/100  ${c(colNota, barra(nota))}  ${salida.resumen.fallas} fallas · ${salida.resumen.avisos} avisos\n`);
   if (!problemas.length) console.log('Sin problemas detectados. Igual mirala al lado de las referencias 06, 07, 08 y 14.\n');

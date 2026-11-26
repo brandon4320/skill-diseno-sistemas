@@ -66,7 +66,7 @@ cd ~/.claude/skills/diseno-sistemas/ejemplos && python3 -m http.server
 
 ## Revisar una pantalla: `scripts/revisar.mjs`
 
-Abre la pantalla en Chromium, mide los estilos y devuelve una nota de 0 a 100 con cada problema, su selector y la sugerencia: un solo botón relleno, dos voces tipográficas, radios y tamaños en la escala, contraste AA, toques de 44 px, estado solo con color, cifras tabulares, nombres accesibles, desborde a 390 px, **componentes que se deslizan de costado en el celular** (salvo carruseles con encastre o `data-carrusel`), contenido cortado en el borde, errores de consola y, con `--oscuro`, blanco puro sobre negro, colores de estado sin versión oscura y sombras como única separación.
+Abre la pantalla en Chromium, mide los estilos y devuelve una nota de 0 a 100 con cada problema, su selector y la sugerencia: un solo botón relleno, dos voces tipográficas, radios y tamaños en la escala, contraste AA, toques de 44 px, estado solo con color, cifras tabulares, nombres accesibles, desborde a 390 px, **componentes que se deslizan de costado en el celular** (salvo carruseles con encastre o `data-carrusel`), contenido cortado en el borde, **aire muerto** (filas de tarjetas estiradas, huecos dentro de una tarjeta, íconos agrandados y qué entra arriba del pliegue según §4i; `data-pantalla` en `<body>` le dice qué tipo de pantalla es), errores de consola y, con `--oscuro`, blanco puro sobre negro, colores de estado sin versión oscura y sombras como única separación.
 
 Instalá Playwright una vez, fuera de la carpeta de la skill:
 

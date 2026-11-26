@@ -421,7 +421,7 @@
 }
 </style>
 </head>
-<body class="bib">
+<body data-pantalla="galeria" class="bib">
 <div class="bib-pag">
   <aside class="bib-indice" data-volver="index.html" data-titulo="Capas"></aside>
 
@@ -1289,17 +1289,17 @@ $$('.c-escena-m[data-fondo]').forEach(e => {
 
 /* ═════════ Datos de ejemplo (Estudio Faro) ═════════ */
 const FACTURAS = {
-  'FAC-01102': { cli: 'Orbe Retail', ent: 'var(--e1)', con: 'Plan anual de marca', monto: 4820000, emitida: '2026-11-02', vence: '2026-11-17', estado: 'vencida', resp: 'Lucía Benítez', contrato: 'CONT-0412', mail: 'pagos@orberetail.com.ar',
+  'FAC-01102': { cli: 'Orbe Retail', ent: 'var(--e1)', con: 'Plan anual de marca', monto: 4820000, emitida: '2026-11-02', vence: '2026-11-17', estado: 'vencida', resp: 'Lucía Benítez', contrato: 'CTR-0412', mail: 'pagos@orberetail.com.ar',
     act: [['ph-bell-ringing', 'Recordatorio enviado a pagos@orberetail.com.ar', '2026-11-17T09:00:00-03:00'], ['ph-eye', 'Orbe Retail abrió la factura', '2026-11-03T11:24:00-03:00'], ['ph-paper-plane-tilt', 'Lucía Benítez la emitió', '2026-11-02T16:10:00-03:00']] },
-  'FAC-01101': { cli: 'Casa Lumen', ent: 'var(--e2)', con: 'Rediseño del sitio · hito 2', monto: 2360000, emitida: '2026-11-01', vence: '2026-11-30', estado: 'emitida', resp: 'Lucía Benítez', contrato: 'CONT-0398', mail: 'administracion@casalumen.com',
+  'FAC-01101': { cli: 'Casa Lumen', ent: 'var(--e2)', con: 'Rediseño del sitio · hito 2', monto: 2360000, emitida: '2026-11-01', vence: '2026-11-30', estado: 'emitida', resp: 'Lucía Benítez', contrato: 'CTR-0398', mail: 'administracion@casalumen.com',
     act: [['ph-eye', 'Casa Lumen abrió la factura', '2026-11-18T10:05:00-03:00'], ['ph-paper-plane-tilt', 'Lucía Benítez la emitió', '2026-11-01T12:30:00-03:00']] },
-  'FAC-01099': { cli: 'Grupo Atlas', ent: 'var(--e3)', con: 'Soporte mensual noviembre', monto: 980000, emitida: '2026-10-27', vence: '2026-11-10', estado: 'bloqueada', resp: 'Joaquín Rivas', contrato: 'CONT-0377', mail: 'administracion@grupoatlas.com.ar',
+  'FAC-01099': { cli: 'Grupo Atlas', ent: 'var(--e3)', con: 'Soporte mensual noviembre', monto: 980000, emitida: '2026-10-27', vence: '2026-11-10', estado: 'bloqueada', resp: 'Joaquín Rivas', contrato: 'CTR-0377', mail: 'administracion@grupoatlas.com.ar',
     act: [['ph-warning', 'Bloqueada: el cliente pide el remito firmado', '2026-11-11T09:40:00-03:00'], ['ph-paper-plane-tilt', 'Joaquín Rivas la emitió', '2026-10-27T15:00:00-03:00']] },
-  'FAC-01098': { cli: 'Nativa Foods', ent: 'var(--e4)', con: 'Campaña verano · piezas', monto: 1840500, emitida: '2026-10-28', vence: '2026-11-12', estado: 'cobrada', resp: 'Martina Quiroga', contrato: 'CONT-0405', mail: 'pagos@nativafoods.com',
+  'FAC-01098': { cli: 'Nativa Foods', ent: 'var(--e4)', con: 'Campaña verano · piezas', monto: 1840500, emitida: '2026-10-28', vence: '2026-11-12', estado: 'cobrada', resp: 'Martina Quiroga', contrato: 'CTR-0405', mail: 'pagos@nativafoods.com',
     act: [['ph-check-circle', 'Cobro registrado por transferencia', '2026-11-12T14:20:00-03:00'], ['ph-paper-plane-tilt', 'Martina Quiroga la emitió', '2026-10-28T10:00:00-03:00']] },
-  'FAC-01096': { cli: 'Puerto Sur Logística', ent: 'var(--e5)', con: 'Señalética del depósito', monto: 3150000, emitida: '2026-11-05', vence: '2026-12-05', estado: 'emitida', resp: 'Joaquín Rivas', contrato: 'CONT-0419', mail: 'compras@puertosur.com.ar',
+  'FAC-01096': { cli: 'Puerto Sur Logística', ent: 'var(--e5)', con: 'Señalética del depósito', monto: 3150000, emitida: '2026-11-05', vence: '2026-12-05', estado: 'emitida', resp: 'Joaquín Rivas', contrato: 'CTR-0419', mail: 'compras@puertosur.com.ar',
     act: [['ph-paper-plane-tilt', 'Joaquín Rivas la emitió', '2026-11-05T17:45:00-03:00']] },
-  'FAC-01095': { cli: 'Kora Salud', ent: 'var(--e6)', con: 'Manual de marca', monto: 1275000, emitida: '2026-10-20', vence: '2026-11-04', estado: 'cobrada', resp: 'Martina Quiroga', contrato: 'CONT-0388', mail: 'tesoreria@korasalud.com',
+  'FAC-01095': { cli: 'Kora Salud', ent: 'var(--e6)', con: 'Manual de marca', monto: 1275000, emitida: '2026-10-20', vence: '2026-11-04', estado: 'cobrada', resp: 'Martina Quiroga', contrato: 'CTR-0388', mail: 'tesoreria@korasalud.com',
     act: [['ph-check-circle', 'Cobro registrado con cheque', '2026-11-04T11:00:00-03:00'], ['ph-paper-plane-tilt', 'Martina Quiroga la emitió', '2026-10-20T09:30:00-03:00']] },
 };
 const IDS = Object.keys(FACTURAS);

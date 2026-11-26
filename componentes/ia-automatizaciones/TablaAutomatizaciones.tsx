@@ -175,7 +175,7 @@ export function TablaAutomatizaciones({ items, onActivar, onEjecutar, onAbrir, c
         </table>
       </div>
       {lista.length === 0 && (
-        <p className="px-5 py-10 text-center text-[13px] text-texto-3">
+        <p className="px-5 py-4 text-center text-[13px] text-texto-3">
           Ninguna automatización en este filtro.{' '}
           <button type="button" onClick={() => setFiltro('todas')} className={cx('font-medium text-tinta underline-offset-2 hover:underline', FOCO)}>
             Ver todas

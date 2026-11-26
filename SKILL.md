@@ -36,6 +36,7 @@ Rutas relativas a esta carpeta; los números sueltos (`06`, `07`…) son las cap
 | Arrastre que cambia un resultado (fecha, ponderado, carga) | §1c.5, §5 Pipeline | `ejemplos/arrastre-con-impacto.html` |
 | Celular | §5 Celular, §6e (nunca de costado) | `ejemplos/pantallas/celular.html`, `09`, `11`, `12` |
 | Aprovechar la pantalla: anchos, paneles fijos, densidad, lo urgente arriba | §4h, `analisis/16-espacio-y-pantalla.md` | `15`–`20` |
+| Tarjetas que ocupan de más, qué tiene que verse sin scrollear | §4i, `guias/jerarquia-y-espacios.md` §5.1 | `scripts/revisar.mjs` (chequeo "Aire muerto") |
 | Cronograma, Gantt, roadmap, carga del equipo | §4h, §5 Calendario | `17`, `18`, `19` |
 | Chat o conversación con panel de información | §4h | `15` |
 | Reporte con vista previa y envío | §4h, §5 Documentos | `16` |
@@ -66,7 +67,7 @@ Rutas relativas a esta carpeta; los números sueltos (`06`, `07`…) son las cap
 6. Cabecera: título grande y firme (Geist 500), subtítulo con cifras reales, un solo botón relleno.
 7. Fila de 3–6 KPIs: uno protagonista, el resto en bandeja con tarjeta adentro, cada uno con su dibujo.
 8. Cuerpo: tarjetas de entidad para lo que está en curso, tabla o lista para el resto, panel de contexto a la derecha.
-9. Espacios con la tabla de §4a; escalera tipográfica de 5 niveles (§4e).
+9. Espacios con la tabla de §4a; escalera tipográfica de 5 niveles (§4e); altos de §4i (KPIs ≤ 200, cabecera de una fila) para que el bloque principal asome sin scrollear.
 10. Vida (§1b): color por entidad, caras, un gráfico con estado, movimiento al cargar.
 11. Estados vacío, cargando y error (§6b); textos según `guias/textos.md`.
 12. Probá a 1280, 1440, 1920, a 360/390/414 (sin nada que se deslice de costado) y en oscuro; pasá `scripts/revisar.mjs` y la lista de §8.
@@ -253,7 +254,7 @@ Solo valores de `--espacio-*` (`tokens.css`). La única excepción literal es el
 Lo premium se nota en que todo cae en su lugar. Un desfase de 2 px se ve aunque nadie sepa decir qué está mal.
 - **Bordes comunes.** Todo bloque de una columna arranca en la misma x: títulos de sección, tarjetas, tablas y filtros comparten borde izquierdo. Lo mismo a la derecha con acciones, montos y ⋯. Nada "casi alineado": o está en la línea o está claramente adentro (16 o más).
 - **Padding simétrico.** En tarjetas y botones, el padding de arriba es igual al de abajo y el de la izquierda igual al de la derecha. Si el contenido de abajo es un pie, el pie lleva su propio padding simétrico. Excepción: el ícono de un botón con texto (izquierda 12, derecha 14 compensa visualmente).
-- **Filas de hermanos iguales.** Las tarjetas de una misma fila tienen el mismo alto (`grid` + `align-items:stretch`) y sus partes internas caen a la misma altura. Título con título, número con número y pie con pie (subgrid, o alto fijo por zona). El pie va pegado abajo (`margin-top:auto`) aunque una tarjeta tenga menos contenido.
+- **Filas de hermanos iguales.** Las tarjetas de una misma fila tienen el mismo alto (`grid` + `align-items:stretch`) y sus partes internas caen a la misma altura. Título con título, número con número y pie con pie (subgrid, o alto fijo por zona). El pie va pegado abajo (`margin-top:auto`) aunque una tarjeta tenga menos contenido. Si una necesita más de ~40 px que las otras, no se estira la fila: §4i.
 - **Anchos que se repiten.** Las columnas de una grilla son iguales salvo que haya un protagonista declarado (1.25fr). Dos botones lado a lado al pie de una capa tienen el mismo ancho o están alineados a la derecha, nunca uno largo y otro corto centrados. Los íconos de una lista van en una columna de ancho fijo.
 - **Centro óptico.** Ícono centrado en su cuadro (`display:grid; place-items:center`, mismo tamaño par: 16 en 32, 18 en 36, 20 en 40). Los íconos con peso a un lado se corren 1 px hacia el lado liviano (play →, flechas). Texto y ícono en la misma línea: `align-items:center`. Si mezclan tamaños de letra, alineá por la línea base (`align-items:baseline`).
 - **Números alineados.** En columnas de cifras: `tabular-nums`, todos a la derecha, mismos decimales. En una fila de KPIs, las cifras caen en la misma línea base.
@@ -290,6 +291,52 @@ Las referencias llenan el ancho sin huecos y nunca obligan a buscar el contenido
 - **Cabecera compacta en operación:** título 20–24 con subtítulo de cifras reales y las acciones en la misma fila (36); el primer bloque a 16–24.
 - **Escritorio puede desplazar de costado solo con aviso.** Un cronograma más largo que la pantalla (18) se desliza con barra visible, columna de nombres fija y un chip que dice qué quedó afuera ("‹ 6 vencidas"). En celular, nunca (§6e).
 
+### 4i. Densidad vertical y arriba del pliegue (`guias/jerarquia-y-espacios.md` §5.1)
+Fricción cero también es **ver lo más posible sin scrollear**. No es amontonar: el aire va **entre** grupos (§4a, §4b) y adentro de una tarjeta el alto lo pone el contenido. Una tarjeta enorme con tres datos obliga a scrollear para llegar a lo que importa.
+
+**Alto y padding por pieza** (a 1440; entre paréntesis, celular):
+
+| Pieza | Alto | Padding |
+|---|---|---|
+| KPI simple (rótulo + cifra + contexto) | 104–128 (96–112) | 16 (20 en vistazo) |
+| KPI con dibujo (barra, rayitas, curva de 32–40) | 140–170 | 16 |
+| KPI en bandeja (rótulo de 32–36 + tarjeta + pie de 32) | **≤ 200** la fila entera (~185 sin leyenda; ~215 con dos monedas lado a lado) | bandeja 4, tarjeta 16 |
+| Protagonista (cifra grande + curva) | el de su fila, ≤ 200 (celular: ≤ 160, ≤ 210 con su acción) | 20–24; curva de 48–64 al pie, nunca más de ⅓ de la tarjeta |
+| Tarjeta de entidad (proyecto, cliente, persona) | 120–180 sin lista; ≤ 320 con ≤ 4 pasos | 16 (20 en vistazo) |
+| Tarjeta de kanban | 72–120 | 12 |
+| Bandeja de lista (5–7 filas) | rótulo 32–36 + filas de 36–40 | 4 |
+| Aviso o fila de 2 líneas | 56–64 | 12 arriba y abajo |
+| Gráfico de tablero (área de dibujo) | 180–240 (120–160) | 16–20 |
+| Monitoreo | 180–200 (§4c) | 16 |
+| Vacío dentro de una tarjeta o bandeja | una línea de 36–48 ("Nada pendiente hoy") | — |
+| Vacío de una lista o tabla entera | 160–240 con ilustración de 64–96; nunca más de ⅓ de la pantalla | 24 |
+| Esqueleto | el alto exacto de lo que reemplaza | — |
+
+**Cabeceras:** barra superior 52–56. Cabecera de página en operación: **una fila de 56–64** (título + subtítulo con cifras a la izquierda, acciones a la derecha; el período o la semana al lado del título, no arriba en otra línea) y el primer bloque a 16. En vistazo, con saludo y fecha, **≤ 96**. El selector de período va en la fila del título de sección o de la cabecera, nunca en una fila propia. Cabecera de tarjeta: una fila de 32–36 (rótulo + acción o ⋯); nada de título + subtítulo + divisor + aire antes del contenido. Cabecera de ficha: **≤ 120** con nombre, estado, 3–4 datos clave en línea y acciones, y las pestañas pegadas abajo.
+
+**Arriba del pliegue** (lo que tiene que verse sin scrollear):
+- **1440 × 900.** Tablero: cabecera + fila de KPIs + **240 px o más del bloque principal** (los KPIs empiezan antes de 300 y terminan antes de 660). Lista u operación: cabecera + filtros + **10 filas de 36** (piso 8). Ficha: cabecera + datos clave + pestañas + 3 filas de la primera pestaña. Calendario o cronograma: "Requiere atención" + la semana de 8 a 18 o las primeras 6 filas. **45 % o más** de la primera pantalla con contenido (texto, cifras, dibujos) en tablero y lista; 30 % en el resto.
+- **390 × 844.** Cabecera ≤ 56, saludo en una línea, protagonista ≤ 160 (≤ 210 con su acción adentro), accesos rápidos en una fila de ≤ 88 y **3 ítems de "Hoy" o más** antes de la píldora fija (lo de hoy va antes que los KPIs); KPIs de a 2 por fila, de ≤ 104. La píldora no tapa el último ítem (`padding-bottom` = su alto + 16).
+
+**Cómo se gana alto sin amontonar**, en este orden:
+1. **Sacar lo que no informa:** ícono agrandado como relleno (íconos de 13–22, cuadro de 32–36), subtítulo que repite el título, divisor + título + aire para lo mismo.
+2. **Fusionar filas:** ícono y rótulo en una línea; el delta al lado de la cifra o en el pie; el período en la fila del título; las acciones en la fila de la cabecera.
+3. **Alto natural.** Hermanas con contenido parecido se igualan (§4g) y lo que sobra no pasa de ~40 px (pie con `margin-top:auto`). Si una necesita más de 40 que las otras, la fila va con `align-items:start` o la alta se recorta.
+4. **Nada de `min-height` ni `height` fija en una tarjeta con datos.** Solo en zonas para soltar, lienzos, calendarios (`data-alto-libre`) y esqueletos.
+5. **Topes:** 5–7 filas + "Ver todo"; descripción de 2 líneas con `line-clamp`.
+6. **Dibujos de alto fijo:** sparkline 24–32, curva de KPI 32–40, protagonista 48–64, gráfico de tablero 180–240.
+7. Recién al final, **bajar el padding dentro de su rango** de §4a (24 → 20 → 16). Nunca letra de menos de 12, toques de menos de 44 en celular ni adentro más de la mitad de afuera.
+
+**Aire muerto (error):** más de 40 px sin contenido dentro de una tarjeta (arriba, entre partes o abajo); una fila de tarjetas estirada por la más alta con 60 px o más de blanco en la mayoría; un vacío que ocupa media pantalla; un ícono de más de 32 usado como dibujo. `revisar.mjs` lo mide (avisa desde 60, falla desde 120) y dice qué entra arriba del pliegue.
+
+**Cuándo NO compactar:**
+- **Formularios y altas:** campos de 36–40 (52 en celular), 20 entre campos y 24 entre grupos. Un formulario apretado se llena mal.
+- **Acceso** (entrar, código, invitación): centrado y con aire; la regla del pliegue no aplica.
+- **Lectura:** chat, reporte, documento A4, ayuda, notas largas. Interlineado 1,5 y 68ch: el aire es para leer.
+- **Confirmaciones, irreversibles, bienvenida y éxito:** piezas aisladas que se leen una vez.
+- **Celular:** los 44 de toque y los 16 de margen mandan sobre la densidad.
+- El vistazo de dirección respira más que la operación (§4c), pero con los mismos topes de alto.
+
 ---
 
 ## 5. Piezas
@@ -308,6 +355,7 @@ Las referencias llenan el ancho sin huecos y nunca obligan a buscar el contenido
 - Avance contra meta: barra de 3–6 px, rayitas con marca de "esperado a hoy" o "3 de 6". Nunca una torta.
 - Filas de 3–6 del mismo tamaño; cada KPI lleva a su lista filtrada (pie clickeable con ↗) y la deja destellando.
 - Sin valor: "—" en gris; cargando: esqueleto con la forma del KPI.
+- **Compacto:** 104–128 de alto el simple, ≤ 200 la fila con bandeja y pie; el ícono va en la fila del rótulo (16) y el delta en el pie o al lado de la cifra, nunca en una fila propia (§4i).
 
 ### Dos monedas (`componentes/datos/DosMonedas.tsx` · `ejemplos/dos-monedas.html`)
 Cuando un sistema maneja moneda local y dólares, la segunda moneda **no es una nota al pie**: "$ 45,7 M" grande y "y US$ 4.700" chiquito abajo hace que los dólares no se vean.
@@ -571,6 +619,7 @@ El oscuro es **el mismo layout con otros tokens**: mismas posiciones, tamaños, 
 - Sumar monedas distintas.
 - **Pantalla sin aprovechar:** contenedor angosto centrado (`max-width` + `margin:auto`) en una pantalla de trabajo, franja vacía a la derecha a 1920, panel lateral que se estira con la ventana, columnas en px fijos que no llenan el ancho, la grilla de abajo con bordes distintos a la de arriba.
 - Lo urgente (vencido, en riesgo, empieza hoy) debajo del cronograma o de la tabla, o un aviso sin su arreglo en la fila.
+- **Tarjetas infladas (§4i):** KPI de más de 200, cabecera de página de más de 96 o el selector de período en una fila propia, `min-height` o `height` fija en una tarjeta con datos, una fila estirada por la tarjeta más alta, más de 40 px vacíos dentro de una tarjeta, un vacío de media pantalla, un ícono agrandado como dibujo; un tablero donde no se ve el bloque principal o una lista con menos de 8 filas arriba del pliegue. Y al revés: un formulario, un acceso o un texto para leer apretados para que "entre".
 - **En celular, algo que se desliza de costado:** tabla ancha, kanban de columnas, cronograma o Gantt, fila de KPIs en carrusel, riel de filtros o pestañas, código; un carrusel sin encastre ni indicador; un ancho fijo sin `max-w-full`; un hijo de flex o grid sin `min-w-0`; `overflow-x:hidden` en `body` para tapar un desborde.
 - **Oscuro mal hecho:** `#fff` sobre `#000`; estados o deltas con el mismo color que en claro (el rojo del claro sobre oscuro da 2,5:1); tarjeta más oscura que su bandeja; tarjetas separadas solo por sombra; grilla o guías de gráfico más brillantes que los datos; logo oscuro sin cuadro sobre fondo oscuro; invertir a blanco todo lo seleccionado.
 - **En el acceso:** campos de solo línea, correo y contraseña lado a lado, principal circular en un rincón, slogans o fotos de stock, todo oscuro por defecto; código casilla por casilla (seis inputs); foto como caja gris mientras carga.
@@ -601,3 +650,4 @@ El oscuro es **el mismo layout con otros tokens**: mismas posiciones, tamaños, 
 20. **Pantalla aprovechada:** a 1280, 1440 y 1920 llena el ancho sin franjas vacías; columna fluida + panel fijo de 320–380; la grilla de abajo hereda las columnas de arriba; densidad según la tarea; "Requiere atención" y "Empieza hoy" arriba con su arreglo en la fila (§4h).
 21. **Oscuro:** escalera de superficies (tarjeta más clara que su bandeja), tinta `#fafafa` sobre `#0a0a0b`, estados con su versión oscura, bordes en vez de sombras, AA en los dos modos, gráficos con sus colores y la grilla baja, logos en cuadro; el revisor con `--oscuro` sin avisos de oscuro.
 22. **Acceso:** los 7 estados resueltos en el lugar (`guias/acceso.md`), `autocomplete` en cada campo, código en un solo input, y el revisor ≥ 90 con `--galeria` y con `--oscuro`.
+23. **Densidad vertical (§4i):** a 1440 × 900 se ve, sin scrollear, la cabecera, los KPIs y 240 px del bloque principal (tablero), 8–10 filas (lista) o la primera pestaña (ficha); a 390 × 844, la cifra, los accesos y 3 ítems de hoy. KPIs ≤ 200, cabecera de una fila (≤ 96 en vistazo), ningún hueco de más de 40 dentro de una tarjeta, nada de `min-height` en tarjetas con datos; el revisor sin avisos de "Aire muerto". Formularios, acceso y lectura conservan su aire.

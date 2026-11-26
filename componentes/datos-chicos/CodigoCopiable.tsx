@@ -68,7 +68,7 @@ export function CodigoCopiable({ valor, mostrar, variante = 'fila', etiqueta, cl
   )
 }
 
-/** "Plan anual Orbe Retail CONT-01101": el código pegado al título, mono gris un paso más chico. */
+/** "Plan anual Orbe Retail CTR-0412": el código pegado al título, mono gris un paso más chico. */
 export function TituloConCodigo({ titulo, codigo, className }: { titulo: string; codigo: string; className?: string }) {
   return (
     <span className={cx('inline-flex min-w-0 flex-wrap items-baseline gap-2 text-sm font-medium text-tinta', className)}>

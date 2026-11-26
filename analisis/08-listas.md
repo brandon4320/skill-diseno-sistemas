@@ -28,7 +28,7 @@
 10. Mostrá el conteo en cada pestaña o filtro ("Vencidas 5") y el total gris a la derecha del título de la sección.
 11. Los anulados o reembolsados se muestran tachados y en gris, no se borran.
 12. Truncá con "…" en una sola línea. Nunca dejes que una fila crezca a 3 líneas por un nombre largo.
-13. Los identificadores (`CONT-01101`, `FC A-0001-…`) van en fuente mono 13px gris 700.
+13. Los identificadores (`CTR-0412`, `FC A-0001-…`) van en fuente mono 13px gris 700.
 
 ### 3. Antipatrones que estas referencias evitan
 - Tablas con borde en cada celda, cebra o encabezado oscuro.
